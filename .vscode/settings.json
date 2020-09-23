@@ -1,0 +1,6 @@
+{
+    "material-icon-theme.files.associations": {
+        "*.view.tsx": "html",
+        "*.context.tsx": "redux",
+    },
+}
