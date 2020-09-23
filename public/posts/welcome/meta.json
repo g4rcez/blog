@@ -1,0 +1,10 @@
+{
+    "description": "Welcome to my new blog and frontend lab",
+    "img": "react",
+    "tags": [
+        "frontend",
+        "react",
+        "typescript",
+        "javascript"
+    ]
+}
