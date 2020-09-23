@@ -1,0 +1,51 @@
+{
+    "transparent": "transparent",
+    "current": "currentColor",
+    "dark": {
+        "light": "#eee",
+        "dark": "#ddd",
+        "overlay": "#14191eCE",
+        "default": "#1D242B"
+    },
+    "pacman": {
+        "body": "#fbd38d",
+        "eat": "#feb2b2"
+    },
+    "disabled": {
+        "dark": "#3f4042",
+        "default": "#9fa2a5",
+        "light": "#cfd0d2"
+    },
+    "base": {
+        "default": "#fff",
+        "dark": "#121213",
+        "light": "#fff"
+    },
+    "on-base": "#FFFFFF",
+    "primary": {
+        "light": "#606d7c",
+        "default": "#24354B",
+        "dark": "#121a25"
+    },
+    "danger": {
+        "lightest": "#fff8f8",
+        "light": "#feb2b2",
+        "default": "#f56565",
+        "dark": "#c53030"
+    },
+    "warn": {
+        "light": "#fbd38d",
+        "default": "#ed8936",
+        "dark": "#c05621"
+    },
+    "success": {
+        "light": "#9ae6b4",
+        "default": "#48bb78",
+        "dark": "#2f855a"
+    },
+    "info": {
+        "light": "#90c1d4",
+        "default": "#4299e1",
+        "dark": "#2b6cb0"
+    }
+}

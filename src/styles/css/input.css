@@ -1,0 +1,104 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input {
+  @apply w-full outline-none bg-transparent;
+}
+
+.input-label {
+  @apply absolute pointer-events-none block text-disabled;
+  transform-origin: top left;
+  transform: translate(0, -25px) scale(1);
+  transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.input-label-focus {
+  transform: translate(0, -40px) scale(0.75);
+  transform-origin: top left;
+}
+
+.input-underline {
+  @apply border-b border-disabled-light;
+}
+
+.input-invalid-message,
+.input-valid-message {
+  @apply hidden;
+}
+
+.input-underline:after {
+  @apply absolute left-0 right-0 pointer-events-none border-b-2 border-primary-light;
+  bottom: -0.05rem;
+  content: "";
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  transform: scaleX(0);
+}
+
+.input:focus ~ .input-underline:after {
+  transform: scaleX(1);
+}
+
+.input:focus + .input-label,
+.input:not(:placeholder-shown) + .input-label {
+  @apply input-label-focus;
+  transform: translate(0, -45px) scale(0.75);
+  transform-origin: top left;
+}
+
+.input:focus + .input-label,
+.input:valid:required + .input-label {
+  @apply text-primary-light;
+}
+
+.input:valid:required ~ .input-underline:after {
+  @apply text-primary-light;
+  transform: scaleX(1);
+}
+
+.input:not([value=""]):invalid:required:not(:focus) ~ .input-underline:after {
+  @apply border-danger-light;
+  transform: scaleX(1);
+}
+
+.input:not([value=""]):invalid:required:not(:focus) + .input-label,
+.input:not([value=""]):invalid:required:not(:focus) ~ .input-underline:after {
+  @apply text-danger-light;
+}
+
+.input-invalid
+  > .input:not([value=""]):invalid:required:not(:focus)
+  + label
+  + div
+  + span
+  > .input-invalid-message:not(:empty) {
+  @apply block text-danger-light;
+}
+
+.input-valid
+  > .input:not([value=""]):valid:required:not(:focus)
+  + label
+  + div
+  + span
+  > .input-valid-message:not(:empty) {
+  @apply block text-primary-light;
+}
+
+.input:disabled {
+  @apply cursor-not-allowed;
+}
+
+.textarea {
+  @apply resize-none;
+}
+
+.textarea:focus + label,
+.textarea:not(:empty) + label {
+  top: 25px;
+}

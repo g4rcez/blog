@@ -1,0 +1,35 @@
+[
+    {
+        "description": "Array.prototype. Um pequeno HowTo dos métodos",
+        "img": "/img/react.png",
+        "tags": [
+            "arrays",
+            "typescript",
+            "javascript"
+        ],
+        "createdAt": "2020-09-22T17:49:52.638Z",
+        "hasTranslation": false,
+        "modifiedAt": 1600828207559.1458,
+        "path": "arrays-prototype",
+        "readingTime": 7,
+        "languages": [],
+        "extension": "md"
+    },
+    {
+        "description": "Welcome to my new blog and frontend lab",
+        "img": "/img/react.png",
+        "tags": [
+            "frontend",
+            "react",
+            "typescript",
+            "javascript"
+        ],
+        "createdAt": "2020-09-22T06:12:58.320Z",
+        "hasTranslation": false,
+        "modifiedAt": 1600755931380.664,
+        "path": "welcome",
+        "readingTime": 1,
+        "languages": [],
+        "extension": "md"
+    }
+]

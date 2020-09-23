@@ -1,0 +1,47 @@
+{
+    "transparent": "transparent",
+    "current": "currentColor",
+    "dark": {
+        "light": "#60656a",
+        "dark": "#14191e",
+        "overlay": "#14191eCE",
+        "default": "#1D242B"
+    },
+    "disabled": {
+        "dark": "#3f4042",
+        "default": "#9fa2a5",
+        "light": "#cfd0d2"
+    },
+    "base": {
+        "default": "#fbfbfc",
+        "dark": "#f1f3f7",
+        "light": "#ffffff"
+    },
+    "on-base": "#FFFFFF",
+    "primary": {
+        "light": "#000",
+        "default": "#000",
+        "dark": "#000"
+    },
+    "danger": {
+        "lightest": "#fff8f8",
+        "light": "#feb2b2",
+        "default": "#f56565",
+        "dark": "#c53030"
+    },
+    "warn": {
+        "light": "#fbd38d",
+        "default": "#ed8936",
+        "dark": "#c05621"
+    },
+    "success": {
+        "light": "#9ae6b4",
+        "default": "#48bb78",
+        "dark": "#2f855a"
+    },
+    "info": {
+        "light": "#90c1d4",
+        "default": "#4299e1",
+        "dark": "#2b6cb0"
+    }
+}

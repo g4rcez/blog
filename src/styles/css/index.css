@@ -1,0 +1,84 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "./transitions.css";
+@import "./input.css";
+@import "tailwindcss/utilities";
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+*:focus {
+  outline: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  transition: 0.7;
+  cursor: all-scroll;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+html {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+html,
+body,
+#root {
+  @apply bg-base-dark text-dark-light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.h-fit {
+  height: fit-content;
+}
+
+.img-responsive {
+  max-width: 100%;
+  vertical-align: middle;
+  border-style: none;
+}
+
+.circonf {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 1px solid silver;
+  animation: circ-anim 0.7s linear infinite;
+}
+
+.circonf-2 {
+  border-color: grey;
+  border-bottom-color: transparent;
+}
+
+@keyframes circ-anim {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

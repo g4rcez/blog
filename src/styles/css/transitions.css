@@ -1,0 +1,27 @@
+.transition-default {
+  transition-duration: 500ms;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0ms;
+}
+
+.display-transition {
+  transition-property: display;
+  @apply transition-default;
+}
+
+.bg-animate,
+.bg-animate:focus,
+.bg-animate:hover {
+  transition: background-color 250ms ease-in-out;
+}
+.text-animate,
+.text-animate:focus,
+.text-animate:hover {
+  transition: color 250ms ease-in-out;
+}
+
+.link-animate,
+.link-animate:focus,
+.link-animate:hover {
+  transition: text-decoration 250ms ease-in-out, font-weight 250ms ease-in-out;
+}
