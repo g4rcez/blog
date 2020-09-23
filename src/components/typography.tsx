@@ -1,5 +1,4 @@
 import React, { Fragment, useMemo } from "react";
-import { isPropertySignature } from "typescript";
 import { useClassNames } from "../hooks/use-classnames";
 
 type HX = React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;

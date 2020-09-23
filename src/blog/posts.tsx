@@ -61,7 +61,7 @@ const Posts = (props: Props) => {
   const clearFilter = () => setFilter("");
 
   return (
-    <div className="flex flex-wrap flex-col md:flex-row justify-items-end w-full">
+    <div className="flex flex-wrap flex-col md:flex-row justify-items-end w-full px-2 md:px-0">
       <Container className="w-full h-fit">
         <SubTitle size="text-4xl" className="mb-8 font-bold w-full flex">
           Posts
@@ -70,19 +70,25 @@ const Posts = (props: Props) => {
       <div className="w-full md:w-3/4 flex md:flex-col flex-col order-2 md:order-1">
         {posts.slice(0, props.posts).map((post) => (
           <Container key={post.path} className="flex flex-auto items-center mb-8 justify-between">
-            <Img
-              src={post.img}
-              alt={post.title}
-              className="img-responsive w-16 h-w-16 rounded-full bg-primary p-2 flex"
-            />
+            <Link to={post.path}>
+              <Img
+                src={post.img}
+                alt={post.title}
+                className="img-responsive w-16 h-w-16 rounded-full bg-primary p-2 flex"
+              />
+            </Link>
             <div className="flex flex-auto flex-col ml-4">
-              <SubTitle size="text-3xl" className="font-bold">
-                {post.title}
-              </SubTitle>
+              <Link to={post.path}>
+                <SubTitle size="text-3xl" className="font-bold">
+                  {post.title}
+                </SubTitle>
+              </Link>
               {!isEmpty(post.languages) && (
                 <Paragraph>
                   {post.languages.map((lang) => (
-                    <Link to={Links.getPost(post.post, post.extension, lang)}>{lang}</Link>
+                    <Link key={`${post.path}-${lang}`} to={Links.getPost(post.post, post.extension, lang)}>
+                      {lang}
+                    </Link>
                   ))}
                 </Paragraph>
               )}
@@ -91,13 +97,18 @@ const Posts = (props: Props) => {
               </SubTitle>
               <Paragraph>{post.description}</Paragraph>
               <div className="inline-block">
-                {!isEmpty(post.tags) && post.tags!.map((lang) => <Tag onClick={() => setFilter(lang)}>#{lang}</Tag>)}
+                {!isEmpty(post.tags) &&
+                  post.tags!.map((tag) => (
+                    <Tag key={`${post.path}-${tag}`} onClick={() => setFilter(tag)}>
+                      #{tag}
+                    </Tag>
+                  ))}
               </div>
             </div>
           </Container>
         ))}
       </div>
-      <div className="w-full md:w-1/4 flex flex-col order-1 md:order-2 p-4 md:p-0">
+      <div className="w-full md:w-1/4 flex flex-col order-1 md:order-2">
         <Input
           containerClassName="w-full"
           placeholder="Find your post"
@@ -115,7 +126,9 @@ const Posts = (props: Props) => {
         />
         <Container className="mt-2">
           {tags.map((x) => (
-            <Tag onClick={() => setFilter(x)}>#{x}</Tag>
+            <Tag key={`${x}`} onClick={() => setFilter(x)}>
+              #{x}
+            </Tag>
           ))}
         </Container>
       </div>

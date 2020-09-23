@@ -184,6 +184,7 @@ export const Input: <T = any>(props: InputProps<T>) => JSX.Element = React.forwa
 
     useLayoutEffect(() => {
       validateValidity(getRefValidity());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onTestValidate = (value?: string) => {

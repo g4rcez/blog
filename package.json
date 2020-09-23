@@ -19,7 +19,7 @@
     "css": "postcss src/styles/css/index.css -o src/styles/css/dist/index.css",
     "watch:css": "postcss src/styles/css/index.css -o src/styles/css/dist/index.css --watch",
     "start": "PORT=4000 react-scripts start",
-    "build": "NODE_ENV=production yarn css && react-scripts build",
+    "build": "NODE_ENV=production yarn css && yarn posts && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
