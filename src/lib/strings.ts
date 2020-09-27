@@ -1,12 +1,15 @@
 import { Nullable } from "../react-app-env";
 import { getDefaultLanguage } from "./dom";
 export const Strings = {
-  formatLocaleDate: (date: Date, locale?: string) => {
+  formatLocaleDate: (date: string, locale?: string): string => {
+    if (date === "") {
+      return "";
+    }
     const formatter = locale || getDefaultLanguage();
     if (formatter.toLowerCase() === "iso") {
-      return date.toISOString();
+      return new Date(date).toISOString();
     }
-    return date.toLocaleString(formatter);
+    return new Date(date).toLocaleString(formatter);
   },
   capitalize: (str = "") =>
     str

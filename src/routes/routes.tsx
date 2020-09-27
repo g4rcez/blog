@@ -4,7 +4,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Loader } from "../components/pacman-loader";
 export const Path = [
   { path: Links.root, component: lazy(() => import("../App")) },
-  { path: Links.post, component: lazy(() => import("../blog/post")) }
+  { path: Links.posts, component: lazy(() => import("../blog/posts.view")) },
+  { path: Links.post, component: lazy(() => import("../blog/post.view")) }
 ];
 
 const Routes = () => {
@@ -13,7 +14,7 @@ const Routes = () => {
       <Suspense fallback={<Loader width="10rem" />}>
         <Switch>
           {Path.map((x) => (
-            <Route key={x.path} exact strict sensitive path={x.path} component={x.component} />
+            <Route key={x.path} exact path={x.path} component={x.component} />
           ))}
         </Switch>
       </Suspense>

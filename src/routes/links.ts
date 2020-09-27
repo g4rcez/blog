@@ -1,6 +1,7 @@
 import { Extension } from "../blog/post.type";
 export const Links = {
   root: "/",
+  posts: "/posts",
   post: "/post/:title",
   getPost: (title: string, extension?: Extension, lang?: string) => {
     const url = new URL("https://localhost");
