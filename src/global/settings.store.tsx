@@ -34,10 +34,11 @@ export const Settings: React.FC = ({ children }) => {
       const response = await fetch(`https://api.github.com/users/${Config.github}`, { cache: "force-cache" });
       const user: GithubUser = await response.json();
       dispatch.setUser(user);
-      repositoriesRequest(user.repos_url);
+      repositoriesRequest(user.login, user.public_repos);
     };
-    const repositoriesRequest = async (url: string) => {
-      const response = await fetch(url);
+    const repositoriesRequest = async (user: string, repoCount: number) => {
+      const url = `https://api.github.com/users/${user}/repos?per_page=${repoCount}`;
+      const response = await fetch(url, { cache: "no-cache" });
       const repos: GithubRepository[] = await response.json();
       dispatch.setRepositories(repos.sort((a, b) => a.name.localeCompare(b.name)));
     };

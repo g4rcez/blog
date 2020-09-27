@@ -77,8 +77,8 @@ const PostView = () => {
 
   const [prev, next] = useMemo((): [PostType | undefined, PostType | undefined] => {
     const curr = POSTS.findIndex((x) => x.path === post.path);
-    const prevPost = Math.max(0, curr - 1);
-    const nextPost = Math.max(POSTS.length - 1, curr + 1);
+    const prevPost = curr - 1;
+    const nextPost = curr + 1;
     return [POSTS[prevPost], POSTS[nextPost]];
   }, [post]);
 
@@ -87,7 +87,9 @@ const PostView = () => {
   }, [post]);
 
   useEffect(() => {
-    setPost(getPost(params.title!));
+    const p = getPost(params.title!);
+    setPost(p);
+    document.title = `Garcez Blog - ${p.title}`;
   }, [params.title]);
 
   useEffect(() => {
@@ -120,17 +122,23 @@ const PostView = () => {
         )}
         <div dangerouslySetInnerHTML={{ __html: content }} />
         <Container className="justify-between">
-          <div className="div w-full md:w-1/2">
+          <div className="div w-1/2">
             {prev && (
-              <Link to={prev.url} className="hover:underline hover:text-primary-light leading-relaxed text-lg">
+              <Link
+                to={prev.url}
+                className="hover:underline hover:text-primary-light leading-relaxed text-default text-info-light"
+              >
                 {"<- "}
                 {prev.title}
               </Link>
             )}
           </div>
-          <div className="div w-full md:w-1/2 text-right">
+          <div className="div w-1/2 text-right">
             {next && (
-              <Link to={next.url} className="hover:underline hover:text-primary-light leading-relaxed text-lg">
+              <Link
+                to={next.url}
+                className="hover:underline hover:text-primary-light leading-relaxed text-default text-info-light"
+              >
                 {next.title} {" ->"}
               </Link>
             )}

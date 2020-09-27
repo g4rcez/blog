@@ -19,7 +19,7 @@
     "base": {
         "default": "#fff",
         "dark": "#121213",
-        "light": "#fff"
+        "light": "#29292a"
     },
     "on-base": "#FFFFFF",
     "primary": {

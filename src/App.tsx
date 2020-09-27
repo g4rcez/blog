@@ -1,30 +1,22 @@
 import Linq from "linq-arrays";
-import React, { useMemo, useState } from "react";
+import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Post } from "./blog/post";
 import { Body } from "./components/body";
 import { Container } from "./components/container";
 import { Img } from "./components/img";
 import { Loader } from "./components/pacman-loader";
 import { Star } from "./components/star";
 import { Paragraph, SubTitle } from "./components/typography";
-import POSTS from "./posts/posts.json";
 import { GithubRepository } from "./global/github.types";
 import { useFormatLocaleDate, useGitUser, useRepositories } from "./global/settings.store";
 import { useClassNames } from "./hooks/use-classnames";
-import { Post } from "./blog/post";
+import POSTS from "./posts/posts.json";
 
 type LangProps = {
   value?: string;
   onClick: (str: string) => void;
   className?: string;
 };
-
-const getIcon = (str: string | null) =>
-  `devicon-${str
-    ?.toLowerCase()
-    .replace("html", "html5")
-    .replace("css", "css3")
-    .replace("objective-c", "swift")
-    .replace("shell", "linux")}-plain`;
 
 const Lang: React.FC<LangProps> = ({ value = "", className = "bg-primary hover:bg-primary-light", ...props }) => (
   <span
@@ -56,6 +48,7 @@ const Repo = (props: {
 const App = () => {
   const user = useGitUser();
   const dateFormat = useFormatLocaleDate();
+  const ref = useRef<HTMLDivElement>(null);
 
   const repositories = useRepositories();
   const [repository, setRepository] = useState<GithubRepository | null>(null);
@@ -73,6 +66,12 @@ const App = () => {
     return [...new Set(langs).values()].filter(Boolean);
   }, [repositories]);
 
+  useLayoutEffect(() => {
+    if (repository !== null) {
+      ref.current?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    }
+  }, [repository]);
+
   if (user === null) {
     return (
       <Body className="flex-col w-full">
@@ -86,16 +85,10 @@ const App = () => {
   return (
     <Body className="flex-col w-full p-2">
       <div className="w-full flex flex-row h-fit">
-        <div className="w-fit justify-center content-center items-center flex-row relative">
+        <div className="w-fit justify-center content-center items-center flex-row">
           <a href={user.html_url}>
             <Img className="w-32 rounded-full" alt={user.login} src={user.avatar_url} />
           </a>
-          <Img
-            className="w-8 absolute right-0 bottom-0"
-            alt={user.location}
-            fallback="https://via.placeholder.com/32x19"
-            src={`https://www.countries-ofthe-world.com/flags-normal/flag-of-${user.location}.png`}
-          />
         </div>
         <div className="ml-6 flex-col h-fit">
           <SubTitle size="text-3xl" className="font-bold hover:underline text-animate hover:text-info-light">
@@ -104,6 +97,7 @@ const App = () => {
             </a>
           </SubTitle>
           <Paragraph>{user.bio}</Paragraph>
+          <Paragraph>Location: {user.location || "Localhost"}</Paragraph>
           <Paragraph>
             {user.followers} followers · {user.following} following
           </Paragraph>
@@ -126,7 +120,6 @@ const App = () => {
         <div className="my-8 w-full flex flex-wrap">
           {languages.map((x) => (
             <Lang key={x} onClick={setLanguage} value={x}>
-              <i className={`${getIcon(x)} mr-2`} />
               {x}
             </Lang>
           ))}
@@ -138,13 +131,13 @@ const App = () => {
         </div>
         <div className="flex w-full flex-wrap md:flex-no-wrap">
           {repository !== null && (
-            <div className="my-8 flex mr-4 pr-4 max-w-full md:max-w-md w-full text-default relative">
+            <div ref={ref} className="my-8 flex mr-4 pr-4 max-w-full md:max-w-md w-full text-default relative">
               <SubTitle className="font-bold">
                 <a
                   className="text-animate hover:underline hover:text-info-light items-center flex"
                   href={repository.html_url}
                 >
-                  {repository.name} <i className={`${getIcon(repository.language)} ml-4`} />
+                  {repository.name} <wbr />- {repository.language}
                 </a>
                 {(!!repository.description && <Paragraph>{repository.description}</Paragraph>) || (
                   <Paragraph className="italic">No description</Paragraph>

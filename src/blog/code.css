@@ -7,6 +7,14 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
  */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
 
+pre {
+  background-color: var(--base-light);
+  width: 100%;
+  padding: 0.5rem;
+  overflow-x: auto;
+  word-break: break-all;
+}
+
 code[class*="language-"],
 pre[class*="language-"] {
   color: #ccc;
@@ -19,15 +27,13 @@ pre[class*="language-"] {
   word-break: normal;
   word-wrap: normal;
   line-height: 1.5;
-
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 100%;
   tab-size: 4;
-
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
   hyphens: none;
+  overflow-x: scroll;
 }
 
 /* Code blocks */

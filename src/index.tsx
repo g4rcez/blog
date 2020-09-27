@@ -5,13 +5,20 @@ import Router from "./routes/routes";
 import { Settings } from "./global/settings.store";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+
+const App = () => (
   <React.StrictMode>
     <Settings>
       <Router />
     </Settings>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
-serviceWorker.register();
+if (rootElement?.hasChildNodes()) {
+  ReactDOM.hydrate(<App />, rootElement);
+} else {
+  ReactDOM.render(<App />, rootElement);
+}
+
+serviceWorker.unregister();
