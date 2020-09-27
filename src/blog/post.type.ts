@@ -1,34 +1,19 @@
-import { Nullable } from "../react-app-env";
-
 export enum Extension {
   Markdown = "md",
   Html = "html"
 }
-export type Commons = {
-  description: Nullable<string>;
-  extension: Extension;
-  languages: string[];
-  path: string;
+export type Post = {
   img: string;
-  tags?: string[];
-  post: string;
+  headerInit: number;
+  headerEnd: number;
   readingTime: number;
-};
-
-export type JsonPost = Commons & {
-  createdAt: string;
-  hasTranslation: boolean;
-  modifiedAt: number;
-  path: string;
-  languages: string[];
-  description: string;
-  extension: Extension;
-  readingTime: number;
-};
-
-export type Post = Commons & {
+  useFolks: boolean;
+  subjects: string[];
   title: string;
-  createdAt: Date;
-  readingTime: number;
-  modifiedAt: Date;
+  language: string;
+  translations: string[];
+  description: string;
+  createdAt: string;
+  path: string;
+  url: string;
 };
