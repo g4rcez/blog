@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useClassNames } from "../hooks/use-classnames";
+import { Links } from "../routes/links";
 
-const Item: React.FC = (p) => (
-  <a
-    href="#responsive-header"
+const Item: React.FC<{ to: string }> = (p) => (
+  <Link
+    to={p.to}
     className="block hover:font-bold px-2 hover:underline mt-4 lg:inline-block lg:mt-0 text-base pr-4 link-animate"
   >
     {p.children}
-  </a>
+  </Link>
 );
 
 export const Navbar = () => {
@@ -21,10 +23,12 @@ export const Navbar = () => {
   const onToggle = () => setShow((bool) => !bool);
 
   return (
-    <header className="justify-center flex w-full bg-primary">
+    <header className="justify-center flex bg-primary w-full max-w-full">
       <nav className="flex items-center justify-between flex-wrap p-1 container">
         <div className="flex items-center flex-shrink-0 mr-6">
-          <span className="font-bold text-xl tracking-tight">Blog</span>
+          <Link to={Links.root} className="font-bold text-xl tracking-tight">
+            Blog
+          </Link>
         </div>
         <div className="block lg:hidden">
           <button onClick={onToggle} className="flex items-center px-3 py-2 border rounded text-base">
@@ -37,10 +41,8 @@ export const Navbar = () => {
         <div className={toggleClassName}>
           <div className="text-sm lg:flex-grow"></div>
           <div>
-            <Item>Lab</Item>
-            <Item>Posts</Item>
-            <Item>Github</Item>
-            <Item>About Me</Item>
+            <Item to={Links.root}>Lab</Item>
+            <Item to={Links.posts}>Posts</Item>
           </div>
         </div>
       </nav>

@@ -7,12 +7,11 @@ export const Loader: NoChildren<{ width?: string }> = ({ width = "7rem" }) => {
     <svg
       style={{
         margin: "auto",
-        background: "red",
         display: "block",
         shapeRendering: "auto",
         width
       }}
-      className="bg-primary-light w-full"
+      className="w-full"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid"
     >

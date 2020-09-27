@@ -23,7 +23,7 @@ type Title = {
 const isString = (u: unknown) => typeof u === "string";
 
 export const SubTitle: React.FC<HX & Title> = ({ className, tag = "h2", size = "text-2xl", ...props }) => {
-  const clx = useClassNames([className, size], "typography prose", size, className);
+  const clx = useClassNames([className, size], "typography", size, className);
   const truncate = useMemo(() => props.truncate && isString(props.children), [props.truncate, props.children]);
   const text = useMemo(() => {
     if (truncate) {
@@ -51,14 +51,11 @@ type Paragraph = {
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>;
 
 export const Paragraph: React.FC<Paragraph> = ({ className, center, ...props }) => {
-  const clx = useClassNames(
+  const paragraphClassName = useClassNames(
     [className, center],
     "py-2 typography text-sm",
-    {
-      "text-justify": !center,
-      "text-center": center
-    },
+    { "text-center": center },
     className
   );
-  return <p {...props} className={clx} />;
+  return <p {...props} className={paragraphClassName} />;
 };
