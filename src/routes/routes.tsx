@@ -5,7 +5,8 @@ import { Loader } from "../components/pacman-loader";
 export const Path = [
   { path: Links.root, component: lazy(() => import("../App")) },
   { path: Links.posts, component: lazy(() => import("../blog/posts.view")) },
-  { path: Links.post, component: lazy(() => import("../blog/post.view")) }
+  { path: Links.post, component: lazy(() => import("../blog/post.view")) },
+  { path: Links.Linq, component: lazy(() => import("../libs/linq.view")) }
 ];
 
 const Routes = () => {

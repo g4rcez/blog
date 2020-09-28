@@ -2,6 +2,7 @@
 @import "tailwindcss/components";
 @import "./transitions.css";
 @import "./input.css";
+@import "../../components/button/button.css";
 @import "tailwindcss/utilities";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 

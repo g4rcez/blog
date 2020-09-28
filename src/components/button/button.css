@@ -1,0 +1,15 @@
+.btn-base {
+  @apply text-sm rounded-md relative inline-flex items-center justify-center antialiased;
+  @apply leading-6 tracking-wide transition duration-150 ease-in-out border appearance-none;
+  @apply outline-none shadow-none box-border;
+  transition: all 250ms ease-out;
+}
+
+.btn-base:focus,
+.btn-base:hover {
+  outline: none;
+}
+
+.btn-body {
+  @apply btn-base px-4 py-1;
+}

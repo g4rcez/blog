@@ -41,7 +41,7 @@ export const Navbar = () => {
         <div className={toggleClassName}>
           <div className="text-sm lg:flex-grow"></div>
           <div>
-            <Item to={Links.root}>Lab</Item>
+            <Item to={Links.Linq}>Lab</Item>
             <Item to={Links.posts}>Posts</Item>
           </div>
         </div>
