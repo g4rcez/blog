@@ -1,5 +1,4 @@
 import Linq from "linq-arrays";
-import marked from "marked";
 import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -8,11 +7,10 @@ import { Container } from "../components/container";
 import { SubTitle } from "../components/typography";
 import { useFormatLocaleDate } from "../global/settings.store";
 import { useSearch } from "../hooks/use-search";
+import { Markdown } from "../lib/markdown";
 import POSTS from "../posts/posts.json";
 import type { Post as PostType } from "./post.type";
 import { Extension } from "./post.type";
-import "./code.css";
-import "./prism";
 
 type Params = Partial<{
   title: string;
@@ -22,41 +20,6 @@ type Search = Partial<{
   extension: Extension;
   language: string;
 }>;
-
-const heading = ["text-5xl", "text-3xl", "text-2xl", "text-lg"];
-marked.setOptions({
-  highlight: (code, language) => {
-    try {
-      const prism = (window as any).Prism;
-      const lang = language in prism.languages ? language : "typescript";
-      return prism.highlight(code, prism.languages[lang], language);
-    } catch (error) {
-      return code;
-    }
-  }
-});
-marked.use({
-  gfm: true,
-  xhtml: true,
-  smartypants: true,
-  smartLists: true,
-  renderer: {
-    listitem: (body: string) => `<li class='my-4 text-lg inline-block items-center text-left w-full'>${body}</li>`,
-    paragraph: (text: string) =>
-      `<p class="mb-4 whitespace-pre-line font-normal leading-relaxed break-words text-lg">${text}</p>`,
-    heading(text: string, level: number) {
-      const className = heading[level - 1] ?? "text-default";
-      return `
-            <h${level} class="${className} font-bold my-8">
-              ${text}
-            </h${level}>`;
-    },
-    blockquote: (body: string) =>
-      `<blockquote class="p-2 ml-3 pl-3 border-l-4 py-4 border-info-light my-8 italic font-thin text-lg">${body}</blockquote>`,
-    list: (body: string, order: boolean) =>
-      `<${order ? "ol" : "ul"} class='list-inside ${order ? "list-disc" : "list-decimal"}'>${body}</$>`
-  } as any
-});
 
 type GetFilePath = (x: { title: string; extension?: Extension; lang?: string }) => string;
 const getFilePath: GetFilePath = (x) => {
@@ -103,7 +66,7 @@ const PostView = () => {
         for (let index = 0; index < post.headerEnd - 1; index++) {
           text = text.replace(/^[a-zA-Z0-9]+: ?.*\n/gi, "");
         }
-        setContent(marked(text));
+        setContent(Markdown(text));
       }
     };
     req();

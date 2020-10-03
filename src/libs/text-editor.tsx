@@ -26,6 +26,7 @@ type Props = {
   code: string;
   onMount: () => void;
   templates?: Template[];
+  children?: React.ReactNode;
 };
 export const TextEditor = ({ onMount, ...props }: Props) => {
   const [code, setCode] = useState(() => props.code || "");
@@ -35,6 +36,10 @@ export const TextEditor = ({ onMount, ...props }: Props) => {
   useEffect(() => {
     onMount();
   }, [onMount]);
+
+  useEffect(() => {
+    setCode(props.code);
+  }, [props.code]);
 
   useLayoutEffect(() => {
     const listener = (e: KeyboardEvent) => {
@@ -94,6 +99,7 @@ export const TextEditor = ({ onMount, ...props }: Props) => {
       <div className="text-right mt-4">
         <Button onClick={exec}>Run</Button>
       </div>
+      {props.children}
     </Body>
   );
 };
