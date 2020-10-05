@@ -44,12 +44,12 @@ const ColorGrid: React.FC = () => {
     }
 
     return (
-        <Container className="grid grid-flow-row-dense grid-cols-4 gap-4">
+        <Container className="grid grid-flow-row-dense md:grid-cols-4 gap-4">
             {colorsGridArray.map((main) => {
                 if (Array.isArray(main.color)) {
-                    return main.color.map(x => <InputInfo x={x} main={main} />)
+                    return main.color.map(x => <InputInfo key={`${main.name}${x.name}`} x={x} main={main} />)
                 }
-                return <InputInfo x={main} main={main} />
+                return <InputInfo key={main.name} x={main} main={main} />
             })}
         </Container>
     );
