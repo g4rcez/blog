@@ -33,13 +33,9 @@ export const TextEditor = ({ onMount, ...props }: Props) => {
   const [clearEachExec, setClearEachExec] = useState(true);
   const codeMirror = useRef<any>(null);
 
-  useEffect(() => {
-    onMount();
-  }, [onMount]);
+  useEffect(onMount, [onMount]);
 
-  useEffect(() => {
-    setCode(props.code);
-  }, [props.code]);
+  useEffect(() => setCode(props.code), [props.code]);
 
   useLayoutEffect(() => {
     const listener = (e: KeyboardEvent) => {

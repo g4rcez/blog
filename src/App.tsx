@@ -129,9 +129,9 @@ const App = () => {
             </Lang>
           )}
         </div>
-        <div className="flex w-full flex-wrap md:flex-no-wrap">
+        <div className="w-full flex-wrap md:flex-no-wrap grid grid-flow-col-dense grid-col-2 items-start">
           {repository !== null && (
-            <div ref={ref} className="my-8 flex mr-4 pr-4 max-w-full md:max-w-md w-full text-default relative">
+            <div ref={ref} className="mb-8 flex mr-4 max-w-full w-full text-default relative">
               <SubTitle className="font-bold">
                 <a
                   className="text-animate hover:underline hover:text-info-light items-center flex"
@@ -151,7 +151,7 @@ const App = () => {
                   <span className="ml-4"></span>
                 </Paragraph>
               </SubTitle>
-              <div className="text-right absolute top-0 right-0 -mt-4">
+              <div className="text-right absolute top-0 right-0 -mt-4 mr-1">
                 <span className="text-2xl hover:text-danger" role="button" onClick={() => setRepository(null)}>
                   &times;
                 </span>

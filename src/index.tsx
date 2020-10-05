@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/css/dist/index.css";
-import Router from "./routes/routes";
 import { Settings } from "./global/settings.store";
+import Router from "./routes/routes";
 import * as serviceWorker from "./serviceWorker";
+import "./styles/css/dist/index.css";
 
 const rootElement = document.getElementById("root");
 

@@ -12,14 +12,9 @@ import POSTS from "../posts/posts.json";
 import type { Post as PostType } from "./post.type";
 import { Extension } from "./post.type";
 
-type Params = Partial<{
-  title: string;
-}>;
+type Params = Partial<{ title: string }>;
 
-type Search = Partial<{
-  extension: Extension;
-  language: string;
-}>;
+type Search = Partial<{ extension: Extension; language: string }>;
 
 type GetFilePath = (x: { title: string; extension?: Extension; lang?: string }) => string;
 const getFilePath: GetFilePath = (x) => {
@@ -29,7 +24,7 @@ const getFilePath: GetFilePath = (x) => {
   return `${path}/${file}.${ext}`;
 };
 
-const getPost = (title: string): PostType => Linq.WhereFirst(POSTS, "path", "===", title) as never;
+const getPost = (path: string): PostType => Linq.WhereFirst(POSTS, "path", "===", path) as never;
 
 const PostView = () => {
   const [content, setContent] = useState("");

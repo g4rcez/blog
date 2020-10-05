@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
+import { Button } from "../components/button/button";
 import { Paragraph, SubTitle } from "../components/typography";
 import { Markdown } from "../lib/markdown";
+
 export type ContentDocProps = {
   id: string;
   method: string;
@@ -19,32 +21,22 @@ type Props = {
 export const ContentDoc = ({ docs, onClick }: Props) => {
   return (
     <Fragment>
-      <div className="w-full flex flex-row flex-wrap justify-between my-4 text-default">
-        {docs
-          .filter((x) => !!x.code)
-          .map((x) => (
-            <a key={`anchor-${x.id}`} href={`#${x.id}`} className="text-info-light hover:text-info hover:underline">
-              {x.method}
-            </a>
-          ))}
-      </div>
-      {docs.map((x) => (
-        <div key={x.id} className="flex-wrap w-full my-6 border-b border-base-light">
-          <SubTitle
-            id={x.id}
-            role={x.code ? "button" : undefined}
-            onClick={() => onClick(x.code)}
-            className={x.code ? "font-extrabold hover:underline hover:text-info-light" : "font-extrabold"}
-          >
-            {x.method}
-          </SubTitle>
-          <SubTitle tag="h4" size="text-default" className="my-2 mt-4">
-            Signature
-          </SubTitle>
-          <div dangerouslySetInnerHTML={{ __html: Markdown(writeCode(`(${x.input}) => ${x.output}`)) }} />
-          <Paragraph className="text-default">{x.desc}</Paragraph>
-        </div>
-      ))}
+      {docs.map((doc) => {
+        const subTitleClassName = doc.code ? "font-extrabold hover:underline hover:text-info-light" : "font-extrabold";
+        return (
+          <div key={doc.id} className="flex-wrap w-full my-6 border-b border-base-light">
+            <SubTitle id={doc.id} className={subTitleClassName}>
+              {doc.method}
+              {doc.code && <Button onClick={() => onClick(doc.code)}>View Demo</Button>}
+            </SubTitle>
+            <SubTitle tag="h4" size="text-default" className="my-2 mt-4">
+              Signature
+            </SubTitle>
+            <div dangerouslySetInnerHTML={{ __html: Markdown(writeCode(`(${doc.input}) => ${doc.output}`)) }} />
+            <Paragraph className="text-default">{doc.desc}</Paragraph>
+          </div>
+        );
+      })}
     </Fragment>
   );
 };

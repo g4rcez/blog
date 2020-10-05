@@ -4,6 +4,7 @@ export const Links = {
   posts: "/posts",
   post: "/post/:title",
   Linq: "/libs/linq",
+  settings: "/settings",
   getPost: (title: string, extension?: Extension, lang?: string) => {
     const url = new URL("https://localhost");
     url.pathname = `/post/${title}`;
