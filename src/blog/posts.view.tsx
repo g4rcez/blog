@@ -5,6 +5,7 @@ import { Input } from "../components/input";
 import { Tag } from "../components/tag";
 import { SubTitle } from "../components/typography";
 import { useFormatLocaleDate } from "../global/settings.store";
+import { Strings } from "../lib/strings";
 import POSTS from "../posts/posts.json";
 import { Post } from "./post";
 
@@ -30,7 +31,7 @@ const PostsView = (props: Props) => {
         (el.subjects ?? []).forEach((x) => acc.add(x));
         return acc;
       }, new Set<string>()).values()
-    ],
+    ].sort(Strings.sort),
     []
   );
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useClassNames } from "../hooks/use-classnames";
 import { Links } from "../routes/links";
@@ -6,7 +7,7 @@ import { Links } from "../routes/links";
 const Item: React.FC<{ to: string }> = (p) => (
   <Link
     to={p.to}
-    className="block hover:font-bold px-2 hover:underline mt-4 lg:inline-block lg:mt-0 text-base pr-4 link-animate"
+    className="items-center flex hover:font-bold px-2 hover:underline mt-4 lg:inline-flex lg:mt-0 text-base pr-4 link-animate w-full"
   >
     {p.children}
   </Link>
@@ -17,7 +18,9 @@ export const Navbar = () => {
   const toggleClassName = useClassNames(
     [show],
     { block: show, hidden: !show },
-    "w-full flex-grow lg:flex lg:items-center lg:w-auto display-transition absolute md:relative -ml-1 md:ml-0 top-0 mt-10 md:mt-0 bg-primary w-full md:pb-0 pb-4"
+    "flex-col flex-grow lg:flex lg:items-center lg:w-auto display-transition",
+    "w-full absolute md:relative",
+    "-ml-1 md:ml-0 top-0 mt-10 md:mt-0 bg-primary w-full md:pb-0 pb-4 justify-end"
   );
 
   const onToggle = () => setShow((bool) => !bool);
@@ -39,10 +42,10 @@ export const Navbar = () => {
           </button>
         </div>
         <div className={toggleClassName}>
-          <div className="text-sm lg:flex-grow"></div>
-          <div>
+          <div className="flex-auto flex flex-col md:flex-row w-auto ml-auto justify-end">
             <Item to={Links.Linq}>Lab</Item>
             <Item to={Links.posts}>Posts</Item>
+            <Item to={Links.settings}> <FaCog title="Settings" /> <span className="ml-1 visible md:hidden"> Settings</span> </Item>
           </div>
         </div>
       </nav>

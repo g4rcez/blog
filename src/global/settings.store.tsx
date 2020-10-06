@@ -5,16 +5,17 @@ import { getDefaultLanguage } from "../lib/dom";
 import { merge } from "../lib/object";
 import { Storage } from "../lib/storage";
 import { Strings } from "../lib/strings";
-import Colors from "../styles/colors/colors.json";
+import LightTheme from "../styles/colors/light.json";
+import DarkTheme from "../styles/colors/colors.json";
 import { setAllColors } from "../styles/set-colors";
 import { Config } from "./config";
 import { GithubRepository, GithubUser } from "./github.types";
 
-const mergeAndSet = pipe(merge, setAllColors)
+const mergeAndSet = pipe(merge, setAllColors);
 
 const defaultState = {
   locale: getDefaultLanguage(),
-  colors: mergeAndSet(Colors, Storage.getStorageColors()),
+  colors: mergeAndSet(DarkTheme, Storage.getStorageColors()),
   user: null as GithubUser | null,
   repositories: [] as GithubRepository[]
 };
@@ -22,7 +23,10 @@ const defaultState = {
 type State = typeof defaultState;
 
 const reducers = {
-  setColors: (c: typeof Colors) => (state: State): State => ({ ...state, colors: Storage.setStorageColors(setAllColors(c)) }),
+  setColors: (c: typeof DarkTheme) => (state: State): State => ({
+    ...state,
+    colors: Storage.setStorageColors(setAllColors(c))
+  }),
   setLocale: (locale: string) => (state: State): State => ({ ...state, locale }),
   setUser: (user: GithubUser) => (state: State): State => ({ ...state, user }),
   setRepositories: (repositories: GithubRepository[]) => (state: State): State => ({ ...state, repositories })
@@ -46,7 +50,7 @@ export const Settings: React.FC = ({ children }) => {
       const url = `https://api.github.com/users/${user}/repos?per_page=${repoCount}`;
       const response = await fetch(url, { cache: "no-cache" });
       const repos: GithubRepository[] = await response.json();
-      dispatch.setRepositories(repos.sort((a, b) => a.name.localeCompare(b.name)));
+      dispatch.setRepositories(repos.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())));
     };
     userRequest();
   }, []);
@@ -76,4 +80,14 @@ export const useRepositories = () => {
 export const useSortRepositories = (sorter: (a: GithubRepository, b: GithubRepository) => number) => {
   const settings = useContext(SettingsStore);
   return () => settings.dispatch.setRepositories(settings.state.repositories.sort(sorter));
+};
+
+export const useDarkMode = () => {
+  const context = useContext(SettingsStore);
+  return () => context.dispatch.setColors(DarkTheme)
+};
+
+export const useLightMode = () => {
+  const context = useContext(SettingsStore);
+  return () => context.dispatch.setColors(LightTheme);
 };

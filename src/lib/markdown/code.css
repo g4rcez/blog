@@ -7,10 +7,18 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
  */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
 
+
+code {
+  padding: 0.2rem 0.5rem;
+  color: var(--warn-default);
+  background-color: var(--primary-dark);
+}
+
 pre {
-  background-color: var(--base-light);
+  background-color: var(--primary-dark);
   width: 100%;
   padding: 0.5rem;
+  border-radius: 5px;
   overflow-x: auto;
   word-break: break-all;
 }

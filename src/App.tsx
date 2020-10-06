@@ -10,6 +10,7 @@ import { Paragraph, SubTitle } from "./components/typography";
 import { GithubRepository } from "./global/github.types";
 import { useFormatLocaleDate, useGitUser, useRepositories } from "./global/settings.store";
 import { useClassNames } from "./hooks/use-classnames";
+import { Strings } from "./lib/strings";
 import POSTS from "./posts/posts.json";
 
 type LangProps = {
@@ -63,7 +64,7 @@ const App = () => {
 
   const languages = useMemo(() => {
     const langs = repositories.reduce((acc, el) => acc.concat(el.language ?? ""), [] as string[]);
-    return [...new Set(langs).values()].filter(Boolean);
+    return [...new Set(langs).values()].filter(Boolean).sort(Strings.sort);
   }, [repositories]);
 
   useLayoutEffect(() => {

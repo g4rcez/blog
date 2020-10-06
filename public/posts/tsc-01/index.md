@@ -10,7 +10,7 @@ description: "Vantagens e desvantagens"
 
 No artigo anterior eu comecei a falar de Typescript. Um amigo indicou fazer um artigo falando do por que usar, e cá estou escrevendo sobre.
 
--   Obrigado pela indicação de um tema haha
+>   Obrigado pela indicação de um tema haha
 
 ## Prós e contras
 

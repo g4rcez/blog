@@ -2,28 +2,16 @@ import React, { useMemo } from "react";
 import { pick, omit } from "ramda";
 import { useClassNames } from "../../hooks/use-classnames";
 
-const btnLinkClassName = "btn-base bg-transparent border-transparent hover:border-b rounded-none border-0";
 const btnClassName = "btn-base bg-transparent hover:text-base";
 
 const buttonThemes = {
   light: {
     className: `${btnClassName} border-base-light text-base hover:text-info-dark hover:bg-base focus:text-info-dark focus:bg-base`
   },
-  lightDanger: {
-    className: `${btnClassName} border-base-light hover:border-danger-light active:border-danger-light text-base hover:text-danger-dark hover:bg-danger-light focus:bg-danger-light`
-  },
-  lightWarn: {
-    className: `${btnClassName} border-base-light hover:border-warn-light active:border-warn-light text-base hover:text-warn-dark hover:bg-warn-light focus:bg-warn-light`
-  },
-  lightPrimary: {
-    className: `${btnClassName} border-base-light hover:border-primary-light active:border-primary-light text-base hover:text-primary-light hover:bg-base-light focus:bg-base-light`
-  },
   primary: {
     className: `${btnClassName} border-primary-light text-primary-light hover:bg-primary-light focus:bg-primary-light focus:text-base`
   },
   info: { className: `${btnClassName} hover:bg-info-light active:bg-info-light border-info-light text-info` },
-  link: { isLink: true, className: `${btnLinkClassName} hover:border-dark-light` },
-  linkPrimary: { isLink: true, className: `${btnLinkClassName} hover:border-primary-light text-primary-light` },
   danger: { className: `${btnClassName} hover:bg-danger-light active:bg-danger-light border-danger-light text-danger` },
   warn: { className: `${btnClassName} hover:bg-warn-light active:bg-warn-light border-warn-light text-warn-light` }
 };

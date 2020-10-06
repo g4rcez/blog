@@ -2,10 +2,14 @@
     "transparent": "transparent",
     "current": "currentColor",
     "dark": {
-        "light": "#60656a",
+        "light": "#8e9195",
         "dark": "#14191e",
-        "overlay": "#14191eCE",
-        "default": "#1D242B"
+        "overlay": "#14191ece",
+        "default": "#1d242b"
+    },
+    "pacman": {
+        "body": "#fbd38d",
+        "eat": "#feb2b2"
     },
     "disabled": {
         "dark": "#3f4042",
@@ -14,14 +18,14 @@
     },
     "base": {
         "default": "#fbfbfc",
-        "dark": "#f1f3f7",
-        "light": "#ffffff"
+        "dark": "#eee",
+        "light": "#8a8a8a"
     },
-    "on-base": "#FFFFFF",
+    "on-base": "#ffffff",
     "primary": {
-        "light": "#000",
-        "default": "#000",
-        "dark": "#000"
+        "light": "#3f3f3f",
+        "default": "#252525",
+        "dark": "#121212"
     },
     "danger": {
         "lightest": "#fff8f8",

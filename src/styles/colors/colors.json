@@ -4,8 +4,8 @@
     "dark": {
         "light": "#eee",
         "dark": "#ddd",
-        "overlay": "#14191eCE",
-        "default": "#1D242B"
+        "overlay": "#14191ece",
+        "default": "#1d242b"
     },
     "pacman": {
         "body": "#fbd38d",
@@ -19,12 +19,12 @@
     "base": {
         "default": "#fff",
         "dark": "#121213",
-        "light": "#29292a"
+        "light": "#d9d9d9"
     },
-    "on-base": "#FFFFFF",
+    "on-base": "#ffffff",
     "primary": {
         "light": "#606d7c",
-        "default": "#24354B",
+        "default": "#24354b",
         "dark": "#121a25"
     },
     "danger": {

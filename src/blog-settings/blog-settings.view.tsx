@@ -1,10 +1,11 @@
 import { assocPath } from "ramda";
 import React, { useContext, useMemo, useState } from "react";
 import { Body } from "../components/body";
+import { Button } from "../components/button/button";
 import { Container } from "../components/container";
 import { Input } from "../components/input";
 import { Paragraph, SubTitle } from "../components/typography";
-import { SettingsStore, useFormatLocaleDate } from "../global/settings.store";
+import { SettingsStore, useDarkMode, useFormatLocaleDate, useLightMode } from "../global/settings.store";
 
 const ColorGrid: React.FC = () => {
     const context = useContext(SettingsStore);
@@ -24,22 +25,18 @@ const ColorGrid: React.FC = () => {
         context.dispatch.setColors(newColors)
     }
 
-    const InputInfo = ({x, main}: any) => {
+    const InputInfo = ({ x, main }: { x: any, main:any }) => {
         const [color, setColor] = useState(x.color);
         return (
-            <div className="w-full flex items-center justify-between mt-8">
                 <Input 
-                    containerClassName="w-11/12"
+                    containerClassName="mt-8"
                     value={color}
+                    type="color"
                     onBlur={() => changeColor([main.name, x.name], color)} 
-                    onChange={(e) => setColor(e.target.value)} 
+                    onChange={(e) => setColor(e.target.value)}
                     placeholder={`${main.name}.${x.name}`} 
                     name={`${main.name}.${x.name}`} 
                 />
-                <svg width="16" height="16">
-                    <rect x="0" y="0" width="16" height="16" style={{ fill: color, strokeWidth: "1px", stroke: "white" }} />
-                </svg>
-            </div>
         );
     }
 
@@ -49,17 +46,18 @@ const ColorGrid: React.FC = () => {
                 if (Array.isArray(main.color)) {
                     return main.color.map(x => <InputInfo key={`${main.name}${x.name}`} x={x} main={main} />)
                 }
-                return <InputInfo key={main.name} x={main} main={main} />
+                return null
             })}
         </Container>
     );
 }
 
 const BlogSettings = () => {
-    const settings = useContext(SettingsStore);
-    
+    const context = useContext(SettingsStore);
+    const darkMode = useDarkMode();
+    const lightMode = useLightMode();
     const dateFormatter = useFormatLocaleDate()
-    const [date, setDate] = useState(settings.state.locale);
+    const [date, setDate] = useState(context.state.locale);
 
     return (
         <Body className="flex flex-1 flex-col">
@@ -72,12 +70,18 @@ const BlogSettings = () => {
                     placeholder="Locale formatter"
                     value={date} 
                     onChange={(e) => setDate(e.target.value)} 
-                    onBlur={() => settings.dispatch.setLocale(date)} 
+                    onBlur={() => context.dispatch.setLocale(date)} 
                 />
                 <Paragraph className="w-full">{dateFormatter(new Date().toString())}</Paragraph>
             </Container>
             <Container className="mt-8">
-                <SubTitle size="text-2xl" className="font-bold w-full">Colors Schema</SubTitle> 
+                <Container className="items-center justify-between">
+                    <SubTitle size="text-2xl" className="font-bold">Colors Schema</SubTitle> 
+                    <div>
+                        <Button className="mr-4" onClick={lightMode}>Light Theme</Button>
+                        <Button onClick={darkMode}>Dark Theme</Button>
+                    </div>
+                </Container>
                 <ColorGrid />
             </Container>
         </Body>
