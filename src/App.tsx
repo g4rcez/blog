@@ -1,6 +1,7 @@
 import Linq from "linq-arrays";
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Post } from "./blog/post";
+import { getFilePath } from "./blog/post.type";
 import { Body } from "./components/body";
 import { Container } from "./components/container";
 import { Img } from "./components/img";
@@ -8,8 +9,11 @@ import { Loader } from "./components/pacman-loader";
 import { Star } from "./components/star";
 import { Paragraph, SubTitle } from "./components/typography";
 import { GithubRepository } from "./global/github.types";
-import { useFormatLocaleDate, useGitUser, useRepositories } from "./global/settings.store";
+import { usePostsCache } from "./global/posts-cache";
+import { useColors, useFormatLocaleDate, useGitUser, useRepositories } from "./global/settings.store";
 import { useClassNames } from "./hooks/use-classnames";
+import { Notify } from "./lib/dom";
+import { ProgressTopBar } from "./lib/progress-top-bar";
 import { Strings } from "./lib/strings";
 import POSTS from "./posts/posts.json";
 
@@ -50,6 +54,9 @@ const App = () => {
   const user = useGitUser();
   const dateFormat = useFormatLocaleDate();
   const ref = useRef<HTMLDivElement>(null);
+  const postCache = usePostsCache();
+  const colors = useColors();
+  const [loadingPosts, setLoadingPosts] = useState(false);
 
   const repositories = useRepositories();
   const [repository, setRepository] = useState<GithubRepository | null>(null);
@@ -73,6 +80,23 @@ const App = () => {
     }
   }, [repository]);
 
+  const onDownloadAllPosts = async () => {
+    const control = ProgressTopBar({ color: colors.info.default });
+    control.start();
+    setLoadingPosts(true);
+    await Promise.all(
+      POSTS.map(async (x) => {
+        const url = getFilePath({ title: x.url.replace(/^\/post\//, "") });
+        control.increment();
+        const post = await postCache?.request(url);
+        return post;
+      })
+    );
+    setLoadingPosts(false);
+    control.done();
+    Notify("You can read offline now");
+  };
+
   if (user === null) {
     return (
       <Body className="flex-col w-full">
@@ -86,10 +110,19 @@ const App = () => {
   return (
     <Body className="flex-col w-full p-2">
       <div className="w-full flex flex-row h-fit">
-        <div className="w-fit justify-center content-center items-center flex-row">
+        <div className="w-fit justify-center content-center items-center flex-row text-center">
           <a href={user.html_url}>
-            <Img className="w-32 rounded-full" alt={user.login} src={user.avatar_url} />
+            <Img className="w-32 mb-2 rounded-full m-auto" alt={user.login} src={user.avatar_url} />
           </a>
+          {postCache !== null && (
+            <button
+              disabled={loadingPosts}
+              onClick={onDownloadAllPosts}
+              className="bg-transparent text-info hover:text-info-light text-animate cursor-pointer hover:underline"
+            >
+              Download all posts
+            </button>
+          )}
         </div>
         <div className="ml-6 flex-col h-fit">
           <SubTitle size="text-3xl" className="font-bold hover:underline text-animate hover:text-info-light">

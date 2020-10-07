@@ -77,3 +77,9 @@ pre {
 .w-fit {
   width: fit-content;
 }
+
+.glow {
+  opacity: 1;
+  height: 2px;
+  box-shadow: 0 0 7px #5691ffaf;
+}

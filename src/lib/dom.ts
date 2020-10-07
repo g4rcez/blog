@@ -23,3 +23,16 @@ export const scrollIntoView = (menu: HTMLElement, element: HTMLElement): void =>
     return scrollTo(menu, Math.max(element.offsetTop - overScroll, 0));
   }
 };
+
+export const Notify = (message: string) => {
+  const send = () => new Notification(message, { icon: "/favicon.ico" });
+  if (Notification.permission === "granted") {
+    send();
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === "granted") {
+        send();
+      }
+    });
+  }
+};

@@ -1,21 +1,38 @@
 import { pipe } from "ramda";
 import React, { createContext, useCallback, useContext, useEffect } from "react";
+import { useLocation } from "react-router";
 import useReducer from "use-typed-reducer";
 import { getDefaultLanguage } from "../lib/dom";
 import { merge } from "../lib/object";
 import { Storage } from "../lib/storage";
 import { Strings } from "../lib/strings";
-import LightTheme from "../styles/colors/light.json";
+import { Links } from "../routes/links";
 import DarkTheme from "../styles/colors/colors.json";
+import LightTheme from "../styles/colors/light.json";
 import { setAllColors } from "../styles/set-colors";
 import { Config } from "./config";
 import { GithubRepository, GithubUser } from "./github.types";
+import { useGitCache } from "./git-user-cache";
 
 const mergeAndSet = pipe(merge, setAllColors);
 
+const checkSkeleton = <T,>(b: T, n: T): T => {
+  const structure: T = {} as never;
+  for (const i in b) {
+    const base = (b as any)[i];
+    const newOne = (n as any)[i];
+    if (typeof base === "object" && n !== undefined && typeof newOne === "object") {
+      structure[i] = checkSkeleton(base, newOne ?? base);
+    } else {
+      structure[i] = newOne ?? base;
+    }
+  }
+  return structure;
+};
+
 const defaultState = {
   locale: getDefaultLanguage(),
-  colors: mergeAndSet(DarkTheme, Storage.getStorageColors()),
+  colors: mergeAndSet(checkSkeleton(DarkTheme, Storage.getStorageColors()), Storage.getStorageColors()),
   user: null as GithubUser | null,
   repositories: [] as GithubRepository[]
 };
@@ -38,22 +55,27 @@ export const SettingsStore = createContext({
 
 export const Settings: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(defaultState, reducers);
+  const location = useLocation();
+  const userCache = useGitCache();
 
   useEffect(() => {
+    const req = userCache?.request!;
     const userRequest = async () => {
-      const response = await fetch(`https://api.github.com/users/${Config.github}`, { cache: "force-cache" });
+      const response = await req(`https://api.github.com/users/${Config.github}`);
       const user: GithubUser = await response.json();
       dispatch.setUser(user);
       await repositoriesRequest(user.login, user.public_repos);
     };
     const repositoriesRequest = async (user: string, repoCount: number) => {
       const url = `https://api.github.com/users/${user}/repos?per_page=${repoCount}`;
-      const response = await fetch(url, { cache: "no-cache" });
+      const response = await req(url);
       const repos: GithubRepository[] = await response.json();
       dispatch.setRepositories(repos.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())));
     };
-    userRequest();
-  }, []);
+    if (location.pathname === Links.root && userCache !== null) {
+      userRequest();
+    }
+  }, [location, userCache]);
 
   return <SettingsStore.Provider children={children} value={{ state, dispatch }} />;
 };
@@ -84,7 +106,7 @@ export const useSortRepositories = (sorter: (a: GithubRepository, b: GithubRepos
 
 export const useDarkMode = () => {
   const context = useContext(SettingsStore);
-  return () => context.dispatch.setColors(DarkTheme)
+  return () => context.dispatch.setColors(DarkTheme);
 };
 
 export const useLightMode = () => {

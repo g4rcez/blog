@@ -11158,6 +11158,12 @@ pre {
   width: fit-content;
 }
 
+.glow {
+  opacity: 1;
+  height: 2px;
+  box-shadow: 0 0 7px #5691ffaf;
+}
+
 @media (min-width: 640px){
   .sm\:container{
     width: 100%;

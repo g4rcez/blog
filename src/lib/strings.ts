@@ -31,3 +31,4 @@ export const Strings = {
     }),
   sort: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase())
 };
+

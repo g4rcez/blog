@@ -5,24 +5,17 @@ import { Link } from "react-router-dom";
 import { Body } from "../components/body";
 import { Container } from "../components/container";
 import { SubTitle } from "../components/typography";
+import { usePostsCache } from "../global/posts-cache";
 import { useFormatLocaleDate } from "../global/settings.store";
 import { useSearch } from "../hooks/use-search";
 import { Markdown } from "../lib/markdown";
 import POSTS from "../posts/posts.json";
 import type { Post as PostType } from "./post.type";
-import { Extension } from "./post.type";
+import { Extension, getFilePath } from "./post.type";
 
 type Params = Partial<{ title: string }>;
 
 type Search = Partial<{ extension: Extension; language: string }>;
-
-type GetFilePath = (x: { title: string; extension?: Extension; lang?: string }) => string;
-const getFilePath: GetFilePath = (x) => {
-  const file = x.lang ?? "index";
-  const ext = x.extension ?? Extension.Markdown;
-  const path = `/posts/${x.title}`;
-  return `${path}/${file}.${ext}`;
-};
 
 const getPost = (path: string): PostType => Linq.WhereFirst(POSTS, "path", "===", path) as never;
 
@@ -31,6 +24,7 @@ const PostView = () => {
   const params = useParams<Params>();
   const search = useSearch<Search>();
   const [post, setPost] = useState<PostType>(() => getPost(params.title!) as any);
+  const cache = usePostsCache();
   const dateFormat = useFormatLocaleDate();
 
   const [prev, next] = useMemo((): [PostType | undefined, PostType | undefined] => {
@@ -52,10 +46,9 @@ const PostView = () => {
 
   useEffect(() => {
     const req = async () => {
-      if (params.title) {
-        const response = await fetch(getFilePath({ title: params.title, ...search }), {
-          cache: "no-cache"
-        });
+      if (params.title && cache !== null) {
+        const url = getFilePath({ title: params.title, ...search });
+        const response = await cache.request(url);
         let text = await response.text();
         text = text.replace(/---.*\n/gi, "");
         for (let index = 0; index < post.headerEnd - 1; index++) {
@@ -65,11 +58,11 @@ const PostView = () => {
       }
     };
     req();
-  }, [search, post.headerEnd, params.title]);
+  }, [search, post.headerEnd, params.title, cache]);
 
   return (
     <Body className="flex-col w-full">
-      <div className="w-full flex flex-col m-auto md:p-0 md:max-w-4xl">
+      <div className="w-full flex flex-col m-auto md:p-0">
         <SubTitle tag="h1" size="text-4xl" className="font-bold mb-4">
           {post.title}
         </SubTitle>

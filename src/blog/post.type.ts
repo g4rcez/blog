@@ -17,3 +17,11 @@ export type Post = {
   path: string;
   url: string;
 };
+
+type GetFilePath = (x: { title: string; extension?: Extension; lang?: string }) => string;
+export const getFilePath: GetFilePath = (x) => {
+  const file = x.lang ?? "index";
+  const ext = x.extension ?? Extension.Markdown;
+  const path = `/posts/${x.title}`;
+  return `${path}/${file}.${ext}`;
+};
