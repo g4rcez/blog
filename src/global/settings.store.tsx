@@ -68,7 +68,7 @@ export const Settings: React.FC = ({ children }) => {
     };
     const repositoriesRequest = async (user: string, repoCount: number) => {
       const url = `https://api.github.com/users/${user}/repos?per_page=${repoCount}`;
-      const response = await req(url);
+      const response = await fetch(url);
       const repos: GithubRepository[] = await response.json();
       dispatch.setRepositories(repos.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())));
     };

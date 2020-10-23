@@ -13,13 +13,13 @@ export const useCache = (caches: Promise<Cache>) => {
       setCache({
         request: async (request: RequestInfo) => {
           const cached = await c.match(request);
-          if (cached === undefined) {
+          // if (cached === undefined) {
             const response = await fetch(request);
             const clone = response.clone();
             c.put(request, clone);
             return response;
-          }
-          return cached;
+          // }
+          // return cached;
         }
       });
     };
