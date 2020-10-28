@@ -33,7 +33,7 @@ const ColorGrid: React.FC = () => {
                     value={color}
                     type="color"
                     onBlur={() => changeColor([main.name, x.name], color)} 
-                    onChange={(e) => setColor(e.target.value)}
+                    onChange={(e: any) => setColor(e.target.value)}
                     placeholder={`${main.name}.${x.name}`} 
                     name={`${main.name}.${x.name}`} 
                 />
@@ -69,7 +69,7 @@ const BlogSettings = () => {
                     name="locale"
                     placeholder="Locale formatter"
                     value={date} 
-                    onChange={(e) => setDate(e.target.value)} 
+                    onChange={(e:any) => setDate(e.target.value)} 
                     onBlur={() => context.dispatch.setLocale(date)} 
                 />
                 <Paragraph className="w-full">{dateFormatter(new Date().toString())}</Paragraph>

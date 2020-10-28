@@ -192,7 +192,7 @@ export const Input: <T = any>(props: InputProps<T>) => JSX.Element = React.forwa
       setValidField(result ?? inputRef.current?.validity?.valid);
     };
 
-    const onChange: InputProps["onChange"] = (e) => {
+    const onChange: InputProps["onChange"] = (e:any) => {
       e.persist();
       validateValidity(getValidity(e.target.validity));
       if (validateOnChange) {
