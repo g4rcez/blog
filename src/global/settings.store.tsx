@@ -72,7 +72,7 @@ export const Settings: React.FC = ({ children }) => {
       const repos: GithubRepository[] = await response.json();
       dispatch.setRepositories(repos.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())));
     };
-    if (location.pathname === Links.root && userCache !== null) {
+    if (location.pathname === Links.me && userCache !== null) {
       userRequest();
     }
   }, [location, userCache]);

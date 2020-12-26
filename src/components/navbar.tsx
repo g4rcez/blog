@@ -44,7 +44,7 @@ export const Navbar = () => {
         <div className={toggleClassName}>
           <div className="flex-auto flex flex-col md:flex-row w-auto ml-auto justify-end">
             <Item to={Links.Linq}>Lab</Item>
-            <Item to={Links.posts}>Posts</Item>
+            <Item to={Links.me}>Me</Item>
             <Item to={Links.settings}> <FaCog title="Settings" /> <span className="ml-1 visible md:hidden"> Settings</span> </Item>
           </div>
         </div>

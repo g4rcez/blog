@@ -142,7 +142,7 @@ const App = () => {
           <SubTitle className="font-bold">Recent Posts</SubTitle>
         </Container>
         <Container className="my-8">
-          {POSTS.slice(0, 3).map((x) => (
+          {POSTS.slice(0, 4).map((x) => (
             <Post dateFormat={dateFormat} post={x} key={x.url} />
           ))}
         </Container>

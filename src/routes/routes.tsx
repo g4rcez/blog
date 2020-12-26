@@ -4,9 +4,9 @@ import { Loader } from "../components/pacman-loader";
 import { Links } from "./links";
 import { Settings } from "../global/settings.store";
 export const Path = [
-  { path: Links.root, component: lazy(() => import("../App")) },
+  { path: Links.me, component: lazy(() => import("../App")) },
   { path: Links.settings, component: lazy(() => import("../blog-settings/blog-settings.view")) },
-  { path: Links.posts, component: lazy(() => import("../blog/posts.view")) },
+  { path: Links.root, component: lazy(() => import("../blog/posts.view")) },
   { path: Links.post, component: lazy(() => import("../blog/post.view")) },
   { path: Links.Linq, component: lazy(() => import("../libs/linq.view")) }
 ];

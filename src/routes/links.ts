@@ -1,5 +1,6 @@
 import { Extension } from "../blog/post.type";
 export const Links = {
+  me: "/me",
   root: "/",
   posts: "/posts",
   post: "/post/:title",
