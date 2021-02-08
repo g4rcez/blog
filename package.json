@@ -6,7 +6,7 @@
     "classnames": "2.2.6",
     "codemirror": "5.58.1",
     "linq-arrays": "1.5.0",
-    "marked": "^1.2.0",
+    "marked": "^2.0.0",
     "ramda": "0.27.1",
     "react": "^17.0.1",
     "react-codemirror2": "7.2.1",
