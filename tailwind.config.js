@@ -16,8 +16,10 @@ const getColors = (JSON_COLOR = {}) => {
 };
 
 module.exports = {
-  purge: [],
-  presets: [],
+  purge: {
+    enabled: true,
+    content: ['./pages/**/*.tsx','./lib/**/*.tsx'],
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
