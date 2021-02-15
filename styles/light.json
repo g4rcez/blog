@@ -1,0 +1,30 @@
+{
+    "name": "dark",
+    "transparent": "transparent",
+    "current": "currentColor",
+    "primary": {
+        "DEFAULT": "#a30af3",
+        "link": "#a069bd",
+        "contrast": "#ffffff"
+    },
+    "danger": {
+        "DEFAULT": "#ec4646"
+    },
+    "warn": {
+        "DEFAULT": "#f8dc81"
+    },
+    "info": {
+        "DEFAULT": "#4ca5db"
+    },
+    "success": {
+        "DEFAULT": "#90d4a7"
+    },
+    "on-base": "#21272d",
+    "base": "#f1f1f1",
+    "code": {
+        "bg": "#31363b",
+        "plain": "#f1f1f1"
+    },
+    "twitter": "#1DA1F2",
+    "linkedin": "#0073b1"
+}
