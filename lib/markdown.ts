@@ -20,6 +20,7 @@ export type Post = PostFile & {
   slug: string;
   content: string;
   readingTime: number;
+  subjects: string[];
 };
 export type Keys = keyof Post;
 

@@ -2,6 +2,7 @@ import { getAllPosts, getPostBySlug, toMarkdown } from "../../lib/markdown";
 import type { Post } from "../../lib/markdown";
 import { useMemo } from "react";
 import { Format } from "../../lib/format";
+import Head from "next/head";
 
 type Params = {
   params: {
@@ -15,6 +16,7 @@ const allPostInfo: (keyof Post)[] = [
   "date",
   "slug",
   "description",
+  "subjects",
   "content",
   "image",
 ];
@@ -51,12 +53,14 @@ type Props = {
 };
 
 export const Component = ({ post }: Props) => {
-  const date = useMemo(
-    () => Format.date(post.date),
-    [post]
-  );
+  const date = useMemo(() => Format.date(post.date), [post]);
   return (
     <section className="flex flex-col w-full m-auto container">
+      <Head>
+        <meta name="description" content={post.description} />
+        <meta name="keywords" content={post.subjects.join(",")} />
+        <title>Garcez Blog | {post.title}</title>
+      </Head>
       <header className="mb-4">
         <h1 className="font-bold text-5xl">{post.title}</h1>
         <p className="prose mt-4 mb-2">{post.description}</p>
