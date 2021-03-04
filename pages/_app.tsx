@@ -16,11 +16,6 @@ const Me = {
 };
 
 function MyApp({ Component, pageProps, ...props }) {
-  const user = {
-    twitter: process.env.twitter ?? "twitter",
-    github: process.env.github ?? "github",
-    linkedin: process.env.linkedin ?? "linkedin",
-  };
   const [theme, setTheme] = useState<"dark" | "light" | null>(() => null);
 
   useEffect(() => {
