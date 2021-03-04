@@ -4,5 +4,8 @@ export const Format = {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour12: false,
+      hour: "numeric",
+      minute: "numeric",
     }).format(new Date(date)),
 };

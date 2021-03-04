@@ -55,13 +55,13 @@ type Props = {
 export const Component = ({ post }: Props) => {
   const date = useMemo(() => Format.date(post.date), [post]);
   return (
-    <section className="flex flex-col w-full m-auto container">
+    <section className="flex flex-col w-full">
       <Head>
         <meta name="description" content={post.description} />
         <meta name="keywords" content={post.subjects.join(",")} />
         <title>Garcez Blog | {post.title}</title>
       </Head>
-      <header className="mb-4">
+      <header className="mb-8">
         <h1 className="font-bold text-5xl">{post.title}</h1>
         <p className="prose mt-4 mb-2">{post.description}</p>
         <time className="text-md prose">{date}</time>

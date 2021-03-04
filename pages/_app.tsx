@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps, ...props }) {
   }, []);
 
   return (
-    <main className="w-full container mx-auto max-w-5xl px-2 sm:px-0">
+    <main className="w-full container mx-auto md:px-6 px-4 sm:max-w-5xl">
       <Head>
         <title>Garcez Blog</title>
         <meta
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps, ...props }) {
         <meta name="twitter:creator" content="@garcez_allan" />
         <meta name="theme-color" content={themeColor} />
       </Head>
-      <header className="w-full mb-8">
+      <header className="w-full flex flex-wrap flex-col gap-y-8 justify-center items-center mb-8 mt-2">
         <nav className="w-full mx-auto py-2 flex flex-row justify-between items-center">
           <Link href="/">
             <span className="flex items-center gap-x-2">
