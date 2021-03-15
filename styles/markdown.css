@@ -41,3 +41,7 @@
 .markdown code {
   @apply text-info p-1 mx-1;
 }
+
+.markdown table {
+  @apply w-full text-left table-auto border-separate;
+}

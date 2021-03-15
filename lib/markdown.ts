@@ -4,6 +4,7 @@ import { join } from "path";
 import remark from "remark";
 import html from "remark-html";
 import prism from "remark-prism";
+import gfm from "remark-gfm";
 
 export type PostFile = {
   title: string;
@@ -55,6 +56,7 @@ export const getAllPosts = (fields: Keys[] = []) =>
 export const toMarkdown = async (markdown: string) => {
   const result = await remark()
     .use(html)
+    .use(gfm)
     .use(prism, {
       /* transformInlineCode: true, */
       plugins: [
