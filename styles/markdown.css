@@ -2,7 +2,7 @@
 .markdown h2,
 .markdown h3,
 .markdown h4 {
-  @apply my-4;
+  @apply my-4 text-primary-link;
 }
 .markdown h1 {
   @apply text-5xl font-bold;

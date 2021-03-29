@@ -1,6 +1,6 @@
 import { getAllPosts, getPostBySlug, toMarkdown } from "../../lib/markdown";
 import type { Post } from "../../lib/markdown";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Format } from "../../lib/format";
 import Head from "next/head";
 

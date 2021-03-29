@@ -15,12 +15,12 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
 
 code {
   padding: 0.2rem 0.5rem;
-  color: var(--base-DEFAULT);
-  background-color: var(--primary-dark);
+  color: var(--code-plain);
+  background-color: var(--code-bg);
 }
 
 pre {
-  background-color: var(--primary-dark);
+  background-color: var(--code-bg);
   width: 100%;
   padding: 0.5rem;
   border-radius: 5px;
@@ -30,7 +30,7 @@ pre {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  color: var(--base-DEFAULT);
+  color: var(--code-plain);
   background: none;
   font-family: "Fira Code", monospace;
   font-size: 1em;
@@ -58,7 +58,7 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #2d2d2d;
+  background-color: var(--code-bg);
 }
 
 /* Inline code */
