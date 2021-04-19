@@ -16,10 +16,10 @@ const getColors = (JSON_COLOR = {}) => {
 };
 
 module.exports = {
-  purge: {
-    enabled: true,
-    content: ['./pages/**/*.tsx','./lib/**/*.tsx'],
-  },
+  purge: [
+    "./public/**/*.html",
+    "./{pages,styles,components,lib}/**/*.{js,jsx,ts,tsx,vue}",
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {

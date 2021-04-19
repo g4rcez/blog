@@ -1,13 +1,13 @@
+import { ThemePreference } from "lib/theme-preference";
 import Head from "next/head";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaLinkedin, FaMoon, FaSun } from "react-icons/fa";
 import { SiReact } from "react-icons/si";
 import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
-import { ThemePreference } from "../lib/theme-preference";
-import Dark from "../styles/dark.json";
+import Dark from "styles/dark.json";
+import Light from "styles/light.json";
 import "../styles/dist.css";
-import Light from "../styles/light.json";
 
 const Me = {
   TWITTER: "https://twitter.com/garcez_allan",
