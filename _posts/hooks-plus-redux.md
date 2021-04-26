@@ -5,7 +5,7 @@ title: "Hooks + Redux"
 language: "pt-br"
 translations: ["pt-br"]
 date: "2019-09-29T11:33:00.000Z"
-description: ""
+description: "Unido os hooks ao estado global"
 ---
 
 Desde que saiu a versão estável de Hooks para React, eu vejo muitos artigos com a ideia de **Usando Hooks para eliminar o Redux da sua aplicação**. Alguns desses têm até umas ideias interessantes, mas não é esse o propósito de Hooks, se você quer criar uma biblioteca que substitua o Redux, você deverá estudar ContextAPI e não Hooks.

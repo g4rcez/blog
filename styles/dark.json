@@ -5,12 +5,14 @@
     "primary": {
         "DEFAULT": "#a30af3",
         "link": "#a069bd",
+        "dark": "#7207aa",
         "contrast": "#ffffff"
     },
     "danger": {
         "DEFAULT": "#ec4646"
     },
     "warn": {
+        "light": "#fcf1cc",
         "DEFAULT": "#f8dc81"
     },
     "info": {

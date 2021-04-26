@@ -7,7 +7,7 @@ import { SiReact } from "react-icons/si";
 import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
 import Dark from "styles/dark.json";
 import Light from "styles/light.json";
-import "../styles/dist.css";
+import "../styles/globals.css";
 
 const Me = {
   TWITTER: "https://twitter.com/garcez_allan",

@@ -8,7 +8,7 @@ import gfm from "remark-gfm";
 
 export type PostFile = {
   title: string;
-  description: string;
+  description?: string;
   date: string;
   image: string;
 };
@@ -35,6 +35,7 @@ export function getPostBySlug(slug: string, fields: Keys[] = []): Post {
   const items = { readingTime };
 
   fields.forEach((field) => {
+    console.log({ fields, field });
     if (field === "slug") {
       items[field] = realSlug;
     }
@@ -42,7 +43,7 @@ export function getPostBySlug(slug: string, fields: Keys[] = []): Post {
       items[field] = content;
     }
     if (data[field]) {
-      items[field] = data[field];
+      items[field] = data[field] ?? "";
     }
   });
   return items as never;
