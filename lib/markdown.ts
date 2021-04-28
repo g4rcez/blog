@@ -35,7 +35,6 @@ export function getPostBySlug(slug: string, fields: Keys[] = []): Post {
   const items = { readingTime };
 
   fields.forEach((field) => {
-    console.log({ fields, field });
     if (field === "slug") {
       items[field] = realSlug;
     }
