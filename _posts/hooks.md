@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["hooks", "react", "typescript","javascript","frontend"]
+subjects: ["hooks", "react", "typescript", "javascript", "frontend"]
 title: "React Hooks"
 language: "pt-br"
 translations: ["pt-br"]
@@ -25,8 +25,8 @@ Não. Não. De novo, não. A primeira coisa que precisei fazer para ter um bom e
 
 Se você já conhece componentes de classes, então esqueça um pouco do ciclo de vida para entender sobre hooks. As vezes acabamos fazendo algumas associações no caso do `useEffect`
 
--   "O `useEffect` com um array de dependências vazio é igual ao `componentDidMount`"
--   "O `useEffect` com um array de dependências com alguns itens que precisam mudar é igual ao `componentDidMount` e ao `componentDidUpdate`"
+- "O `useEffect` com um array de dependências vazio é igual ao `componentDidMount`"
+- "O `useEffect` com um array de dependências com alguns itens que precisam mudar é igual ao `componentDidMount` e ao `componentDidUpdate`"
 
 Isso é parcialmente verdade, apesar do efeito causado ser o mesmo, não podemos assumir que são a mesma coisa. Um exemplo:
 
@@ -48,12 +48,10 @@ useEffect(() => {
 
 Se formos fazer uma rápida associação a classes, nosso componente com hooks possui dois `componentDidMount`? Sim e não.
 
--   Sim. Pois ao ser montado, ambos efeitos do nosso `useEffect` serão executados
--   Não. Pois o nosso segundo efeito não é executado somente na hora do componente montar, ele será executado sempre que o `state` mudar. Ao montar o componente, o `state` receberá um valor inicial, logo...ele irá mudar e irá triggar nosso evento. Qualquer atualização nele irá fazer o efeito ser executado de novo.
+- Sim. Pois ao ser montado, ambos efeitos do nosso `useEffect` serão executados
+- Não. Pois o nosso segundo efeito não é executado somente na hora do componente montar, ele será executado sempre que o `state` mudar. Ao montar o componente, o `state` receberá um valor inicial, logo...ele irá mudar e irá triggar nosso evento. Qualquer atualização nele irá fazer o efeito ser executado de novo.
 
 O nosso querido hook `useEffect` apenas reage as mudanças dos seus dependentes.
-
----
 
 Outro cara que confundimos é o `useState` por conta do método de classes `this.setState()`. Vamos dar uma conferida nos métodos:
 
@@ -110,8 +108,8 @@ setState(currentState => ({ ...currentState, name: "Typescript" }));
 
 Em minha opinião, o `useState` só é interessante de se utilizar nos seguintes casos:
 
--   Valores de tipos primários
--   Objetos que são preenchidos em uma única ação
+- Valores de tipos primários
+- Objetos que são preenchidos em uma única ação
 
 Com o `useState`, podemos compor nosso estado em pequenas partes isoladas e controladas de forma isolada.
 
@@ -123,59 +121,59 @@ Bom, se você pensou isso, vou apresentar a você o `useReducer`. Vou apresentar
 import React, { useReducer } from "react";
 
 const initialState = {
-	name: "",
-	age: 0,
-	points: 0,
-	isApproved: false,
+  name: "",
+  age: 0,
+  points: 0,
+  isApproved: false,
 };
 
 type Actions =
-	| {
-			type: "onChangeText";
-			text: string;
-	  }
-	| {
-			type: "onChangeCheckbox";
-			check: boolean;
-	  }
-	| {
-			type: "onChangeNumber";
-			value: number;
-			field: "age" | "points";
-	  };
+  | {
+      type: "onChangeText";
+      text: string;
+    }
+  | {
+      type: "onChangeCheckbox";
+      check: boolean;
+    }
+  | {
+      type: "onChangeNumber";
+      value: number;
+      field: "age" | "points";
+    };
 
 type State = typeof initialState;
 
 const reducer = (state: State, actions: Actions): State => {
-	if (actions.type === "onChangeText") {
-		return { ...state, name: actions.text };
-	}
-	if (actions.type === "onChangeCheckbox") {
-		return { ...state, isApproved: actions.check };
-	}
-	if (actions.type === "onChangeNumber") {
-		return { ...state, [actions.field]: actions.value };
-	}
-	return state;
+  if (actions.type === "onChangeText") {
+    return { ...state, name: actions.text };
+  }
+  if (actions.type === "onChangeCheckbox") {
+    return { ...state, isApproved: actions.check };
+  }
+  if (actions.type === "onChangeNumber") {
+    return { ...state, [actions.field]: actions.value };
+  }
+  return state;
 };
 
 function Component() {
-	const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { value, name, type, checked } = e.target;
-		if (type === "checkbox") {
-			return dispatch({ type: "onChangeCheckbox", check: checked });
-		}
-		if (type === "number") {
-			return dispatch({
-				type: "onChangeNumber",
-				value: Number.parseFloat(value),
-				field: name as "age" | "points",
-			});
-		}
-		return dispatch({ type: "onChangeText", text: value });
-	};
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name, type, checked } = e.target;
+    if (type === "checkbox") {
+      return dispatch({ type: "onChangeCheckbox", check: checked });
+    }
+    if (type === "number") {
+      return dispatch({
+        type: "onChangeNumber",
+        value: Number.parseFloat(value),
+        field: name as "age" | "points",
+      });
+    }
+    return dispatch({ type: "onChangeText", text: value });
+  };
 }
 ```
 
@@ -196,106 +194,102 @@ type Immutable<State> = Partial<Readonly<State>>;
 
 // Inferência dos tipos da função primária
 type Infer<
-	State,
-	Fn extends (...args: never) => (state: State) => Immutable<State>
+  State,
+  Fn extends (...args: never) => (state: State) => Immutable<State>
 > = (...args: Parameters<Fn>) => (state: State) => Immutable<State>;
 
 // apenas um utils para extender nos tipos
 type ReducerChunk<Actions, State> = {
-	[key in keyof Actions]: (args: any) => (state: State) => Immutable<State>;
+  [key in keyof Actions]: (args: any) => (state: State) => Immutable<State>;
 };
 
 export type Dispatches<State, Actions extends ReducerChunk<Actions, State>> = {
-	[key in keyof Actions]: Infer<State, Actions[key]>;
+  [key in keyof Actions]: Infer<State, Actions[key]>;
 };
 
 const useReducer = <State, Actions extends ReducerChunk<Actions, State>>(
-	initialState: State,
-	actions: Actions
+  initialState: State,
+  actions: Actions
 ): [State, Dispatches<State, Actions>] => {
-	const [state, setState] = useState(initialState);
-	// memoizando as actions para evitar novos objetos
-	const dispatches = useMemo(
-		() =>
-			Object.entries(actions).reduce(
-				(acc, [name, dispatch]: [string, any]) => ({
-					...acc,
-					[name]: (...params: any) => {
-						const event = dispatch(...params);
-						setState((currentState) => ({
-							...currentState,
-							...event(...params),
-						}));
-					},
-				}),
-				{} as Dispatches<State, Actions>
-			),
-		[actions]
-	);
-	return [state, dispatches];
+  const [state, setState] = useState(initialState);
+  // memoizando as actions para evitar novos objetos
+  const dispatches = useMemo(
+    () =>
+      Object.entries(actions).reduce(
+        (acc, [name, dispatch]: [string, any]) => ({
+          ...acc,
+          [name]: (...params: any) => {
+            const event = dispatch(...params);
+            setState((currentState) => ({
+              ...currentState,
+              ...event(...params),
+            }));
+          },
+        }),
+        {} as Dispatches<State, Actions>
+      ),
+    [actions]
+  );
+  return [state, dispatches];
 };
 
 type STATE = {
-	name: string;
-	age: number;
-	points: number;
-	isApproved: boolean;
+  name: string;
+  age: number;
+  points: number;
+  isApproved: boolean;
 };
 const initialState: STATE = {
-	name: "",
-	age: 0,
-	points: 0,
-	isApproved: false,
+  name: "",
+  age: 0,
+  points: 0,
+  isApproved: false,
 };
 
 const App = () => {
-	const [state, reducers] = useReducer(initialState as STATE, {
-		onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => {
-			const { value } = e.target;
-			// Se for passar o evento para essa próxima função
-			// não se esqueça de usar e.persist()
-			// mais informações:
-			// https://reactjs.org/docs/events.html#event-pooling
-			return (): Partial<STATE> => ({ name: value });
-		},
-		onChangeNumber: (e: React.ChangeEvent<HTMLInputElement>) => {
-			const { name, value } = e.target;
-			return (): Partial<STATE> => ({
-				[name as "age" | "points"]: Number.parseFloat(value),
-			});
-		},
-		onChangeCheckbox: (e: React.ChangeEvent<HTMLInputElement>) => {
-			const { checked } = e.target;
-			return (): Partial<STATE> => ({ isApproved: checked });
-		},
-	});
-	return (
-		<Fragment>
-			<input
-				name="name"
-				onChange={reducers.onChangeName}
-				value={state.name}
-			/>
-			<input
-				type="number"
-				name="age"
-				onChange={reducers.onChangeNumber}
-				value={state.age}
-			/>
-			<input
-				type="number"
-				name="points"
-				onChange={reducers.onChangeNumber}
-				value={state.points}
-			/>
-			<input
-				type="checkbox"
-				name="isApproved"
-				onChange={reducers.onChangeCheckbox}
-				checked={state.isApproved}
-			/>
-		</Fragment>
-	);
+  const [state, reducers] = useReducer(initialState as STATE, {
+    onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      // Se for passar o evento para essa próxima função
+      // não se esqueça de usar e.persist()
+      // mais informações:
+      // https://reactjs.org/docs/events.html#event-pooling
+      return (): Partial<STATE> => ({ name: value });
+    },
+    onChangeNumber: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      return (): Partial<STATE> => ({
+        [name as "age" | "points"]: Number.parseFloat(value),
+      });
+    },
+    onChangeCheckbox: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = e.target;
+      return (): Partial<STATE> => ({ isApproved: checked });
+    },
+  });
+  return (
+    <Fragment>
+      <input name="name" onChange={reducers.onChangeName} value={state.name} />
+      <input
+        type="number"
+        name="age"
+        onChange={reducers.onChangeNumber}
+        value={state.age}
+      />
+      <input
+        type="number"
+        name="points"
+        onChange={reducers.onChangeNumber}
+        value={state.points}
+      />
+      <input
+        type="checkbox"
+        name="isApproved"
+        onChange={reducers.onChangeCheckbox}
+        checked={state.isApproved}
+      />
+    </Fragment>
+  );
 };
 
 export default App;
@@ -318,17 +312,17 @@ const isClient = typeof window === "object";
 const getSize = () => (isClient ? window.innerWidth : 0);
 
 const useWidth = () => {
-	const [windowSize, setWindowSize] = useState(getSize);
-	useEffect(() => {
-		if (!isClient) {
-			return;
-		}
-		const resizeHandler = () => setWindowSize(getSize());
-		window.addEventListener("resize", resizeHandler);
-		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+  const [windowSize, setWindowSize] = useState(getSize);
+  useEffect(() => {
+    if (!isClient) {
+      return;
+    }
+    const resizeHandler = () => setWindowSize(getSize());
+    window.addEventListener("resize", resizeHandler);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-	return windowSize;
+  return windowSize;
 };
 
 export default useWidth;
@@ -352,19 +346,19 @@ Quando você precisa passar as referências do seu componente para que irá cons
 
 ```typescript
 type Props = {
-	ref: {
-		focus(): void;
-	};
+  ref: {
+    focus(): void;
+  };
 };
 
 const Input: React.FC<Props> = (props, externalRef) => {
-	const internalRef = useRef();
-	useImperativeHandle(externalRef, () => ({
-		focus: () => {
-			internalRef.current.focus();
-		},
-	}));
-	return <input {...props} ref={ref} />;
+  const internalRef = useRef();
+  useImperativeHandle(externalRef, () => ({
+    focus: () => {
+      internalRef.current.focus();
+    },
+  }));
+  return <input {...props} ref={ref} />;
 };
 
 export default React.forwardRef(Input);
@@ -374,7 +368,7 @@ Eu ainda não fiz um uso muito absurdo desses 2 recursos, mas é assim que funci
 
 ## Conclusão: vou ficar devendo 2 hooks
 
-Faltou eu apresentar o `useContext` e o `useDebugValue`. O `useDebugValue` eu realmente NUNCA usei graças ao nosso vício de socar `console.log` + `debugger` em tudo. Sei que é um hook que nos ajuda, mas nunca tive necessidade de fazer o uso. 
+Faltou eu apresentar o `useContext` e o `useDebugValue`. O `useDebugValue` eu realmente NUNCA usei graças ao nosso vício de socar `console.log` + `debugger` em tudo. Sei que é um hook que nos ajuda, mas nunca tive necessidade de fazer o uso.
 
 Agora o `useContext`...Fica tranquilo que eu vou fazer uma experiência bem maneira com ele e escrever um post somente sobre esse hook. Mas já adianto que podemos usar a `ContextAPI` (não a legada, a da versão 16.3) para substituir o uso de Redux em alguns casos.
 

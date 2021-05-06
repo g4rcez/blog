@@ -3,14 +3,13 @@ import { GetStaticProps } from "next";
 import Link from "next/link";
 import {
   FormEvent,
-  Fragment,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { Format } from "../lib/format";
+import { Format, toPost } from "../lib/format";
 import { getAllPosts, Post } from "../lib/markdown";
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -23,10 +22,8 @@ export const getStaticProps: GetStaticProps = async () => {
     "title",
     "image",
   ]);
-  return { props: { posts }, revalidate: false };
+  return { props: { posts } };
 };
-
-const toPost = (slug: string) => `/post/${slug}`;
 
 const inputName = "search";
 
@@ -51,7 +48,7 @@ const Subjects = ({
   }, []);
 
   return (
-    <div className="prose flex gap-x-4 xl:prose-lg mt-2 text-md">
+    <div className="prose flex gap-x-2 xl:prose-md mt-2 text-md flex-wrap gap-y-2">
       {list.map((y) => (
         <button
           onClick={() => click(y)}
@@ -114,18 +111,11 @@ export default function Index({ posts }: { posts: Post[] }) {
   const onReset = () => setSearch("");
 
   return (
-    <Fragment>
-      <div
-        className="w-full flex flex-wrap flex-col gap-y-8 justify-center items-center"
-        key="all-my-posts"
-      >
-        <form
-          onSubmit={onSubmit}
-          onReset={onReset}
-          className="w-full flex flex-nowrap justify-start gap-x-4 items-end"
-        >
+    <div className="w-full min-w-full">
+      <form onSubmit={onSubmit} onReset={onReset} className="w-full block mb-8">
+        <div className="flex flex-row flex-wrap gap-2">
           <label
-            className="flex flex-row items-center input-group"
+            className="flex flex-row items-center input-group whitespace-nowrap"
             htmlFor="search"
           >
             <input
@@ -141,25 +131,29 @@ export default function Index({ posts }: { posts: Post[] }) {
             </span>
           </label>
           <Button
-            className="hover:bg-primary focus:bg-primary hover:text-primary-contrast focus:text-on-base border-primary text-primary-link"
+            className="hover:bg-primary focus:bg-primary hover:text-primary-contrast focus:text-on-base border-primary text-primary-link w-fit"
             type="submit"
           >
             Search
           </Button>
           <Button
-            className="hover:bg-warn focus:bg-warn hover:text-base focus:text-base border-warn text-warn-light"
+            className="hover:bg-warn focus:bg-warn hover:text-base focus:text-base border-warn text-warn-light w-fit"
             type="reset"
           >
             Reset
           </Button>
-        </form>
+        </div>
+      </form>
+      <section className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-12">
         {viewedPosts.map((x) => {
           return (
-            <section key={x.slug} className="w-full">
+            <article key={x.slug} className="flex flex-col w-full">
               <nav>
                 <header className="text-primary-link transition-colors duration-500 cursor-pointer hover:underline">
                   <Link href={toPost(x.slug)}>
-                    <h3 className="text-2xl font-bold">{x.title}</h3>
+                    <a href={toPost(x.slug)}>
+                      <h3 className="text-2xl font-bold">{x.title}</h3>
+                    </a>
                   </Link>
                 </header>
               </nav>
@@ -172,10 +166,10 @@ export default function Index({ posts }: { posts: Post[] }) {
                 search={search}
                 onClick={setSearch}
               />
-            </section>
+            </article>
           );
         })}
-      </div>
-    </Fragment>
+      </section>
+    </div>
   );
 }

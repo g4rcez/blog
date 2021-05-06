@@ -9,3 +9,6 @@ export const Format = {
       minute: "numeric",
     }).format(new Date(date)),
 };
+
+
+export const toPost = (slug: string) => `/post/${slug}`;
