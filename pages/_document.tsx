@@ -4,7 +4,7 @@ const GA_TRACKING_ID = "G-GWZ4PNE2ZL";
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="pt-br">
         <Head>
           <script
             async

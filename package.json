@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "css": "NODE_ENV=dev postcss styles/globals.css -o styles/dist.css --watch",
-    "css:prod": "NODE_ENV=production postcss styles/globals.css -o styles/dist.css",
     "dev": "next dev",
-    "build": "yarn css:prod && next build",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {

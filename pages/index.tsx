@@ -145,30 +145,26 @@ export default function Index({ posts }: { posts: Post[] }) {
         </div>
       </form>
       <section className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-12">
-        {viewedPosts.map((x) => {
-          return (
-            <article key={x.slug} className="flex flex-col w-full">
-              <nav>
-                <header className="text-primary-link transition-colors duration-500 cursor-pointer hover:underline">
-                  <Link href={toPost(x.slug)}>
-                    <a href={toPost(x.slug)}>
-                      <h3 className="text-2xl font-bold">{x.title}</h3>
-                    </a>
-                  </Link>
-                </header>
-              </nav>
-              <p className="prose xl:prose-lg text-sm opacity-50 my-2">
-                {Format.date(x.date)} - {x.readingTime} min read
-              </p>
-              <p className="prose xl:prose-lg text-md">{x.description}</p>
-              <Subjects
-                subjects={x.subjects}
-                search={search}
-                onClick={setSearch}
-              />
-            </article>
-          );
-        })}
+        {viewedPosts.map((x) => (
+          <article key={x.slug} className="flex flex-col w-full">
+            <header className="text-primary-link transition-colors duration-500 cursor-pointer hover:underline">
+              <Link href={toPost(x.slug)}>
+                <a href={toPost(x.slug)}>
+                  <h3 className="text-2xl font-bold">{x.title}</h3>
+                </a>
+              </Link>
+            </header>
+            <p className="prose xl:prose-lg text-sm opacity-50 my-2">
+              {Format.date(x.date)} - {x.readingTime} min read
+            </p>
+            <p className="prose xl:prose-lg text-md">{x.description}</p>
+            <Subjects
+              subjects={x.subjects}
+              search={search}
+              onClick={setSearch}
+            />
+          </article>
+        ))}
       </section>
     </div>
   );

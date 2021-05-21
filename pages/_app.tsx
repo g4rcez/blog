@@ -70,8 +70,8 @@ function MyApp({ Component, pageProps }) {
               className="bg-transparent cursor-pointer mb-1"
               type="button"
             >
-              {theme === "dark" && <img className="w-6" src="/sun.svg" />}
-              {theme === "light" && <img className="w-6" src="/moon.svg" />}
+              {theme === "dark" && <img className="w-6" alt="light mode icon" src="/sun.svg" />}
+              {theme === "light" && <img className="w-6" alt="dark mode icon" src="/moon.svg" />}
             </button>
           </span>
         </nav>
