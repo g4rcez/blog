@@ -8,17 +8,19 @@ date: "2020-02-20T23:29:59.999Z"
 description: "Vantagens e desvantagens"
 ---
 
+# Introdução
+
 No artigo anterior eu comecei a falar de Typescript. Um amigo indicou fazer um artigo falando do por que usar, e cá estou escrevendo sobre.
 
->   Obrigado pela indicação de um tema haha
+> Obrigado pela indicação de um tema haha
 
-## Prós e contras
+# Prós e contras
 
 Essa parte vai ficar bem tendenciosa devido a eu não curtir linguagens sem tipos. Programar em JS sempre foi divertido e cansativo justamente por isso, quando comecei com TS, passou a ser divertido e produtivo.
 
 Apesar disso, garanto ser o mais imparcial possível para que você possa decidir se deve ou não investir em TS. Muito embora, eu garanto a você que com certeza vale a pena.
 
-### Contras
+# Contras
 
 Vou falar dos contras primeiro porque caso veja algo que não te agrada, você já fecha o artigo e continua sua vida.
 
@@ -27,7 +29,7 @@ Vou falar dos contras primeiro porque caso veja algo que não te agrada, você j
 3. Runtime: não há runtime. Infelizmente TS só funciona em desenvolvimento e não irá assegurar que os tipos dos valores das suas funções runtime recebam exatamente os tipos que você esperava em Dev. Apesar de ser difícil de algo quebrar por conta de tipos errados, qualquer sabotagem que vc fizer em um fluxo de dados poderá causar uma falha inesperada. Por isso é bom evitar o uso de coisas como `any` e `unknown`.
 4. Um step a mais no build: embora hoje eu não veja muitos problemas em configurar a transpilação, você pode achar isso um problema por não estar acostumado.
 
-### Prós
+# Prós
 
 Vou começar essa parte com uma crítica que ouvi de um grande profissional "Quem usa linguagem dinâmica em 2020?". A ironia dele foi por conta de uma linguagem estática trazer tantos benefícios, que não faz sentido usar linguagens dinâmicas.
 
@@ -36,8 +38,7 @@ Vou começar essa parte com uma crítica que ouvi de um grande profissional "Que
 3. Adeus ao undefined: um dos problemas mais comuns ou quiçá o mais comum do mundo JS pode ser evitado em TS graças ao transpilador nos avisar todas as possibilidades de coisas nulas e indefinidas
 4. JS Latest: Typescript irá garantir que você sempre estará usando a versão mais recente (com todas as features) de Javascript, sem precisar de muita configuração
 
-
-### Experiência no uso
+# Experiência no uso
 
 A curva para se usar Typescript é bem linear. Eu costumo dizer que aprender Typescript é fácil, mas masterizar é um pouco mais complicado (talvez pelo fato da tipagem envolver conceitos de programação funcional e orientada a objetos).
 

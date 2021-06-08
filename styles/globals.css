@@ -1,13 +1,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "./markdown.css";
 @import "./prism.css";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&display=swap");
 
 :root {
-  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell,
-    Fira Sans, Droid Sans, sans-serif;
+  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell, Fira Sans, Droid Sans, sans-serif;
 }
 
 * {

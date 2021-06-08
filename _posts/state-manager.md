@@ -8,13 +8,15 @@ date: "2021-03-23T23:00:00.000Z"
 description: "Indo além do useState"
 ---
 
+# Introdução
+
 Há tempos temos os hooks e ainda assim estamos aprendendo e melhorando o approach de "estado funcional" dentro do React. E hoje venho trazer duas formas de tratar estado com hooks.
 
 O primeiro approach é uma tentativa de utilizar somente um custom hook para manipular o seu componente, sendo o hook o responsável por controlar todo o estado do componente. Neste approach teríamos `useState`, `useMemo`, `useEffect` e `useCallback`. Além dos hooks customizados se você precisar manipular DOM, history ou qualquer outro objeto necessário.
 
 Já o segundo approach é uma abordagem criando um hook que recebe um estado inicial e funções para atualização do estado. Neste caso, passaríamos apenas o estado inicial, as funções e as props do componente. Para este approach eu irei usar o hook [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
 
-### useHook
+# useHook
 
 Nosso primeiro caso consiste em passar hooks como props para nossos componentes. Isso mesmo, props com hooks. Mas para isso, precisamos seguir as regras dos hooks, logo, nossas variáveis precisarão ter o prefixo `use` e o resto do nome em `camelCase`.
 
@@ -82,10 +84,7 @@ Para manter tudo familiar, fiz um pequeno exemplo do `useCounterPlus` retornando
 import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import "./App.css";
 
-type UseHook = () => [
-  number,
-  { set: Dispatch<SetStateAction<S>>; reset: () => void }
-];
+type UseHook = () => [number, { set: Dispatch<SetStateAction<S>>; reset: () => void }];
 
 const Counter = ({ useHook }: { useHook: () => number }) => {
   const [count, actions] = useHook();
@@ -127,7 +126,7 @@ Esse padrão é bastante interessante, mas pode gerar alguns problemas com os `u
 
 Para evitar esses problemas, temos o segundo padrão que foi uma adaptação da primeira sugestão, utilizando o [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
 
-### [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
+# [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
 
 Esse projeto foi uma adaptação com tipos para usar o `useReducer`, mas ao invés de ter usar `switch-case` com o `type` das `actions` despachadas, utilizamos funções como `dispatch` e assim garantimos o uso correto com todos os tipos de entrada da função.
 
@@ -151,12 +150,9 @@ type State = typeof State;
 
 type Reducers = {
   // o any nesse caso é por que não importa o retorno
-  // já que o useTypedReducer vai converter para o esquema de função 
-  reset: UseReducer.Reducer<State, () => any>; 
-  onChange: UseReducer.Reducer<
-    State,
-    (e: React.ChangeEvent<HTMLInputElement>) => any
-  >;
+  // já que o useTypedReducer vai converter para o esquema de função
+  reset: UseReducer.Reducer<State, () => any>;
+  onChange: UseReducer.Reducer<State, (e: React.ChangeEvent<HTMLInputElement>) => any>;
   increment: UseReducer.Reducer<State, () => any>;
 };
 
@@ -190,8 +186,7 @@ function App() {
 
 Com o `useTypedReducer` conseguimos trazer um código mais conciso e nos permitindo passa o `initialState` e os nossos `reducers` de forma dinâmica, assim também permitindo flexibilidade de comportamento.
 
-
-### Conclusão
+# Conclusão
 
 Não há um melhor jeito de se abordar estados complexos, certos casos onde existem estados globais, você poderá optar por ContextAPI, Redux, Jotai, Mobx e vários outros, mas para estados locais, é sempre bom optar pela simplicidade e flexibilidade para ajudar na hora da manutenção ou quando existir uma nova feature a ser criada.
 

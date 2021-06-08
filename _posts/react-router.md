@@ -8,15 +8,18 @@ date: "2021-03-03T18:33:00.000Z"
 description: "Desmistificando o conceito por trás do React Router"
 ---
 
+# Introdução
+
+
 Fala aí galera, tudo tranquilo? Nesse post eu gostaria de trazer pra vocês uma experiência que tive recriando o [React Router](https://reactrouter.com/).
 
 Como todos sabemos, React Router é quase que a biblioteca oficial para roteamento em React, e quase ninguém conhece alguma alternativa. Durante algumas criações de telas, utilizando [Query String](https://en.wikipedia.org/wiki/Query_string), acabei enfrentando alguns problemas com isso, principalmente em como recuperar meu objeto dado a minha query string.
 
-## TL;DR
+# TL;DR
 
 [Repositório com o resultado da brincadeira](https://github.com/g4rcez/brouther)
 
-## Definindo o escopo
+# Definindo o escopo
 
 Eu tive problemas com o meu query string, mas para um router client side, eu precisava de algo que manipulasse o path da URL, controle de histórico e que renderizasse meus componentes de acordo com o path da URL (recebendo IDs, ou parâmetros que compõe a rota). Logo, vamos precisar
 
@@ -42,7 +45,7 @@ const App = () => (
 
 Esse é o resultado final, agora é só fazer acontecer haha
 
-### <Router />
+# <Router />
 
 O Router costuma estar no top level da nossa aplicação, abraçando todos os componentes para que possamos criar `<Route />` diferentes. O `<Router />` é quem entrega a context para nossas rotas e é o responsável por comandar a renderização de cada rota.
 
@@ -192,7 +195,7 @@ export const Router: FC<RouterProps> = ({ children, notFound: NotFound }) => {
 };
 ```
 
-### <Route />
+# <Route />
 
 E com isso temos nosso router, mas ainda falta a nossa forma de criar nosso `<Route/>`
 
@@ -209,7 +212,7 @@ export const Route = (props: RouteProps) => {
 };
 ```
 
-### <Link />
+# <Link />
 
 Mas também faltou a forma de criar nossos links para caminhar entre as páginas. Para isso, podemos fazer uma componente utilizando o `<a/>` e aproveitar o próprio atributo href, assim temos uma forma acessível e semântica de criar nossos Links.
 
@@ -234,7 +237,7 @@ export const Link: React.FC<A> = ({ onClick, state, href, ...props }) => {
 E com isso temos nossos elementos necessários para o básico do router. O que nos leva a real motivação do nosso router
 
 
-### useQS (QueryString)
+# useQS (QueryString)
 
 Nesse ponto, já temos tudo necessário menos a nossa forma de conseguir obter o queryString como objeto. Para isso, vamos utilizar a biblioteca [`query-string`](https://github.com/sindresorhus/query-string#readme). 
 

@@ -9,6 +9,8 @@ import Dark from "styles/dark.json";
 import Light from "styles/light.json";
 import "../styles/globals.css";
 
+const googleFont = "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
+
 const Me = {
   TWITTER: "https://twitter.com/garcez_allan",
   GITHUB: "https://github.com/g4rcez",
@@ -30,10 +32,7 @@ function MyApp({ Component, pageProps }) {
     ThemePreference.saveTheme(theme);
   }, [theme]);
 
-  const themeColor = useMemo(
-    () => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT),
-    []
-  );
+  const themeColor = useMemo(() => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT), []);
 
   const toggle = useCallback(() => {
     setTheme((p) => (p === "dark" ? "light" : "dark"));
@@ -43,14 +42,18 @@ function MyApp({ Component, pageProps }) {
     <main className="w-full container mx-auto md:px-6 px-4 block md:max-w-6xl">
       <Head>
         <title>Garcez Blog</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1" />
+        <meta name="theme-color" content="#21272d" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <link href={googleFont} rel="stylesheet" />
+        <link rel="preload" href={googleFont} as="style" onLoad={(e) => ((e.target as any).rel = "stylesheet")} />
         <meta
           name="description"
           content="Javascript, Typescript, React e provas de conceito sobre diversos casos de frontend"
         />
-        <meta
-          name="keywords"
-          content="Javascript,Typescript,React,CSS,HTML,Frontend,Microfrontend,Software Engineer"
-        />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="keywords" content="Javascript,Typescript,React,CSS,HTML,Frontend,Microfrontend,Software Engineer" />
         <meta name="twitter:creator" content="@garcez_allan" />
         <meta name="theme-color" content={themeColor} />
       </Head>
@@ -65,13 +68,9 @@ function MyApp({ Component, pageProps }) {
             </a>
           </Link>
           <span className="flex gap-x-4">
-            <button
-              onClick={toggle}
-              className="bg-transparent cursor-pointer mb-1"
-              type="button"
-            >
-              {theme === "dark" && <img className="w-6" alt="light mode icon" src="/sun.svg" />}
-              {theme === "light" && <img className="w-6" alt="dark mode icon" src="/moon.svg" />}
+            <button onClick={toggle} className="bg-transparent cursor-pointer mb-1">
+              {theme === "dark" && <img width="24px" height="24px" alt="light mode icon" src="/sun.svg" />}
+              {theme === "light" && <img width="24px" height="24px" alt="dark mode icon" src="/moon.svg" />}
             </button>
           </span>
         </nav>
@@ -81,44 +80,39 @@ function MyApp({ Component, pageProps }) {
       </div>
       <footer className="mb-2">
         <div className="mt-8 mb-4 text-lg flex flex-row justify-center font-bold gap-x-4">
-          <a href={Me.GITHUB} className="cursor-pointer">
+          <a href={Me.GITHUB} className="cursor-pointer" title="My Github">
+            <span className="sr-only">My Github</span>
             <VscGithubInverted />
           </a>
           <a
             href={Me.TWITTER}
+            title="My twitter"
             className="cursor-pointer transition-colors duration-500 hover:text-twitter"
           >
+            <span className="sr-only">My Twitter</span>
+
             <VscTwitter />
           </a>
           <a
             href={Me.LINKEDIN}
+            title="My Linkedin"
             className="cursor-pointer transition-colors duration-500 hover:text-linkedin"
           >
+            <span className="sr-only">My Linkedin</span>
             <FaLinkedin />
           </a>
         </div>
         <div className="w-full block text-xs text-center">
           Sun/Moon icons made by{" "}
-          <a
-            href="https://www.freepik.com"
-            title="Freepik"
-            className="text-primary-link hover:underline italic"
-          >
+          <a href="https://www.freepik.com" title="Freepik" className="text-primary-link hover:underline italic">
             Freepik
           </a>{" "}
           from{" "}
-          <a
-            href="https://www.flaticon.com/"
-            title="Flaticon"
-            className="text-primary-link hover:underline italic"
-          >
+          <a href="https://www.flaticon.com/" title="Flaticon" className="text-primary-link hover:underline italic">
             www.flaticon.com
           </a>{" "}
           <b className="mx-2">|</b> Brand Icons by{" "}
-          <a
-            className="text-primary-link hover:underline italic"
-            href="https://react-icons.github.io/react-icons/"
-          >
+          <a className="text-primary-link hover:underline italic" href="https://react-icons.github.io/react-icons/">
             react-icons
           </a>
         </div>

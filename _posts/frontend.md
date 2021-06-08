@@ -10,7 +10,7 @@ description: "Criando frontends customizaveis com arquivos de setup"
 
 Quem nunca teve que parar o desenvolvimento pra ter que ouvir "Muda aquela corzinha ali de verde pra vermelho magenta?" ou então "Tem que trocar uma palavrinha só em tal lugar". Se você nunca ouviu, você têm muita sorte.
 
-### Historinhas
+# Historinhas
 
 A motivação desse post foi pra explicar um pouco da ferramenta que eu desenvolvi num projeto da empresa, projeto esse que eu apresentei no primeiro Meetup de NodeJS do Rio de Janeiro (somente uma parte dele). Eu fui falar de criação de CLIs, mas acabou que a ideia dessa minha CLI pra **gerar configurações do frontend** intrigou mais uma galera do que o próprio assunto de CLI em si.
 
@@ -18,7 +18,7 @@ Esse CLI foi feito para criar parâmetros de configuração do meu frontend que 
 
 > Suponha que você tenha cliente XPTO e ABCD, ambos têm o mesmo site e o tema precisa ser diferente. Tendo que fazer em React, como você faria pra resolver esse problema? Eu vou relatar a minha solução
 
-### Step by Step
+## Step by Step
 
 Antes de começar, temos umas regrinhas que preciso deixar claro e explicar o cenário.
 
@@ -98,7 +98,7 @@ window.$__CONFIG__.config = {
 
 Bom, com isso aí já da pra começar a ter uma ideia. Esse arquivo é gerado de um [script que cria os arquivos de configuração pra cada tenant](https://gist.github.com/g4rcez/c6bb44e9dca7d2b401dc4c46467b0cc2). _Não esquece de dar uma olhada nesse script aí, ele vai mostrar como eu crio cada configuração_.
 
-### Acesso no Frontend
+# Acesso no Frontend
 
 Vamos começar do zero sobre como eu criei essa estratégia para o front.
 

@@ -1,0 +1,83 @@
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-link);
+  font-weight: bolder;
+}
+
+.markdown h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.markdown h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.markdown h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.markdown h4 {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.markdown ul,
+.markdown ol {
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  list-style-position: inside;
+}
+
+.markdown ul {
+  list-style-type: disc;
+}
+
+.markdown ol {
+  list-style-type: decimal;
+}
+
+.markdown a {
+  color: var(--primary-link);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+  color: var(--primary-DEFAULT);
+}
+
+.markdown p {
+  margin-bottom: 1rem;
+}
+
+.markdown .language-unknown,
+.markdown pre,
+.markdown code {
+  color: var(--info-DEFAULT);
+  padding: 0.25rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.markdown table {
+  width: 100%;
+  text-align: left;
+  table-layout: auto;
+  border-collapse: separate;
+}
+
+.markdown blockquote {
+  padding: 0.5rem;
+  border: 1px solid var(--gray);
+  border-radius: 0.25rem;
+}

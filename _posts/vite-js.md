@@ -8,11 +8,13 @@ date: "2021-05-21T04:25:51.999Z"
 description: "Uma alternativa ao create-react-app"
 ---
 
-Durante algumas experimentações com microfrontends eu busquei tentar fugir do webpack, devido a forma de build gerado. Talvez por falta de pesquisa ou conhecimento sobre o webpack, mas o build gerado pelo webpack gera chunks de Javascript que são referenciados como Arrays ao invés de referenciar a URL ou importar o módulo. 
+# Introdução
+
+Durante algumas experimentações com microfrontends eu busquei tentar fugir do webpack, devido a forma de build gerado. Talvez por falta de pesquisa ou conhecimento sobre o webpack, mas o build gerado pelo webpack gera chunks de Javascript que são referenciados como Arrays ao invés de referenciar a URL ou importar o módulo.
 
 Infelizmente, o Create-React-App utiliza o webpack e isso não encaixava bem no que eu queria fazer. Uns 2 anos atrás eu conheci uma ferramenta que venho utilizando bastante para o build de bibliotecas, o [Rollup](https://rollupjs.org/). O Rollup é bem mais simples do que o webpack, e sua configuração permitia fazer exatamente o que eu precisava para os microfrontends. Mas ainda tinha um problema...
 
-### Hello [ViteJS](http://vitejs.dev/)
+# Hello [ViteJS](http://vitejs.dev/)
 
 Apesar de ser do "mundo React", as vezes me aventuro um pouco com VueJS e leio bastante discussões da comunidade Vue no twitter. E foi assim que conheci o [ViteJS](http://vitejs.dev/), que se diz ser a próxima geração de ferramentas para frontend.
 
@@ -22,9 +24,9 @@ Apesar de ter tido esse problema no primeiro uso, ele não afetou em nada minha 
 
 Se você não pensa em fazer diversas configurações, é quase certeza de não ter nenhum problema com a experiência.
 
-### Criando um projeto ViteJS para React
+# Criando um projeto ViteJS para React
 
-Assim como o CreateReactApp possui alguns templates, o Vite também possui seus templates que atendem a diversos frameworks, indo de Vue até Svelte. No nosso caso, iremos utilizar React com Typescript, que corresponde ao template `react-ts`. 
+Assim como o CreateReactApp possui alguns templates, o Vite também possui seus templates que atendem a diversos frameworks, indo de Vue até Svelte. No nosso caso, iremos utilizar React com Typescript, que corresponde ao template `react-ts`.
 
 Sem mais delongas, para criar um projeto:
 
@@ -36,15 +38,14 @@ npm init @vitejs/app react-app --template react-ts
 yarn create @vitejs/app react-app --template react-ts
 ```
 
-Vale notar algumas diferenças do CreateReactApp. 
+Vale notar algumas diferenças do CreateReactApp.
 
-- Ao terminar o setup, você precisará fazer `MANUALMENTE` o install com `yarn` ou `npm install`. 
+- Ao terminar o setup, você precisará fazer `MANUALMENTE` o install com `yarn` ou `npm install`.
 - O script para iniciar o desenvolvimento é `yarn dev` ou `npm run dev`
 
 Após o install manual, você já poderá rodar `yarn dev` e começar a fazer seu projeto.
 
-
-### Diferenças entre ViteJS e CRA
+# Diferenças entre ViteJS e CRA
 
 Como o próprio nome sugere, CRA é específico para React e por isso o suporte para o desenvolvimento utilizando o CRA será "melhor" em termos de suporte a visualização de erro e outras configurações que o CRA trás.
 
@@ -62,7 +63,7 @@ Um posto interessante é a ideia de trazer o build utilizando [Server Side Rende
 
 Trazer o Rollup no lugar do Webpack foi uma jogada sensacional, na minha visão. Isso nos permite fazer as próprias configurações sem ter que estudar um sistema de plugins e configurações bizarras do Webpack. Como você pode ver na documentação do [Rollup](https://rollupjs.org/), a configuração é bem mais simples e o sistema de plugins não exige uma configuração muito avançada.
 
-### Conclusão
+# Conclusão
 
 Deu pra notar que eu curti bastante o Vite né? Haha. Sem dúvidas é uma ferramenta excelente, mas que talvez pela existência do CRA ela seja ofuscada por não ter o mesmo tooling para desenvolvimento. Em questão de build, não tem nem chance pro CRA.
 

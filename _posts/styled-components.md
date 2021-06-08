@@ -7,8 +7,9 @@ translations: ["pt-br"]
 date: "2020-10-22T00:00:00.000Z"
 description: "Que tal fazer o seu próprio styled-components da forma simples?"
 ---
+# Introdução
 
-#### Se você só quiser código: [Link do Gist](https://gist.github.com/g4rcez/743ac98956f47ec7c58ad1149f5dc02e)
+**TL;DRSe você só quiser código: [Link do Gist](https://gist.github.com/g4rcez/743ac98956f47ec7c58ad1149f5dc02e)**
 
 Você conhece o [styled-components](https://styled-components.com/)? Se não, te apresento agora a famosa biblioteca de CSS-in-JS mais utilizada no mundo React. 
 
@@ -56,7 +57,7 @@ Até o momento ainda não consegui entender o código todo do styled-components,
 2. Insere os estilos passados no CSS-in-JS nos elementos que são filhos de styled-components
 3. O CSS gerado é inserido no HTML. Em algumas versões ele era inserido no `head>style` com todo o CSS necessário, nas versões novas parece ser um texto encodado e transformado em estilo CSS
 
-### Talk is cheap, show me the code
+# Talk is cheap, show me the code
 
 Para podermos criar qualquer elemento HTML, sendo estes passados por parâmetros, devemos conhecer o [React.createElement](https://reactjs.org/docs/react-api.html#createelement) para criar nossos elementos de forma dinâmica, não utilizando JSX. 
 
@@ -267,7 +268,7 @@ const App = () => {
 };
 ```
 
-### Conclusão
+# Conclusão
 
 E então, o que achou? Claro que o styled-components faz algumas melhorias de performance durante a compilação do projeto, através das `macros`. Mas em projetos pequenos ou para fins de estudo, vale a pena você utilizar essa versão para observar o comportamento do React de forma mais *profunda*. 
 

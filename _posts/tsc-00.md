@@ -8,6 +8,8 @@ date: "2020-02-10T23:29:59.999Z"
 description: "Começando uma série sobre o querido Typescript"
 ---
 
+# Introdução
+
 Antes de tudo, vamos prestar bastante atenção no que diz o site do [typescript](https://typescriptlang.org).
 
 > TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
@@ -20,7 +22,7 @@ Então essa série é sobre um **superset** de Javascript e não uma nova lingua
 
 Sem mais delongas e histórias do que é o Typescript, vamos pro código
 
-## Getting started
+# Getting started
 
 Simples e direto ao ponto:
 
@@ -32,7 +34,7 @@ Se você quiser tentar algo sem precisar instalar, tenta o [playground online](h
 
 É isso.
 
-## Tipos primitivos
+# Tipos primitivos
 
 Se você veio do Java, C#, F#, Haskell ou qualquer linguagem tipada, então já está em casa. Se você é javascriptero de primeira viagem, seja bem vindo ao mundo onde você sabe **EXATAMENTE** o que é o que.
 
@@ -40,11 +42,11 @@ Se você veio do Java, C#, F#, Haskell ou qualquer linguagem tipada, então já 
 
 Como tipos primários nós temos:
 
--   number: 42, 0xf042, 0b1010, 0o742
--   string: "Hack the planet", "Hello World", 'typescript'
--   boolean: true, false
--   null: _algo que existe e não possui valor_
--   undefined: _algo que possivelmente não existe ou não foi definido_
+- number: 42, 0xf042, 0b1010, 0o742
+- string: "Hack the planet", "Hello World", 'typescript'
+- boolean: true, false
+- null: _algo que existe e não possui valor_
+- undefined: _algo que possivelmente não existe ou não foi definido_
 
 Tipos primitivos são os tipos implementados da linguagem. Apesar de `[]` (array) e `{}` (objetos) serem tipos básicos em JS, não vou abordar sobre eles nesse momento para não confundir com termos como **_inferência_** ou **_tipos condicionais_**.
 
@@ -70,7 +72,7 @@ A resposta é simples, **não pode**. Mas podemos evitar ao máximo que o input 
 type NomePessoa = "Fu" | "Bá" | "Joãozinho" | "Mariazinha" | "Fulano";
 
 function getChar(pessoa: NomePessoa, char: number) {
-	return pessoa.charCodeAt(char);
+  return pessoa.charCodeAt(char);
 }
 
 getChar("Fu", 2); // Isso passa
@@ -88,7 +90,7 @@ Em desenvolvimento, o transpilador do Typescript irá impedir você passar qualq
 
 Ainda há o caso onde você cria uma variável do tipo `string`, que será genérica. E depois irá querer que ela seja usada nessa função. Mas nada pode garantir que ela realmente seja uma string caso o valor não seja controlado ou validado por você.
 
-## Inferência
+# Inferência
 
 Nem sempre quando for atribuir valor as suas variáveis e atributos, você irá precisar definir o tipo delas. O transpilador do Typescript é inteligente o suficiente para saber seus tipos através do tipo do valor que você está passando.
 
@@ -117,15 +119,15 @@ O erro apresentado para o `Array<number>` é `'readonly' type modifier is only p
 
 Como não vou entrar no mérito do readonly agora (apesar de ser bem explicito dizendo que o valor é somente leitura e não deve ser sobrescrito), vamos passar para a próxima.
 
-## Objetos
+# Objetos
 
 Como falei dos arrays acima, agora irei falar de objetos. De cara, veja esse objeto bem simples:
 
 ```typescript
 const user = {
-	name: "Fu",
-	age: 20,
-	languages: ["Javascript", "Typescript", "C#", "Java"],
+  name: "Fu",
+  age: 20,
+  languages: ["Javascript", "Typescript", "C#", "Java"],
 };
 ```
 
@@ -137,10 +139,10 @@ Mas e se você quiser garantir que os tipos de user sejam exatamente o que você
 type Linguagens = "Javascript" | "Typescript" | "C#" | "Java";
 
 type User = {
-	name: NomePessoa;
-	// faixa de idade permitida: 18 à 25
-	age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
-	languages: Linguagens[];
+  name: NomePessoa;
+  // faixa de idade permitida: 18 à 25
+  age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
+  languages: Linguagens[];
 };
 ```
 
@@ -155,30 +157,30 @@ Para isso, basta acrescentar o `readonly` antes das chaves do nosso objeto, assi
 ```typescript
 // sintáxe readonly por chave
 type User = {
-	readonly name: NomePessoa;
-	// faixa de idade permitida: 18 à 25
-	readonly age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
-	readonly languages: Linguagens[];
+  readonly name: NomePessoa;
+  // faixa de idade permitida: 18 à 25
+  readonly age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
+  readonly languages: Linguagens[];
 };
 
 type ReadonlyUser = Readonly<{
-	readonly name: NomePessoa;
-	// faixa de idade permitida: 18 à 25
-	readonly age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
-	readonly languages: Linguagens[];
+  readonly name: NomePessoa;
+  // faixa de idade permitida: 18 à 25
+  readonly age: 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
+  readonly languages: Linguagens[];
 }>;
 
 const user2: ReadonlyUser = {
-	name: "Fu",
-	age: 20,
-	languages: ["Javascript", "Typescript", "C#", "Java"],
+  name: "Fu",
+  age: 20,
+  languages: ["Javascript", "Typescript", "C#", "Java"],
 };
 user2.name = "Chitão"; // Cannot assign to 'name' because it is a read-only property.(2540)
 ```
 
 Assim você garante que seus valores nunca irão ser reatribuídos. Em caso de objetos e arrays, o valor pode mudar através dos seus métodos, mas nunca poderão ser reatribuídos.
 
-## Conclusão
+# Conclusão
 
 A parte [0] fica por aqui, e espero que você esteja igual ao Bender
 

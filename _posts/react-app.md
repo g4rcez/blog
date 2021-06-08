@@ -8,6 +8,8 @@ date: "2019-11-20T20:29:59.999Z"
 description: "Entendendo as técnicas para um frontend dinâmico e com controle de acesso"
 ---
 
+# Introdução
+
 Minha última experiência tem sido bastante peculiar. Acabei tendo de usar/desenvolver:
 
 -   Hooks (agora é padrão)
@@ -22,7 +24,7 @@ que mais fez sentido e a que na minha cabeça ficou da melhor forma.
 
 Vamos por parte explicando o setup, mas se quiser ver o resultado, é só [ir lá no meu github](https://github.com/g4rcez/react-app-multitenant).
 
-### create-react-app
+# create-react-app
 
 Como é um projeto em React, utilizaremos o `create-react-app`, a forma mais simples de começar um projeto React
 
@@ -34,7 +36,9 @@ create-react-app react-app-multitenant --typescript
 
 Como esse projeto é um _fork_ da empresa, então o exemplo no git está com `eject`, mas isso não é obrigatório e não vai interferir muito para você. Caso queira utilizar o import absoluto por dentro do seu projeto, você pode utilizar essa mesma configuração do github que já está tudo certo. Vale lembrar também que o build desse projeto está gerando os arquivos sem o hash para evitar cachê.
 
-### Menu, Rotas e Code Splitting
+# Menu, Rotas e Code Splitting
+
+## Menu
 
 A criação do menu, das rotas e a técnica de code splitting ficaram quase que atreladas ao mesmo objeto. Olhando o [menu.ts](https://github.com/g4rcez/react-app-multitenant/blob/master/src/model/menu.ts) você irá ver uma property no objeto chamada `component` que é uma função `(profile: string, tenant?: string) => Promise<any>`. Melhor observar a tipagem dos meus itens do menu:
 
@@ -66,6 +70,8 @@ Bom, mas porque `component` é uma função que recebe `profile` e `tenant`? Ess
 Com isso, temos parte do nosso code splitting funcionando, agora precisamos de um pouco de código para a criação das nossas rotas e o Suspense para o lazy loading dos componentes.
 
 Para definir as rotas de forma dinâmica, dado um tenant e um perfil logado, [foi necessário um hook](https://github.com/g4rcez/react-app-multitenant/blob/master/src/hooks/useRoutesByProfile.ts)
+
+## Rotas
 
 ```typescript
 // Apenas um tipo para forçar o array de rotas ter os itens necessários para o react-router
@@ -164,6 +170,7 @@ const AppRouter = () => {
 	);
 };
 ```
+## Code Splitting
 
 Feito isso, nosso controle de rotas está totalmente pronto, com as regras de Tenant e perfil aplicadas. Para fazer o funcionamento correto, você precisa fazer o `import()` para o path correto e ter uma estrutura de pastas de acordo com os tenants e perfis disponíveis.
 
@@ -203,7 +210,7 @@ if (!isDev) {
 }
 ```
 
-### Redux dinâmico
+# Redux dinâmico
 
 Se vamos modularizar a aplicação, a parte do redux também precisa ser modularizada. Nossa _store_ deverá ter métodos
 de injetar os reducers de acordo com a tela que estão sendo acessados, e substituir o atual estado do reducer pelo novo estado com os novos reducers injetados. Tomei como base a resposta do [Dan Abramov no StackOverflow](https://stackoverflow.com/questions/32968016/how-to-dynamically-load-reducers-for-code-splitting-in-a-redux-application/33044701#33044701), e fiz algumas adaptações para Typescript e utilizando hooks. Você pode observar a forma de como criar uma store com suporte a injeção de novos reducers
@@ -296,7 +303,7 @@ const useInjectReducer = (key: string, reducer: Reducer<any>) => {
 
 E isso é tudo. Na hora de importar seu reducer, não esqueça de definir o estado inicial para o primeiro render não quebrar, pois nele não existirá o seu reducer ainda. E com isso os reducers serão acrescentados dinâmicamente ao nosso app.
 
-### Planejamento futuro
+# Planejamento futuro
 
 1. Uma coisa que ainda estou testando é fazer a inserção de actions no sagas dinamicamente, seguindo a mesma lógica de um reducer dinâmico, com isso, removeremos todos os assets estáticos do nosso código, e apenas quando o usuário interagir com um módulo da aplicação ele será "ativado".
 
@@ -304,7 +311,7 @@ E isso é tudo. Na hora de importar seu reducer, não esqueça de definir o esta
 
 3. Realizar testes de performance na aplicação. Como estou mudando a store em alguns renders, é possível que isso apresente lentidões futuras. Será preciso testar
 
-### Conclusão
+# Conclusão
 
 Apesar de parecer muito código, depois que se entende o que deve fazer, tudo fica bem mais claro. A experiência de desenvolvimento com essa prática tem sido bem aceitável, apenas alguns glitches acontecem quando algum componente é atualizado e a tela fica branca, mas nada que fosse realmente impactar.
 
@@ -314,7 +321,7 @@ O over engineering foi aceito para tal solução, infelizmente ainda não vi uma
 
 E é isso galerinha, espero que isso possa ajudar você a dar uma clareada na mente e fique como material de pesquisa. Quaisquer problemas, posta uma issue lá no repositório que a gente troca uma ideia xD
 
-### Referências
+# Referências
 
 -   [Dynamic Redux](https://stackoverflow.com/questions/32968016/how-to-dynamically-load-reducers-for-code-splitting-in-a-redux-application/33044701#33044701)
 -   [Code Splitting](https://reactjs.org/docs/code-splitting.html)

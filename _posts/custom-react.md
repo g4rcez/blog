@@ -12,7 +12,7 @@ Como havia escrito no post anterior, acabei fazendo um parser de BB code pra ter
 
 Sem mais delongas, vamos para a parte técnica e junto a isso eu irei explicar o requisito ou necessidade para tal problema. A partir daqui, os sub títulos serão frases que ouvi após todo o desenho da arquitetura do frontend e começo do desenvolvimento de alguns componentes ou até mesmo páginas do frontend
 
-## "Preciso de um site que mude de acordo com a marca"
+# "Preciso de um site que mude de acordo com a marca"
 
 Foi nesse ponto que toda a bagunça começou. Já havia definido junto a equipe tudo o que seria usado, alguns componentes já haviam sido escritos. Grande parte da futura stack já havia sido definida. _Calma, eu vou falar a stack_
 
@@ -268,7 +268,7 @@ FS.readdir(CONFIGS_DIR, (_, files) => {
 
 Mais uma vez, perdão pelo código um pouco maior. Alguns erros podem ser encontrados devido ao ato de deletar algumas linhas que contém informações que não podem ser publicadas. Vale lembrar que esse `if (file==="reference.json")` é para criar um arquivo de desenvolvimento, servindo de _esqueleto_, já que toda a configuração é feita num html do roteador de UI. Isso é apenas um _hack_ ou **gambiarra** para rodar o projeto sem erros em desenvolvimento.
 
-## "Eu preciso que esse texto seja em negrito e aquele botão mande uma mensagem no Zap da loja"
+# "Eu preciso que esse texto seja em negrito e aquele botão mande uma mensagem no Zap da loja"
 
 Sem dúvidas esse foi o que me deixou mais puto na hora que ouvi. Pois o setup para textos já estava todo feito, todos os textos definidos, e mudanças visuais não eram possíveis pois como eu iria separar dentro de uma string em tempo de execução. E pior ainda, saber qual string deveria ficar em negrito, qual deveria virar um link. Eu ainda dei uma enrolada pra tentar não fazer essa mudança, mas não rolou.
 
@@ -320,7 +320,7 @@ E claro, eu deveria aceitar variáveis nessas string, um outro problema que foi 
 
 Após terminar isso, fiquei bastante satisfeito, tava tudo lindo. Eu tinha um arquivo de configuração que era só entregar pro design editar ou pro marketing fazer os textos, ninguém mais ia pedir nenhuma modificação exorbitante no sistema...
 
-## "Esse link aí não pode aparecer pro usuário quando ele não tiver tantos produtos"
+# "Esse link aí não pode aparecer pro usuário quando ele não tiver tantos produtos"
 
 Esse título na real foi um pouco maior, ficou o seguinte:
 
@@ -397,7 +397,7 @@ Tudo ótimo. Ta tudo maneiro. Mas esse tanto de mudança acabou impactando no de
 
 Mas se eu to falando disso...é por que eu tive que resolver. E é esse problema em específico que me motivou ainda mais a escrever esse artigo mais _deep dive_ na construção dessa UI.
 
-## "Cara, o site ta muito lento pra abrir, preciso resolver isso urgente"
+# "Cara, o site ta muito lento pra abrir, preciso resolver isso urgente"
 
 Antes de continuar, preciso desabafar e dizer que eu quase dei uma resposta do tipo
 

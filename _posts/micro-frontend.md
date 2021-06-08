@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["javascript","tricks","typescript","frontend"]
+subjects: ["javascript", "tricks", "typescript", "frontend"]
 title: "Micro frontend ou NextJS"
 language: "pt-br"
 translations: ["pt-br"]
@@ -8,7 +8,9 @@ date: "2020-12-24T00:00:00.000Z"
 description: "Tecnologia nova, conceito velho. Nada muda"
 ---
 
-[NextJS](https://nextjs.org/) é um dos projetos da atualidade mais sinistros que tem. O conceito de SSR que ele trouxe (que não é nada inovador) junto de todo o tooling + ecossistema React, realmente, é impressionante. 
+# Introdução
+
+[NextJS](https://nextjs.org/) é um dos projetos da atualidade mais sinistros que tem. O conceito de SSR que ele trouxe (que não é nada inovador) junto de todo o tooling + ecossistema React, realmente, é impressionante.
 
 Mas nada disso é novo, na verdade, o conceito de SSR é bem antigo. Se você programou em PHP, Dotnet, Java, talvez você já tenha se deparado com técnicas para escrever um código backend dentro do seu frontend e a cada request, o seu server iria processar aquela página e retornar o conteúdo dinâmico.
 
@@ -16,7 +18,7 @@ Na real, o grande diferencial do Next está na geração estática do conteúdo 
 
 Mesmo com todos esses benefícios, o NextJS não é a bala de prata que estamos vendo por aí. Talvez seu problema não necessite de um SEO (aplicações internas) e renderizar a página no cliente não é problema, dado que hoje em dia os browsers estão cada vez mais rápidos (e mais comedores de RAM). Antes de continuar, gostaria de te perguntar... **Você já ouviu falar sobre micro frontends?**
 
-### Micro Frontends
+# Micro Frontends
 
 Se existem micro serviços, por que não podemos modularizar nosso frontend? Precisa realmente o frontend ser uma aplicação monolítica com centenas de milhares de linhas? Você pode buscar uma referência técnica no [micro-frontends](https://micro-frontends.org/) e o [artigo do Martin Fowler](https://martinfowler.com/articles/micro-frontends.html).
 
@@ -31,19 +33,19 @@ São diversos problemas realmente, olhando assim, até parece mais interessante 
 - Grande probabilidade de dead code (código não utilizado)
 - Refatorações de códigos gigantes tendem a ser mais complicadas do que gostaríamos
 
-Dados estes pontos, adotar uma estratégia de microfrontend talvez não seja algo tão doloroso assim. 
+Dados estes pontos, adotar uma estratégia de microfrontend talvez não seja algo tão doloroso assim.
 
 **Mas o que seria necessário para adotarmos um microfrontend?**
 
-### NextJS vs Render
+# NextJS vs Render
 
 Antes de falar do Render, vamos analisar o ponto do NextJS. Com NextJS, podemos adotar uma estratégia de SSR e páginas que são cacheadas com valores preestabelecidos em tempo de build, isso realmente é incrível, performático e não nos dá nenhum trabalho adicional. Mas...ele ainda não resolve o nosso problema de ter múltiplos frontends conectados, mesmo sendo de repositórios diferentes.
 
-Agora podemos falar do Render. Esse conceito de *Render* não é exatamente um conceito que você encontrará com esse nome, foi um nome dado por um grande amigo e mentor que desenvolveu uma aplicação que entregava frontends versionados. Ao conhecer esse conceito, tentei entender e adaptar para uma situação de microfrontends. Antes, vamos entender as funcionalidades do render.
+Agora podemos falar do Render. Esse conceito de _Render_ não é exatamente um conceito que você encontrará com esse nome, foi um nome dado por um grande amigo e mentor que desenvolveu uma aplicação que entregava frontends versionados. Ao conhecer esse conceito, tentei entender e adaptar para uma situação de microfrontends. Antes, vamos entender as funcionalidades do render.
 
 - Http Server
-- Ser um *proxy* para onde os frontends estão armazenados [1]
-- Ser um *proxy* para as APIs chamadas pelos nossos frontends [2]
+- Ser um _proxy_ para onde os frontends estão armazenados [1]
+- Ser um _proxy_ para as APIs chamadas pelos nossos frontends [2]
 - Cachear os assets do nosso frontend
 - Separar aplicações
 - Versionar aplicações [3]
@@ -56,7 +58,7 @@ Explicando os 3 pontos em evidência.
 
 Talvez esse trecho fique um pouco abstrato, mas fica tranquilo que vou fazer mais um post sobre trazendo toda a parte de como o código funciona, primeiro vamos focar no conceito.
 
-### Primeiras impressões
+# Primeiras impressões
 
 De começo, trabalhar com microfrontend não foi tão simples. Tive que entender como fazer o compartilhamento de dependência, gastar um pouco do tempo em configurações de webpack, e principalmente, compartilhar estado entre aplicações React que estão em árvores diferentes.
 
@@ -66,9 +68,8 @@ A configuração do webpack precisou um pouco de boilerplate para JSX e Typescri
 
 Compartilhar estado foi um desafio bem interessante, apenas com um useEffect + useState foi possível compartilhar o estado entre aplicações. Para isso, foi necessário utilizar `window.addEventListener` para notificar os subscribers do estado compartilhado.
 
+# Conclusão
 
-### Conclusão
-
-Sem dúvida, microfrontends são um desafio totalmente diferente daquilo que a maioria dos frontends estão habituados, é approach diferente para resolver problemas que talvez seriam complexos mantendo milhares de linhas de código. Em breve, eu irei escrever sobre a parte de código do render e sobre um pequeno Hello World usando um microfrontend. 
+Sem dúvida, microfrontends são um desafio totalmente diferente daquilo que a maioria dos frontends estão habituados, é approach diferente para resolver problemas que talvez seriam complexos mantendo milhares de linhas de código. Em breve, eu irei escrever sobre a parte de código do render e sobre um pequeno Hello World usando um microfrontend.
 
 Isso é tudo, pessoal.

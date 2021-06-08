@@ -8,11 +8,13 @@ date: "2021-03-15T18:33:00.000Z"
 description: "Se você tem um problema, usando regex você têm dois problemas"
 ---
 
+# Introdução
+
 [Expressões regulares ou `regex`](https://en.wikipedia.org/wiki/Regular_expression) são uma sequência de caracteres que nos dão o poder de identificar padrões em strings. Costumam ser uma dor de cabeça pra qualquer um, mas tem um poder para resolver problemas com apenas uma linha de código (que dependendo, vai ser mais complicado de ler do que 10 linhas de código).
 
 O problema de regex é que não são human friendly, e isso atrapalha o entendimento. Mas sem problemas, hoje eu vou tentar ajudar com isso.
 
-### Meta caracteres
+# Meta caracteres
 
 São os caracteres que possuem _super poderes_ dentro da nossa regex, apesar de serem caracteres normais, eles trazem consigo uma regra para casar os padrões. Se liga em quais são:
 
@@ -35,7 +37,7 @@ Esses são alguns meta caracteres interessantes para começarmos nossa brincadei
 
 Sem mais delongas, vamos pegar alguns valores para fazermos validações usando regex
 
-### Máscara de CPF
+# Máscara de CPF
 
 Sabemos para validar CPF, precisamos do algoritmo de CPF e caso queira garantir, a string deve estar no formato que já conhecemos muito bem `000.000.000-00`. Você pode validar de diversas maneiras, mas usando regex, temos a seguinte
 
@@ -54,7 +56,7 @@ Moleza né? Brincadeira. Vamos analisar essa regex por passos:
 
 Assim não parece tão difícil, é só ter calma para entender os símbolos.
 
-### Usando regex para replace de código malicioso
+# Usando regex para replace de código malicioso
 
 Regex também pode nos ajudar a enfrentar alguns inputs maliciosos, afinal de contas, tudo o que vem do usuário é errado.
 
@@ -88,7 +90,7 @@ Ainda temos a presença do `|`, entre os parenteses de grupo. Esse pipe signific
 
 Claro que essa regex possui alguns problemas de segurança ainda, mas que graça teria se eu passasse a regex final? Você não ia ficar curioso e tentar resolver.
 
-### Conclusão
+# Conclusão
 
 Com estes 2 casos já foi possível explicar algumas das artimanhas de regex e demonstrar como pode ser mais tranquilo estudar regex. É um estudo que exige paciência e que trás uma ferramenta absurda para você utilizar na hora de resolver os seus problemas. 
 

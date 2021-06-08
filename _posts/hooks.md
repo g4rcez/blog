@@ -8,18 +8,20 @@ date: "2020-02-02T00:00:00.000Z"
 description: "Uma nova forma (nem tão nova) de pensar"
 ---
 
+# Introdução
+
 Fala galera, beleza? Tem um tempão, mas um tempão mesmo que eu quero escrever sobre hooks e nunca consigo. Acabo lendo muitos artigos sobre e nunca escrevi um pouco da minha visão e algumas das técnicas que tenho adotado.
 
 Sem mais delongas, vamos lá começar a escrever...
 
-## Rule of Hooks.
+# Rule of Hooks.
 
 Antes de começar a ir lá de verdade, vamos deixar anotado as regras dos hooks, que podem ser aplicadas ao seu projeto com eslint através do pacote [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks#installation). Você poder fazer um `deep dive` na [documentação](https://pt-br.reactjs.org/docs/hooks-rules.html)
 
 1. Use Hooks Apenas no Nível Superior
 2. Use Hooks Apenas Dentro de Funções do React
 
-## Mas em classes era assim
+# Mas em classes era assim
 
 Não. Não. De novo, não. A primeira coisa que precisei fazer para ter um bom entendimento de hooks foi parar de pensar em como eu faria as coisas com classes, apesar de ambos os approaches nos entregarem componentes, temos uma diferença enorme entre eles.
 
@@ -181,7 +183,7 @@ Isso te lembra um pouco do redux? A diferença é que eu não usei `switch/case`
 
 Bom, até aqui eu dei um leve overview de como hooks não são exatamente um `as is` de classes. Daqui pra frente é hora de extrair o poder que hooks nos dá com custom hooks e algumas outras técnicas
 
-## Custom hooks - useReducer
+# Custom hooks - useReducer
 
 Como falei, essa forma de fazer um useReducer é estranha pra mim, gosto de transformar cada `action` que será despachada em uma função isolada das outras. Abaixo o código do `useReducer` customizado, se o código ficar muito grande, [pode ver o gist](https://gist.github.com/g4rcez/8274b8065e9506b33315baf05eca8645)
 
@@ -303,7 +305,7 @@ Como explicado no comentário, o `useMemo` foi utilizado para que não seja recr
 
 Com esse hook, acabei dando um exemplo bem consistente do `useState` + `useMemo`.
 
-## Lidando com listeners
+# Lidando com listeners
 
 Um coisa um pouco comum é criar um event listener, seja para um elemento ou até para o nosso objeto `window`. Vou demonstrar um efeito para observar a alteração de tamanho da tela
 
@@ -332,15 +334,15 @@ O `resizeHandler` foi criado dentro do `useEffect` pois o `addEventListener` e o
 
 Uma coisa importante a falar é o retorno do `useEffect`. Acabei não falando anteriormente, mas o retorno do `useEffect` é executado quando o componente desmonta, efeito similar ao `componentWillUnmount`.
 
-## O que é o useCallback?
+# O que é o useCallback?
 
 O useCallback é quase um `alias` para o `useMemo`, mas somente para funções. Ele garante a mesma referência de funções, evitando que funções no corpo dos nossos componentes de função sejam criadas a cada novo reRender.
 
-## useEffect ou useLayoutEffect?
+# useEffect ou useLayoutEffect?
 
 Bom, os dois são iguais, mas diferentes. O `useLayoutEffect` é executado somente após todas as mutações na DOM. O ideal de seu uso é somente quando você faz mutações com `refs` ou coisas que dependam de elementos no nosso DOM (elementos que não são controlados por React, por exemplo).
 
-## React.forwardRef <3 useImperativeHandler
+# React.forwardRef <3 useImperativeHandler
 
 Quando você precisa passar as referências do seu componente para que irá consumir, o seu componente precisa estar envolvido por um `React.forwardRef` e com o `useImperativeHandler` nós iremos atribuir o valor de `ref` do nosso componente. Simples assim:
 
@@ -366,7 +368,7 @@ export default React.forwardRef(Input);
 
 Eu ainda não fiz um uso muito absurdo desses 2 recursos, mas é assim que funciona e é importante você saber que ele existe e um caso de uso.
 
-## Conclusão: vou ficar devendo 2 hooks
+# Conclusão: vou ficar devendo 2 hooks
 
 Faltou eu apresentar o `useContext` e o `useDebugValue`. O `useDebugValue` eu realmente NUNCA usei graças ao nosso vício de socar `console.log` + `debugger` em tudo. Sei que é um hook que nos ajuda, mas nunca tive necessidade de fazer o uso.
 

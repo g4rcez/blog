@@ -8,6 +8,8 @@ date: "2019-12-16T23:59:59.999Z"
 description: "Estratégia para substituir ninhos de if"
 ---
 
+# Introdução
+
 _Antes de mais nada, provavelmente existe um nome muito maneiro para este tipo de pattern, mas eu não lembro. E pra não perder a ideia do post, vou escrever sem pesquisar o nome, foi mal :cry:_
 
 Estava num grupo do telegram e vi um cara falando:
@@ -26,7 +28,7 @@ Claro que em Java isso fica complexo, acabou dando uns 6 arquivos para uma coisa
 
 Como o título deste post é evitar os **ifs**, vamos pra essa trick agora em JS/TS.
 
-### Definindo nossos casos
+# Definindo nossos casos
 
 ```typescript
 type Sex = "M" | "F";

@@ -8,6 +8,8 @@ date: "2021-04-27T23:30:00.000Z"
 description: "Desvendando o ref e forwardRef"
 ---
 
+# Introdução
+
 `useRef`, `createRef`, `forwardRef`. Tanta coisa complicada e ainda tem o `useImperativeHandle` pra complicar o que nós devemos usar. Mas a pergunta fica, _quando eu devo usar ref?_. Isso é uma pergunta que eu me faço pelo menos 2 vezes antes de querer criar uma ref em algum componente.
 
 Antes de começar a explicar qualquer coisa, vamos listar alguns pontos:
@@ -18,7 +20,7 @@ Antes de começar a explicar qualquer coisa, vamos listar alguns pontos:
 
 Antes de responder as perguntas, vou explicar cada um dos refs.
 
-### useRef | createRef
+# useRef | createRef
 
 O `useRef` serve para funções e o `createRef` funciona para classes e o funcionamento de ambos é bem parecido. Podemos fazer a associação de `useState` e `this.setState`. Hooks e estado dos componentes de classe.
 
@@ -66,7 +68,7 @@ class Component extends React.PureComponent {
 }
 ```
 
-### React.forwardRef<Ref, Props>(props, externalRef)
+# React.forwardRef<Ref, Props>(props, externalRef)
 
 De cara já temos a assinatura tipada + parâmetros do forwardRef. Mas para poder explicar o `forwardRef` de forma tranquila, vamos voltar um pouco em como chamamos o nosso JSX e como nós criamos nossos componentes de função:
 
@@ -132,7 +134,7 @@ Dessa forma apresentada, nós só conseguimos fazer um forward da ref de um elem
 
 **Ótima pergunta**
 
-### useImperativeHandle
+# useImperativeHandle
 
 Aaah, os hooks...Como eles facilitam nossa vida. Este aqui eu deixei por último pois para usar o `useImperativeHandle` você precisa do `forwardRef`. Nosso array de dependências pra esse hook já está preenchido, agora só aprender
 
@@ -167,7 +169,7 @@ Apesar de ser um conceito complexo, o uso é bem simples. Existem alguns tradeof
 
 Com o `useImperativeHandle` você irá criar métodos ou atributos do seu componente filho que irá refletir no pai, sem gerar nenhum novo render. E essa é uma forma de passar props do filho para o pai.
 
-### Respondendo as perguntas
+# Respondendo as perguntas
 
 Como eu tinha levantado 3 perguntas no começo do artigo, iremos respondê-las agora para chegar a conclusão
 
@@ -180,7 +182,7 @@ Como eu tinha levantado 3 perguntas no começo do artigo, iremos respondê-las a
 - Quando devo usar forward Ref?
 `R: Quando estiver criando um componente que será a abstração de um elemento HTML ou quando quiser fornecer métodos do filho para o pai`
 
-### Conclusão
+# Conclusão
 
 Refs são uma verdadeira mágica que nos permite trabalhar diretamente com o DOM, de forma imperativa. Isso pode ser muito útil em alguns casos onde você cria uma biblioteca que faça diversas mudanças diretas no DOM. 
 

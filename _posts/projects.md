@@ -8,11 +8,15 @@ date: "2019-10-19T23:59:59.999Z"
 description: "Muito além de /components e /pages"
 ---
 
-> Apesar de utilizar estruturas de pastas do React, esse arquivo vai servir pra qualquer projeto e em qualquer linguagem, tire proveito do mindset e faça bom proveito das dicas :heart:
+# Introdução
+
+> Apesar de utilizar estruturas de pastas do React, esse artigo vai servir pra qualquer projeto e em qualquer linguagem, tire proveito do mindset e faça bom proveito das dicas :heart:
 
 Bom, como comentado no meu post ["Construindo um frontend flexível"](https://blog.garcez.now.sh/custom-react/), estou com uma experiência em aplicações multitenants. Chega num ponto em que cada projeto seu já está com umas 72~80k linhas de código e você não sabe onde está cada coisa porque sua estrutura inicial não favorecia a ser algo escalar.
 
 Isso é um problema absurdo, por que acaba-se andando muito entre diretórios e você não sabe onde achar ou sabe onde achar e demora bastante para andar entre seus arquivos. A própria estrutura padrão de `src/{components,pages,redux,actions,helpers,utils,hooks}` acaba não lhe favorecendo a escalar e saber onde está cada coisa
+
+# Organização
 
 Entre conversas, leituras do DDD (Domain Driven Design) e podcasts, acabei adotando uma estrutura de projeto um pouco diferente do comum, mas que faz muito sentido. Talvez você possa fazer alguma associação com ducks (se vier da comunidade React), mas acho que a parada é um pouco diferente. Um nome que ouvi bastante para isso foi `Scope named packages`. Se liga numa estrutura básica
 
@@ -82,13 +86,13 @@ export default { Reducer, Action };
 
 Esse foi um pequeno exemplo de como você pode organizar seus reducers.
 
-### Helpers e Componentes
+## Helpers e Componentes
 
 Lógico que nem tudo irá ficar somente contido dentro de pacotes nomeados por suas entidades, as vezes algumas funções, componentes, tipos, classes de modelo e outros serão reutilizados. Mas para ter uma estrutura escalar é importante tentar manter *a altura da árvore de diretórios* de até 2. Pode parecer bobeira, mas você vai me agradecer por se manter nessa regra.
 
 Uma outra prática que não é muito interessante é criar uma pasta para um componente e nessa pasta ter somente o index.{jsx?,tsx?}. Nesses casos, melhor criar o arquivo com o nome do componente fora da pasta. 
 
-### Modularizar quando necessário
+## Modularizar quando necessário
 
 Um erro que acabei cometendo por falta de tempo e recurso foi manter a minha biblioteca de componentes dentro do projeto, o que aumentou demais a codebase, e sem necessidade. Agora com um pouco mais de tempo livre estou quebrando partes do código que poderão ser reaproveitadas por outros projetos. Com isso, reduzo o tamanho da minha codebase e posso dividir melhor a equipe para trabalhar em repositórios separados.
 
@@ -106,11 +110,11 @@ Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa
 
 Óbviamente essa redução tem seus "mistérios", pois parte da lógica foi abstraída para outros repositórios, mas o projeto principal se tornou mais fácil de manter, e os subprojetos agora podem ser mantidos por uma pessoa sem muita dificuldade.
 
-### Prós e Contras desse modelo
+# Conclusão Prós e Contras desse modelo
 
 Óbvio que isso não é uma estrutura que serve para qualquer coisa, é algo situacional que poderá ou não vir a calhar para você. Listando meus prós e contras dessa arquitetura
 
-#### Contras
+## Contras
 
 - A lógica fica separada em outros projetos, sendo necessário abrir issues em repositórios para a manutenção e tracking/documentação dos erros encontrados
 - Você deve manter a estrutura de build de N projetos. Claro que criando um, você irá pode replicar para todos os outros. Mas talvez não seja a melhor estrutura dependendo do que você fornece em um repositório
@@ -118,7 +122,7 @@ Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa
 - Como dito no primeiro item, os bugs podem estar espalhados em diversos lugares, dificultando a identificação de alguns erros e aumentando a necessidade de testes mais bem escritos
 - Quanto mais arquivos, mais demora a indexação do seu projeto e até mesmo o build.
 
-#### Prós
+## Prós
 
 - A escalabilidade tende a ser alta. Talvez não tão alta se o seu projeto for mega super gigante, aí será preciso analisar outras possibilidades.
 - A lógica fica contida na sua entidade, facilitando o encontro do código e não possuindo lógica de negócio espalhada em diversos trechos do código

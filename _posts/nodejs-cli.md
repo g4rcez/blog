@@ -8,15 +8,18 @@ date: "2019-08-03T03:18:00.000Z"
 description: "Automatizando tarefas pela linha de comando"
 ---
 
+# Introdução
+
+
 Como no dia 07/08 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/), resolvi escrever esse pequeno post para deixar como referência após a apresentação e também esclarecer as ideias antes de apresentar.
 
-### Motivação
+# Motivação
 
 Durante um bom tempo eu utilizei bastante Bash e Python para fazer minhas ferramentas CLI, era um bom arsenal para realizar as tarefas, mas a manutenção começava a ficar ruim depois de um tempo, problemas de edentação quando havia migração de editores...
 
 Um dia eu decidi começar a pesquisar sobre o ferramental de NodeJS e tudo mudou. Como eu sempre tendi mais ao lado de frontend, Javascript era uma linguagem que estava no sangue, e então comecei a fazer todos os meus scripts de Python em NodeJS e com isso obtive o mesmo resultado, porém com um código mais consiso. **_Ainda mais quando decidi colocar [Typescript](https://www.typescriptlang.org) no meio disso tudo_**.
 
-### npm init
+# npm init
 
 Como o mundo de JS é bastante vasto, existem centenas de boilerplates pra você seguir, como configurar, best practices e blábláblá...mas eu prefiro o basicão pra seguir o [KISS](https://en.wikipedia.org/wiki/KISS_principle).
 
@@ -36,7 +39,7 @@ Usei `npm init -y` pra ser mais rápido. Mas isso já da pra começar a fazer os
 4. Instalar as dependências
 5. Codar!!! Codar!!! Codar!!!
 
-#### Main no package.json
+# Main no package.json
 
 ```json
 {
@@ -66,7 +69,7 @@ Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quant
 
 **Mas como irei programar com TS se NodeJS não roda TS?**
 
-#### Escrevendo TS
+# Escrevendo TS
 
 O primeiro passo antes de tudo é criar um `tsconfig.json`. Caso você não tenha typescript no PC, vamos resolver isso agora para fazer nossa CLI
 
@@ -108,7 +111,7 @@ tslint --init
 
 E caso queira [referência, esse é o meu `tslint.json`](https://gist.github.com/g4rcez/1218bcfe10e930adf1e4f8aa0be91cf9).
 
-#### Dependências
+# Dependências
 
 Como todo bom programador em NodeJS, você deve ser dependente de diversos...pacotes. E pra fazer uma CLI não é diferente.
 
@@ -128,7 +131,7 @@ Tirando `typescript`, os demais são novos, então vou explicar
 
 Os types são `devDependencies` para nos auxiliar com o typing do TS
 
-#### Desenvolvimento selvagem
+# Desenvolvimento selvagem
 
 Pronto, tudo certo (eu espero que sim...) para o desenvolvimento selvagem. Primeiro o código e depois a explicação
 

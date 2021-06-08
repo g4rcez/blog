@@ -1,0 +1,18 @@
+{
+    "name": "Garcez Blog PWA Version",
+    "short_name": "Garcez Blog",
+    "theme_color": "#21272d",
+    "background_color": "#21272d",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "vercel.svg",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "splash_pages": null
+}

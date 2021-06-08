@@ -8,12 +8,14 @@ date: "2020-04-06T23:29:59.999Z"
 description: "FP além do .reduce"
 ---
 
+# Introdução
+
 Talvez você nunca tenha ouvido falar de programação funcional, mas com certeza já usou os conceitos básicos desse paradigma de programação.
 Atire uma pedra se você nunca usou um `Array.forEach`, `Array.map`, `Array.reduce` ou `Array.filter`. Se você nunca fez `[...array1, ...array2]`, então pode tacar uma pedra também.
 
 Viu como sem saber você já usa conceitos de FP `(functional programming ou programação funcional)`? Mas afinal de contas, que conceitos são esses?
 
-### Funções puras e impuras
+# Funções puras e impuras
 
 O que seria uma função pura? E o que seria uma função impura? Vamos ver dois exemplos simples para entender a diferença entre uma e outra...
 
@@ -91,7 +93,7 @@ const unsafeConcatToArray = <T>(array: T[], newItem: T) => {
 const safeConcatToArray = <T>(array: T[], newItem: T) => [...array, newItem]
 ```
 
-### Funções de primeira classe
+# Funções de primeira classe
 
 > Mas se é função como vai ser de classe? HAHA
 
@@ -116,7 +118,7 @@ Podemos ler da seguinte forma: *Array.reduce é uma função que recebe uma fun�
 Ao reparar nisso, você vai ver que conhece muito mais de programação funcional do que imagina, apenas não sabia "dar nome aos bois".
 
 
-### Imutabilidade
+# Imutabilidade
 
 Esse é um conceito importante que apesar de ser simples de entender, torna-se complicado devido ao mindset que temos de paradigmas estrutural e orientado a objetos. Talvez seja bem fácil introduzir esse conceito devido ao uso da keyword `const`, mas talvez em casos de arrays e objetos você ainda possa ter dificuldade de aplicar o conceito.
 
@@ -153,6 +155,6 @@ console.log(b); // {a: 1}
 
 E assim garantiríamos a imutabilidade do nosso objeto recebido na função.
 
-### Calma que tem mais...
+# Calma que tem mais...
 
 Mas só no próximo artigo haha. Esse fica com os conceitos básicos pra tentar triggar aos poucos a forma funcional de como podemos pensar funcional.

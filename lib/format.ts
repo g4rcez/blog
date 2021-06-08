@@ -12,8 +12,8 @@ export const Format = {
     str = str.replace(/^\s+|\s+$/g, "");
     str = str.toLowerCase();
 
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to = "aaaaeeeeiiiioooouuuunc------";
+    var from = "ãàáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to = "aaaaaeeeeiiiioooouuuunc------";
     for (var i = 0, l = from.length; i < l; i++) {
       str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
     }

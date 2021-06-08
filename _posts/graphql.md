@@ -8,11 +8,13 @@ date: "2021-06-07T23:20:20.492Z"
 description: "O 'matador' do REST ou só mais um hype?"
 ---
 
+# Introdução
+
 [Graphql](https://graphql.org/) é uma tecnologia muito com um hype absurdo, que propõe a resolver problemas de centralização dos dados, trazer o poder do cliente escolher quais dados julga necessários receber, trás um [_schema_](https://graphql.org/learn/schema/) que já possui uma documentação dos tipos entregues...só coisa boa né?
 
 > PS: quando conheci graphql em 2017, fiquei num hype absurdo e até hoje ainda não consegui subir um sistema em produção que fosse amplamente usado. Triste...mas continuo na luta de implementar um graphql em larga escala
 
-## O que é o graphql?
+# O que é o graphql?
 
 Graphql é uma query language que permite que o consumidor dos dados possam fazer queries com os dados que desejam receber. O servidor cria _schemas_ que definem as queries feitas. Cada _schema_ fornece meios para que você possa acessar dados dos objetos entregues pelo servidor.
 
@@ -50,7 +52,7 @@ Agora ficou fácil saber né? Mais ou menos. Vamos desmembrar essa query:
 - `name: String!`: Ainda sobre name, temos um `!`. Em graphql, o `!` (se você viu o meu [vídeo no YouTube](https://www.youtube.com/watch?v=EUJ5vWBT2iA&) vai saber que o nome certo é **brabo operator**) significa o NonNullable, ou não nulo.
 - `appearsIn: [Episode!]!`: A notação `[]` significa um array/lista de types `Episode`. O `!` aparecendo duas vezes remete a um array não nulo e um `Episode` não nulo.
 
-## [Scalar Types](https://graphql.org/learn/schema/#scalar-types)
+# [Scalar Types](https://graphql.org/learn/schema/#scalar-types)
 
 Como citado acima, os [scalar types](https://graphql.org/learn/schema/#scalar-types) podem ser classificados como "primitivos" para que você possa escrever os outros tipos. Ao total, são 4 scalar types:
 
@@ -61,7 +63,7 @@ Como citado acima, os [scalar types](https://graphql.org/learn/schema/#scalar-ty
 
 Você também pode estender a possibilidade de scalar types com a keyword `scalar`. Mas isso é um assunto pra um post específico de implementação do graphql.
 
-## Matador do [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
+# Matador do [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 
 **Apenas não...é isso.**
 
@@ -73,7 +75,7 @@ Graphql e REST não deveriam ser considerados "adversários", na minha opinião.
 - **Autorização e autorização**: Apesar de estar no server, o graphql apenas agrega dados de outros lugares e os formata no *schema*. Mas e se o cliente tentar acessar um recurso que não deveria? Quem vai dizer que não deveria? O graphql ou a API que será consumida? E o retorno de erros para esse cliente? Essas perguntas são um pouco nebulosas e podem causar dúvidas na implementação
 - **Retrocompatibilidade**: Esse é um problema quase que universal, mas em REST conseguimos resolver com o versionamento da API, mas no graphql pode ser um pouco trabalhoso versionar *schemas*. Apesar de existir `@deprecated`, ainda pode ser um problema caso você corte alguns pontos do seu schema
 
-## Conclusão
+# Conclusão
 
 Graphql é sem dúvidas uma grande tecnologia que podemos utilizar no nosso dia a dia. Não import a linguagem, você vai ter uma implementação em graphql. [Só olhar essa lista](https://graphql.org/code/). Como disse anteriormente, não faz sentido compararmos Rest e Graphql pois ambos se propõe a resolver o problema da entrega de dados com *approaches* diferentes, trazendo seus próprios benefícios e problemas.
 
