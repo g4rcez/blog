@@ -2,6 +2,7 @@
     "name": "dark",
     "transparent": "transparent",
     "current": "currentColor",
+    "gray": "#373c42",
     "primary": {
         "DEFAULT": "#a30af3",
         "link": "#a069bd",

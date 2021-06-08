@@ -6,19 +6,19 @@
 }
 
 .markdown h1 {
-  @apply text-5xl;
-}
-
-.markdown h2 {
   @apply text-4xl;
 }
 
-.markdown h3 {
+.markdown h2 {
   @apply text-3xl;
 }
 
+.markdown h3 {
+  @apply text-2xl;
+}
+
 .markdown h4 {
-  @apply text-xl;
+  @apply text-lg;
 }
 
 .markdown ul,
@@ -54,4 +54,8 @@
 
 .markdown table {
   @apply w-full text-left table-auto border-separate;
+}
+
+.markdown blockquote {
+  @apply p-2 border border-gray rounded opacity-70;
 }
