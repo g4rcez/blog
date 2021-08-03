@@ -24,24 +24,20 @@ const allPostInfo: (keyof Post)[] = [
   "image",
 ];
 
-export async function getStaticPaths() {
-  const posts = getAllPosts(allPostInfo);
-  return {
-    paths: posts.map((post) => {
-      return {
-        params: {
-          slug: post.slug,
-        },
-      };
-    }),
-    fallback: false,
-  };
-}
+export const getStaticPaths = () => ({
+  paths: getAllPosts(allPostInfo).map((post) => {
+    return {
+      params: {
+        slug: post.slug,
+      },
+    };
+  }),
+  fallback: false,
+});
 
-export async function getStaticProps({ params }: Params) {
+export const getStaticProps = async ({ params }: Params) => {
   const post = getPostBySlug(params.slug, allPostInfo);
-  const posts = getAllPosts(["slug", "title", "date"]);
-  const adjacentPosts = posts.reduce(
+  const adjacentPosts = getAllPosts(["slug", "title", "date"]).reduce(
     (acc, el, index, array) => {
       if (el.slug === post.slug) {
         return {
@@ -63,7 +59,7 @@ export async function getStaticProps({ params }: Params) {
       },
     },
   };
-}
+};
 
 type Props = {
   post: Post;
@@ -73,12 +69,20 @@ type Props = {
   };
 };
 
-export const WhoIsNext = (props: Post & { label: "next" | "prev"; className: string }) => {
+export const WhoIsNext = (
+  props: Post & { label: "next" | "prev"; className: string }
+) => {
   const icon = props.label === "next" ? "->" : "<-";
   const href = toPost(props.slug);
   return (
     <Link href={href}>
-      <a href={href} className={"w-full hover:underline hover:text-primary-link cursor-pointer " + props.className}>
+      <a
+        href={href}
+        className={
+          "w-full hover:underline hover:text-primary-link cursor-pointer " +
+          props.className
+        }
+      >
         {props.label === "prev" && <span className="mx-2">{icon}</span>}
         {props.title}
         {props.label === "next" && <span className="mx-2">{icon}</span>}
@@ -111,19 +115,29 @@ export const Component = ({ post, adjacentPosts }: Props) => {
   const [titles, setTitles] = useState<Heading[]>([]);
 
   useEffect(() => {
+    const createTableContent = () => {
+      const headings = ref.current.querySelectorAll("h1,h2,h3,h4,h5,h6");
+      const list: Heading[] = [...headings].map((x) => {
+        const id = Format.slug(x.textContent);
+        x.id = id;
+        return {
+          id: Format.slug(x.textContent),
+          text: x.textContent,
+          tag: x.tagName as Tag,
+        };
+      });
+      setTitles(list);
+    };
     if (ref.current === null) return;
-    const headings = ref.current.querySelectorAll("h1,h2,h3,h4,h5,h6");
-    const list: Heading[] = [...headings].map((x) => {
-      const id = Format.slug(x.textContent);
-      x.id = id;
-      return {
-        id: Format.slug(x.textContent),
-        text: x.textContent,
-        tag: x.tagName as Tag,
-      };
-    });
-    setTitles(list);
+    createTableContent();
+    const observer = new MutationObserver(createTableContent);
+    observer.observe(ref.current, { subtree: true, childList: true });
+    return () => {
+      observer.disconnect();
+    };
   }, []);
+
+  const openGraphImage = `https://garcez.dev/post-graph/${post.slug}.png`;
 
   return (
     <section className="block w-full min-w-full">
@@ -132,6 +146,29 @@ export const Component = ({ post, adjacentPosts }: Props) => {
         <meta name="keywords" content={post.subjects.join(",")} />
         <title>Garcez Blog | {post.title}</title>
         <link rel="stylesheet" href="/markdown.css" as="style" />
+
+        <meta name="twitter:image:src" content={openGraphImage} />
+        <meta name="twitter:site" content="@garcez.dev" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="g4rcez/blog: O lugar do rascunho de ideias"
+        />
+        <meta name="twitter:description" content={post.description} />
+        <meta property="og:image" content={openGraphImage} />
+        <meta property="og:image:alt" content={post.description} />
+        <meta property="og:image:width" content="1050" />
+        <meta property="og:image:height" content="280" />
+        <meta property="og:site_name" content="Blog do Garcez" />
+        <meta property="og:type" content="object" />
+        <meta
+          property="og:title"
+          content="g4rcez/blog: O lugar do rascunho de ideias"
+        />
+        <meta
+          property="og:url"
+          content={`https://garcez.dev/post/${post.slug}`}
+        />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">
         <h1 className="prose mt-4 mb-2 font-bold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
@@ -163,8 +200,20 @@ export const Component = ({ post, adjacentPosts }: Props) => {
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
-        {adjacentPosts.prev !== null && <WhoIsNext {...adjacentPosts.prev} label="prev" className="text-left" />}
-        {!hasNext !== null && <WhoIsNext {...adjacentPosts.next} label="next" className="text-right" />}
+        {adjacentPosts.prev !== null && (
+          <WhoIsNext
+            {...adjacentPosts.prev}
+            label="prev"
+            className="text-left"
+          />
+        )}
+        {!hasNext !== null && (
+          <WhoIsNext
+            {...adjacentPosts.next}
+            label="next"
+            className="text-right"
+          />
+        )}
       </div>
     </section>
   );
