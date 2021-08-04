@@ -30,7 +30,10 @@ const server = http.createServer((req, res) => {
     const data = {
       title: metadata.title,
       description: metadata.description,
-      tags: metadata.subjects.map((x) => `<li>${x}</li>`).join(" "),
+      tags: metadata.subjects
+        .map((x) => `<li>${x}</li>`)
+        .slice(0, 2)
+        .join(" "),
       releaseDate: new Intl.DateTimeFormat("pt-BR", {
         year: "numeric",
         month: "long",
