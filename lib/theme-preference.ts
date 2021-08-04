@@ -12,15 +12,15 @@ const prefersDark = () =>
 const setColor = (varName: string, color: string, root: HTMLElement) =>
   root.style.setProperty(varName, color);
 
-const Values = <T, K extends string>(v: T): Array<[keyof T, K]> =>
-  Object.values(v) as never;
+const Entries = <T, K extends string>(v: T): Array<[keyof T, K]> =>
+  Object.entries(v) as never;
 
 const setCssVars = (colors: any, element: HTMLElement) => {
   Object.entries(colors).forEach(([key, value]) => {
     if (typeof value === "string") {
       setColor(`--${key}`, value, element);
     } else if (typeof value === "object") {
-      Values(value).forEach(([secKey, secVal]) => {
+      Entries(value).forEach(([secKey, secVal]) => {
         setColor(`--${key}-${secKey}`, secVal, element);
       });
     }

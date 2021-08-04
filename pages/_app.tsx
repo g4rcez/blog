@@ -18,7 +18,13 @@ const Me = {
   LINKEDIN: "https://www.linkedin.com/in/allan-garcez/",
 };
 
-function MyApp({ Component, pageProps }: { Component: React.FC<unknown>; pageProps: never }) {
+function MyApp({
+  Component,
+  pageProps,
+}: {
+  Component: React.FC<unknown>;
+  pageProps: never;
+}) {
   const [theme, setTheme] = useState<"dark" | "light" | null>(() => "dark");
 
   useEffect(() => {
@@ -27,10 +33,11 @@ function MyApp({ Component, pageProps }: { Component: React.FC<unknown>; pagePro
 
   useEffect(() => {
     if (theme === null) return;
-    const root = document.querySelector(":root")! as any;
+    const root = document.documentElement;
     const json = theme === "dark" ? Dark : Light;
     ThemePreference.setCss(json, root);
     ThemePreference.saveTheme(theme);
+    root.classList.value = theme;
   }, [theme]);
 
   const themeColor = useMemo(
@@ -87,22 +94,12 @@ function MyApp({ Component, pageProps }: { Component: React.FC<unknown>; pagePro
               onClick={toggle}
               className="bg-transparent cursor-pointer mb-1"
             >
-              {theme === "dark" && (
-                <img
-                  width="24px"
-                  height="24px"
-                  alt="light mode icon"
-                  src="/sun.svg"
-                />
-              )}
-              {theme === "light" && (
-                <img
-                  width="24px"
-                  height="24px"
-                  alt="dark mode icon"
-                  src="/moon.svg"
-                />
-              )}
+              <img
+                width="24px"
+                height="24px"
+                alt={`${theme} mode icon"`}
+                src={theme === "dark" ? "/moon.svg" : "/sun.svg"}
+              />
             </button>
           </span>
         </nav>

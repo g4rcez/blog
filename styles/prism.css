@@ -109,7 +109,7 @@ pre[class*="language-"] {
 .token.atrule,
 .token.keyword,
 .token.builtin {
-  color: #cc99cd;
+  color: #e27ce4;
 }
 
 .token.keyword {
