@@ -35,9 +35,18 @@ export const getStaticPaths = () => ({
   fallback: false,
 });
 
+type AdjacentPosts = {
+  next: Partial<Post> | null;
+  prev: Partial<Post> | null;
+};
+
 export const getStaticProps = async ({ params }: Params) => {
   const post = getPostBySlug(params.slug, allPostInfo);
-  const adjacentPosts = getAllPosts(["slug", "title", "date"]).reduce(
+  const adjacentPosts = getAllPosts([
+    "slug",
+    "title",
+    "date",
+  ]).reduce<AdjacentPosts>(
     (acc, el, index, array) => {
       if (el.slug === post.slug) {
         return {
@@ -116,13 +125,15 @@ export const Component = ({ post, adjacentPosts }: Props) => {
 
   useEffect(() => {
     const createTableContent = () => {
+      if (ref.current === null) return;
       const headings = ref.current.querySelectorAll("h1,h2,h3,h4,h5,h6");
       const list: Heading[] = [...headings].map((x) => {
-        const id = Format.slug(x.textContent);
+        const text = x.textContent!;
+        const id = Format.slug(text);
         x.id = id;
         return {
-          id: Format.slug(x.textContent),
-          text: x.textContent,
+          text,
+          id: Format.slug(text),
           tag: x.tagName as Tag,
         };
       });
@@ -209,7 +220,7 @@ export const Component = ({ post, adjacentPosts }: Props) => {
         )}
         {!hasNext !== null && (
           <WhoIsNext
-            {...adjacentPosts.next}
+            {...adjacentPosts.next!}
             label="next"
             className="text-right"
           />

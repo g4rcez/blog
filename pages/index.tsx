@@ -78,7 +78,7 @@ export default function Index({ posts }: { posts: Post[] }) {
             if (post.title.toLowerCase().includes(lowerSearch)) {
               return true;
             }
-            if (post.description.toLowerCase().includes(lowerSearch)) {
+            if (post?.description?.toLowerCase().includes(lowerSearch)) {
               return true;
             }
             return (post?.subjects ?? []).some((x) => x.toLowerCase().includes(lowerSearch));

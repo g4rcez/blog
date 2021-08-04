@@ -1,7 +1,7 @@
 import { ThemePreference } from "lib/theme-preference";
 import Head from "next/head";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaLinkedin } from "react-icons/fa";
 import { SiReact } from "react-icons/si";
 import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
@@ -9,7 +9,8 @@ import Dark from "styles/dark.json";
 import Light from "styles/light.json";
 import "../styles/globals.css";
 
-const googleFont = "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
+const googleFont =
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
 
 const Me = {
   TWITTER: "https://twitter.com/garcez_allan",
@@ -17,7 +18,7 @@ const Me = {
   LINKEDIN: "https://www.linkedin.com/in/allan-garcez/",
 };
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: { Component: React.FC<unknown>; pageProps: never }) {
   const [theme, setTheme] = useState<"dark" | "light" | null>(() => "dark");
 
   useEffect(() => {
@@ -32,7 +33,10 @@ function MyApp({ Component, pageProps }) {
     ThemePreference.saveTheme(theme);
   }, [theme]);
 
-  const themeColor = useMemo(() => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT), []);
+  const themeColor = useMemo(
+    () => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT),
+    []
+  );
 
   const toggle = useCallback(() => {
     setTheme((p) => (p === "dark" ? "light" : "dark"));
@@ -43,17 +47,28 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>Garcez Blog</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1"
+        />
         <meta name="theme-color" content="#21272d" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link href={googleFont} rel="stylesheet" />
-        <link rel="preload" href={googleFont} as="style" onLoad={(e) => ((e.target as any).rel = "stylesheet")} />
+        <link
+          rel="preload"
+          href={googleFont}
+          as="style"
+          onLoad={(e) => ((e.target as any).rel = "stylesheet")}
+        />
         <meta
           name="description"
           content="Javascript, Typescript, React e provas de conceito sobre diversos casos de frontend"
         />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="keywords" content="Javascript,Typescript,React,CSS,HTML,Frontend,Microfrontend,Software Engineer" />
+        <meta
+          name="keywords"
+          content="Javascript,Typescript,React,CSS,HTML,Frontend,Microfrontend,Software Engineer"
+        />
         <meta name="twitter:creator" content="@garcez_allan" />
         <meta name="theme-color" content={themeColor} />
       </Head>
@@ -68,9 +83,26 @@ function MyApp({ Component, pageProps }) {
             </a>
           </Link>
           <span className="flex gap-x-4">
-            <button onClick={toggle} className="bg-transparent cursor-pointer mb-1">
-              {theme === "dark" && <img width="24px" height="24px" alt="light mode icon" src="/sun.svg" />}
-              {theme === "light" && <img width="24px" height="24px" alt="dark mode icon" src="/moon.svg" />}
+            <button
+              onClick={toggle}
+              className="bg-transparent cursor-pointer mb-1"
+            >
+              {theme === "dark" && (
+                <img
+                  width="24px"
+                  height="24px"
+                  alt="light mode icon"
+                  src="/sun.svg"
+                />
+              )}
+              {theme === "light" && (
+                <img
+                  width="24px"
+                  height="24px"
+                  alt="dark mode icon"
+                  src="/moon.svg"
+                />
+              )}
             </button>
           </span>
         </nav>
@@ -104,15 +136,26 @@ function MyApp({ Component, pageProps }) {
         </div>
         <div className="w-full block text-xs text-center">
           Sun/Moon icons made by{" "}
-          <a href="https://www.freepik.com" title="Freepik" className="text-primary-link hover:underline italic">
+          <a
+            href="https://www.freepik.com"
+            title="Freepik"
+            className="text-primary-link hover:underline italic"
+          >
             Freepik
           </a>{" "}
           from{" "}
-          <a href="https://www.flaticon.com/" title="Flaticon" className="text-primary-link hover:underline italic">
+          <a
+            href="https://www.flaticon.com/"
+            title="Flaticon"
+            className="text-primary-link hover:underline italic"
+          >
             www.flaticon.com
           </a>{" "}
           <b className="mx-2">|</b> Brand Icons by{" "}
-          <a className="text-primary-link hover:underline italic" href="https://react-icons.github.io/react-icons/">
+          <a
+            className="text-primary-link hover:underline italic"
+            href="https://react-icons.github.io/react-icons/"
+          >
             react-icons
           </a>
         </div>
