@@ -1,12 +1,17 @@
-//@ts-check
-const http = require("http");
-const path = require("path");
-const fs = require("fs");
-const glob = require("glob");
-const puppeteer = require("puppeteer");
-const matter = require("gray-matter");
+import fs from "fs";
+import matter from "gray-matter";
+import http from "http";
+import path from "path";
+import puppeteer from "puppeteer";
 
 const root = path.resolve(process.cwd());
+
+type Metadata = {
+  title: string;
+  description: string;
+  subjects: string[];
+  date: string;
+};
 
 const server = http.createServer((req, res) => {
   try {
@@ -15,7 +20,7 @@ const server = http.createServer((req, res) => {
     const postPath = path.join(root, "_posts", `${post}.md`);
 
     const content = fs.readFileSync(postPath, { encoding: "utf-8" });
-    const metadata = matter(content).data;
+    const metadata: Metadata = matter(content).data as never;
 
     const template = fs.readFileSync(
       path.resolve(path.join(root, "open-graph-bot", "template.html")),
@@ -59,7 +64,7 @@ server.listen(5000);
   const browser = await puppeteer.launch({
     defaultViewport: {
       height: 280,
-      width: 1050,
+      width: 750,
     },
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -83,7 +88,8 @@ server.listen(5000);
     );
   } catch (error) {
     console.log(error);
+  } finally {
+    console.log("print page");
+    process.exit(0);
   }
-
-  console.log("print page");
 })();
