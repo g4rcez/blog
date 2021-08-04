@@ -63,7 +63,7 @@ server.listen(5000);
 (async () => {
   const browser = await puppeteer.launch({
     defaultViewport: {
-      height: 280,
+      height: 210,
       width: 750,
     },
     headless: true,
