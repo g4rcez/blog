@@ -33,7 +33,7 @@ export function getPostBySlug(slug: string, fields: Keys[] = []): Post {
   const { data, content } = matter(fileContents);
   const readingTime = Math.ceil(content.split(" ").length / 250);
 
-  const items = { readingTime };
+  const items: Partial<Post> = { readingTime };
 
   fields.forEach((field) => {
     if (field === "slug") {
