@@ -3,6 +3,7 @@ import matter from "gray-matter";
 import { join } from "path";
 import remark from "remark";
 import html from "remark-html";
+//@ts-ignore
 import prism from "remark-prism";
 import gfm from "remark-gfm";
 
