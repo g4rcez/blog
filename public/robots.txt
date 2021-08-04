@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /post/*
+
+Disallow: /api/*
+Disallow: /_next/*
+Disallow: /js
