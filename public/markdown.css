@@ -28,15 +28,15 @@
   line-height: 1.75rem;
 }
 
-.markdown ul,
-.markdown ol {
+.markdown ul:not([class^="header-tab"]),
+.markdown ol:not([class^="header-tab"]) {
   margin-left: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
   list-style-position: inside;
 }
 
-.markdown ul {
+.markdown ul:not([class^="header-tab"]) {
   list-style-type: disc;
   margin-left: 2rem;
 }

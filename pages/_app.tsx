@@ -1,3 +1,4 @@
+import { ThemeProvider, useDarkMode } from "components/use-dark-mode";
 import { ThemePreference } from "lib/theme-preference";
 import Head from "next/head";
 import Link from "next/link";
@@ -18,36 +19,14 @@ const Me = {
   LINKEDIN: "https://www.linkedin.com/in/allan-garcez/",
 };
 
-function MyApp({
+function App({
   Component,
   pageProps,
 }: {
   Component: React.FC<unknown>;
   pageProps: never;
 }) {
-  const [theme, setTheme] = useState<"dark" | "light" | null>(() => "dark");
-
-  useEffect(() => {
-    setTheme(() => (ThemePreference.prefersDark() ? "dark" : "light"));
-  }, []);
-
-  useEffect(() => {
-    if (theme === null) return;
-    const root = document.documentElement;
-    const json = theme === "dark" ? Dark : Light;
-    ThemePreference.setCss(json, root);
-    ThemePreference.saveTheme(theme);
-    root.classList.value = theme;
-  }, [theme]);
-
-  const themeColor = useMemo(
-    () => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT),
-    []
-  );
-
-  const toggle = useCallback(() => {
-    setTheme((p) => (p === "dark" ? "light" : "dark"));
-  }, []);
+  const { toggle, themeColor, theme } = useDarkMode();
 
   return (
     <main className="w-full container mx-auto md:px-6 px-4 block md:max-w-6xl">
@@ -98,7 +77,7 @@ function MyApp({
                 width="24px"
                 height="24px"
                 alt={`${theme} mode icon"`}
-                src={theme === "dark" ? "/moon.svg" : "/sun.svg"}
+                src={theme.name === "dark" ? "/moon.svg" : "/sun.svg"}
               />
             </button>
           </span>
@@ -161,4 +140,16 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default function Entrypoint({
+  Component,
+  pageProps,
+}: {
+  Component: React.FC<unknown>;
+  pageProps: never;
+}) {
+  return (
+    <ThemeProvider>
+      <App Component={Component} pageProps={pageProps} />
+    </ThemeProvider>
+  );
+}

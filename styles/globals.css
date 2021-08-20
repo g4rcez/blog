@@ -4,7 +4,8 @@
 @import "./prism.css";
 
 :root {
-  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell, Fira Sans, Droid Sans, sans-serif;
+  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell,
+    Fira Sans, Droid Sans, sans-serif;
 }
 
 * {
@@ -52,4 +53,48 @@ span {
 
 .w-fit {
   width: fit-content;
+}
+
+.header-tab {
+  @apply p-0 m-0 list-none inline-flex;
+}
+
+.tab-container::-webkit-scrollbar {
+  @apply bg-transparent;
+  height: 1px;
+  width: 5px;
+}
+
+/* Track */
+.tab-container::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+/* Handle */
+.tab-container::-webkit-scrollbar-thumb {
+  @apply bg-transparent;
+}
+
+/* Handle on hover */
+.tab-container::-webkit-scrollbar-thumb:hover {
+  @apply bg-transparent;
+}
+
+.header-tab > li {
+  @apply relative cursor-pointer;
+}
+
+.inkbar {
+  @apply bg-transparent absolute bottom-0 left-0 w-full;
+  height: 2px;
+  transition: all 175ms cubic-bezier(0.71, 0.39, 0.47, 0.85);
+}
+
+.px-4 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.inkbar {
+  @apply bg-primary;
 }

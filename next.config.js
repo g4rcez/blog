@@ -4,8 +4,8 @@ module.exports = withPreact({
   pageExtensions: ["mdx", "ts", "tsx"],
   poweredByHeader: false,
   reactStrictMode: true,
+  webpack5: true,
   future: {
-    webpack5: true,
     strictPostcssConfiguration: true,
   },
 });

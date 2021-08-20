@@ -1,3 +1,5 @@
+import { MDXRemote } from "next-mdx-remote";
+import { MDXRemoteSerializeResult } from "next-mdx-remote/dist/types";
 import Head from "next/head";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -6,6 +8,14 @@ import { useMemo } from "react";
 import { Format, toPost } from "../../lib/format";
 import type { Post } from "../../lib/markdown";
 import { getAllPosts, getPostBySlug, toMarkdown } from "../../lib/markdown";
+import { Tab, Tabs } from "../../components/tab";
+import { Code } from "../../components/code";
+
+const Components = {
+  Tab,
+  Tabs,
+  Code,
+};
 
 type Params = {
   params: {
@@ -71,7 +81,7 @@ export const getStaticProps = async ({ params }: Params) => {
 };
 
 type Props = {
-  post: Post;
+  post: Post & { content: MDXRemoteSerializeResult<Record<string, unknown>> };
   adjacentPosts: {
     next: Post | null;
     prev: Post | null;
@@ -208,8 +218,9 @@ export const Component = ({ post, adjacentPosts }: Props) => {
       <section
         ref={ref}
         className="markdown prose lg:prose-xl block w-full min-w-full"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      >
+        <MDXRemote {...post.content} lazy components={Components} />
+      </section>
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (
           <WhoIsNext
