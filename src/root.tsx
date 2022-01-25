@@ -1,5 +1,6 @@
 import type { MetaFunction } from "remix";
 import { Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "remix";
+import { Navbar } from "./components/navbar";
 import css from "./styles/dist.css";
 
 export const meta: MetaFunction = () => {
@@ -17,7 +18,8 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="w-full container mx-auto">
+        <Navbar />
         <Outlet />
         <ScrollRestoration />
         <Scripts />

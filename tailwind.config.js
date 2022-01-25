@@ -2,6 +2,7 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   content: ["./src/**/*.{tsx,ts,html}"],
+  darkMode: "class",
   theme: {
     extend: {},
     fontFamily: {
