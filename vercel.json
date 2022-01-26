@@ -1,0 +1,14 @@
+{
+    "build": {
+        "env": {
+            "ENABLE_FILE_SYSTEM_API": "1"
+        }
+    },
+    "functions": {
+        "api/index.js": {
+            "memory": 1024,
+            "maxDuration": 5,
+            "includeFiles": "_posts/*.md"
+        }
+    }
+}
