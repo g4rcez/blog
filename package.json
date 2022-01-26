@@ -4,7 +4,7 @@
   "description": "",
   "license": "",
   "scripts": {
-    "build": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css -m && remix build",
+    "build": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css -m && remix build && cp -r _posts build",
     "css": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css --watch",
     "dev": "concurrently 'yarn css' 'remix dev'",
     "postinstall": "remix setup node",

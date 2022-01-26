@@ -23,7 +23,7 @@ export namespace Files {
   });
 
   export const listAllPosts = async (): Promise<PostFile[]> => {
-    const base = Path.resolve(process.cwd(), "_posts");
+    const base = Path.resolve(__dirname, "_posts");
     const posts = Fs.readdirSync(base, "utf-8");
     const files = await Promise.all(
       posts.map(async (post): Promise<PostFile> => {
