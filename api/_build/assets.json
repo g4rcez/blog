@@ -1,0 +1,53 @@
+{
+  "version": "f84ff536",
+  "entry": {
+    "module": "/build/entry.client-FQUN2T5E.js",
+    "imports": [
+      "/build/_shared/chunk-DGNGNE3C.js",
+      "/build/_shared/chunk-N2RB76FW.js",
+      "/build/_shared/chunk-AKSB5QXU.js"
+    ]
+  },
+  "routes": {
+    "root": {
+      "id": "root",
+      "path": "",
+      "module": "/build/root-2NKOU2QR.js",
+      "imports": [
+        "/build/_shared/chunk-U5U7Y4SA.js",
+        "/build/_shared/chunk-4PF7NBSX.js"
+      ],
+      "hasAction": false,
+      "hasLoader": false,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/index": {
+      "id": "routes/index",
+      "parentId": "root",
+      "index": true,
+      "module": "/build/routes/index-4TWNG6IJ.js",
+      "imports": [
+        "/build/_shared/chunk-VNV55H5T.js"
+      ],
+      "hasAction": false,
+      "hasLoader": true,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    },
+    "routes/posts/$post": {
+      "id": "routes/posts/$post",
+      "parentId": "root",
+      "path": "posts/:post",
+      "module": "/build/routes/posts/$post-S5RB7VP6.js",
+      "imports": [
+        "/build/_shared/chunk-VNV55H5T.js"
+      ],
+      "hasAction": false,
+      "hasLoader": true,
+      "hasCatchBoundary": false,
+      "hasErrorBoundary": false
+    }
+  },
+  "url": "/build/manifest-F84FF536.js"
+}

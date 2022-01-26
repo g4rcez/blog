@@ -2,9 +2,10 @@ import { existsSync } from "fs";
 import fs from "fs/promises";
 import { bundleMDX } from "mdx-bundler";
 import Path from "path";
+import { postsDirectory } from "~/post";
 
 export const compileMdx = async (post: string, language?: string) => {
-  const filePath = Path.resolve(Path.join(__dirname, "_posts", `${post}.md`));
+  const filePath = Path.resolve(Path.join(postsDirectory, `${post}.md`));
   if (!existsSync(filePath)) {
     return null;
   }

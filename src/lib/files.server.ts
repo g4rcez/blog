@@ -1,6 +1,7 @@
 import Path from "path";
 import frontMatter from "front-matter";
 import Fs from "fs";
+import { postsDirectory } from "~/post";
 
 export namespace Files {
   export type PostFile = {
@@ -23,7 +24,7 @@ export namespace Files {
   });
 
   export const listAllPosts = async (): Promise<PostFile[]> => {
-    const base = Path.resolve(__dirname, "_posts");
+    const base = Path.resolve(postsDirectory);
     const posts = Fs.readdirSync(base, "utf-8");
     const files = await Promise.all(
       posts.map(async (post): Promise<PostFile> => {
