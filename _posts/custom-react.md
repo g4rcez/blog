@@ -91,11 +91,11 @@ const { transparentize, lighten, darken } = require("polished");
 const dirname = `${__dirname}/../config/`;
 
 const alpha = (color, name) => ({
-  [`${name}Alpha`]: transparentize(0.5, color)
+  [`${name}Alpha`]: transparentize(0.5, color),
 });
 const light = (color, name) => ({ [`${name}Light`]: lighten(0.2, color) });
 const lightest = (color, name) => ({
-  [`${name}Lightest`]: lighten(0.6, color)
+  [`${name}Lightest`]: lighten(0.6, color),
 });
 const dark = (color, name) => ({ [`${name}Dark`]: darken(0.2, color) });
 const darkest = (color, name) => ({ [`${name}Darkest`]: darken(0.6, color) });
@@ -112,7 +112,7 @@ const colorize = (theme) => (acc, x) => {
     ...light(c, x),
     ...dark(c, x),
     ...darkest(c, x),
-    ...lightest(c, x)
+    ...lightest(c, x),
   };
 };
 
@@ -124,27 +124,24 @@ const manifestJsonGenerator = (json, colors) => {
       {
         src: json.icon,
         sizes: "64x64 32x32 24x24 16x16",
-        type: "image/x-icon"
+        type: "image/x-icon",
       },
       {
         src: json.icon,
         sizes: "512x512",
-        type: "image/x-icon"
-      }
+        type: "image/x-icon",
+      },
     ],
     start_url: ".",
     orientation: "natural",
     display: "standalone",
     theme_color: colors.primary,
-    background_color: "#000"
+    background_color: "#000",
   };
 };
 
 const replaceTenantName = (json, language) => {
-  return JSON.stringify(json.lang[language])
-    .replace(/XPTO/gi, json.tenant)
-    .replace(/ABCD/gi, json.tenant)
-    .replace(/XYZ/gi, json.tenant);
+  return JSON.stringify(json.lang[language]).replace(/XPTO/gi, json.tenant).replace(/ABCD/gi, json.tenant).replace(/XYZ/gi, json.tenant);
 };
 
 const createConfigFile = (contents, filename, referenceObject) => {
@@ -161,8 +158,8 @@ const createConfigFile = (contents, filename, referenceObject) => {
     texts: {
       ...json.texts,
       "pt-br": JSON.parse(ptBrTexts),
-      "en-us": JSON.parse(enUSTexts)
-    }
+      "en-us": JSON.parse(enUSTexts),
+    },
   };
 };
 
@@ -211,7 +208,7 @@ const createFiles = async () => {
 module.exports = {
   REFERENCE_FILE,
   referenceObject,
-  writeJsVarInFile
+  writeJsVarInFile,
 };
 ```
 
@@ -244,9 +241,9 @@ FS.readdir(CONFIGS_DIR, (_, files) => {
         texts: {
           "pt-br": {
             ...json.texts["pt-br"],
-            [key]: text
-          }
-        }
+            [key]: text,
+          },
+        },
       },
       null,
       4
@@ -312,8 +309,8 @@ E claro, eu deveria aceitar variáveis nessas string, um outro problema que foi 
   {resolve({
     text: "stringQueExisteNoMapaDeTraducao",
     textParams: {
-      varName: props.redux.umValorDoRedux
-    }
+      varName: props.redux.umValorDoRedux,
+    },
   })}
 </p>
 ```
@@ -335,7 +332,7 @@ Como falei anteriormente, rotas e menus estão quase sempre ligados. Então a mi
 1. Criar uma lista de objetos com os componentes, ícones utilizados no menu, título do menu e da página, perfil que pode visualizar tal rota
 2. Enumerar todas as dependências (fica ligado nessa palavra, você já deve ter imaginado um `useEffect`) necessárias para as rotas
 3. Separar a lógica de cada rota de forma isolada, o que inclui mais um item no nosso objeto citado no item 1
-4. Configurar o React Router para não utilizar mais o <Route /> hardcode, mas sim um <Route /> que será gerado através de um array.
+4. Configurar o React Router para não utilizar mais o `<Route />` hardcode, mas sim um `<Route />` que será gerado através de um array.
 5. Filtrar o array de acordo com todas as informações dos itens 1, 2 e 3.
 
 Show. Melhor eu mostrar o código logo

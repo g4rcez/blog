@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["node","cli","javascript","typescript"]
+subjects: ["node", "cli", "javascript", "typescript"]
 title: "Node CLI"
 language: "pt-br"
 translations: ["pt-br"]
@@ -9,7 +9,6 @@ description: "Automatizando tarefas pela linha de comando"
 ---
 
 # Introdução
-
 
 Como no dia 07/08 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/), resolvi escrever esse pequeno post para deixar como referência após a apresentação e também esclarecer as ideias antes de apresentar.
 
@@ -43,20 +42,20 @@ Usei `npm init -y` pra ser mais rápido. Mas isso já da pra começar a fazer os
 
 ```json
 {
-	"name": "alfred",
-	"version": "3.0.28",
-	"description": "",
-	"main": "./cli/index.js",
-	"bin": {
-		"alfred": "./cli/index.js"
-	},
-	"scripts": {
-		"build": "tsc -p .",
-		"prettier": "prettier --write \"{.,src/**}/*.{js,jsx,ts,tsx}\""
-	},
-	"keywords": [],
-	"author": "g4rcez",
-	"license": "MIT"
+  "name": "alfred",
+  "version": "3.0.28",
+  "description": "",
+  "main": "./cli/index.js",
+  "bin": {
+    "alfred": "./cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "prettier": "prettier --write \"{.,src/**}/*.{js,jsx,ts,tsx}\""
+  },
+  "keywords": [],
+  "author": "g4rcez",
+  "license": "MIT"
 }
 ```
 
@@ -64,8 +63,8 @@ Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quant
 
 > Apesar do mundo inteiro dizer compilar JS, esse termo é errado pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
 
-<small style="margin-top:-2em">Essa é a sua cara nesse exato momento</small>
-<img alt="Meme" src="https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif" style="width:100%"/>
+<small style={{marginTop: "-2em"}}>Essa é a sua cara nesse exato momento</small>
+<img alt="Meme" src="https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif" style={{width:"100%"}}/>
 
 **Mas como irei programar com TS se NodeJS não roda TS?**
 
@@ -82,21 +81,21 @@ E pronto, já temos o nosso `tsconfig.json` e vamos deixar ele com essa cara:
 
 ```json
 {
-	"compilerOptions": {
-		"target": "es5",
-		"module": "commonjs",
-		"lib": ["esnext", "es7"],
-		"allowJs": false,
-		"declaration": true,
-		"declarationMap": true,
-		"outDir": "./cli",
-		"rootDir": "./src",
-		"removeComments": true,
-		"importHelpers": true,
-		"downlevelIteration": true,
-		"strict": true,
-		"esModuleInterop": true
-	}
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["esnext", "es7"],
+    "allowJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./cli",
+    "rootDir": "./src",
+    "removeComments": true,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "esModuleInterop": true
+  }
 }
 ```
 
@@ -124,10 +123,10 @@ $ yarn add --dev @types/node @types/semver @types/signale
 
 Tirando `typescript`, os demais são novos, então vou explicar
 
--   [semver](https://github.com/npm/node-semver): Para versionamento semântico. Você pode olhar sobre o [semver no site oficial e entender sobre versionamento de software](https://semver.org)
--   [commander](https://github.com/tj/commander.js/): Esse é o meu gerenciador de argumentos da CLI favorito. Um ótimo suporte para codar no estilo `getopt.h` do C ou programas no `git style`
--   [signale](https://github.com/klaussinani/signale): Um log extremamente útil e com diversas features para exibir mensagens
--   [chalk](https://github.com/chalk/chalk): Pense num CSS para seu terminal, é o mais simples pra explicar
+- [semver](https://github.com/npm/node-semver): Para versionamento semântico. Você pode olhar sobre o [semver no site oficial e entender sobre versionamento de software](https://semver.org)
+- [commander](https://github.com/tj/commander.js/): Esse é o meu gerenciador de argumentos da CLI favorito. Um ótimo suporte para codar no estilo `getopt.h` do C ou programas no `git style`
+- [signale](https://github.com/klaussinani/signale): Um log extremamente útil e com diversas features para exibir mensagens
+- [chalk](https://github.com/chalk/chalk): Pense num CSS para seu terminal, é o mais simples pra explicar
 
 Os types são `devDependencies` para nos auxiliar com o typing do TS
 
@@ -147,49 +146,49 @@ const program = new cli.Command();
     no Unix, não por causa do Jquery
 */
 const $ = (command: string): Promise<string> =>
-	new Promise((res, rej) =>
-		exec(command, (err, stdout, stderr) => {
-			if (err) {
-				return rej(stderr);
-			}
-			return res(stdout);
-		})
-	);
+  new Promise((res, rej) =>
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        return rej(stderr);
+      }
+      return res(stdout);
+    })
+  );
 
 //  Como não exigimos parâmetros aqui, então não esperamos receber nada
 const Tags = () => {
-	try {
-		const gitOutput = await $("git tag"); // Output de todas as tags
-		const tags = gitOutput.split("\n");
-		// Uma ordenação simples de acordo com as versões apresentadas
-		// Versões não válidas ficaram no topo da pilha
-		tags.sort((v1: string, v2: string) => {
-			if (semver.valid(v1) && semver.valid(v2)) {
-				if (semver.eq(v1, v2)) {
-					return 0;
-				}
-				return semver.gte(v1, v2) ? 1 : -1;
-			}
-			return -1;
-		});
-		signale.success(tags.join("\n"));
-	} catch (e) {}
+  try {
+    const gitOutput = await $("git tag"); // Output de todas as tags
+    const tags = gitOutput.split("\n");
+    // Uma ordenação simples de acordo com as versões apresentadas
+    // Versões não válidas ficaram no topo da pilha
+    tags.sort((v1: string, v2: string) => {
+      if (semver.valid(v1) && semver.valid(v2)) {
+        if (semver.eq(v1, v2)) {
+          return 0;
+        }
+        return semver.gte(v1, v2) ? 1 : -1;
+      }
+      return -1;
+    });
+    signale.success(tags.join("\n"));
+  } catch (e) {}
 };
 
 program
-	.version("0.0.1")
-	.allowUnknownOption(false)
-	.description("Ordenador de tags")
-	.usage("tag")
-	.command("tag")
-	.name("my-cli")
-	.alias("t")
-	.description("Ordena as tags do repositório git corrente")
-	.action(Tags);
+  .version("0.0.1")
+  .allowUnknownOption(false)
+  .description("Ordenador de tags")
+  .usage("tag")
+  .command("tag")
+  .name("my-cli")
+  .alias("t")
+  .description("Ordena as tags do repositório git corrente")
+  .action(Tags);
 
 if (process.argv.length === 2) {
-	program.help();
-	process.exit();
+  program.help();
+  process.exit();
 }
 program.parse(process.argv);
 ```
@@ -216,54 +215,48 @@ Não vou deixar de explicar como podemos fazer para receber os parâmetros no ca
     os tipos que irá receber com os seus argumentos do programa
 */
 const Tags = (params: any) => {
-	try {
-		// Até o próximo comentário, ta tudo igual
-		const gitOutput = await $("git tag"); // Output de todas as tags
-		const tags = gitOutput.split("\n");
-		tags.sort((v1: string, v2: string) => {
-			if (semver.valid(v1) && semver.valid(v2)) {
-				if (semver.eq(v1, v2)) {
-					return 0;
-				}
-				return semver.gte(v1, v2) ? 1 : -1;
-			}
-			return -1;
-		});
-		// Até aqui, nada mudou, mas vamos colocar um info e estilizar
-		// com o chalk pra dizer que mostrei ele
-		signale.info(chalk.bold.visible.underline.blue(params.msg));
-		signale.success(tags.join("\n"));
-	} catch (e) {}
+  try {
+    // Até o próximo comentário, ta tudo igual
+    const gitOutput = await $("git tag"); // Output de todas as tags
+    const tags = gitOutput.split("\n");
+    tags.sort((v1: string, v2: string) => {
+      if (semver.valid(v1) && semver.valid(v2)) {
+        if (semver.eq(v1, v2)) {
+          return 0;
+        }
+        return semver.gte(v1, v2) ? 1 : -1;
+      }
+      return -1;
+    });
+    // Até aqui, nada mudou, mas vamos colocar um info e estilizar
+    // com o chalk pra dizer que mostrei ele
+    signale.info(chalk.bold.visible.underline.blue(params.msg));
+    signale.success(tags.join("\n"));
+  } catch (e) {}
 };
 
 program
-	.version("0.0.1")
-	.allowUnknownOption(false)
-	.description("Ordenador de tags")
-	.usage("tag")
-	.command("tag")
-	.name("my-cli")
-	.alias("t")
-	// Aqui está o novo trecho no commander
-	// Ele irá entregar uma property "msg" para você usar como valor
-	// caso não exista, ela será o valor padrão que definiu
-	// E se não definir, será undefined
-	.option(
-		"-m, --msg <mensagem>",
-		"Mensagem a ser exibida antes de exibir as tags",
-		"Ordenação de tags"
-	) // "Ordenação de tags" é a mensagem padrão caso não haja
-	.description("Ordena as tags do repositório git corrente")
-	.action(Tags);
+  .version("0.0.1")
+  .allowUnknownOption(false)
+  .description("Ordenador de tags")
+  .usage("tag")
+  .command("tag")
+  .name("my-cli")
+  .alias("t")
+  // Aqui está o novo trecho no commander
+  // Ele irá entregar uma property "msg" para você usar como valor
+  // caso não exista, ela será o valor padrão que definiu
+  // E se não definir, será undefined
+  .option("-m, --msg <mensagem>", "Mensagem a ser exibida antes de exibir as tags", "Ordenação de tags") // "Ordenação de tags" é a mensagem padrão caso não haja
+  .description("Ordena as tags do repositório git corrente")
+  .action(Tags);
 
 if (process.argv.length === 2) {
-	program.help();
-	process.exit();
+  program.help();
+  process.exit();
 }
 program.parse(process.argv);
 ```
 
 Bom, creio que isso seja o necessário para que todos possam começar a fazer suas CLI com NodeJS
 e considerar manter como sua linguagem para scripts, afinal de conta NodeJS é Java**SCRIPT**.
-
-

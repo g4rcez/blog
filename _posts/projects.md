@@ -28,14 +28,14 @@ Entre conversas, leituras do DDD (Domain Driven Design) e podcasts, acabei adota
 ├── scripts
 └── src
     ├── clientes
-    │   ├── components
-    │   │   └── HomeClient.tsx
-    │   ├── DeleteClient.ts
-    │   ├── GetClients.ts
-    │   ├── hooks
-    │   │   └── useClients.ts
-    │   ├── SaveClient.ts
-    │   └── UpdateClient.ts
+    │ ├── components
+    │ │ └── HomeClient.tsx
+    │ ├── DeleteClient.ts
+    │ ├── GetClients.ts
+    │ ├── hooks
+    │ │ └── useClients.ts
+    │ ├── SaveClient.ts
+    │ └── UpdateClient.ts
     ├── colaboradores
     ├── dashboard
     ├── helpers
@@ -90,7 +90,7 @@ Esse foi um pequeno exemplo de como você pode organizar seus reducers.
 
 Lógico que nem tudo irá ficar somente contido dentro de pacotes nomeados por suas entidades, as vezes algumas funções, componentes, tipos, classes de modelo e outros serão reutilizados. Mas para ter uma estrutura escalar é importante tentar manter *a altura da árvore de diretórios* de até 2. Pode parecer bobeira, mas você vai me agradecer por se manter nessa regra.
 
-Uma outra prática que não é muito interessante é criar uma pasta para um componente e nessa pasta ter somente o index.{jsx?,tsx?}. Nesses casos, melhor criar o arquivo com o nome do componente fora da pasta. 
+Uma outra prática que não é muito interessante é criar uma pasta para um componente e nessa pasta ter somente o index.\{jsx?,tsx?}. Nesses casos, melhor criar o arquivo com o nome do componente fora da pasta. 
 
 ## Modularizar quando necessário
 
@@ -132,5 +132,3 @@ Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa
 Isso tudo que foi falado não é um padrão, não irá gerar tendência, é apenas uma forma que deu certo em um projeto grande e quis compartilhar com você.
 
 **Sim, eu disse você, a única pessoa que lê o meu blog :heart:**
-
-E como de costume...

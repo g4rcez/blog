@@ -45,9 +45,9 @@ const App = () => (
 
 Esse é o resultado final, agora é só fazer acontecer haha
 
-# <Router />
+# \<Router />
 
-O Router costuma estar no top level da nossa aplicação, abraçando todos os componentes para que possamos criar `<Route />` diferentes. O `<Router />` é quem entrega a context para nossas rotas e é o responsável por comandar a renderização de cada rota.
+O Router costuma estar no top level da nossa aplicação, abraçando todos os componentes para que possamos criar `\<Route />` diferentes. O `\<Router />` é quem entrega a context para nossas rotas e é o responsável por comandar a renderização de cada rota.
 
 Para que possamos fazer o nosso Router, devemos seguir os seguintes passos:
 
@@ -67,7 +67,7 @@ export const History = createBrowserHistory();
 export const HistoryContext = createContext({ ...History, params: {} });
 ```
 
-Com isso, podemos construir de fato o nosso componente `<Router />` que irá entregar nossa context para cada elemento a ser renderizado na tela.
+Com isso, podemos construir de fato o nosso componente `\<Router />` que irá entregar nossa context para cada elemento a ser renderizado na tela.
 
 ```tsx
 import { pathToRegexp } from "path-to-regexp";
@@ -195,7 +195,7 @@ export const Router: FC<RouterProps> = ({ children, notFound: NotFound }) => {
 };
 ```
 
-# <Route />
+# \<Route />
 
 E com isso temos nosso router, mas ainda falta a nossa forma de criar nosso `<Route/>`
 
@@ -212,7 +212,7 @@ export const Route = (props: RouteProps) => {
 };
 ```
 
-# <Link />
+# \<Link />
 
 Mas também faltou a forma de criar nossos links para caminhar entre as páginas. Para isso, podemos fazer uma componente utilizando o `<a/>` e aproveitar o próprio atributo href, assim temos uma forma acessível e semântica de criar nossos Links.
 

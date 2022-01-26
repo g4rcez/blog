@@ -68,7 +68,7 @@ class Component extends React.PureComponent {
 }
 ```
 
-# React.forwardRef<Ref, Props>(props, externalRef)
+# React.forwardRef\<Ref, Props\>(props, externalRef)
 
 De cara já temos a assinatura tipada + parâmetros do forwardRef. Mas para poder explicar o `forwardRef` de forma tranquila, vamos voltar um pouco em como chamamos o nosso JSX e como nós criamos nossos componentes de função:
 
@@ -120,7 +120,7 @@ const Component = forwardRef<HTMLSpanElement, Props>((props: Props, ref) => {
 
 Agora sim. Podemos utilizar a property `ref` ao usar o nosso `Component` e não haverão mais erros. E o mais legal? Quem consumir este componente vai ter o tipo exato da ref, sem nenhum problema na hora de consumir
 
-![Funcionamento da ref do Component <span />](/ref-image.png)
+![Funcionamento da ref do Component \<span /\>](/ref-image.png)
 
 Se você fizer um `document.querySelector("span")` ou qualquer outro método de acesso ao DOM que vá retornar um span, verá que as properties são as mesmas. E ainda mais, se você fizer um `Object.is(ref.current, document.querySelector("span"))` eles serão os mesmos objetos.
 

@@ -1,9 +1,9 @@
-import { bundleMDX } from "mdx-bundler";
-import fs from "fs/promises";
 import { existsSync } from "fs";
+import fs from "fs/promises";
+import { bundleMDX } from "mdx-bundler";
 import Path from "path";
 
-export const compileMdx = async (post: string, language?: string): Promise<string | null> => {
+export const compileMdx = async (post: string, language?: string) => {
   const filePath = Path.resolve(Path.join(process.cwd(), "_posts", `${post}.md`));
   if (!existsSync(filePath)) {
     return null;
@@ -17,5 +17,5 @@ export const compileMdx = async (post: string, language?: string): Promise<strin
       return options;
     },
   });
-  return result.code;
+  return { code: result.code, content: mdxSource, post: result.frontmatter as never };
 };

@@ -1,5 +1,5 @@
 export namespace Strings {
-  export const slugify = (str: string) =>
+  export const slugify = (str: string = "") =>
     str
       .toLowerCase()
       .trim()
