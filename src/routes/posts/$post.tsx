@@ -2,26 +2,31 @@ import { getMDXComponent } from "mdx-bundler/client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { Anchor } from "~/components/anchor";
+import { Container } from "~/components/container";
 import { MdxComponents } from "~/components/mdx-components";
-import { Files } from "~/lib/files.server";
+import { Posts } from "~/database/posts.server";
+import { Http } from "~/lib/http";
 import { compileMdx } from "~/lib/mdx.server";
 import { Strings } from "~/lib/strings";
 
 export const loader: LoaderFunction = async ({ params }) => {
   const slug = params.post as string;
-  const result = await compileMdx(params.post as string);
-  return json({ code: result?.code, slug, post: Files.parsePostFile(result?.post!, slug, result?.content!) }, result === null ? 404 : 200);
+  const post = await Posts.findOne(slug);
+  if (post === null) return json({ message: `Not found ${slug}` }, Http.StatusNotFound);
+  const result = await compileMdx(post.content);
+  return json({ code: result?.code, post }, result === null ? 404 : 200);
 };
 
 export const meta: MetaFunction = ({ data }) => {
-  const title: string = data.slug;
+  const post: Posts.PostDetailed = data.post;
+  const title = post?.title ?? "";
   return {
-    title,
+    title: title,
     "og:title": title,
   };
 };
 
-type LoaderData = { code: string | null; post: Files.PostFile };
+type LoaderData = { code: string | null; post: NonNullable<Posts.PostDetailed> };
 
 type Heading = { id: string; text: string; order: number };
 
@@ -46,12 +51,12 @@ export default function Index() {
   if (Component === null) return <div>Not found</div>;
 
   return (
-    <div className="mx-auto container w-full max-w-6xl">
+    <Container>
       <header className="mb-8">
         <div className="mb-4">
           <h1 className="text-5xl font-extrabold capitalize leading-snug">{data.post.title}</h1>
           <small>
-            <time>{new Date(data.post.date).toDateString()}</time> — {data.post.readingTime} min read
+            <time>{new Date(data.post.createdAt).toDateString()}</time> — {data.post.readingTime} min read
           </small>
         </div>
         <nav>
@@ -70,6 +75,6 @@ export default function Index() {
       >
         <Component components={MdxComponents} />
       </main>
-    </div>
+    </Container>
   );
 }

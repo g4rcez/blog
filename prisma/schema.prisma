@@ -1,0 +1,61 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Post {
+  postId      String     @id @default(uuid())
+  slug        String     @db.VarChar(256)
+  description String     @db.VarChar(512)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  readingTime Int        @default(0) @db.UnsignedInt
+  title       String     @db.VarChar(256)
+  language    String     @default("pt-br") @db.VarChar(6)
+  content     String     @db.Text
+  published   Boolean    @default(false)
+  visitors    Int        @db.UnsignedInt
+  originalId  String?
+  authorId    String
+  tags        PostTags[]
+  Post        Post[]     @relation("originalPost")
+  author      User       @relation(fields: [authorId], references: [userId])
+  original    Post?      @relation(name: "originalPost", fields: [originalId], references: [postId], onUpdate: NoAction, onDelete: NoAction)
+
+  @@map("post")
+}
+
+model Tag {
+  tagId    String     @id @default(uuid())
+  label    String     @unique @db.VarChar(32)
+  type     String     @default("undefined") @db.VarChar(32)
+  PostTags PostTags[]
+
+  @@map("tag")
+}
+
+model PostTags {
+  post       Post     @relation(fields: [postId], references: [postId])
+  tag        Tag      @relation(fields: [tagId], references: [tagId])
+  postId     String
+  tagId      String
+  assignedAt DateTime @default(now())
+
+  @@id([postId, tagId])
+  @@map("post_tags")
+}
+
+model User {
+  userId String @id @default(uuid())
+  Post   Post[]
+  name   String
+  email  String @unique
+
+  @@map("users")
+}

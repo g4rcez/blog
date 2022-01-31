@@ -4,6 +4,9 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+  "exclude": [
+    "node_modules/**/*"
+  ],
   "compilerOptions": {
     "lib": [
       "DOM",
@@ -13,10 +16,15 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+    "preserveConstEnums": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2019",
     "strict": true,
+    "downlevelIteration": true,
+    "useUnknownInCatchVariables": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [

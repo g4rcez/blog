@@ -45,7 +45,7 @@ export const Navbar = () => {
 
   return (
     <header className="w-full bg-zinc-900 text-white sticky top-0 mb-8 z-10">
-      <nav className="flex justify-between items-center mx-auto container max-w-6xl py-4 text-xl">
+      <nav className="flex justify-between items-center mx-auto container max-w-6xl py-2 text-xl">
         <Link to={Links.root}>
           <strong className="font-extrabold">g4rcez blog</strong>
         </Link>

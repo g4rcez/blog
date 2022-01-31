@@ -1,4 +1,7 @@
 export const Links = {
-    root: "/",
-    post: (name: string) => `/posts/${name}`
-}
+  root: "/",
+  rootTagFilter: (tag: string) => `/?tag=${tag}`,
+  post: (name: string) => `/posts/${name}`,
+
+  adminPosts: "/",
+};
