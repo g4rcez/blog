@@ -9,13 +9,14 @@ export namespace Posts {
     content: string;
     title: string;
     description: string;
+    userId: string;
   } & Partial<PostDetailed>;
 
   export type PostDetailed = Awaited<ReturnType<typeof findOne>>;
 
-  export const create = async ({ title, content, description }: CreatePost) => {
+  export const create = async ({ title, content, description, userId }: CreatePost) => {
     const postId = randomUUID();
-    return Db.post.create({
+    return Db.posts.create({
       data: {
         postId,
         title,
@@ -29,7 +30,7 @@ export namespace Posts {
         readingTime: Math.ceil(content.split(" ").length / 250),
         author: {
           connect: {
-            userId: "ff8c9651-cbcc-4231-a9ba-4aa3b4bfa958",
+            id: userId,
           },
         },
       },
@@ -39,30 +40,32 @@ export namespace Posts {
   type UpdateBody = { content: string; postId: string; description: string; published: boolean; title: string; tags: string[] };
 
   export const update = async (post: UpdateBody) => {
-    await Db.post.update({
+    const now = new Date();
+    const slug = Strings.slugify(post.title);
+    await Db.posts.update({
       where: { postId: post.postId },
       data: {
         content: post.content,
         description: post.description,
         title: post.title,
-        slug: Strings.slugify(post.title),
+        slug,
         published: post.published,
-        updatedAt: new Date(),
-        tags: {
-          connect: post.tags.map((tag) => ({
-            postId_tagId: {
-              postId: post.postId,
-              tagId: tag,
-            },
-          })),
-        },
+        updatedAt: now,
       },
     });
-    return post;
+    await Db.postTags.createMany({
+      skipDuplicates: true,
+      data: post.tags.map((tag) => ({
+        tagId: tag,
+        postId: post.postId,
+        assignedAt: new Date(),
+      })),
+    });
+    return { ...post, slug };
   };
 
   export const findOne = async (slug: string) => {
-    const posts = await Db.post.findMany({
+    const posts = await Db.posts.findMany({
       where: {
         slug,
         originalId: null,
@@ -97,7 +100,7 @@ export namespace Posts {
         },
       };
     }
-    return Db.post.findMany({
+    return Db.posts.findMany({
       orderBy: [{ createdAt: "desc" }],
       where: whereCondition,
       select: {

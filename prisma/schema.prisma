@@ -9,7 +9,7 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-model Post {
+model Posts {
   postId      String     @id @default(uuid())
   slug        String     @db.VarChar(256)
   description String     @db.VarChar(512)
@@ -24,25 +24,25 @@ model Post {
   originalId  String?
   authorId    String
   tags        PostTags[]
-  Post        Post[]     @relation("originalPost")
-  author      User       @relation(fields: [authorId], references: [userId])
-  original    Post?      @relation(name: "originalPost", fields: [originalId], references: [postId], onUpdate: NoAction, onDelete: NoAction)
+  Post        Posts[]    @relation("originalPost")
+  author      Users      @relation(fields: [authorId], references: [id])
+  original    Posts?     @relation(name: "originalPost", fields: [originalId], references: [postId], onUpdate: NoAction, onDelete: NoAction)
 
-  @@map("post")
+  @@map("posts")
 }
 
-model Tag {
+model Tags {
   tagId    String     @id @default(uuid())
   label    String     @unique @db.VarChar(32)
   type     String     @default("undefined") @db.VarChar(32)
   PostTags PostTags[]
 
-  @@map("tag")
+  @@map("tags")
 }
 
 model PostTags {
-  post       Post     @relation(fields: [postId], references: [postId])
-  tag        Tag      @relation(fields: [tagId], references: [tagId])
+  post       Posts    @relation(fields: [postId], references: [postId])
+  tag        Tags     @relation(fields: [tagId], references: [tagId])
   postId     String
   tagId      String
   assignedAt DateTime @default(now())
@@ -51,11 +51,13 @@ model PostTags {
   @@map("post_tags")
 }
 
-model User {
-  userId String @id @default(uuid())
-  Post   Post[]
-  name   String
-  email  String @unique
+model Users {
+  id            String  @id @default(uuid())
+  Post          Posts[]
+  name          String
+  email         String  @unique
+  authService   String  @default("")
+  authServiceId String  @default("")
 
   @@map("users")
 }

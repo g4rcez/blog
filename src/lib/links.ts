@@ -1,7 +1,10 @@
 export const Links = {
   root: "/",
-  rootTagFilter: (tag: string) => `/?tag=${tag}`,
   post: (name: string) => `/posts/${name}`,
-
-  adminPosts: "/",
+  rootTagFilter: (tag: string) => `/?tag=${tag}`,
+  adminNewPost: `/admin/posts/new`,
+  adminPost: (slug: string) => `/admin/posts/${slug}`,
+  adminTagFilter: (tag: string) => `/admin/tags?tag=${tag}`,
+  adminRoot: "/admin/posts",
+  login: "/login",
 };

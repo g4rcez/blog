@@ -1,8 +1,8 @@
 -- CreateTable
-CREATE TABLE `post` (
+CREATE TABLE `posts` (
     `postId` VARCHAR(191) NOT NULL,
-    `slug` VARCHAR(256) NOT NULL DEFAULT '',
-    `description` VARCHAR(512) NOT NULL DEFAULT '',
+    `slug` VARCHAR(256) NOT NULL,
+    `description` VARCHAR(512) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `readingTime` INTEGER UNSIGNED NOT NULL DEFAULT 0,
@@ -18,12 +18,12 @@ CREATE TABLE `post` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `tag` (
+CREATE TABLE `tags` (
     `tagId` VARCHAR(191) NOT NULL,
     `label` VARCHAR(32) NOT NULL,
     `type` VARCHAR(32) NOT NULL DEFAULT 'undefined',
 
-    UNIQUE INDEX `tag_label_key`(`label`),
+    UNIQUE INDEX `tags_label_key`(`label`),
     PRIMARY KEY (`tagId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -38,10 +38,12 @@ CREATE TABLE `post_tags` (
 
 -- CreateTable
 CREATE TABLE `users` (
-    `userId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
+    `authService` VARCHAR(191) NOT NULL DEFAULT '',
+    `authServiceId` VARCHAR(191) NOT NULL DEFAULT '',
 
     UNIQUE INDEX `users_email_key`(`email`),
-    PRIMARY KEY (`userId`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -19,3 +19,4 @@ export namespace Remix {
 export namespace Validation {
   export type Error<T extends {}> = Record<keyof T, string[]>;
 }
+

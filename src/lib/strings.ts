@@ -14,4 +14,16 @@ export namespace Strings {
       .replace(/[^\w\-]+/g, "")
       .replace(/\-\-+/g, "-");
   };
+
+  export const formatDate = (date: Date) =>
+    date.toLocaleTimeString(undefined, {
+      day: "numeric",
+      weekday: "short",
+      hour: "numeric",
+      hour12: false,
+      second: "numeric",
+      month: "long",
+      year: "numeric",
+      minute: "numeric",
+    });
 }

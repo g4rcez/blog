@@ -1,20 +1,31 @@
-import { ActionFunction, Form } from "remix";
+import { Form, redirect } from "remix";
+import { authenticator, authSession } from "~/auth/auth.server";
+import { Auth } from "~/auth/middleware";
 import { ActionButton } from "~/components/button";
 import { Container } from "~/components/container";
 import { Heading } from "~/components/heading";
 import { Input } from "~/components/input";
 import { Textarea } from "~/components/textarea";
 import { Posts } from "~/database/posts.server";
+import { Users } from "~/database/users.server";
 import { Http } from "~/lib/http";
+import { Links } from "~/lib/links";
 
-export const action: ActionFunction = async ({ request }) => {
-  const body = await request.formData();
-  return Posts.create({
-    content: body.get("content") as string,
-    description: body.get("description") as string,
-    title: body.get("title") as string,
-  });
-};
+export const action = Auth.action(
+  async ({ request }, session) => {
+    const body = await request.formData();
+    const user = await Users.getById(session.data.id);
+    const post = await Posts.create({
+      userId: user?.id!,
+      content: body.get("content") as string,
+      description: body.get("description") as string,
+      title: body.get("title") as string,
+    });
+    return redirect(Links.adminPost(post.slug));
+  },
+  authSession,
+  authenticator
+);
 
 export default function AdminPostRoute() {
   return (
