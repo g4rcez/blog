@@ -53,6 +53,7 @@ export namespace Posts {
         updatedAt: now,
       },
     });
+    await Db.postTags.deleteMany({ where: { postId: post.postId } });
     await Db.postTags.createMany({
       skipDuplicates: true,
       data: post.tags.map((tag) => ({
@@ -72,7 +73,16 @@ export namespace Posts {
       },
       select: {
         postId: true,
-        tags: true,
+        tags: {
+          select: {
+            tag: {
+              select: {
+                label: true,
+                tagId: true,
+              },
+            },
+          },
+        },
         slug: true,
         title: true,
         content: true,

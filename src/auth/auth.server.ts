@@ -2,25 +2,16 @@ import dotenv from "dotenv";
 import { createCookieSessionStorage } from "remix";
 import { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
+import { Cookies } from "~/cookies.server";
 import { Users } from "~/database/users.server";
+import ConfigJson from "../config.json";
 dotenv.config();
 
 type User = {
   name: string;
 };
 
-export const authSession = createCookieSessionStorage({
-  cookie: {
-    name: "_session",
-    sameSite: "lax",
-    path: "/",
-    httpOnly: true,
-    secrets: ["s3cr3t"],
-    secure: process.env.NODE_ENV === "production",
-  },
-});
-
-export const authenticator = new Authenticator<User>(authSession);
+export const authenticator = new Authenticator<User>(Cookies.auth);
 
 class UserError extends Error {
   constructor() {
@@ -34,7 +25,7 @@ const gitHubStrategy = new GitHubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID ?? "",
     clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
-    callbackURL: "http://localhost:3000/auth/callback/github",
+    callbackURL: ConfigJson.urlCallback,
   },
   async (ctx): Promise<User> => {
     const user = await Users.get(ctx.profile._json.id.toString());

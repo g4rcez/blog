@@ -1,9 +1,13 @@
 export namespace Strings {
-  export const random = () => Math.random().toString(36).substring(2);
-  export const slugify = (text: string = "") => {
-    const from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
-    const to = "aaaaaeeeeeiiiiooooouuuunc--------";
+  export const toTitle = (str: string) => str.replace(/((^|[ _-])([a-z]{1}))/g, (_, char) => char.toUpperCase());
 
+  export const random = () => Math.random().toString(36).substring(2);
+
+  const from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+
+  const to = "aaaaaeeeeeiiiiooooouuuunc--------";
+
+  export const slugify = (text: string = "") => {
     return text
       .toLowerCase()
       .split("")

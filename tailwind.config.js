@@ -1,5 +1,6 @@
 const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
+const blogConfig = require("./src/config.json");
 
 module.exports = {
   content: ["./src/**/*.{tsx,ts,html}"],
@@ -7,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        main: { ...colors.indigo, DEFAULT: colors.indigo["500"], light: colors.indigo["200"], dark: colors.indigo["800"]},
+        main: { ...colors.indigo, ...blogConfig.colors.main, DEFAULT: blogConfig.colors.main.default },
       },
     },
     fontFamily: {

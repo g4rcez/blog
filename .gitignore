@@ -7,3 +7,4 @@ node_modules
 /src/styles/dist.css
 /api/_build
 /data
+/src/config.json

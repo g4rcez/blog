@@ -81,3 +81,7 @@ h4 {
 .button {
   @apply px-4 py-2 border text-lg font-medium rounded-lg min-w-[1.5rem] transition-all duration-300 text-slate-200;
 }
+
+.ReactCollapse--collapse {
+  transition: height 500ms ease-out;
+}

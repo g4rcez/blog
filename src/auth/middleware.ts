@@ -22,4 +22,13 @@ export namespace Auth {
 
   export const action: Middleware<ActionFunction> = middleware;
   export const loader: Middleware<LoaderFunction> = middleware;
+
+  export const isAuth = async (ctx: Parameters<LoaderFunction>[0], authenticator: Authenticator): Promise<boolean> => {
+    try {
+      await checkAuth(ctx.request, authenticator);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
 }

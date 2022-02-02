@@ -17,7 +17,7 @@ const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
 
   return (
     <Render {...props}>
-      <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
+      <Anchor className="font-extrabold no-underline group" to={`#${text}`}>
         <button className="inline-block opacity-0 transition-opacity duration-300 group-hover:opacity-100 rotate-45 mr-2">
           <RiLink aria-hidden="true" className="rotate-45 text-base" />
         </button>
