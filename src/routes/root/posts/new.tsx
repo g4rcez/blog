@@ -1,11 +1,12 @@
 import { Form, redirect } from "remix";
-import { authenticator, authSession } from "~/auth/auth.server";
+import { authenticator } from "~/auth/auth.server";
 import { Auth } from "~/auth/middleware";
 import { ActionButton } from "~/components/button";
 import { Container } from "~/components/container";
 import { Heading } from "~/components/heading";
 import { Input } from "~/components/input";
 import { Textarea } from "~/components/textarea";
+import { Cookies } from "~/cookies.server";
 import { Posts } from "~/database/posts.server";
 import { Users } from "~/database/users.server";
 import { Http } from "~/lib/http";
@@ -21,9 +22,9 @@ export const action = Auth.action(
       description: body.get("description") as string,
       title: body.get("title") as string,
     });
-    return redirect(Links.adminPost(post.slug));
+    return redirect(Links.rootPost(post.slug));
   },
-  authSession,
+  Cookies.auth,
   authenticator
 );
 

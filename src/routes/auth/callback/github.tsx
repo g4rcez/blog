@@ -4,7 +4,7 @@ import { Links } from "~/lib/links";
 
 export let loader: LoaderFunction = ({ request }) => {
   return authenticator.authenticate("github", request, {
-    successRedirect: Links.adminRoot,
+    successRedirect: Links.rootIndex,
     failureRedirect: "/login",
   });
 };

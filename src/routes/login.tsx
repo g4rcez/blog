@@ -7,13 +7,13 @@ import { Links } from "~/lib/links";
 
 export const action: ActionFunction = async ({ request }) => {
   return authenticator.authenticate("user-pass", request, {
-    successRedirect: Links.adminRoot,
+    successRedirect: Links.rootIndex,
     failureRedirect: Links.login,
   });
 };
 
 export let loader: LoaderFunction = async ({ request }) => {
-  return authenticator.isAuthenticated(request, { successRedirect: Links.adminRoot });
+  return authenticator.isAuthenticated(request, { successRedirect: Links.rootIndex });
 };
 
 export default function Login() {

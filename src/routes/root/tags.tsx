@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { RiAddLine, RiEditLine } from "react-icons/ri";
 import { ActionFunction, json, useFetcher, useLoaderData } from "remix";
-import { authenticator, authSession } from "~/auth/auth.server";
+import { authenticator } from "~/auth/auth.server";
 import { Auth } from "~/auth/middleware";
 import { ActionButton, EditButton } from "~/components/button";
 import { Container } from "~/components/container";
 import { Heading } from "~/components/heading";
 import { Input } from "~/components/input";
+import { Cookies } from "~/cookies.server";
 import { Tags } from "~/database/tags.server";
-import { Remix } from "~/globals.types";
+import { Remix } from "~/lib/utility-types";
 import { Http } from "~/lib/http";
 import { has } from "~/lib/utility-types";
 
@@ -27,7 +28,7 @@ export const loader: Remix.LoaderFunction<Props> = Auth.loader(
     const tags = await Tags.getAll();
     return { tags: tags, tagQueryString: url.searchParams.get("tag") ?? "" };
   },
-  authSession,
+  Cookies.auth,
   authenticator
 );
 
@@ -47,13 +48,17 @@ const httpMethodActions: Record<string, ActionFunction> = {
   },
 };
 
-export const action: ActionFunction = async (context) => {
-  const method = context.request.method.toLowerCase();
-  if (has(httpMethodActions, method)) {
-    return httpMethodActions[method](context);
-  }
-  return json({ notFound: true }, Http.StatusNotFound);
-};
+export const action: ActionFunction = Auth.action(
+  async (context) => {
+    const method = context.request.method.toLowerCase();
+    if (has(httpMethodActions, method)) {
+      return httpMethodActions[method](context);
+    }
+    return json({ notFound: true }, Http.StatusNotFound);
+  },
+  Cookies.auth,
+  authenticator
+);
 
 const NewTagInline: React.VFC<{ autoFocus: boolean }> = ({ autoFocus }) => {
   const form = useRef<HTMLFormElement>(null);

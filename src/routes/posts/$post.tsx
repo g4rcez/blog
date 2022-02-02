@@ -8,22 +8,37 @@ import { Posts } from "~/database/posts.server";
 import { Http } from "~/lib/http";
 import { compileMdx } from "~/lib/mdx.server";
 import { Strings } from "~/lib/strings";
+import ConfigJson from "../../config.json";
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const slug = params.post as string;
+
   const post = await Posts.findOne(slug);
   if (post === null) return json({ message: `Not found ${slug}` }, Http.StatusNotFound);
   const result = await compileMdx(post.content);
-  return json({ code: result?.code, post }, result === null ? 404 : 200);
+  return json({ code: result?.code, post, url: request.url }, result === null ? 404 : 200);
 };
 
 export const meta: MetaFunction = ({ data }) => {
   const post: Posts.PostDetailed = data.post;
-  const title = post?.title ?? "";
-  return {
-    title: title,
-    "og:title": title,
+  if (post === null) return {} as never;
+  const metaTags: Record<string, string> = {
+    title: post.title,
+    description: post.description,
+    keywords: [...post.tags, { tag: { label: "react-hooks" } }].map((tag) => Strings.toTitle(tag.tag.label)).join(", "),
+    "og:site": post.description,
+    "og:title": post.title,
+    "og:url": data.url as string,
+    "og:description": post.description,
+
+    "twitter:title": post.title,
+    "twitter:card": "summary_large_image",
+    "twitter:description": post.description,
   };
+
+  if (ConfigJson.github) metaTags["twitter:site"] = `@${ConfigJson.github}`;
+  if (ConfigJson.twitter) metaTags["twitter:creator"] = `@${ConfigJson.twitter}`;
+  return metaTags;
 };
 
 type LoaderData = { code: string | null; post: NonNullable<Posts.PostDetailed> };
@@ -63,7 +78,7 @@ export default function Index() {
           <ul className="my-4">
             {headings.map((hx) => (
               <li key={`${hx.id}-${hx.order}`} className="my-2 text-sm underline underline-offset-4" data-order={hx.order}>
-                <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
+                <Anchor to={`#${hx.id}`}>{hx.text}</Anchor>
               </li>
             ))}
           </ul>
