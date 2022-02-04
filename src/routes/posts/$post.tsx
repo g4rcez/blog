@@ -2,26 +2,46 @@ import { getMDXComponent } from "mdx-bundler/client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { Anchor } from "~/components/anchor";
+import { Container } from "~/components/container";
 import { MdxComponents } from "~/components/mdx-components";
-import { Files } from "~/lib/files.server";
+import { Posts } from "~/database/posts.server";
+import { Http } from "~/lib/http";
 import { compileMdx } from "~/lib/mdx.server";
 import { Strings } from "~/lib/strings";
+import ConfigJson from "../../config.json";
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   const slug = params.post as string;
-  const result = await compileMdx(params.post as string);
-  return json({ code: result?.code, slug, post: Files.parsePostFile(result?.post!, slug, result?.content!) }, result === null ? 404 : 200);
+
+  const post = await Posts.findOne(slug);
+  if (post === null) return json({ message: `Not found ${slug}` }, Http.StatusNotFound);
+  const result = await compileMdx(post.content);
+  return json({ code: result?.code, post, url: request.url }, result === null ? 404 : 200);
 };
 
 export const meta: MetaFunction = ({ data }) => {
-  const title: string = data.slug;
-  return {
-    title,
-    "og:title": title,
+  const post: Posts.PostDetailed = data.post;
+  if (post === null) return {} as never;
+  const metaTags: Record<string, string> = {
+    title: post.title,
+    description: post.description,
+    keywords: [...post.tags, { tag: { label: "react-hooks" } }].map((tag) => Strings.toTitle(tag.tag.label)).join(", "),
+    "og:site": post.description,
+    "og:title": post.title,
+    "og:url": data.url as string,
+    "og:description": post.description,
+
+    "twitter:title": post.title,
+    "twitter:card": "summary_large_image",
+    "twitter:description": post.description,
   };
+
+  if (ConfigJson.github) metaTags["twitter:site"] = `@${ConfigJson.github}`;
+  if (ConfigJson.twitter) metaTags["twitter:creator"] = `@${ConfigJson.twitter}`;
+  return metaTags;
 };
 
-type LoaderData = { code: string | null; post: Files.PostFile };
+type LoaderData = { code: string | null; post: NonNullable<Posts.PostDetailed> };
 
 type Heading = { id: string; text: string; order: number };
 
@@ -46,19 +66,19 @@ export default function Index() {
   if (Component === null) return <div>Not found</div>;
 
   return (
-    <div className="mx-auto container w-full max-w-6xl">
+    <Container>
       <header className="mb-8">
         <div className="mb-4">
           <h1 className="text-5xl font-extrabold capitalize leading-snug">{data.post.title}</h1>
           <small>
-            <time>{new Date(data.post.date).toDateString()}</time> — {data.post.readingTime} min read
+            <time>{new Date(data.post.createdAt).toDateString()}</time> — {data.post.readingTime} min read
           </small>
         </div>
         <nav>
           <ul className="my-4">
             {headings.map((hx) => (
               <li key={`${hx.id}-${hx.order}`} className="my-2 text-sm underline underline-offset-4" data-order={hx.order}>
-                <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
+                <Anchor to={`#${hx.id}`}>{hx.text}</Anchor>
               </li>
             ))}
           </ul>
@@ -70,6 +90,6 @@ export default function Index() {
       >
         <Component components={MdxComponents} />
       </main>
-    </div>
+    </Container>
   );
 }

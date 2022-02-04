@@ -1,8 +1,12 @@
 {
   "include": [
     "remix.env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "src/blog.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules/**/*"
   ],
   "compilerOptions": {
     "lib": [
@@ -10,13 +14,19 @@
       "DOM.Iterable",
       "ES2019"
     ],
+    "module": "ESNext",
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+    "preserveConstEnums": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2019",
     "strict": true,
+    "downlevelIteration": true,
+    "useUnknownInCatchVariables": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [

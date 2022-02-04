@@ -6,3 +6,5 @@ node_modules
 .env
 /src/styles/dist.css
 /api/_build
+/data
+/src/config.json
