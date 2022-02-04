@@ -1,9 +1,10 @@
-import { Strings } from "~/lib/strings";
-import { Anchor } from "./anchor";
-import { RiLink } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
+import { RiLink } from "react-icons/ri";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
-import codeStyle from "react-syntax-highlighter/dist/cjs/styles/prism/dracula";
+import { Strings } from "~/lib/strings";
+import { Themes } from "~/lib/theme";
+import { Anchor } from "./anchor";
+import { useTheme } from "./theme.provider";
 
 const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> & { tag: `h${2 | 3 | 4 | 5 | 6}` }) => {
   const Render = props.tag;
@@ -27,16 +28,39 @@ const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
   );
 };
 
+const Pre = (props: any) => {
+  const { className, children } = props.children.props;
+  const lang = (className ?? "").replace("language-", "");
+  const [theme] = useTheme();
+  const [codeStyle, setCodeStyle] = useState<any>({});
+
+  useEffect(() => {
+    const async = async () => {
+      const css = await import(
+        theme === Themes.Dark
+          ? "react-syntax-highlighter/dist/cjs/styles/prism/dracula"
+          : "react-syntax-highlighter/dist/cjs/styles/prism/material-light"
+      );
+      return setCodeStyle(css.default.default);
+    };
+    async();
+  }, [theme]);
+
+  return (
+    <Syntax
+      showLineNumbers
+      language={lang}
+      className="text-lg my-4 border dark:border-transparent"
+      style={{ ...codeStyle, fontFamily: "monospace" }}
+      codeTagProps={{ style: { fontFamily: "'Fira Code', monospace" } }}
+    >
+      {children.trim()}
+    </Syntax>
+  );
+};
+
 export const MdxComponents = {
-  pre: (props: any) => {
-    const { className, children } = props.children.props;
-    const lang = (className ?? "").replace("language-", "");
-    return (
-      <Syntax showLineNumbers language={lang} className="text-lg my-4" style={{ ...codeStyle, fontFamily: "monospace" }}>
-        {children.trim()}
-      </Syntax>
-    );
-  },
+  pre: Pre,
   h1: (props: any) => <HX {...props} tag="h2" />,
   h2: (props: any) => <HX {...props} tag="h2" />,
   h3: (props: any) => <HX {...props} tag="h3" />,

@@ -9,19 +9,16 @@ type ContextType = [theme: Themes, setTheme: React.Dispatch<React.SetStateAction
 
 const Context = React.createContext<ContextType | undefined>(undefined);
 
+const mediaQuery = "(prefers-color-scheme: dark)";
+
 export const ThemeProvider: React.FC<{ initialTheme: Themes }> = ({ children, initialTheme }) => {
   const [theme, setTheme] = useState(initialTheme);
   const { submit } = useFetcher();
-  const onMediaMatch = useCallback((match: boolean) => setTheme(match ? Themes.Light : Themes.Dark), []);
-  useMediaQuery("(prefers-color-scheme: light)", onMediaMatch);
+  const onMediaMatch = useCallback((match: boolean) => setTheme(match ? Themes.Dark : Themes.Light), []);
+  useMediaQuery(mediaQuery, onMediaMatch);
   const colorSchemaMeta = useRef<HTMLMetaElement | null>(null);
 
   useEffect(() => {
-    if (colorSchemaMeta.current === null) {
-      colorSchemaMeta.current = document.querySelector("meta[name='color-scheme']");
-    }
-    colorSchemaMeta.current!.content = theme === Themes.Dark ? "dark light" : "light dark";
-
     if (theme === Themes.Null) return;
     submit({ theme }, { action: Links.postApiTheme, method: Http.Post });
   }, [theme, submit]);
