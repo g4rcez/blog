@@ -2,7 +2,7 @@ import { Links, LinksFunction, LiveReload, LoaderFunction, Meta, Outlet, Scripts
 import { authenticator } from "./auth/auth.server";
 import { Auth } from "./auth/middleware";
 import { Navbar } from "./components/navbar";
-import { ThemeProvider } from "./components/theme.provider";
+import { ThemeProvider, useTheme } from "./components/theme.provider";
 import ConfigJson from "./config.json";
 import { Themes } from "./lib/theme";
 import { themeCookies } from "./routes/api/theme";
@@ -18,16 +18,16 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 
 export default function App() {
   const loaderData = useLoaderData();
-  const theme: Themes = loaderData.theme;
+  const [theme] = useTheme();
   return (
     <ThemeProvider initialTheme={theme}>
-      <html lang="pt-BR" className={theme === Themes.Dark ? "dark" : "light"}>
+      <html lang="pt-BR" className={theme === Themes.Dark ? "dark" : ""}>
         <head>
           <meta charSet="utf-8" />
           <title>g4rcez Blog</title>
           <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
           <meta name="theme-color" content={ConfigJson.colors.main.default} />
-          <meta name="color-scheme" content={theme === Themes.Dark ? "dark" : "light dark"} />
+          <meta name="color-scheme" content={theme === Themes.Dark ? "dark light" : "light dark"} />
           <Meta />
           <Links />
         </head>

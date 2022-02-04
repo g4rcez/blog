@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useFetcher } from "remix";
 import { useMediaQuery } from "~/hooks/use-media-query";
 import { Http } from "~/lib/http";
@@ -16,10 +16,10 @@ export const ThemeProvider: React.FC<{ initialTheme: Themes }> = ({ children, in
   const { submit } = useFetcher();
   const onMediaMatch = useCallback((match: boolean) => setTheme(match ? Themes.Dark : Themes.Light), []);
   useMediaQuery(mediaQuery, onMediaMatch);
-  const colorSchemaMeta = useRef<HTMLMetaElement | null>(null);
 
   useEffect(() => {
     if (theme === Themes.Null) return;
+    setTheme(theme);
     submit({ theme }, { action: Links.postApiTheme, method: Http.Post });
   }, [theme, submit]);
 
