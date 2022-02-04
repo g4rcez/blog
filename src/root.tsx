@@ -1,16 +1,12 @@
-import { Links, LinksFunction, LiveReload, LoaderFunction, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useLoaderData } from "remix";
+import { Links, LinksFunction, LiveReload, LoaderFunction, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "remix";
 import { authenticator } from "./auth/auth.server";
 import { Auth } from "./auth/middleware";
 import { Navbar } from "./components/navbar";
-import css from "./styles/dist.css";
-import ConfigJson from "./config.json";
 import { ThemeProvider } from "./components/theme.provider";
-import { themeCookies } from "./routes/api/theme";
+import ConfigJson from "./config.json";
 import { Themes } from "./lib/theme";
-
-export const meta: MetaFunction = () => {
-  return { title: "g4rcez Blog", "theme-color": ConfigJson.colors.main.default, "color-scheme": "" };
-};
+import { themeCookies } from "./routes/api/theme";
+import css from "./styles/dist.css";
 
 export const loader: LoaderFunction = async (ctx) => {
   const isAuth = await Auth.isAuth(ctx, authenticator);
@@ -22,13 +18,16 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 
 export default function App() {
   const loaderData = useLoaderData();
-  const theme = loaderData.theme;
+  const theme: Themes = loaderData.theme;
   return (
     <ThemeProvider initialTheme={theme}>
-      <html lang="pt-BR" className={theme === Themes.Dark ? "dark" : ""}>
+      <html lang="pt-BR" className={theme === Themes.Dark ? "dark" : "light"}>
         <head>
           <meta charSet="utf-8" />
+          <title>g4rcez Blog</title>
           <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+          <meta name="theme-color" content={ConfigJson.colors.main.default} />
+          <meta name="color-scheme" content={theme === Themes.Dark ? "dark" : "light dark"} />
           <Meta />
           <Links />
         </head>

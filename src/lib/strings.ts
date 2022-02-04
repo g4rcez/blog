@@ -10,6 +10,9 @@ export namespace Strings {
   export const slugify = (text: string = "") => {
     return text
       .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u202f]/g, " ")
+      .replace(/[\u0300-\u036f]/g, "")
       .split("")
       .map((letter, i) => letter.replace(new RegExp(from.charAt(i), "g"), to.charAt(i)))
       .toString()

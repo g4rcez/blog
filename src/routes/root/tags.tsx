@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { RiAddLine, RiEditLine } from "react-icons/ri";
 import { ActionFunction, json, useFetcher, useLoaderData } from "remix";
-import { authenticator } from "~/auth/auth.server";
 import { Auth } from "~/auth/middleware";
 import { ActionButton, EditButton } from "~/components/button";
 import { Container } from "~/components/container";
 import { Heading } from "~/components/heading";
 import { Input } from "~/components/input";
-import { Cookies } from "~/cookies.server";
 import { Tags } from "~/database/tags.server";
-import { Remix } from "~/lib/utility-types";
 import { Http } from "~/lib/http";
-import { has } from "~/lib/utility-types";
+import { has, Remix } from "~/lib/utility-types";
 
 type Tag = Tags.AllTags[0];
 
@@ -22,15 +19,11 @@ type Props = {
 
 const className = "flex items-center justify-center w-fit font-extrabold text-xl";
 
-export const loader: Remix.LoaderFunction<Props> = Auth.loader(
-  async ({ request }) => {
-    const url = new URL(request.url);
-    const tags = await Tags.getAll();
-    return { tags: tags, tagQueryString: url.searchParams.get("tag") ?? "" };
-  },
-  Cookies.auth,
-  authenticator
-);
+export const loader: Remix.LoaderFunction<Props> = Auth.loader(async ({ request }) => {
+  const url = new URL(request.url);
+  const tags = await Tags.getAll();
+  return { tags: tags, tagQueryString: url.searchParams.get("tag") ?? "" };
+});
 
 const httpMethodActions: Record<string, ActionFunction> = {
   [Http.Post]: async ({ request }) => {
@@ -48,17 +41,13 @@ const httpMethodActions: Record<string, ActionFunction> = {
   },
 };
 
-export const action: ActionFunction = Auth.action(
-  async (context) => {
-    const method = context.request.method.toLowerCase();
-    if (has(httpMethodActions, method)) {
-      return httpMethodActions[method](context);
-    }
-    return json({ notFound: true }, Http.StatusNotFound);
-  },
-  Cookies.auth,
-  authenticator
-);
+export const action: ActionFunction = Auth.action(async (context) => {
+  const method = context.request.method.toLowerCase();
+  if (has(httpMethodActions, method)) {
+    return httpMethodActions[method](context);
+  }
+  return json({ notFound: true }, Http.StatusNotFound);
+});
 
 const NewTagInline: React.VFC<{ autoFocus: boolean }> = ({ autoFocus }) => {
   const form = useRef<HTMLFormElement>(null);
@@ -72,7 +61,7 @@ const NewTagInline: React.VFC<{ autoFocus: boolean }> = ({ autoFocus }) => {
     if (!isAdding && autoFocus) {
       form.current.reset();
       const first = form.current.elements.namedItem("label") as HTMLInputElement;
-      setTimeout(() => first.focus(), 100);
+      first.focus();
     }
     skipFirst.current = true;
   }, [isAdding]);

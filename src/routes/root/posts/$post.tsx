@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ActionFunction, Form, json, LoaderFunction, redirect, useActionData, useLoaderData, useTransition } from "remix";
-import { authenticator } from "~/auth/auth.server";
+import { authCookies, authenticator } from "~/auth/auth.server";
 import { Auth } from "~/auth/middleware";
 import { ActionButton } from "~/components/button";
 import { Callout } from "~/components/callout";
@@ -17,41 +17,33 @@ import { Links } from "~/lib/links";
 import { Strings } from "~/lib/strings";
 import { Nullable } from "~/lib/utility-types";
 
-export const loader: LoaderFunction = Auth.loader(
-  async ({ params }) => {
-    const slug = params.post as string;
-    const post = await Posts.findOne(slug);
-    const tags = await Tags.getAll();
-    if (post === null) {
-      return json({ error: `Not found ${slug}`, posts: [], tags }, Http.StatusNotFound);
-    }
-    return json({ post, tags, error: null, oldTitle: post.title }, Http.StatusNotFound);
-  },
-  Cookies.auth,
-  authenticator
-);
+export const loader: LoaderFunction = Auth.loader(async ({ params }) => {
+  const slug = params.post as string;
+  const post = await Posts.findOne(slug);
+  const tags = await Tags.getAll();
+  if (post === null) {
+    return json({ error: `Not found ${slug}`, posts: [], tags }, Http.StatusNotFound);
+  }
+  return json({ post, tags, error: null, oldTitle: post.title }, Http.StatusNotFound);
+});
 
-export const action: ActionFunction = Auth.action(
-  async ({ request }) => {
-    const data = await request.formData();
-    const title = data.get("title") as string;
-    const slug = Strings.slugify(title);
-    const post = await Posts.update({
-      title,
-      postId: data.get("postId") as string,
-      tags: data.getAll("tags") as string[],
-      content: data.get("content") as string,
-      description: data.get("description") as string,
-      published: data.get("published")?.toString() === "on",
-    });
-    if (slug !== data.get("oldLink")) {
-      return redirect(Links.rootPost(post.slug));
-    }
-    return { savedAt: new Date().toISOString() };
-  },
-  Cookies.auth,
-  authenticator
-);
+export const action: ActionFunction = Auth.action(async ({ request }) => {
+  const data = await request.formData();
+  const title = data.get("title") as string;
+  const slug = Strings.slugify(title);
+  const post = await Posts.update({
+    title,
+    postId: data.get("postId") as string,
+    tags: data.getAll("tags") as string[],
+    content: data.get("content") as string,
+    description: data.get("description") as string,
+    published: data.get("published")?.toString() === "on",
+  });
+  if (slug !== data.get("oldLink")) {
+    return redirect(Links.rootPost(post.slug));
+  }
+  return { savedAt: new Date().toISOString() };
+});
 
 type Post = NonNullable<Posts.PostDetailed>;
 
