@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { ActionFunction, Form, json, LoaderFunction, redirect, useActionData, useLoaderData, useTransition } from "remix";
-import { authCookies, authenticator } from "~/auth/auth.server";
 import { Auth } from "~/auth/middleware";
 import { ActionButton } from "~/components/button";
 import { Callout } from "~/components/callout";
@@ -9,7 +8,6 @@ import { Heading } from "~/components/heading";
 import { Input } from "~/components/input";
 import { Switch } from "~/components/switch";
 import { Textarea } from "~/components/textarea";
-import { Cookies } from "~/cookies.server";
 import { Posts } from "~/database/posts.server";
 import { Tags } from "~/database/tags.server";
 import { Http } from "~/lib/http";
@@ -59,8 +57,6 @@ export default function PostEditRoute() {
   const actionData = useActionData<{ savedAt: Date }>();
   const form = useRef<HTMLFormElement>(null);
   const [show, setShow] = useState(false);
-
-  console.log({ show }, actionData);
 
   useEffect(() => {
     if (actionData?.savedAt) setShow(true);

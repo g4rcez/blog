@@ -19,7 +19,6 @@ export const Callout: React.FC<Props> = ({ show, onChange, closable, ...props })
   const onClick = useCallback(() => {
     setControlledState((prev) => {
       const newState = !prev;
-      console.log({ onClick: newState });
       onChange?.(newState);
       return newState;
     });
