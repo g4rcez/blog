@@ -105,7 +105,9 @@ export namespace Posts {
       whereCondition.tags = {
         some: {
           tag: {
-            label: tag,
+            label: {
+              contains: tag,
+            },
           },
         },
       };
