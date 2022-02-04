@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { createCookieSessionStorage } from "remix";
 import { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
 import { Cookies } from "~/cookies.server";

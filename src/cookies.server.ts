@@ -1,22 +1,23 @@
 import { createCookieSessionStorage } from "remix";
 require("dotenv").config();
 
-export namespace Cookies {
-  const secure = process.env.NODE_ENV === "production";
-  const secrets = [process.env.SECRET_COOKIE];
+const secure = process.env.NODE_ENV === "production";
+const secrets = [process.env.SECRET_COOKIE];
 
-  export const auth = createCookieSessionStorage({
+export const Cookies = {
+  secure: process.env.NODE_ENV === "production",
+  secrets: [process.env.SECRET_COOKIE],
+  auth: createCookieSessionStorage({
     cookie: {
       name: "_session",
       sameSite: "lax",
       path: "/",
       httpOnly: true,
-      secrets,
-      secure,
+      secrets: secrets,
+      secure: secure,
     },
-  });
-
-  export const theme = createCookieSessionStorage({
+  }),
+  theme: createCookieSessionStorage({
     cookie: {
       secure,
       secrets,
@@ -26,5 +27,5 @@ export namespace Cookies {
       expires: new Date("2039-01-01T02:59:59.999Z"),
       httpOnly: true,
     },
-  });
-}
+  }),
+};
