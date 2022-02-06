@@ -13,13 +13,13 @@ type Props = {
 };
 
 export const Navbar: React.VFC<Props> = ({ items }) => {
-  const [, setTheme] = useTheme();
+  const [theme, setTheme] = useTheme();
 
   const onToggleTheme = useCallback(() => setTheme((prev) => (prev === "light" ? Themes.Dark : Themes.Light)), []);
 
   return (
     <header className="w-full bg-zinc-900 text-white sticky top-0 mb-8 z-10">
-      <nav className="flex justify-between items-center mx-auto container max-w-6xl py-2 text-xl">
+      <nav className="flex justify-between items-center mx-auto container max-w-6xl py-2 text-xl px-4 sm:px-0">
         <Link to={Links.root}>
           <strong className="font-extrabold">g4rcez blog</strong>
         </Link>
@@ -33,7 +33,7 @@ export const Navbar: React.VFC<Props> = ({ items }) => {
           ))}
         </ul>
         <div className="flex text-2xl">
-          <button onClick={onToggleTheme}>
+          <button onClick={onToggleTheme} name="mode-toggle" aria-label={theme === Themes.Dark ? "Change to light mode" : "Change to dark mode"}>
             <RiSunFill aria-hidden="true" className="hidden dark:block text-orange-200" />
             <RiMoonFill aria-hidden="true" className="block dark:hidden text-slate-400" />
           </button>

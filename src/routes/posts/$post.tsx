@@ -84,12 +84,12 @@ export default function Index() {
           </ul>
         </nav>
       </header>
-      <main
+      <section
         ref={mainRef}
         className="py-2 max-w-6xl prose prose-slate dark:prose-invert prose-a:text-sky-700 dark:prose-a:text-sky-400 dark:prose-a:prose-headings:text-current prose-a:prose-headings:text-current prose-a:underline-offset-4"
       >
         <Component components={MdxComponents} />
-      </main>
+      </section>
     </Container>
   );
 }
