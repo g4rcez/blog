@@ -23,7 +23,11 @@ const Wrap: React.VFC<{ items: any[] }> = (props) => {
       <head>
         <meta charSet="utf-8" />
         <title>g4rcez Blog</title>
+        <meta name="description" content="g4rcez blog" />
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet" />
         <meta name="theme-color" content={ConfigJson.colors.main.default} />
         <meta name="color-scheme" content={theme === Themes.Dark ? "dark light" : "light dark"} />
         <Meta />
@@ -31,10 +35,12 @@ const Wrap: React.VFC<{ items: any[] }> = (props) => {
       </head>
       <body className="w-full h-full">
         <Navbar items={props.items} />
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
+        <main className="px-4 sm:px-0">
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          {process.env.NODE_ENV === "development" && <LiveReload />}
+        </main>
       </body>
     </html>
   );
