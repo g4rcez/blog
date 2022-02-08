@@ -6,8 +6,13 @@ import { Themes } from "~/lib/theme";
 import { Anchor } from "./anchor";
 import { useTheme } from "./theme.provider";
 
-const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> & { tag: `h${2 | 3 | 4 | 5 | 6}` }) => {
-  const Render = props.tag;
+const HX = ({
+  tag: Render,
+  ...props
+}: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLHeadingElement
+> & { tag: `h${2 | 3 | 4 | 5 | 6}` }) => {
   const [text, setText] = useState("");
   const span = useRef<HTMLSpanElement>(null);
 
@@ -17,7 +22,7 @@ const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
   }, []);
 
   return (
-    <Render {...props}>
+    <Render {...props} id={props.id ?? text}>
       <Anchor className="font-extrabold no-underline group" to={`#${text}`}>
         <button className="inline-block opacity-0 transition-opacity duration-300 group-hover:opacity-100 rotate-45 mr-2">
           <RiLink aria-hidden="true" className="rotate-45 text-base" />
@@ -29,7 +34,7 @@ const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
 };
 
 const Pre = (props: any) => {
-  const { className, children } = props.children.props;
+  const { className, children } = props.children[0].props;
   const lang = (className ?? "").replace("language-", "");
   const [theme] = useTheme();
   const [codeStyle, setCodeStyle] = useState<any>({});
@@ -54,18 +59,25 @@ const Pre = (props: any) => {
       style={{ ...codeStyle, fontFamily: "monospace" }}
       codeTagProps={{ style: { fontFamily: "'Fira Code', monospace" } }}
     >
-      {children.trim()}
+      {children[0].trim()}
     </Syntax>
   );
 };
 
 export const MdxComponents = {
   pre: Pre,
+  Custom: () => <p>AAA</p>,
+  custom: () => <p>AAA</p>,
+  img: (props: any) => (
+    <img
+      {...props}
+      className={`block min-w-full w-full m-0 p-0 ${props.className}`}
+    />
+  ),
   h1: (props: any) => <HX {...props} tag="h2" />,
   h2: (props: any) => <HX {...props} tag="h2" />,
   h3: (props: any) => <HX {...props} tag="h3" />,
   h4: (props: any) => <HX {...props} tag="h4" />,
   h5: (props: any) => <HX {...props} tag="h5" />,
   h6: (props: any) => <HX {...props} tag="h6" />,
-  Custom: (props: any) => <h1>CUSTOM</h1>,
 };
