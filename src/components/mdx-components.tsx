@@ -6,7 +6,12 @@ import { Themes } from "~/lib/theme";
 import { Anchor } from "./anchor";
 import { useTheme } from "./theme.provider";
 
-const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> & { tag: `h${2 | 3 | 4 | 5 | 6}` }) => {
+const HX = (
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLHeadingElement>,
+    HTMLHeadingElement
+  > & { tag: `h${2 | 3 | 4 | 5 | 6}` }
+) => {
   const Render = props.tag;
   const [text, setText] = useState("");
   const span = useRef<HTMLSpanElement>(null);
@@ -29,7 +34,7 @@ const HX = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingEleme
 };
 
 const Pre = (props: any) => {
-  const { className, children } = props.children.props;
+  const { className, children } = props.children[0].props;
   const lang = (className ?? "").replace("language-", "");
   const [theme] = useTheme();
   const [codeStyle, setCodeStyle] = useState<any>({});
@@ -54,7 +59,7 @@ const Pre = (props: any) => {
       style={{ ...codeStyle, fontFamily: "monospace" }}
       codeTagProps={{ style: { fontFamily: "'Fira Code', monospace" } }}
     >
-      {children.trim()}
+      {children[0].trim()}
     </Syntax>
   );
 };
