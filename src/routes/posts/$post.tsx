@@ -1,29 +1,71 @@
-import {
-  createElement,
-  Fragment,
-  lazy,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { Anchor } from "~/components/anchor";
 import { Container } from "~/components/container";
-import { MdxComponents } from "~/components/mdx-components";
 import { Posts } from "~/database/posts.server";
 import { Http } from "~/lib/http";
+import { markdown } from "~/lib/markdown.server";
+import { rehype } from "~/lib/rehype";
 import { Strings } from "~/lib/strings";
 import ConfigJson from "../../config.json";
-const ReactMarkdown = import("react-markdown").then((v) => v.default);
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const slug = params.post as string;
   const post = await Posts.findOne(slug);
-  if (post === null)
+  if (post === null) {
     return json({ message: `Not found ${slug}` }, Http.StatusNotFound);
-  return json({ code: post.content, post, url: request.url }, 200);
+  }
+  return json(
+    { code: await markdown(post.content), post, url: request.url },
+    200
+  );
 };
+
+const parseTextHeaders = (html: Document) =>
+  Array.from(html.querySelectorAll("h1,h2,h3,h4,h5,h6")).map((hx): Heading => {
+    const text = hx.textContent || "";
+    return {
+      text,
+      id: Strings.slugify(text),
+      order: Number.parseInt(hx.tagName.replace(/h/i, "")) - 2,
+    };
+  });
+
+const initialState = () => ({ content: React.Fragment, toc: React.Fragment });
+
+function useProcessor(text: string) {
+  const [Content, setContent] = useState(initialState);
+
+  useEffect(() => {
+    const asyncCall = async () => {
+      const file = await rehype(text);
+      const html = new DOMParser().parseFromString(
+        file.toString(),
+        "text/html"
+      );
+      const headers = parseTextHeaders(html);
+      setContent({
+        content: file.result as never,
+        toc: (
+          <ul className="my-4">
+            {headers.map((hx) => (
+              <li
+                key={`${hx.id}-${hx.order}`}
+                className="my-2 text-sm underline underline-offset-4"
+                data-order={hx.order}
+              >
+                <Anchor to={`#${hx.id}`}>{hx.text}</Anchor>
+              </li>
+            ))}
+          </ul>
+        ) as never,
+      });
+    };
+    asyncCall();
+  }, [text]);
+
+  return Content;
+}
 
 export const meta: MetaFunction = ({ data }) => {
   const post: Posts.PostDetailed = data.post;
@@ -51,36 +93,16 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 type LoaderData = {
-  code: string | null;
+  code: Awaited<ReturnType<typeof markdown>>;
   post: NonNullable<Posts.PostDetailed>;
 };
 
 type Heading = { id: string; text: string; order: number };
 
-//let ReactMarkdown: any = null;
-
 export default function Index() {
   const data = useLoaderData<LoaderData>();
-  const [headings, setHeadings] = useState<Heading[]>([]);
   const mainRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!mainRef.current) return;
-    setHeadings(
-      Array.from(mainRef.current.querySelectorAll("h2,h3,h4,h5,h6")).map(
-        (hx): Heading => {
-          const text = hx.textContent || "";
-          const id = Strings.slugify(text);
-          hx.id = id;
-          return {
-            id,
-            text,
-            order: Number.parseInt(hx.tagName.replace(/h/i, "")) - 2,
-          };
-        }
-      )
-    );
-  }, [data]);
+  const processor = useProcessor(data.code);
 
   return (
     <Container>
@@ -94,25 +116,13 @@ export default function Index() {
             {data.post.readingTime} min read
           </small>
         </div>
-        <nav>
-          <ul className="my-4">
-            {headings.map((hx) => (
-              <li
-                key={`${hx.id}-${hx.order}`}
-                className="my-2 text-sm underline underline-offset-4"
-                data-order={hx.order}
-              >
-                <Anchor to={`#${hx.id}`}>{hx.text}</Anchor>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <nav>{processor.toc}</nav>
       </header>
       <section
         ref={mainRef}
         className="py-2 max-w-6xl prose prose-slate dark:prose-invert prose-a:text-sky-700 dark:prose-a:text-sky-400 dark:prose-a:prose-headings:text-current prose-a:prose-headings:text-current prose-a:underline-offset-4"
       >
-        <ReactMarkdown children={data.code ?? ""} components={MdxComponents} />
+        {processor.content}
       </section>
     </Container>
   );
