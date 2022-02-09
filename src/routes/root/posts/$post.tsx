@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { ActionFunction, Form, json, LoaderFunction, redirect, useActionData, useLoaderData, useTransition } from "remix";
+import {
+  ActionFunction,
+  Form,
+  json,
+  LoaderFunction,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from "remix";
 import { Auth } from "~/auth/middleware";
 import { ActionButton } from "~/components/button";
 import { Callout } from "~/components/callout";
@@ -20,9 +29,15 @@ export const loader: LoaderFunction = Auth.loader(async ({ params }) => {
   const post = await Posts.findOne(slug);
   const tags = await Tags.getAll();
   if (post === null) {
-    return json({ error: `Not found ${slug}`, posts: [], tags }, Http.StatusNotFound);
+    return json(
+      { error: `Not found ${slug}`, posts: [], tags },
+      Http.StatusNotFound
+    );
   }
-  return json({ post, tags, error: null, oldTitle: post.title }, Http.StatusNotFound);
+  return json(
+    { post, tags, error: null, oldTitle: post.title },
+    Http.StatusNotFound
+  );
 });
 
 export const action: ActionFunction = Auth.action(async ({ request }) => {
@@ -35,6 +50,7 @@ export const action: ActionFunction = Auth.action(async ({ request }) => {
     tags: data.getAll("tags") as string[],
     content: data.get("content") as string,
     description: data.get("description") as string,
+    createdAt: new Date(data.get("createdAt") as string),
     published: data.get("published")?.toString() === "on",
   });
   if (slug !== data.get("oldLink")) {
@@ -81,13 +97,25 @@ export default function PostEditRoute() {
   return (
     <Container>
       <Heading description={post.description}>{post.title}</Heading>
-      <Callout show={show} onChange={setShow} className="dark:border-l-main border-l-main">
-        {post.title} saved at <b className="text-main">{actionData?.savedAt && Strings.formatDate(new Date(actionData?.savedAt))}</b>!
+      <Callout
+        show={show}
+        onChange={setShow}
+        className="dark:border-l-main border-l-main"
+      >
+        {post.title} saved at{" "}
+        <b className="text-main">
+          {actionData?.savedAt &&
+            Strings.formatDate(new Date(actionData?.savedAt))}
+        </b>
+        !
       </Callout>
       <Form method={Http.Post} ref={form}>
         <input type="hidden" value={post.postId} name="postId" />
         <input type="hidden" value={post.slug} name="oldLink" />
-        <fieldset disabled={transition.state === "submitting"} className="py-2 justify-between w-full mx-auto gap-8 flex flex-wrap">
+        <fieldset
+          disabled={transition.state === "submitting"}
+          className="py-2 justify-between w-full mx-auto gap-8 flex flex-wrap"
+        >
           <Switch<Post> name="published" defaultChecked={post.published}>
             Publish post?
           </Switch>
@@ -101,16 +129,44 @@ export default function PostEditRoute() {
               defaultValue={post.tags.map((tag) => tag.tag.tagId)}
             >
               {tags.map((tag) => (
-                <option key={tag.tagId} value={tag.tagId} className="capitalize">
+                <option
+                  key={tag.tagId}
+                  value={tag.tagId}
+                  className="capitalize"
+                >
                   {tag.label}
                 </option>
               ))}
             </select>
           </div>
-          <Input<Post> defaultValue={post.title} name="title" placeholder="Title" required className="w-full" />
-          <Input<Post> defaultValue={new Date(post.createdAt).toISOString()} name="createdAt" placeholder="Created At" required className="w-full" />
-          <Textarea<Post> required placeholder="Description" defaultValue={post.description} name="description" />
-          <Textarea<Post> required placeholder="Content" defaultValue={post.content} name="content" rows={contentLines} spellCheck />
+          <Input<Post>
+            defaultValue={post.title}
+            name="title"
+            placeholder="Title"
+            required
+            className="w-full"
+          />
+          <Input<Post>
+            defaultValue={new Date(post.createdAt).toISOString()}
+            name="createdAt"
+            placeholder="Created At"
+            required
+            className="w-full"
+          />
+          <Textarea<Post>
+            required
+            placeholder="Description"
+            defaultValue={post.description}
+            name="description"
+          />
+          <Textarea<Post>
+            required
+            placeholder="Content"
+            defaultValue={post.content}
+            name="content"
+            rows={contentLines}
+            spellCheck
+          />
         </fieldset>
         <ActionButton type="submit">Update post</ActionButton>
       </Form>

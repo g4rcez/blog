@@ -14,7 +14,12 @@ export namespace Posts {
 
   export type PostDetailed = Awaited<ReturnType<typeof findOne>>;
 
-  export const create = async ({ title, content, description, userId }: CreatePost) => {
+  export const create = async ({
+    title,
+    content,
+    description,
+    userId,
+  }: CreatePost) => {
     const postId = randomUUID();
     return Db.posts.create({
       data: {
@@ -37,7 +42,15 @@ export namespace Posts {
     });
   };
 
-  type UpdateBody = { content: string; postId: string; description: string; published: boolean; title: string; tags: string[] };
+  type UpdateBody = {
+    content: string;
+    postId: string;
+    description: string;
+    published: boolean;
+    title: string;
+    tags: string[];
+    createdAt: Date;
+  };
 
   export const update = async (post: UpdateBody) => {
     const now = new Date();
@@ -47,6 +60,7 @@ export namespace Posts {
       data: {
         content: post.content,
         description: post.description,
+        createdAt: post.createdAt,
         title: post.title,
         slug,
         published: post.published,
