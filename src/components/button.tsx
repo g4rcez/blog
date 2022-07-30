@@ -21,7 +21,7 @@ export const EditButton = (props: React.DetailedHTMLProps<React.ButtonHTMLAttrib
 );
 
 export const ResetButton = (props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => (
-  <Button {...props} className={`bg-orange-400 link:bg-orange-500 border-orange-500 ${props.className ?? ""}`}>
+  <Button {...props} className={`bg-orange-500 link:bg-orange-600 border-orange-500 font-semibold ${props.className ?? ""}`}>
     {props.children}
   </Button>
 );

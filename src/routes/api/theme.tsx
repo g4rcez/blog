@@ -1,4 +1,4 @@
-import { ActionFunction, json } from "remix";
+import { ActionFunction, json } from "@remix-run/node";
 import { Cookies } from "~/cookies.server";
 import { Themes, validateTheme } from "~/lib/theme";
 
@@ -10,7 +10,8 @@ export const themeCookies = async (request: Request) => {
       return validateTheme(themeValue) ? themeValue : Themes.Null;
     },
     set: (theme: Themes) => session.set("theme", theme),
-    change: () => Cookies.theme.commitSession(session),
+    change: () =>
+      Cookies.theme.commitSession(session, { expires: new Date("2077-01-01") }),
   };
 };
 
@@ -24,5 +25,8 @@ export const action: ActionFunction = async ({ request }) => {
   }
   themeSession.set(theme as Themes);
   const cookie = await themeSession.change();
-  return json({ ok: true, message: "Theme changed" }, { headers: { "Set-Cookie": cookie } });
+  return json(
+    { ok: true, message: "Theme changed" },
+    { headers: { "Set-Cookie": cookie } }
+  );
 };

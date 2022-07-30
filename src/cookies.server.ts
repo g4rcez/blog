@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from "remix";
+import { createCookieSessionStorage } from "@remix-run/node";
 require("dotenv").config();
 
 const secure = process.env.NODE_ENV === "production";
