@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
+import { useLoaderData } from "@remix-run/react";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { Anchor } from "~/components/anchor";
 import { Container } from "~/components/container";
 import { Posts } from "~/database/posts.server";
@@ -116,13 +117,13 @@ export default function Index() {
             {data.post.readingTime} min read
           </small>
         </div>
-        <nav>{processor.toc}</nav>
+        <nav>{processor.toc as any}</nav>
       </header>
       <section
         ref={mainRef}
         className="py-2 max-w-6xl prose prose-slate dark:prose-invert prose-a:text-sky-700 dark:prose-a:text-sky-400 dark:prose-a:prose-headings:text-current prose-a:prose-headings:text-current prose-a:underline-offset-4"
       >
-        {processor.content}
+        {processor.content as any}
       </section>
     </Container>
   );

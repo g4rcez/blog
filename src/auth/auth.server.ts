@@ -1,10 +1,9 @@
-import dotenv from "dotenv";
 import { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
 import { Cookies } from "~/cookies.server";
 import { Users } from "~/database/users.server";
 import ConfigJson from "../config.json";
-dotenv.config();
+import "dotenv/config";
 
 type User = {
   name: string;

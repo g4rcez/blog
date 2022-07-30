@@ -4,7 +4,8 @@ export type Nullable<T> = T | null;
 
 export type OmitKeys<T, K extends keyof T> = Omit<T, K>;
 
-export const has = <T extends {}, K extends keyof T>(obj: T, key: K) => Object.prototype.hasOwnProperty.call(obj, key);
+export const has = <T extends {}, K extends keyof T>(obj: T, key: K) =>
+  Object.prototype.hasOwnProperty.call(obj, key);
 
 export namespace Remix {
   type RemixFormData<T> = OmitKeys<FormData, "get"> & {
@@ -16,7 +17,9 @@ export namespace Remix {
     formData: () => RemixFormData<T>;
   };
 
-  export type LoaderFunction<T = any> = (args: DataFunctionArgs) => Promise<RemixResponse | T> | RemixResponse | T;
+  export type LoaderFunction<T = any> = (
+    args: DataFunctionArgs
+  ) => Promise<RemixResponse | T> | RemixResponse | T;
 
   export const FormActionKey = "_action";
 }
@@ -24,3 +27,11 @@ export namespace Remix {
 export namespace Validation {
   export type Error<T extends {}> = Record<keyof T, string[]>;
 }
+
+export type SerializeToPlain<T extends {}> = {
+  [K in keyof T]: T[K] extends Date
+    ? string
+    : T[K] extends object
+    ? SerializeToPlain<T[K]>
+    : T[K];
+};

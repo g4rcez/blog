@@ -1,4 +1,4 @@
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 import { OmitKeys } from "~/lib/utility-types";
 
 type Tag = "a" | typeof Link;

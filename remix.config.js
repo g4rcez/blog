@@ -1,5 +1,5 @@
 /**
- * @type {import('@remix-run/dev/config').AppConfig}
+ * @type {import('@remix-run/dev').AppConfig}
  */
 module.exports = {
   appDirectory: "src",
@@ -7,4 +7,33 @@ module.exports = {
   publicPath: "/build/",
   serverBuildDirectory: "api/_build",
   ignoredRouteFiles: [".*"],
+  serverDependenciesToBundle: [
+    /^rehype.*/,
+    /^remark.*/,
+    /^unified.*/,
+    /^micromark.*/,
+    /^mdast-.*/,
+    /^hast-util.*/,
+    /^unist.*/,
+    "html-whitespace-sensitive-tag-names",
+    "vfile-message",
+    "markdown-table",
+    "character-entities",
+    "character-entities-legacy",
+    "character-entities-html4",
+    "bail",
+    "ccount",
+    "comma-separated-tokens",
+    "decode-named-character-reference",
+    "hast-to-hyperscript",
+    "html-void-elements",
+    "property-information",
+    "space-separated-tokens",
+    "stringify-entities",
+    "trough",
+    "unified",
+    "vfile-location",
+    "vfile",
+    "web-namespaces",
+  ],
 };
