@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#next {
+  @apply bg-black text-white w-screen max-h-screen;
+  font-family: Inter, sans-serif;
+}

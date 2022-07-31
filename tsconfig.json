@@ -1,34 +1,26 @@
 {
-  "include": ["remix.env.d.ts", "src/blog.d.ts", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules/**/*"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "isolatedModules": true,
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "allowUmdGlobalAccess": false,
-    "allowUnusedLabels": false,
-    "noUnusedParameters": true,
-    "strictPropertyInitialization": true,
-    "strictFunctionTypes": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "preserveConstEnums": true,
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ESNext",
-    "strict": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitAny": true,
     "downlevelIteration": true,
-    "useUnknownInCatchVariables": true,
-    "strictNullChecks": true,
-    "alwaysStrict": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    },
-    "noEmit": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "noStrictGenericChecks": false,
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
