@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["react","frontend","typescript","javascript"]
+subjects: ["react", "frontend", "typescript", "javascript"]
 title: "E se eu precisar mudar só isso aqui?"
 language: "pt-br"
 translations: ["pt-br"]
@@ -22,49 +22,47 @@ Esse CLI foi feito para criar parâmetros de configuração do meu frontend que 
 
 Antes de começar, temos umas regrinhas que preciso deixar claro e explicar o cenário.
 
--   Um backend `roteador de UI` entrega os assets de acordo com o tenant. Os assets ficam em um bucket S3, separados de acordo com o tenant. A cada requisição, esse roteador identifica o tenant chamado e vai no respectivo bucket pegar um arquivo `versions.json` que diz o seguinte para ele _Roteador, a UI do XPTO está na versão 0.0.5 e o ABCD está na versão 0.0.6. Para cada um deles, entregue os assets com essas versões_. Para isso acontecer, basta concatenar strings de acordo com o `diretório + versão` para ter o caminho até o arquivo.
+- Um backend `roteador de UI` entrega os assets de acordo com o tenant. Os assets ficam em um bucket S3, separados de acordo com o tenant. A cada requisição, esse roteador identifica o tenant chamado e vai no respectivo bucket pegar um arquivo `versions.json` que diz o seguinte para ele _Roteador, a UI do XPTO está na versão 0.0.5 e o ABCD está na versão 0.0.6. Para cada um deles, entregue os assets com essas versões_. Para isso acontecer, basta concatenar strings de acordo com o `diretório + versão` para ter o caminho até o arquivo.
 
--   O `roteador de UI` entrega os assets. Primeiro, olhe a estrutura do `index.html`
+- O `roteador de UI` entrega os assets. Primeiro, olhe a estrutura do `index.html`
 
 ```html
 <!DOCTYPE html>
 <html lang="pt-br">
-	<head>
-		<meta charset="utf-8" />
-		<link
-			rel="shortcut icon"
-			href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/favicon.ico"
-		/>
-		<meta
-			name="viewport"
-			content="width=device-width,initial-scale=1,shrink-to-fit=no"
-		/>
-		<link
-			rel="manifest"
-			href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/xpto/manifest.json"
-		/>
-		<meta name="theme-color" content="#000000" />
-		<!-- Isso é importante -->
-		<script>
-			window.$__CONFIG__ = { tenant: "xpto", version: "0.0.5" };
-		</script>
-		<!-- Isso também é importante -->
-		<script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/xpto.js"></script>
-		<title>Dev</title>
-		<link
-			href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/css/main.css"
-			rel="stylesheet"
-		/>
-		<script src="https://MINHAEMPRESA.COM.BR/assets/xpto/js/analytics.js"></script>
-	</head>
-	<body>
-		<noscript
-			>Você precisa ativar o Javascript para usar esse site.</noscript
-		>
-		<main id="root"></main>
-		<script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/_runtime.js"></script>
-		<script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/main.js"></script>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="shortcut icon"
+      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/favicon.ico"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <link
+      rel="manifest"
+      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/xpto/manifest.json"
+    />
+    <meta name="theme-color" content="#000000" />
+    <!-- Isso é importante -->
+    <script>
+      window.$__CONFIG__ = { tenant: "xpto", version: "0.0.5" };
+    </script>
+    <!-- Isso também é importante -->
+    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/xpto.js"></script>
+    <title>Dev</title>
+    <link
+      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/css/main.css"
+      rel="stylesheet"
+    />
+    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/js/analytics.js"></script>
+  </head>
+  <body>
+    <noscript>Você precisa ativar o Javascript para usar esse site.</noscript>
+    <main id="root"></main>
+    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/_runtime.js"></script>
+    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/main.js"></script>
+  </body>
 </html>
 ```
 
@@ -77,22 +75,22 @@ Esses dois arquivos marcados foram colocados no `<head>` e acima da declaração
 ```javascript
 // xpto.js
 window.$__CONFIG__.config = {
-	colors: {
-		primary: "black",
-		secondary: "white",
-		danger: "red",
-		warn: "orange",
-	},
-	texts: {
-		ptBr: {
-			tituloBoasVindas: "Olá mundo",
-		},
-		enUs: {
-			tituloBoasVindas: "Hello world",
-		},
-	},
-	logo: "https://...",
-	banner: "https://...",
+  colors: {
+    primary: "black",
+    secondary: "white",
+    danger: "red",
+    warn: "orange",
+  },
+  texts: {
+    ptBr: {
+      tituloBoasVindas: "Olá mundo",
+    },
+    enUs: {
+      tituloBoasVindas: "Hello world",
+    },
+  },
+  logo: "https://...",
+  banner: "https://...",
 };
 ```
 
@@ -159,7 +157,7 @@ export const BANNER = CONFIG.banner;
 
 // Já vou explicar essa mágica
 const root: any = document.querySelector(":root");
-Object.keys(colors).forEach((x => 
+Object.keys(colors).forEach((x =>
 	root.style.setProperty(`--${x}`, `${colors[x]}`));
 ```
 
@@ -167,7 +165,7 @@ Object.keys(colors).forEach((x =>
 
 ```css
 .primary {
-	color: var(--primary);
+  color: var(--primary);
 }
 ```
 
@@ -177,15 +175,13 @@ Quando for o caso de usar quaisquer valores dentro do seu código React, basta i
 
 ```jsx
 import COLORS from "./config";
-import React from "react;"
+import React from "react;";
 
 export default () => (
-	<div style={{ backgroundColor: COLORS.primary}}>
-		<p style={{ color: COLORS.secondary }}>
-			Hack the planet
-		</p>
-	</div>
-)
+  <div style={{ backgroundColor: COLORS.primary }}>
+    <p style={{ color: COLORS.secondary }}>Hack the planet</p>
+  </div>
+);
 ```
 
 Bem simples né? O processo para a criação disso foi complexo, até existiam soluções prontas, mas todo e qualquer uso de bibliotecas de terceiros para estilização visual nos tiram a flexibilidade e aí acaba que mais ajuda do que atrapalha.
@@ -194,7 +190,7 @@ Bem simples né? O processo para a criação disso foi complexo, até existiam s
 
 Ainda quero escrever um pequeno projeto com o exemplo dessa aplicação, usando esse conceito de temas a partir de um arquivo de configuração que pode vir de um servidor que entrega os assets ou até mesmo ter uma requisição pegando esse arquivo em alguma CDN e só depois começar a renderizar os componentes React...as possibilidades de fazer isso são tão grandes quanto a sua criatividade.
 
-**Lembrando que** esse foi um relato de como resolvi esse problema onde trabalho, e mesmo que pareça meio complexo ou trabalhoso, resolveu nosso problema perfeitamente. Agora quaisquer mudanças necessárias na UI, a responsavel por design ou marketing pode editar um JSON e ela terá a mudança dela no ar em questão de segundos. 
+**Lembrando que** esse foi um relato de como resolvi esse problema onde trabalho, e mesmo que pareça meio complexo ou trabalhoso, resolveu nosso problema perfeitamente. Agora quaisquer mudanças necessárias na UI, a responsavel por design ou marketing pode editar um JSON e ela terá a mudança dela no ar em questão de segundos.
 
 > Como nem tudo são flores, criaram a necessidade de customizar os textos com negrito, itálico, mudar de cor, aceitar valores dinâmicos de acordo com a ação do usuário e até mesmo criar links para instagram, facebook e whatsapp. Essa parada toda eu tenho tentado resolver [nesse repositório](https://github.com/g4rcez/code-markup-parser), porém não está tão atualizado ainda, mas ele esboça a ideia do parser baseado em [BBCode](https://www.bbcode.org)
 

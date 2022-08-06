@@ -174,18 +174,18 @@ Com o `useImperativeHandle` você irá criar métodos ou atributos do seu compon
 Como eu tinha levantado 3 perguntas no começo do artigo, iremos respondê-las agora para chegar a conclusão
 
 - Pra quê serve um ref?
-`R: Acessar o elemento DOM ou criar valores mutáveis que irão perdurar durante todo o ciclo de vida do componente`
+  `R: Acessar o elemento DOM ou criar valores mutáveis que irão perdurar durante todo o ciclo de vida do componente`
 
 - Quando vou usar um ref?
-`R: Quando quiser acessar o HtmlElement de um elemento ou quiser receber as refs de um componente filho`
+  `R: Quando quiser acessar o HtmlElement de um elemento ou quiser receber as refs de um componente filho`
 
 - Quando devo usar forward Ref?
-`R: Quando estiver criando um componente que será a abstração de um elemento HTML ou quando quiser fornecer métodos do filho para o pai`
+  `R: Quando estiver criando um componente que será a abstração de um elemento HTML ou quando quiser fornecer métodos do filho para o pai`
 
 # Conclusão
 
-Refs são uma verdadeira mágica que nos permite trabalhar diretamente com o DOM, de forma imperativa. Isso pode ser muito útil em alguns casos onde você cria uma biblioteca que faça diversas mudanças diretas no DOM. 
+Refs são uma verdadeira mágica que nos permite trabalhar diretamente com o DOM, de forma imperativa. Isso pode ser muito útil em alguns casos onde você cria uma biblioteca que faça diversas mudanças diretas no DOM.
 
-Apesar dessa mágica toda, usar o Ref pode ser um tiro pela culatra e acabar gerando problemas, uma vez que você fará mudanças diretas no DOM e o React irá fazer mudanças no Shadow DOM para posteriormente aplicar as mudanças. Seria mais ou menos um efeito de fazer 2 setStates ao mesmo tempo. 
+Apesar dessa mágica toda, usar o Ref pode ser um tiro pela culatra e acabar gerando problemas, uma vez que você fará mudanças diretas no DOM e o React irá fazer mudanças no Shadow DOM para posteriormente aplicar as mudanças. Seria mais ou menos um efeito de fazer 2 setStates ao mesmo tempo.
 
 Espero que vocês tenham curtido e entendido como funcionam as refs e como fazer para transitar as refs entre componentes. E isso é tudo pessoal.

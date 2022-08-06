@@ -1,7 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import remark from "remark";
+import { remark } from "remark";
 import html from "remark-html";
 //@ts-ignore
 import prism from "remark-prism";
@@ -59,7 +59,7 @@ export const toMarkdown = async (markdown: string) => {
     .use(html)
     .use(gfm)
     .use(prism, {
-      /* transformInlineCode: true, */
+      transformInlineCode: true,
       plugins: [
         "line-numbers",
         "autolinker",

@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["javascript","tricks","typescript"]
+subjects: ["javascript", "tricks", "typescript"]
 title: "Array.prototype"
 language: "pt-br"
 translations: ["pt-br"]
@@ -199,13 +199,13 @@ O reduce transforma uma lista em um elemento do tipo que você bem definir, send
 // 6 + 5 + 4 + 3 + 3 + 2 + 1 +
 // Imagina o objeto pessoa {nome:"", idade:0} em uma lista
 const somaIdade = listaPessoas.reduce((acc, el) => {
-	return acc + el;
+  return acc + el;
 }, 0);
 // Fazendo um objeto virar objeto de novo com reduce
 const pessoa = { nome: "Fu", sobrenome: "Ba", altura: 1.8 };
 const keysArray = Object.keys(pessoa); // ["nome", "sobrenome","altura"]
 const novaPessoa = keysArray.reduce((acc, el) => {
-	return { ...acc, [el]: pessoa[el] };
+  return { ...acc, [el]: pessoa[el] };
 }, {}); // { nome: "Fu", sobrenome: "Ba", altura: 1.8 }
 ```
 
@@ -224,15 +224,15 @@ Umas tricks boladonas pra você assimilar o conteúdo lido. Não vai ter explica
 
 ```javascript
 const newArray = (number, transformCallback) =>
-	Array(number)
-		.fill(0)
-		.map(transformCallback);
+  Array(number).fill(0).map(transformCallback);
 
 const reverseStr = (str) => [...str].reverse().join("");
 
 // src: https://30secondsofcode.org/adapter#pipeasyncfunctions
-const pipeAsyncFunctions = (...fns) => (arg) =>
-	fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
+const pipeAsyncFunctions =
+  (...fns) =>
+  (arg) =>
+    fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
 ```
 
 Pra finalizar, aquele abraço e espero que tenha entendido tudo. Se não entendeu, pode entrar em contato ou postar uma issue que eu terei o maior prazer em te ajudar :smile:

@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["react", "redux", "frontend","typescript","javascript","hooks"]
+subjects: ["react", "redux", "frontend", "typescript", "javascript", "hooks"]
 title: "Hooks + Redux"
 language: "pt-br"
 translations: ["pt-br"]
@@ -25,23 +25,25 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 const state = (fn) =>
-	createSelector(
-		(_: GlobalState) => fn(_),
-		(state) => state
-	);
+  createSelector(
+    (_: GlobalState) => fn(_),
+    (state) => state
+  );
 
 const useReselect = (states, dispatches, comparator = shallowEqual) => {
-	const dispatch = useDispatch();
-	const memoDispatch = Object.keys(dispatches).reduce((acc, fn) => {
-		return {
-			...acc,
-			[fn]: useMemo(
-				() => (...params) => dispatch(dispatches[fn](...params)),
-				[fn]
-			),
-		};
-	}, {});
-	return [useSelector(state(states), comparator), memoDispatch];
+  const dispatch = useDispatch();
+  const memoDispatch = Object.keys(dispatches).reduce((acc, fn) => {
+    return {
+      ...acc,
+      [fn]: useMemo(
+        () =>
+          (...params) =>
+            dispatch(dispatches[fn](...params)),
+        [fn]
+      ),
+    };
+  }, {});
+  return [useSelector(state(states), comparator), memoDispatch];
 };
 
 export default useReselect;
@@ -49,16 +51,16 @@ export default useReselect;
 // Demonstração de uso
 
 const mapStateToProps = (state) => ({
-	clients: state.ClientReducer.clients,
+  clients: state.ClientReducer.clients,
 });
 
 const mapDispatchToProps = { getClients };
 
 const Component = () => {
-	const [globalState, dispatches] = useReselect();
-	useEffect(() => {
-		dispatches.getClients();
-	}, []);
+  const [globalState, dispatches] = useReselect();
+  useEffect(() => {
+    dispatches.getClients();
+  }, []);
 };
 ```
 
@@ -70,36 +72,32 @@ import useReselect from "./useReselect";
 import { shallowEqual } from "react-redux";
 
 const useConnect = (
-	state,
-	dispatches,
-	props = {},
-	comparator = shallowEqual
+  state,
+  dispatches,
+  props = {},
+  comparator = shallowEqual
 ) => {
-	const [globalState, globalDispatches] = useReselect(
-		state,
-		dispatches,
-		comparator
-	);
-	return { ...globalState, ...globalDispatches, ...props };
+  const [globalState, globalDispatches] = useReselect(
+    state,
+    dispatches,
+    comparator
+  );
+  return { ...globalState, ...globalDispatches, ...props };
 };
 
 // Demonstração de uso
 
 const mapStateToProps = (state) => ({
-	clients: state.ClientReducer.clients,
+  clients: state.ClientReducer.clients,
 });
 
 const mapDispatchToProps = { getClients };
 
 const Component = (externalProps) => {
-	const props = useConnect(
-		mapStateToProps,
-		mapDispatchToProps,
-		externalProps
-	);
-	useEffect(() => {
-		props.getClients();
-	}, []);
+  const props = useConnect(mapStateToProps, mapDispatchToProps, externalProps);
+  useEffect(() => {
+    props.getClients();
+  }, []);
 };
 ```
 
@@ -118,23 +116,23 @@ import useConnect from "./";
 
 const stateToProps = (state) => ({ clients: state.ClientReducer.clients });
 const useClientFilter = (key, value) => {
-	const props = useConnect(stateToProps, {});
-	const [list, setList] = useState(props.clients);
+  const props = useConnect(stateToProps, {});
+  const [list, setList] = useState(props.clients);
 
-	/* Esse efeito vai executar toda vez que:
+  /* Esse efeito vai executar toda vez que:
         - A lista mudar de tamanho
         - A propriedade key mudar
         - A propriedade value mudar
     */
-	useEffect(() => {
-		const filterList = props.clients.filter((client) => {
-			const clientValue = client[key];
-			return !!clientValue.match(new RegExp(value, "gi"));
-		});
-		setList(filterList);
-	}, [key, value, props.clients.length]);
+  useEffect(() => {
+    const filterList = props.clients.filter((client) => {
+      const clientValue = client[key];
+      return !!clientValue.match(new RegExp(value, "gi"));
+    });
+    setList(filterList);
+  }, [key, value, props.clients.length]);
 
-	return list;
+  return list;
 };
 
 export default useClientFilter;
@@ -147,20 +145,20 @@ import React, { useState } from "react";
 import useClientFilter from "./hooks";
 
 const ClientList = () => {
-	const [input, setInput] = useState("");
-	const clients = useClientFilter("name", input);
-	const onChange = (e) => setInput(e.target.value);
-	return (
-		<Page>
-			<Input onChange={onChange} value={input} />
-			{clients.map((client) => (
-				<Row key={client.name}>
-					<Text>{client.name}</Text>
-					<Text>- Status: {client.status}</Text>
-				</Row>
-			))}
-		</Page>
-	);
+  const [input, setInput] = useState("");
+  const clients = useClientFilter("name", input);
+  const onChange = (e) => setInput(e.target.value);
+  return (
+    <Page>
+      <Input onChange={onChange} value={input} />
+      {clients.map((client) => (
+        <Row key={client.name}>
+          <Text>{client.name}</Text>
+          <Text>- Status: {client.status}</Text>
+        </Row>
+      ))}
+    </Page>
+  );
 };
 ```
 

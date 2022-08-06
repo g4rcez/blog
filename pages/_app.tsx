@@ -1,3 +1,4 @@
+import { Navbar } from "components/navbar";
 import { ThemePreference } from "lib/theme-preference";
 import Head from "next/head";
 import Link from "next/link";
@@ -50,7 +51,7 @@ function MyApp({
   }, []);
 
   return (
-    <main className="w-full container mx-auto md:px-6 px-4 block md:max-w-6xl">
+    <main className="w-full">
       <Head>
         <title>Garcez Blog</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -79,35 +80,11 @@ function MyApp({
         <meta name="twitter:creator" content="@garcez_allan" />
         <meta name="theme-color" content={themeColor} />
       </Head>
-      <header className="w-full flex flex-wrap gap-y-8 justify-center items-center mb-8 mt-2 text-lg">
-        <nav className="w-full mx-auto py-2 flex flex-row justify-between items-center">
-          <Link href="/">
-            <a href="/">
-              <span className="flex items-center gap-x-2">
-                <SiReact className="inline-block" />
-                Garcez Blog
-              </span>
-            </a>
-          </Link>
-          <span className="flex gap-x-4">
-            <button
-              onClick={toggle}
-              className="bg-transparent cursor-pointer mb-1"
-            >
-              <img
-                width="24px"
-                height="24px"
-                alt={`${theme} mode icon"`}
-                src={theme === "dark" ? "/moon.svg" : "/sun.svg"}
-              />
-            </button>
-          </span>
-        </nav>
-      </header>
-      <div className="w-full">
-        <Component {...pageProps} />
+      <Navbar toggle={toggle} theme={theme} />
+      <div className="w-full container mx-auto md:px-6 px-4 block md:max-w-6xl">
+        <Component {...(pageProps as any)} />
       </div>
-      <footer className="mb-2">
+      <footer className="container mx-auto md:px-6 px-4 block md:max-w-6xl py-8">
         <div className="mt-8 mb-4 text-lg flex flex-row justify-center font-bold gap-x-4">
           <a href={Me.GITHUB} className="cursor-pointer" title="My Github">
             <span className="sr-only">My Github</span>
@@ -131,7 +108,7 @@ function MyApp({
             <FaLinkedin />
           </a>
         </div>
-        <div className="w-full block text-xs text-center">
+        <div className="w-full block text-xs text-center pt-2">
           Sun/Moon icons made by{" "}
           <a
             href="https://www.freepik.com"

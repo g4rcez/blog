@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["tricks", "typescript", "types", "generics"]
+subjects: ["tricks", "typescript"]
 title: "Typescript - [3]"
 language: "pt-br"
 translations: ["pt-br"]
@@ -78,10 +78,18 @@ type StatusDict<T> = Record<Status, T>;
 type StatusComponents = StatusDict<React.FC<{ status: Status }>>;
 
 const statusComponents: StatusComponents = {
-  [Status.Wait]: ({ status }) => <span className="capitalize text-default">{Status.Wait}</span>,
-  [Status.Progress]: ({ status }) => <span className="capitalize text-progress">{Status.Progress}</span>,
-  [Status.Success]: ({ status }) => <span className="capitalize text-success">{Status.Success}</span>,
-  [Status.Failed]: ({ status }) => <span className="capitalize text-danger">{Status.Failed}</span>,
+  [Status.Wait]: ({ status }) => (
+    <span className="capitalize text-default">{Status.Wait}</span>
+  ),
+  [Status.Progress]: ({ status }) => (
+    <span className="capitalize text-progress">{Status.Progress}</span>
+  ),
+  [Status.Success]: ({ status }) => (
+    <span className="capitalize text-success">{Status.Success}</span>
+  ),
+  [Status.Failed]: ({ status }) => (
+    <span className="capitalize text-danger">{Status.Failed}</span>
+  ),
 };
 ```
 

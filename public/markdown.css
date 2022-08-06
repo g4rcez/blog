@@ -3,9 +3,9 @@
 .markdown h3,
 .markdown h4 {
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--primary-link);
+  margin-bottom: 1rem;
   font-weight: bolder;
+  color: var(--primary-link);
 }
 
 .markdown h1 {
@@ -58,7 +58,8 @@
 }
 
 .markdown p {
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .markdown .language-unknown,
@@ -88,7 +89,8 @@ html.dark .remark-highlight > pre {
 }
 
 .markdown blockquote {
-  padding: 0.5rem;
-  border: 1px solid var(--gray);
+  margin: 1rem 0;
+  padding: 0 0.5rem;
   border-radius: 0.25rem;
+  border: 1px solid var(--gray);
 }

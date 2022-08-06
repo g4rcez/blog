@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["typescript", "fp", "functional", "programming"]
+subjects: ["typescript"]
 title: "Functional Typescript"
 language: "pt-br"
 translations: ["pt-br"]
@@ -23,7 +23,7 @@ O que seria uma função pura? E o que seria uma função impura? Vamos ver dois
 // um caso de função impura
 let total = 0;
 const sumTotal = (x: number) => {
-	total += x; // o mesmo que total = total + x
+  total += x; // o mesmo que total = total + x
 };
 sumTotal(1); // total === 1
 sumTotal(2); // total === 3
@@ -45,20 +45,20 @@ Um caso clássico para isso é quando desejamos somar valores de uma lista de ob
 
 ```typescript
 const list = [
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
 ];
 
 let total = 0;
 list.forEach((x) => {
-	total += x.value; // ou total = total + x.value
+  total += x.value; // ou total = total + x.value
 });
 ```
 
@@ -66,15 +66,15 @@ Não é uma solução ruim, mas podemos criar uma solução que evite alterar o 
 
 ```typescript
 const list = [
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
-	{ value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
+  { value: 1 },
 ];
 
 const total = list.reduce((acc, el) => acc + el.value, 0);
@@ -85,12 +85,12 @@ Fica até mais simples, não? Talvez esses exemplos não sejam suficiente para v
 ```typescript
 // Ao executar essa função, você irá alterar o seu array original e não terá consistência nas informações
 const unsafeConcatToArray = <T>(array: T[], newItem: T) => {
-    array.push(item)
-    return array
-}
+  array.push(item);
+  return array;
+};
 
 // Ao executar essa função, você irá garantir que seu array original não foi alterado
-const safeConcatToArray = <T>(array: T[], newItem: T) => [...array, newItem]
+const safeConcatToArray = <T>(array: T[], newItem: T) => [...array, newItem];
 ```
 
 # Funções de primeira classe
@@ -106,10 +106,12 @@ Isso com certeza você já usou em algum momento, afinal de contas, você já ou
 Esses dois conceitos já foram usados no exemplo anterior, quando fizemos um `.reduce`. Se liga na assinatura do `Array.reduce`
 
 ```typescript
-Array.reduce((accumulator: ACC, currentElement: T, index: number, array: T[]) => T);
+Array.reduce(
+  (accumulator: ACC, currentElement: T, index: number, array: T[]) => T
+);
 ```
 
-Podemos ler da seguinte forma: *Array.reduce é uma função que recebe uma função. A função passada para Array.reduce recebe como parâmetros: acumulador que é do tipo T, um elemento atual que é do tipo do item da lista, um index que é a posição numérica do item na lista e o próprio array que está sendo operado*. Apenas citei esse exemplo, agora deixo com você a tarefa de lembrar de todos os métodos que você conhece em Javascript que atendam a esses requisitos:
+Podemos ler da seguinte forma: _Array.reduce é uma função que recebe uma função. A função passada para Array.reduce recebe como parâmetros: acumulador que é do tipo T, um elemento atual que é do tipo do item da lista, um index que é a posição numérica do item na lista e o próprio array que está sendo operado_. Apenas citei esse exemplo, agora deixo com você a tarefa de lembrar de todos os métodos que você conhece em Javascript que atendam a esses requisitos:
 
 1. Recebe uma função como parâmetro
 2. Itera uma lista ou objeto aplicando a função recebida
@@ -117,19 +119,18 @@ Podemos ler da seguinte forma: *Array.reduce é uma função que recebe uma fun�
 
 Ao reparar nisso, você vai ver que conhece muito mais de programação funcional do que imagina, apenas não sabia "dar nome aos bois".
 
-
 # Imutabilidade
 
 Esse é um conceito importante que apesar de ser simples de entender, torna-se complicado devido ao mindset que temos de paradigmas estrutural e orientado a objetos. Talvez seja bem fácil introduzir esse conceito devido ao uso da keyword `const`, mas talvez em casos de arrays e objetos você ainda possa ter dificuldade de aplicar o conceito.
 
-Para entender a imutabilidade, precisamos atentar a duas coisas, `reatribuição de variáveis` e `operações em variáveis`. 
+Para entender a imutabilidade, precisamos atentar a duas coisas, `reatribuição de variáveis` e `operações em variáveis`.
 
 ```typescript
 const mutate = (obj) => {
   obj.c = 2;
   return obj;
-}
-const b = {a:1};
+};
+const b = { a: 1 };
 console.log(b); // {a: 1}
 a(b);
 console.log(b); // {a: 1, c: 2}
@@ -139,14 +140,14 @@ Aí você faz a seguinte pergunta
 
 > Se eu to usando const, pq ele deixa eu alterar o valor do meu objeto?
 
-Simples, o `const` previne somente a `reatribuição` de valores, e não que ele altere as refêrencias de objetos. **MAS COMO EU NÃO VOU ALTERAR UM VALOR NO OBJETO SEM MUDAR A REFERÊNCIA DELE?**. Simples, basta criar uma cópia para manipular e entregar um novo objeto. 
+Simples, o `const` previne somente a `reatribuição` de valores, e não que ele altere as refêrencias de objetos. **MAS COMO EU NÃO VOU ALTERAR UM VALOR NO OBJETO SEM MUDAR A REFERÊNCIA DELE?**. Simples, basta criar uma cópia para manipular e entregar um novo objeto.
 
 Nosso amigo `spread operator` nos ajuda bastante nisso, apesar de fazer apenas uma `shallow copy`, que é uma copia apenas de valores com o tipo primitivo (string, number, boolean). Em casos onde há objetos com arrays ou outros objetos, é necessário usar métodos como `deepClone`.
 
 No exemplo dado acima, poderíamos fazer da seguinte forma:
 
 ```typescript
-const mutate = (obj) => ({ ...obj, c: 2 })
+const mutate = (obj) => ({ ...obj, c: 2 });
 const b = { a: 1 };
 console.log(b); // {a: 1}
 a(b);

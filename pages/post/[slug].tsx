@@ -117,7 +117,7 @@ type Heading = {
   tag: Tag;
 };
 
-export const Component = ({ post, adjacentPosts }: Props) => {
+export default function PostPage({ post, adjacentPosts }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
   const hasNext = adjacentPosts.next === null;
   const ref = useRef<HTMLDivElement>(null);
@@ -228,6 +228,4 @@ export const Component = ({ post, adjacentPosts }: Props) => {
       </div>
     </section>
   );
-};
-
-export default Component;
+}

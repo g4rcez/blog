@@ -47,6 +47,7 @@ pre[class*="language-"] {
   tab-size: 4;
   hyphens: none;
   overflow-x: scroll;
+  padding: 1rem;
 }
 
 /* Code blocks */

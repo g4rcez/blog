@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["javascript","tricks"]
+subjects: ["javascript", "tricks"]
 title: "JS Tricks, evitando ifs"
 language: "pt-br"
 translations: ["pt-br"]
@@ -35,31 +35,31 @@ type Sex = "M" | "F";
 type Medidas = { peso: number; altura: number };
 
 const titles = {
-	abaixoDoPeso: "Abaixo do peso",
-	normal: "Peso normal",
-	poucoAcimaDoPeso: "Um pouco acima do peso",
-	acimaDoPeso: "Acima do peso ideal",
-	obeso: "Obesidade",
+  abaixoDoPeso: "Abaixo do peso",
+  normal: "Peso normal",
+  poucoAcimaDoPeso: "Um pouco acima do peso",
+  acimaDoPeso: "Acima do peso ideal",
+  obeso: "Obesidade",
 };
 
 // Os valores não condizem com o real, eu fiz TI e não medicina.
 // Consulte o médico e beba água
 const parametros = {
-	M: [
-		{ title: titles.abaixoDoPeso, min: 0, max: 20.7 },
-		{ title: titles.normal, min: 20.7, max: 26.4 },
-		{ title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8 },
-		{ title: titles.acimaDoPeso, min: 27.8, max: 31.1 },
-		// Esse caso é absurdo, mas precisamos cobrir tudo acima de 31.1
-		{ title: titles.obeso, min: 31.1, max: Number.MAX_SAFE_INTEGER },
-	],
-	F: [
-		{ title: titles.abaixoDoPeso, min: 0, max: 19.1 },
-		{ title: titles.normal, min: 19.1, max: 25.8 },
-		{ title: titles.poucoAcimaDoPeso, min: 25.8, max: 27.3 },
-		{ title: titles.acimaDoPeso, min: 27.3, max: 32.3 },
-		{ title: titles.obeso, min: 32.3, max: Number.MAX_SAFE_INTEGER },
-	],
+  M: [
+    { title: titles.abaixoDoPeso, min: 0, max: 20.7 },
+    { title: titles.normal, min: 20.7, max: 26.4 },
+    { title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8 },
+    { title: titles.acimaDoPeso, min: 27.8, max: 31.1 },
+    // Esse caso é absurdo, mas precisamos cobrir tudo acima de 31.1
+    { title: titles.obeso, min: 31.1, max: Number.MAX_SAFE_INTEGER },
+  ],
+  F: [
+    { title: titles.abaixoDoPeso, min: 0, max: 19.1 },
+    { title: titles.normal, min: 19.1, max: 25.8 },
+    { title: titles.poucoAcimaDoPeso, min: 25.8, max: 27.3 },
+    { title: titles.acimaDoPeso, min: 27.3, max: 32.3 },
+    { title: titles.obeso, min: 32.3, max: Number.MAX_SAFE_INTEGER },
+  ],
 };
 
 const calculo = ({ peso, altura }: Medidas) => peso / altura ** 2;
@@ -69,7 +69,7 @@ const altura = 1.8;
 const peso = 77;
 const imc = calculo({ altura, peso });
 const val = parametros[sexo].find(
-	(medida) => medida.min <= imc && imc <= medida.max
+  (medida) => medida.min <= imc && imc <= medida.max
 );
 console.log("Status", val.title);
 console.log("IMC", imc);
@@ -88,24 +88,24 @@ Bom, esse é exatamente o algoritmo que fiz em Java, porém traduzido para Javas
 É isso, esse foi bem rápido, apenas para mostrar essa trick e fazer com que você evite **ifs** aninhados. Consegue imaginar como seria o código utilizando ifs? Bom, eu faço aqui pra você
 
 ```typescript
-if(sexo === "M"){
-    if(0 <= imc && imc <= 20.7 ){
-       return { title: titles.abaixoDoPeso, min: 0, max: 20.7 }
-    }
-    if(20.7 <= imc && imc <= 26.4 ){
-        return { title: titles.normal, min: 20.7, max: 26.4 }
-    }
-    if(26.4 <= imc && imc <= 27.8){
-        return 	{ title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8 }
-    }
-    if(27.8 <= imc && imc <= 31.1){
-        return { title: titles.acimaDoPeso, min: 27.8, max: 31.1 }
-    }
+if (sexo === "M") {
+  if (0 <= imc && imc <= 20.7) {
+    return { title: titles.abaixoDoPeso, min: 0, max: 20.7 };
+  }
+  if (20.7 <= imc && imc <= 26.4) {
+    return { title: titles.normal, min: 20.7, max: 26.4 };
+  }
+  if (26.4 <= imc && imc <= 27.8) {
+    return { title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8 };
+  }
+  if (27.8 <= imc && imc <= 31.1) {
+    return { title: titles.acimaDoPeso, min: 27.8, max: 31.1 };
+  }
 }
-if(sexo === "F"){
-    // o mesmo ninho de ifs
+if (sexo === "F") {
+  // o mesmo ninho de ifs
 }
-throw Error("Algo de errado não está certo")
+throw Error("Algo de errado não está certo");
 ```
 
 Viu como fica bem mais complicado? E se você precisar mudar algum valor? E se houverem novas regras? Resposta: vão haver mais e mais **ifs**
@@ -116,7 +116,7 @@ Muito perspicaz, caro leitor. Onde eu estava com a cabeça? Precisamos proteger 
 
 ```typescript
 if (!parametros.hasOwnProperty(sexo)) {
-    throw Error("Algo certo está errado")
+  throw Error("Algo certo está errado");
 }
 // Fluxo normal do seu programa aqui
 // É legal abortar os erros primeiro

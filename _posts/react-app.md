@@ -1,23 +1,23 @@
 ---
 useFolks: true
-subjects: ["react", "typescript", "frontend", "tricks","hooks"]
-title: "MultiTenants, controle de acesso e Code Splitting"
+subjects: ["react", "typescript", "frontend", "tricks", "hooks"]
+title: "MultiTenants, autorização e CodeSplitting"
 language: "pt-br"
 translations: ["pt-br"]
 date: "2019-11-20T20:29:59.999Z"
-description: "Entendendo as técnicas para um frontend dinâmico e com controle de acesso"
+description: "Técnicas para um frontend dinâmico e com controle de acesso"
 ---
 
 # Introdução
 
 Minha última experiência tem sido bastante peculiar. Acabei tendo de usar/desenvolver:
 
--   Hooks (agora é padrão)
--   Redux (de forma dinâmica)
--   Code Splitting
--   ErrorBoundary (controle de erros, React)
--   Roteamento dinâmico
--   Controle de acesso
+- Hooks (agora é padrão)
+- Redux (de forma dinâmica)
+- Code Splitting
+- ErrorBoundary (controle de erros, React)
+- Roteamento dinâmico
+- Controle de acesso
 
 Ficou bastante coisa, um pouco complexo e com certeza um caso de over engineering, mas foi a forma
 que mais fez sentido e a que na minha cabeça ficou da melhor forma.
@@ -50,15 +50,15 @@ A criação do menu, das rotas e a técnica de code splitting ficaram quase que 
     iremos renderizar para o usuário
 */
 export type MenuItem = {
-	component?: (profile: string, tenant?: string) => Promise<any>;
-	key: string;
-	path: string;
-	icon: string;
-	title: string;
-	tenants: string[];
-	subItems: MenuSubItem[];
-	tenantEnv?: string;
-	allowedProfiles: string[];
+  component?: (profile: string, tenant?: string) => Promise<any>;
+  key: string;
+  path: string;
+  icon: string;
+  title: string;
+  tenants: string[];
+  subItems: MenuSubItem[];
+  tenantEnv?: string;
+  allowedProfiles: string[];
 };
 
 // Um sub item não pode ter sub itens, então iremos omitir este tipo
@@ -76,8 +76,8 @@ Para definir as rotas de forma dinâmica, dado um tenant e um perfil logado, [fo
 ```typescript
 // Apenas um tipo para forçar o array de rotas ter os itens necessários para o react-router
 export type RouterConstruct = {
-	path: string;
-	component: React.LazyExoticComponent<React.ComponentType<any>>;
+  path: string;
+  component: React.LazyExoticComponent<React.ComponentType<any>>;
 };
 
 // Aplicar o tenant como um caminho
@@ -85,45 +85,45 @@ const path = (tenant: string) => `/${tenant}/`;
 
 // Verificar se o Item ou SubItem possuem uma property component e retornar o componente + rota
 const getComponentInfo = (item: MenuSubItem, aliasProfile: string) => {
-	if (!!item.component) {
-		const localImport = item.component(aliasProfile, path(TENANT));
-		return { path: item.path, component: lazy(() => localImport) };
-	}
-	return null;
+  if (!!item.component) {
+    const localImport = item.component(aliasProfile, path(TENANT));
+    return { path: item.path, component: lazy(() => localImport) };
+  }
+  return null;
 };
 
 const getProfileRoutes = (filterRoutes: MenuItem[], aliasProfile: string) => {
-	// Essa é a minha lista com as rotas aplicadas no react-router
-	const localRoutes = [] as RouterConstruct[];
-	filterRoutes.forEach((route) => {
-		const component = getComponentInfo(route, aliasProfile);
-		if (route.path !== "" && component !== null) {
-			localRoutes.push(component);
-		}
-		route.subItems.forEach((subRoute) => {
-			const subComponent = getComponentInfo(subRoute, aliasProfile);
-			if (subComponent !== null) {
-				localRoutes.push(subComponent);
-			}
-		});
-	});
-	return localRoutes;
+  // Essa é a minha lista com as rotas aplicadas no react-router
+  const localRoutes = [] as RouterConstruct[];
+  filterRoutes.forEach((route) => {
+    const component = getComponentInfo(route, aliasProfile);
+    if (route.path !== "" && component !== null) {
+      localRoutes.push(component);
+    }
+    route.subItems.forEach((subRoute) => {
+      const subComponent = getComponentInfo(subRoute, aliasProfile);
+      if (subComponent !== null) {
+        localRoutes.push(subComponent);
+      }
+    });
+  });
+  return localRoutes;
 };
 
 const useRoutesByProfile = () => {
-	const filterRoutes = useRouteFilter();
-	const [routes, setRoutes] = useState([] as RouterConstruct[]);
-	/* 
+  const filterRoutes = useRouteFilter();
+  const [routes, setRoutes] = useState([] as RouterConstruct[]);
+  /* 
         Toda vez que o filtro de rotas, dado o perfil e tenant mudar,
         execute a criação de rotas novamente
     */
-	useEffect(() => {
-		const user = getAuthUser();
-		if (!isEmpty(user)) {
-			setRoutes(getProfileRoutes(MenuItems, user.perfil));
-		}
-	}, [filterRoutes]);
-	return routes;
+  useEffect(() => {
+    const user = getAuthUser();
+    if (!isEmpty(user)) {
+      setRoutes(getProfileRoutes(MenuItems, user.perfil));
+    }
+  }, [filterRoutes]);
+  return routes;
 };
 
 export default useRoutesByProfile;
@@ -133,43 +133,44 @@ Quase tudo ok, agora só dizer ao `react-router` quais são as nossas rotas, apl
 
 ```jsx
 const createRoute = (x: RouterConstruct) => (
-	<Route exact key={x.path} path={x.path} component={x.component} />
+  <Route exact key={x.path} path={x.path} component={x.component} />
 );
 
 const AppRouter = () => {
-	// Autenticação requerida em toda a aplicação
-	useAuth();
+  // Autenticação requerida em toda a aplicação
+  useAuth();
 
-	// Hook para roteamento dinâmico
-	const routes = useRoutesByProfile();
+  // Hook para roteamento dinâmico
+  const routes = useRoutesByProfile();
 
-	return (
-		<Router history={History}>
-			{/*
+  return (
+    <Router history={History}>
+      {/*
                 Error Boundary para caso hajam erros de importação dinâmicas e outros
                 relacionado ao ciclo de vida do react (mais funcional em prod)
             */}
-			<ErrorBoundary>
-				{/*
+      <ErrorBoundary>
+        {/*
                     Este componente você pode ver no github, mas é basicamente um wrapper
                     para o React.Suspense com um loader customizado
                 */}
-				<SuspenseLoader>
-					<HashRouter>
-						<Switch>
-							{/*
+        <SuspenseLoader>
+          <HashRouter>
+            <Switch>
+              {/*
                             Mapeamento das rotas dinâmicas de acordo com os dados do nosso hook
                         */}
-							{routes.map(createRoute)}
-							<Route component={NotFound} />
-						</Switch>
-					</HashRouter>
-				</SuspenseLoader>
-			</ErrorBoundary>
-		</Router>
-	);
+              {routes.map(createRoute)}
+              <Route component={NotFound} />
+            </Switch>
+          </HashRouter>
+        </SuspenseLoader>
+      </ErrorBoundary>
+    </Router>
+  );
 };
 ```
+
 ## Code Splitting
 
 Feito isso, nosso controle de rotas está totalmente pronto, com as regras de Tenant e perfil aplicadas. Para fazer o funcionamento correto, você precisa fazer o `import()` para o path correto e ter uma estrutura de pastas de acordo com os tenants e perfis disponíveis.
@@ -203,10 +204,10 @@ export const URL_ACCESS = `https://xpto-industries.io/${TENANT}/dashboard/${VERS
 export declare let __webpack_public_path__: string;
 
 if (!isDev) {
-	/*
+  /*
 		Define onde o webpack irá fazer o load dos `chunks` com dynamic import
 	*/
-	__webpack_public_path__ = URL_ACCESS;
+  __webpack_public_path__ = URL_ACCESS;
 }
 ```
 
@@ -217,26 +218,26 @@ de injetar os reducers de acordo com a tela que estão sendo acessados, e substi
 
 ```typescript
 type Middleware = StoreEnhancer<
-	{
-		dispatch: unknown;
-	},
-	{}
+  {
+    dispatch: unknown;
+  },
+  {}
 >;
 
 export type AsyncStore = Store<unknown, AnyAction> & {
-	dispatch: unknown;
-	asyncReducers: {
-		[key: string]: Reducer<unknown, any>;
-	};
-	injectReducer: (key: string, reducer: Reducer<any>) => AsyncStore;
+  dispatch: unknown;
+  asyncReducers: {
+    [key: string]: Reducer<unknown, any>;
+  };
+  injectReducer: (key: string, reducer: Reducer<any>) => AsyncStore;
 };
 
 const redux = (asyncReducers: any = {}) =>
-	combineReducers({
-		// reducer de autenticação
-		[ReducersAlias.AuthReducer]: authReducer,
-		...asyncReducers,
-	});
+  combineReducers({
+    // reducer de autenticação
+    [ReducersAlias.AuthReducer]: authReducer,
+    ...asyncReducers,
+  });
 
 /*
     Inicializar a store com os middlewares necessários sendo passados
@@ -247,17 +248,17 @@ const redux = (asyncReducers: any = {}) =>
     reducers e o novo estado já está pronto para ser utilizado
 */
 const initializeStore = (middleware: Middleware) => {
-	const store = createStore(redux(), middleware) as AsyncStore;
+  const store = createStore(redux(), middleware) as AsyncStore;
 
-	store.asyncReducers = {};
+  store.asyncReducers = {};
 
-	store.injectReducer = (key: string, reducer: Reducer<unknown, any>) => {
-		store.asyncReducers[key] = reducer;
-		store.replaceReducer(redux(store.asyncReducers));
-		return store;
-	};
+  store.injectReducer = (key: string, reducer: Reducer<unknown, any>) => {
+    store.asyncReducers[key] = reducer;
+    store.replaceReducer(redux(store.asyncReducers));
+    return store;
+  };
 
-	return store;
+  return store;
 };
 
 // src/index.tsx - Onde iremos criar nosso wraper do estado do Redux
@@ -268,12 +269,12 @@ const reduxStore = store(middlewares);
 sagasMiddleware.run(sagasActions);
 
 ReactDOM.render(
-	<StrictMode>
-		<Provider store={reduxStore}>
-			<AppRouter />
-		</Provider>
-	</StrictMode>,
-	document.getElementById("root")
+  <StrictMode>
+    <Provider store={reduxStore}>
+      <AppRouter />
+    </Provider>
+  </StrictMode>,
+  document.getElementById("root")
 );
 ```
 
@@ -293,11 +294,11 @@ import { AsyncStore } from "@/store";
     um reducer na nossa store
 */
 const useInjectReducer = (key: string, reducer: Reducer<any>) => {
-	const store = useStore() as AsyncStore;
+  const store = useStore() as AsyncStore;
 
-	useEffect(() => {
-		store.injectReducer(key, reducer);
-	}, []);
+  useEffect(() => {
+    store.injectReducer(key, reducer);
+  }, []);
 };
 ```
 
@@ -323,6 +324,6 @@ E é isso galerinha, espero que isso possa ajudar você a dar uma clareada na me
 
 # Referências
 
--   [Dynamic Redux](https://stackoverflow.com/questions/32968016/how-to-dynamically-load-reducers-for-code-splitting-in-a-redux-application/33044701#33044701)
--   [Code Splitting](https://reactjs.org/docs/code-splitting.html)
--   [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/)
+- [Dynamic Redux](https://stackoverflow.com/questions/32968016/how-to-dynamically-load-reducers-for-code-splitting-in-a-redux-application/33044701#33044701)
+- [Code Splitting](https://reactjs.org/docs/code-splitting.html)
+- [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/)

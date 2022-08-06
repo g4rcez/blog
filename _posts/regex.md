@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["tricks", "typescript", "regex"]
+subjects: ["tricks", "typescript"]
 title: "Expressões regulares"
 language: "pt-br"
 translations: ["pt-br"]
@@ -70,7 +70,7 @@ Nesse caso, vamos tratar as chamadas de eventos e chamadas de src maliciosos. Pr
 Com isso, nossa regex fica
 
 ```tsx
-const removeMaliciousCode = /(on[a-z]+="[\S\s]*?"|src="javascript:\S+")/gi
+const removeMaliciousCode = /(on[a-z]+="[\S\s]*?"|src="javascript:\S+")/gi;
 ```
 
 Nessa regex já tem coisa que não tínhamos visto antes. Mas para dar nome aos novos padrões
@@ -92,7 +92,7 @@ Claro que essa regex possui alguns problemas de segurança ainda, mas que graça
 
 # Conclusão
 
-Com estes 2 casos já foi possível explicar algumas das artimanhas de regex e demonstrar como pode ser mais tranquilo estudar regex. É um estudo que exige paciência e que trás uma ferramenta absurda para você utilizar na hora de resolver os seus problemas. 
+Com estes 2 casos já foi possível explicar algumas das artimanhas de regex e demonstrar como pode ser mais tranquilo estudar regex. É um estudo que exige paciência e que trás uma ferramenta absurda para você utilizar na hora de resolver os seus problemas.
 
 Espero que com isso você possa se aventurar mais com regex sem que tenha tanta dor de cabeça
 

@@ -5,8 +5,8 @@
     "gray": "#373c42",
     "primary": {
         "DEFAULT": "#a30af3",
-        "link": "#a069bd",
-        "dark": "#7207aa",
+        "link": "#9c5abf",
+        "dark": "#8a46ad",
         "contrast": "#ffffff"
     },
     "danger": {
