@@ -10,7 +10,7 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { Fragment, createElement } from "react";
 import rehypeParse from "rehype-parse";
-import rehypeReact from "rehype-react/lib";
+import rehypeReact from "rehype-react";
 import { MdxComponents } from "../components/mdx";
 
 export const rehype = async (text: string) =>
