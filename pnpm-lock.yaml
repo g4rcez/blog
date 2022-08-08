@@ -4,6 +4,7 @@ specifiers:
   '@tailwindcss/typography': 0.5.4
   '@types/node': 18.6.4
   '@types/react': 18.0.16
+  '@types/react-syntax-highlighter': 15.5.4
   '@types/remark-prism': 1.3.3
   autoprefixer: 10.4.8
   gray-matter: 4.0.3
@@ -28,6 +29,7 @@ specifiers:
   typescript: 4.7.4
 
 dependencies:
+  '@types/react-syntax-highlighter': 15.5.4
   gray-matter: 4.0.3
   next: 12.2.4_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -916,7 +918,12 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-    dev: true
+
+  /@types/react-syntax-highlighter/15.5.4:
+    resolution: {integrity: sha512-GYXA4nRBG4jTGFfYMLO2/yuqyOyaQ415oeJWw6akE5gipOEsGhvXFvWhsctGVMHzAfRI7e/J0B9cpqrfMOwZhA==}
+    dependencies:
+      '@types/react': 18.0.16
+    dev: false
 
   /@types/react/18.0.16:
     resolution: {integrity: sha512-3vX1dzVucqc2nhXtzyaParTIIRZeNbisRqLE7QdeLomVybEyeiuAouzZXgz71P+2kbJOqj3dy0fzoATg2I06GQ==}
@@ -924,7 +931,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.0
-    dev: true
 
   /@types/remark-prism/1.3.3:
     resolution: {integrity: sha512-SWe7SENZm0CQaxFhU21LZswtYwivUkNx2+sWgm8XWUSc0DK5c7DSEU7YHqiDg4ytuf1HYdEvMCck3B6M8Zu/Vw==}
@@ -935,7 +941,6 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: true
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -1585,7 +1590,6 @@ packages:
 
   /csstype/3.1.0:
     resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
-    dev: true
 
   /data-urls/2.0.0:
     resolution: {integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==}
