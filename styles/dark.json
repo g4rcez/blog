@@ -4,7 +4,7 @@
     "current": "currentColor",
     "gray": "#373c42",
     "primary": {
-        "DEFAULT": "#a30af3",
+        "DEFAULT": "#A234DC",
         "link": "#9c5abf",
         "dark": "#8a46ad",
         "contrast": "#ffffff"

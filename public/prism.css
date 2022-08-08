@@ -16,7 +16,6 @@ https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+cli
 code {
   padding: 0.2rem 0.5rem;
   color: var(--code-plain);
-  background-color: var(--code-bg);
 }
 
 pre {

@@ -1,3 +1,4 @@
+const plugin = require("tailwindcss/plugin");
 const colors = require("./styles/dark.json");
 
 const getColors = (JSON_COLOR = {}) => {
@@ -33,5 +34,10 @@ module.exports = {
       colors: getColors(colors),
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"),
+    plugin(({ addVariant }) => {
+      addVariant("link", ["&:hover", "&:focus"]);
+    }),
+  ],
 };

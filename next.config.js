@@ -1,7 +1,5 @@
-const withPreact = require("next-plugin-preact");
-
-module.exports = withPreact({
+module.exports = {
   pageExtensions: ["mdx", "ts", "tsx"],
   poweredByHeader: false,
   reactStrictMode: true,
-});
+};

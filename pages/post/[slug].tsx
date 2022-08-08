@@ -6,6 +6,21 @@ import { useMemo } from "react";
 import { Format, toPost } from "../../lib/format";
 import type { Post } from "../../lib/markdown";
 import { getAllPosts, getPostBySlug, toMarkdown } from "../../lib/markdown";
+import rehypeParse from "rehype-parse";
+import rehypeReact from "rehype-react/lib";
+import { unified } from "unified";
+import { Anchor, MdxComponents } from "../../components/mdx";
+import { Fragment, createElement, FunctionComponent } from "react";
+
+export const rehype = async (text: string) =>
+  unified()
+    .use(rehypeParse, { fragment: true })
+    .use(rehypeReact, {
+      Fragment: Fragment,
+      components: MdxComponents,
+      createElement: createElement as any,
+    })
+    .process(text);
 
 type Params = {
   params: {
@@ -25,14 +40,10 @@ const allPostInfo: (keyof Post)[] = [
 ];
 
 export const getStaticPaths = () => ({
-  paths: getAllPosts(allPostInfo).map((post) => {
-    return {
-      params: {
-        slug: post.slug,
-      },
-    };
-  }),
   fallback: false,
+  paths: getAllPosts(allPostInfo).map((post) => ({
+    params: { slug: post.slug },
+  })),
 });
 
 type AdjacentPosts = {
@@ -58,13 +69,12 @@ export const getStaticProps = async ({ params }: Params) => {
     },
     { next: null, prev: null }
   );
-  const content = await toMarkdown(post.content || "");
   return {
     props: {
       adjacentPosts,
       post: {
         ...post,
-        content,
+        content: await toMarkdown(post.content || ""),
       },
     },
   };
@@ -109,35 +119,57 @@ const Tags = {
   H6: "ml-40",
 };
 
-type Tag = keyof typeof Tags;
+type Heading = { id: string; text: string; order: number };
 
-type Heading = {
-  text: string;
-  id: string;
-  tag: Tag;
+const parseTextHeaders = (html: Document) =>
+  Array.from(html.querySelectorAll("h1,h2,h3,h4,h5,h6")).map((hx): Heading => {
+    const text = hx.textContent || "";
+    return {
+      text,
+      id: Format.slug(text),
+      order: Number.parseInt(hx.tagName.replace(/h/i, "")) - 2,
+    };
+  });
+
+type State = {
+  content: FunctionComponent<{}> | null;
+  toc: FunctionComponent<{}> | null;
 };
+
+const initialState = () => ({ content: null, toc: null });
+
+const Toc = ({ headers }: { headers: Heading[] }) => (
+  <ul className="my-4">
+    {headers.map((hx) => (
+      <li
+        key={`${hx.id}-${hx.order}`}
+        className="my-2 text-sm underline underline-offset-4"
+        data-order={hx.order}
+      >
+        <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
+      </li>
+    ))}
+  </ul>
+);
 
 export default function PostPage({ post, adjacentPosts }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
   const hasNext = adjacentPosts.next === null;
   const ref = useRef<HTMLDivElement>(null);
-  const [titles, setTitles] = useState<Heading[]>([]);
+  const [Content, setContent] = useState<State>(initialState);
 
   useEffect(() => {
-    const createTableContent = () => {
+    const createTableContent = async () => {
       if (ref.current === null) return;
-      const headings = ref.current.querySelectorAll("h1,h2,h3,h4,h5,h6");
-      const list: Heading[] = [...headings].map((x) => {
-        const text = x.textContent!;
-        const id = Format.slug(text);
-        x.id = id;
-        return {
-          text,
-          id: Format.slug(text),
-          tag: x.tagName as Tag,
-        };
+      const file = await rehype(post.content);
+      const html = new DOMParser().parseFromString(
+        file.toString(),
+        "text/html"
+      );
+      setContent({
+        content: file.result as any,
+        toc: () => <Toc headers={parseTextHeaders(html)} />,
       });
-      setTitles(list);
     };
     if (ref.current === null) return;
     createTableContent();
@@ -156,8 +188,6 @@ export default function PostPage({ post, adjacentPosts }: Props) {
         <meta name="description" content={post.description} />
         <meta name="keywords" content={post.subjects.join(",")} />
         <title>Garcez Blog | {post.title}</title>
-        <link rel="stylesheet" href="/markdown.css" as="style" />
-
         <meta name="twitter:image:src" content={openGraphImage} />
         <meta name="twitter:site" content="@garcez.dev" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -165,6 +195,8 @@ export default function PostPage({ post, adjacentPosts }: Props) {
           name="twitter:title"
           content="g4rcez/blog: O lugar do rascunho de ideias"
         />
+        <link href="/prism.css" rel="stylesheet" />
+        <link href="/markdown.css" rel="stylesheet" />
         <meta name="twitter:description" content={post.description} />
         <meta property="og:image" content={openGraphImage} />
         <meta property="og:image:alt" content={post.description} />
@@ -182,34 +214,26 @@ export default function PostPage({ post, adjacentPosts }: Props) {
         />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">
-        <h1 className="prose mt-4 mb-2 font-bold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
+        <h1 className="mt-4 mb-2 font-bold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
           {post.title}
         </h1>
-        <p className="prose mt-4 mb-2 text-sm">{post.description}</p>
-        <time className="text-md prose text-sm">
+        <p className="mt-4 mb-2 text-sm">{post.description}</p>
+        <time className="text-md text-sm">
           {date} | {post.readingTime} min read
         </time>
       </header>
-      <section className="table-of-content my-8">
-        <h2 className="text-xl font-bold mb-2">Table of Content</h2>
-        <ul className="my-4">
-          {titles.map((x) => (
-            <li
-              key={x.id}
-              className={`transition-colors my-1 duration-500 hover:underline text-primary-link hover:text-primary ${
-                Tags[x.tag]
-              }`}
-            >
-              <a href={`#${x.id}`}>{x.text}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <nav className="table-of-content my-8">
+        <Fragment>
+          <h2 className="text-xl font-bold mb-2">Table of Content</h2>
+          {Content.toc && <Content.toc />}
+        </Fragment>
+      </nav>
       <section
         ref={ref}
-        className="markdown prose lg:prose-xl block w-full min-w-full"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+        className="markdown block w-full min-w-full leading-relaxed antialiased tracking-wide break-words dark:text-slate-200"
+      >
+        <Fragment>{Content.content as any}</Fragment>
+      </section>
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (
           <WhoIsNext

@@ -1,14 +1,13 @@
 import { Navbar } from "components/navbar";
+import { ThemeProvider, Themes, useTheme } from "components/theme.config";
 import { ThemePreference } from "lib/theme-preference";
 import Head from "next/head";
-import Link from "next/link";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { FaLinkedin } from "react-icons/fa";
-import { SiReact } from "react-icons/si";
 import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
-import Dark from "styles/dark.json";
-import Light from "styles/light.json";
+import Dark from "../styles/dark.json";
 import "../styles/globals.css";
+import Light from "../styles/light.json";
 
 const googleFont =
   "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
@@ -19,18 +18,14 @@ const Me = {
   LINKEDIN: "https://www.linkedin.com/in/allan-garcez/",
 };
 
-function MyApp({
+function Root({
   Component,
   pageProps,
 }: {
   Component: React.FC<unknown>;
   pageProps: never;
 }) {
-  const [theme, setTheme] = useState<"dark" | "light" | null>(() => "dark");
-
-  useEffect(() => {
-    setTheme(() => (ThemePreference.prefersDark() ? "dark" : "light"));
-  }, []);
+  const [theme, setTheme] = useTheme();
 
   useEffect(() => {
     if (theme === null) return;
@@ -47,7 +42,7 @@ function MyApp({
   );
 
   const toggle = useCallback(() => {
-    setTheme((p) => (p === "dark" ? "light" : "dark"));
+    setTheme((p) => (p === "dark" ? Themes.light : Themes.Dark));
   }, []);
 
   return (
@@ -138,4 +133,10 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default function MyApp(props: any) {
+  return (
+    <ThemeProvider>
+      <Root {...props} />
+    </ThemeProvider>
+  );
+}

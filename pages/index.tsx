@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import { Format, toPost } from "../lib/format";
 import { getAllPosts } from "../lib/markdown";
@@ -22,7 +23,9 @@ const Subjects = ({
   subjects,
   onClick,
   search,
+  root = false,
 }: {
+  root?: boolean;
   subjects?: string[];
   search: string;
   onClick: (str: string) => void;
@@ -39,29 +42,46 @@ const Subjects = ({
   }, []);
 
   return (
-    <div className="prose flex gap-x-2 xl:prose-md mt-2 text-md flex-wrap gap-y-2">
+    <ul className="inline-flex gap-2 mt-2 text-md flex-wrap">
       {list.map((y) => (
-        <button
-          onClick={() => click(y)}
-          className={`${
-            y === search
-              ? "bg-primary-link focus:bg-primary-link"
-              : "bg-primary-dark focus:bg-primary-dark"
-          } hover:bg-primary duration-500 transition-colors px-2 rounded text-primary-contrast`}
-          key={`${y}-${id}`}
-        >
-          {y}
-        </button>
+        <li key={`${y}-${id}`}>
+          <button
+            onClick={() => click(y)}
+            className={`${
+              y === search
+                ? "bg-primary-link link:bg-primary-link"
+                : "bg-primary-dark link:bg-primary-dark"
+            } duration-500 transition-colors px-2 rounded text-primary-contrast`}
+          >
+            {y}
+          </button>
+        </li>
       ))}
-    </div>
+      {root && (
+        <li>
+          <button
+            onClick={() => click("")}
+            className={`bg-orange-500 link:bg-orange-300 duration-500 transition-colors px-2 rounded text-primary-contrast`}
+          >
+            Clear
+          </button>
+        </li>
+      )}
+    </ul>
   );
 };
 
-export default function Index({
+export default function IndexPage({
   posts,
   subjects,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [search, setSearch] = useState("");
+  const { push } = useRouter();
+
+  const change = useCallback((text: string) => {
+    setSearch(text);
+    push({ query: { subject: text || undefined } });
+  }, []);
 
   const viewedPosts = useMemo(
     () =>
@@ -87,7 +107,7 @@ export default function Index({
       <header>
         <p className="mb-1 font-semibold">Busque por assuntos</p>
         <div className="flex flex-row flex-wrap gap-2 mb-8">
-          <Subjects subjects={subjects} search={search} onClick={setSearch} />
+          <Subjects root subjects={subjects} search={search} onClick={change} />
         </div>
       </header>
       <section className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-12">
@@ -100,15 +120,11 @@ export default function Index({
                 </a>
               </Link>
             </header>
-            <p className="prose xl:prose-lg text-sm opacity-50 my-2">
+            <p className="text-sm opacity-50 my-2">
               {Format.date(x.date)} - {x.readingTime} min read
             </p>
-            <p className="prose xl:prose-lg text-md">{x.description}</p>
-            <Subjects
-              subjects={x.subjects}
-              search={search}
-              onClick={setSearch}
-            />
+            <p className="text-md leading-relaxed dark:text-slate-300">{x.description}</p>
+            <Subjects search={search} onClick={change} subjects={x.subjects} />
           </article>
         ))}
       </section>

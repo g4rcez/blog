@@ -1,10 +1,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "./prism.css";
 
 :root {
-  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell, Fira Sans, Droid Sans, sans-serif;
+  --fonts: "Inter", -apple-system, BlinkMacSystemFont, Roboto, Cantarell,
+    Fira Sans, Droid Sans, sans-serif;
 }
 
 * {
@@ -32,18 +32,6 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-div,
-span {
-  font-family: var(--fonts);
 }
 
 .input-group > input:focus ~ span {
