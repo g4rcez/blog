@@ -1,11 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { Format, toPost } from "../../lib/format";
 import { getAllMdFiles, toMarkdown } from "../../lib/markdown";
 import { useTableOfContent } from "../../components/table-of-content";
-import { allPostInfo, getPost, getPostSlugs, Post } from "../../lib/posts";
+import { allPostInfo, getAllPosts, getPost, Post } from "../../lib/posts";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { Markdown } from "../../components/mdx";
 
 type Params = {
   params: {
@@ -15,7 +16,7 @@ type Params = {
 
 export const getStaticPaths = () => ({
   fallback: false,
-  paths: getAllMdFiles(allPostInfo, getPostSlugs, getPost).map((post) => ({
+  paths: getAllMdFiles(allPostInfo, getAllPosts, getPost).map((post) => ({
     params: { slug: post.slug },
   })),
 });
@@ -29,15 +30,14 @@ export const getStaticProps = async ({ params }: Params) => {
   const post = getPost(params.slug, allPostInfo);
   const adjacentPosts = getAllMdFiles<Post>(
     ["slug", "title", "date"],
-    getPostSlugs,
+    getAllPosts,
     getPost
   ).reduce<AdjacentPosts>(
     (acc, el, index, array) => {
       if (el.slug === post.slug) {
-        return {
-          next: array[index + 1] ?? null,
-          prev: array[index - 1] ?? null,
-        };
+        const next = array[index + 1] ?? null;
+        const prev = array[index - 1] ?? null;
+        return { next, prev };
       }
       return acc;
     },
@@ -86,10 +86,9 @@ export const WhoIsNext = (
 
 export default function PostPage({ post, adjacentPosts, mdx }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
-  const hasNext = adjacentPosts.next === null;
-  const [Content, ref] = useTableOfContent(mdx);
-
+  const [Content, ref] = useTableOfContent();
   const openGraphImage = `https://garcez.dev/post-graph/${post.slug}.png`;
+  const hasNext = adjacentPosts.next !== null;
 
   return (
     <section className="block w-full min-w-full">
@@ -132,13 +131,14 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
         </time>
       </header>
       <nav className="table-of-content my-8">
-        {Content.toc && <Content.toc />}
+        <Content.toc />
       </nav>
       <section
         ref={ref}
+        data-post={post.title}
         className="markdown block w-full min-w-full leading-relaxed antialiased tracking-wide break-words dark:text-slate-200"
       >
-        <Fragment>{Content.content as any}</Fragment>
+        <Markdown mdx={mdx} />
       </section>
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (

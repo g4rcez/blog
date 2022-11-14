@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import { Format, toPost } from "../lib/format";
 import { getAllMdFiles } from "../lib/markdown";
-import { getPost, getPostSlugs, Post } from "../lib/posts";
+import { getPost, getAllPosts, Post } from "../lib/posts";
 
 export const getStaticProps = async () => {
   const posts = getAllMdFiles<Post>(
@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
       "title",
       "image",
     ],
-    getPostSlugs,
+    getAllPosts,
     getPost
   );
   const subjects = [...new Set(posts.flatMap((post) => post.subjects))];

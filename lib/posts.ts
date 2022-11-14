@@ -16,7 +16,7 @@ export type Post = PostFile & {
 
 export const postsDirectory = join(process.cwd(), "_posts");
 
-export const getPostSlugs = getAllSlugs(postsDirectory);
+export const getAllPosts = getAllSlugs(postsDirectory);
 
 export const getPost = getFileByName<Post>(postsDirectory);
 

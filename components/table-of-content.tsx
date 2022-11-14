@@ -1,12 +1,23 @@
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  FunctionComponent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Anchor, Markdown } from "./mdx";
 import { Format } from "../lib/format";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type Heading = { id: string; text: string; order: number };
 
-export const parseTextHeaders = (html: Document) =>
-  Array.from(html.querySelectorAll("h1,h2,h3,h4,h5,h6")).map((hx): Heading => {
+const headersSelector = (node: HTMLDivElement) =>
+  Array.from(
+    node.querySelectorAll("h1,h2,h3,h4,h5,h6")
+  ) as HTMLHeadingElement[];
+
+export const parseTextHeaders = (headers: HTMLHeadingElement[]) =>
+  headers.map((hx): Heading => {
     const text = hx.textContent || "";
     return {
       text,
@@ -15,7 +26,7 @@ export const parseTextHeaders = (html: Document) =>
     };
   });
 
-const initialState = () => ({ content: null, toc: null });
+const initialState = () => ({ toc: Fragment });
 
 const Toc = ({ headers }: { headers: Heading[] }) => (
   <header>
@@ -36,30 +47,26 @@ const Toc = ({ headers }: { headers: Heading[] }) => (
 );
 
 type State = {
-  content: FunctionComponent | null;
-  toc: FunctionComponent | null;
+  toc: FunctionComponent;
 };
 
-export const useTableOfContent = (mdx: MDXRemoteSerializeResult) => {
+export const useTableOfContent = () => {
   const [Content, setContent] = useState<State>(initialState);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const createTableContent = () => {
       if (ref.current === null) return;
-      const html = new DOMParser().parseFromString(
-        ref.current.innerHTML,
-        "text/html"
-      );
-      setContent({
-        content: (<Markdown mdx={mdx} />) as any,
-        toc: () => <Toc headers={parseTextHeaders(html)} />,
-      });
+      const headers = headersSelector(ref.current);
+      setContent({ toc: () => <Toc headers={parseTextHeaders(headers)} /> });
     };
     if (ref.current === null) return;
-    createTableContent();
     const observer = new MutationObserver(createTableContent);
-    observer.observe(ref.current, { subtree: true, childList: true });
+    observer.observe(ref.current, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+    });
     return () => observer.disconnect();
   }, []);
 
