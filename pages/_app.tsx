@@ -28,7 +28,6 @@ function Root({
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    if (theme === null) return;
     const root = document.documentElement;
     const json = theme === "dark" ? Dark : Light;
     ThemePreference.setCss(json, root);

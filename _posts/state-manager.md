@@ -126,7 +126,7 @@ Esse padrão é bastante interessante, mas pode gerar alguns problemas com os `u
 
 Para evitar esses problemas, temos o segundo padrão que foi uma adaptação da primeira sugestão, utilizando o [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
 
-# [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer).
+# [use-typed-reducer](https://www.npmjs.com/package/use-typed-reducer)
 
 Esse projeto foi uma adaptação com tipos para usar o `useReducer`, mas ao invés de ter usar `switch-case` com o `type` das `actions` despachadas, utilizamos funções como `dispatch` e assim garantimos o uso correto com todos os tipos de entrada da função.
 

@@ -342,7 +342,7 @@ O useCallback é quase um `alias` para o `useMemo`, mas somente para funções. 
 
 Bom, os dois são iguais, mas diferentes. O `useLayoutEffect` é executado somente após todas as mutações na DOM. O ideal de seu uso é somente quando você faz mutações com `refs` ou coisas que dependam de elementos no nosso DOM (elementos que não são controlados por React, por exemplo).
 
-# React.forwardRef <3 useImperativeHandler
+# React.forwardRef {"<3"} useImperativeHandler
 
 Quando você precisa passar as referências do seu componente para que irá consumir, o seu componente precisa estar envolvido por um `React.forwardRef` e com o `useImperativeHandler` nós iremos atribuir o valor de `ref` do nosso componente. Simples assim:
 

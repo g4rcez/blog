@@ -1,26 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { Format, toPost } from "../../lib/format";
-import type { Post } from "../../lib/markdown";
-import { getAllPosts, getPostBySlug, toMarkdown } from "../../lib/markdown";
-import rehypeParse from "rehype-parse";
-import rehypeReact from "rehype-react/lib";
-import { unified } from "unified";
-import { Anchor, MdxComponents } from "../../components/mdx";
-import { Fragment, createElement, FunctionComponent } from "react";
-
-export const rehype = async (text: string) =>
-  unified()
-    .use(rehypeParse, { fragment: true })
-    .use(rehypeReact, {
-      Fragment: Fragment,
-      components: MdxComponents,
-      createElement: createElement as any,
-    })
-    .process(text);
+import { getAllMdFiles, toMarkdown } from "../../lib/markdown";
+import { useTableOfContent } from "../../components/table-of-content";
+import { allPostInfo, getPost, getPostSlugs, Post } from "../../lib/posts";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type Params = {
   params: {
@@ -28,20 +13,9 @@ type Params = {
   };
 };
 
-const allPostInfo: (keyof Post)[] = [
-  "title",
-  "readingTime",
-  "date",
-  "slug",
-  "description",
-  "subjects",
-  "content",
-  "image",
-];
-
 export const getStaticPaths = () => ({
   fallback: false,
-  paths: getAllPosts(allPostInfo).map((post) => ({
+  paths: getAllMdFiles(allPostInfo, getPostSlugs, getPost).map((post) => ({
     params: { slug: post.slug },
   })),
 });
@@ -52,12 +26,12 @@ type AdjacentPosts = {
 };
 
 export const getStaticProps = async ({ params }: Params) => {
-  const post = getPostBySlug(params.slug, allPostInfo);
-  const adjacentPosts = getAllPosts([
-    "slug",
-    "title",
-    "date",
-  ]).reduce<AdjacentPosts>(
+  const post = getPost(params.slug, allPostInfo);
+  const adjacentPosts = getAllMdFiles<Post>(
+    ["slug", "title", "date"],
+    getPostSlugs,
+    getPost
+  ).reduce<AdjacentPosts>(
     (acc, el, index, array) => {
       if (el.slug === post.slug) {
         return {
@@ -72,6 +46,7 @@ export const getStaticProps = async ({ params }: Params) => {
   return {
     props: {
       adjacentPosts,
+      mdx: await toMarkdown(post.content || ""),
       post: {
         ...post,
         content: await toMarkdown(post.content || ""),
@@ -82,6 +57,7 @@ export const getStaticProps = async ({ params }: Params) => {
 
 type Props = {
   post: Post;
+  mdx: MDXRemoteSerializeResult;
   adjacentPosts: {
     next: Post | null;
     prev: Post | null;
@@ -94,91 +70,24 @@ export const WhoIsNext = (
   const icon = props.label === "next" ? "->" : "<-";
   const href = toPost(props.slug);
   return (
-    <Link href={href}>
-      <a
-        href={href}
-        className={
-          "w-full hover:underline hover:text-primary-link cursor-pointer " +
-          props.className
-        }
-      >
-        {props.label === "prev" && <span className="mx-2">{icon}</span>}
-        {props.title}
-        {props.label === "next" && <span className="mx-2">{icon}</span>}
-      </a>
+    <Link
+      href={href}
+      className={
+        "w-full hover:underline hover:text-primary-link cursor-pointer " +
+        props.className
+      }
+    >
+      {props.label === "prev" && <span className="mx-2">{icon}</span>}
+      {props.title}
+      {props.label === "next" && <span className="mx-2">{icon}</span>}
     </Link>
   );
 };
 
-const Tags = {
-  H1: "ml-0",
-  H2: "ml-8",
-  H3: "ml-16",
-  H4: "ml-24",
-  H5: "ml-32",
-  H6: "ml-40",
-};
-
-type Heading = { id: string; text: string; order: number };
-
-const parseTextHeaders = (html: Document) =>
-  Array.from(html.querySelectorAll("h1,h2,h3,h4,h5,h6")).map((hx): Heading => {
-    const text = hx.textContent || "";
-    return {
-      text,
-      id: Format.slug(text),
-      order: Number.parseInt(hx.tagName.replace(/h/i, "")) - 2,
-    };
-  });
-
-type State = {
-  content: FunctionComponent<{}> | null;
-  toc: FunctionComponent<{}> | null;
-};
-
-const initialState = () => ({ content: null, toc: null });
-
-const Toc = ({ headers }: { headers: Heading[] }) => (
-  <ul className="my-4">
-    {headers.map((hx) => (
-      <li
-        key={`${hx.id}-${hx.order}`}
-        className="my-2 text-sm underline underline-offset-4"
-        data-order={hx.order}
-      >
-        <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
-      </li>
-    ))}
-  </ul>
-);
-
-export default function PostPage({ post, adjacentPosts }: Props) {
+export default function PostPage({ post, adjacentPosts, mdx }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
   const hasNext = adjacentPosts.next === null;
-  const ref = useRef<HTMLDivElement>(null);
-  const [Content, setContent] = useState<State>(initialState);
-
-  useEffect(() => {
-    const createTableContent = async () => {
-      if (ref.current === null) return;
-      const file = await rehype(post.content);
-      const html = new DOMParser().parseFromString(
-        file.toString(),
-        "text/html"
-      );
-      setContent({
-        content: file.result as any,
-        toc: () => <Toc headers={parseTextHeaders(html)} />,
-      });
-    };
-    if (ref.current === null) return;
-    createTableContent();
-    const observer = new MutationObserver(createTableContent);
-    observer.observe(ref.current, { subtree: true, childList: true });
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const [Content, ref] = useTableOfContent(mdx);
 
   const openGraphImage = `https://garcez.dev/post-graph/${post.slug}.png`;
 
@@ -223,10 +132,7 @@ export default function PostPage({ post, adjacentPosts }: Props) {
         </time>
       </header>
       <nav className="table-of-content my-8">
-        <Fragment>
-          <h2 className="text-xl font-bold mb-2">Table of Content</h2>
-          {Content.toc && <Content.toc />}
-        </Fragment>
+        {Content.toc && <Content.toc />}
       </nav>
       <section
         ref={ref}
@@ -242,7 +148,7 @@ export default function PostPage({ post, adjacentPosts }: Props) {
             className="text-left"
           />
         )}
-        {!hasNext !== null && (
+        {hasNext && (
           <WhoIsNext
             {...adjacentPosts.next!}
             label="next"

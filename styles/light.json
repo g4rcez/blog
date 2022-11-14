@@ -1,33 +1,34 @@
 {
-    "name": "dark",
-    "transparent": "transparent",
-    "current": "currentColor",
-    "gray": "#9b9da0",
-    "primary": {
-        "DEFAULT": "#A234DC",
-        "link": "#a069bd",
-        "dark": "#7207aa",
-        "contrast": "#ffffff"
-    },
-    "danger": {
-        "DEFAULT": "#ec4646"
-    },
-    "warn": {
-        "light": "#dfc674",
-        "DEFAULT": "#dfc674"
-    },
-    "info": {
-        "DEFAULT": "#4ca5db"
-    },
-    "success": {
-        "DEFAULT": "#90d4a7"
-    },
-    "on-base": "#21272d",
-    "base": "#f1f1f1",
-    "code": {
-        "plain": "#21272d",
-        "bg": "#dfdfdf"
-    },
-    "twitter": "#1DA1F2",
-    "linkedin": "#0073b1"
+  "name": "dark",
+  "transparent": "transparent",
+  "current": "currentColor",
+  "gray": "#9b9da0",
+  "primary": {
+    "DEFAULT": "#0ea5e9",
+    "light": "#7dd3fc",
+    "link": "#60a5fa",
+    "dark": "#3b82f6",
+    "contrast": "#ffffff"
+  },
+  "danger": {
+    "DEFAULT": "#ec4646"
+  },
+  "warn": {
+    "light": "#dfc674",
+    "DEFAULT": "#dfc674"
+  },
+  "info": {
+    "DEFAULT": "#4ca5db"
+  },
+  "success": {
+    "DEFAULT": "#90d4a7"
+  },
+  "on-base": "#21272d",
+  "base": "#f1f1f1",
+  "code": {
+    "plain": "#21272d",
+    "bg": "#dfdfdf"
+  },
+  "twitter": "#1DA1F2",
+  "linkedin": "#0073b1"
 }

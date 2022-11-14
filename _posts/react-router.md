@@ -45,7 +45,7 @@ const App = () => (
 
 Esse é o resultado final, agora é só fazer acontecer haha
 
-# <Router />
+# {"<Router />"}
 
 O Router costuma estar no top level da nossa aplicação, abraçando todos os componentes para que possamos criar `<Route />` diferentes. O `<Router />` é quem entrega a context para nossas rotas e é o responsável por comandar a renderização de cada rota.
 
@@ -195,7 +195,7 @@ export const Router: FC<RouterProps> = ({ children, notFound: NotFound }) => {
 };
 ```
 
-# <Route />
+# {"<Route />"}
 
 E com isso temos nosso router, mas ainda falta a nossa forma de criar nosso `<Route/>`
 
@@ -212,7 +212,7 @@ export const Route = (props: RouteProps) => {
 };
 ```
 
-# <Link />
+# {"<Link />"}
 
 Mas também faltou a forma de criar nossos links para caminhar entre as páginas. Para isso, podemos fazer uma componente utilizando o `<a/>` e aproveitar o próprio atributo href, assim temos uma forma acessível e semântica de criar nossos Links.
 
@@ -252,7 +252,6 @@ yarn add qs
 *Você pode conferir no [github](https://github.com/g4rcez/brouther/blob/main/src/brouther/use-qs.ts) a implementação do query string.*
 
 Pós instalação, é só partir pro código do nosso hook
-
 
 
 ```tsx

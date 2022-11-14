@@ -1,10 +1,12 @@
 import { OmitKeys } from "lib/utility.types";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { RiLink } from "react-icons/ri";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
 import { Format } from "../lib/format";
 import { Themes, useTheme } from "./theme.config";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import Input from "the-mask-input";
 
 type Tag = "a" | typeof Link;
 
@@ -20,15 +22,14 @@ type Props = OmitKeys<
 };
 export const Anchor = ({ tag: Tag = Link, ...props }: Props) => {
   return (
-    <Tag {...props} passHref>
-      <a
-        {...props}
-        className={`link:underline underline-offset-4 link:text-sky-600 dark:link:text-sky-400 transition-all duration-200 ${
-          props.className ?? ""
-        }`}
-      >
-        {props.children}
-      </a>
+    <Tag
+      className={`link:underline underline-offset-4 link:text-sky-600 dark:link:text-sky-400 transition-colors duration-200 ${
+        props.className ?? ""
+      }`}
+      {...props}
+      passHref
+    >
+      {props.children}
     </Tag>
   );
 };
@@ -61,7 +62,7 @@ const HX = ({
 };
 
 const Pre = (props: any) => {
-  const { className, children } = props.children[0].props;
+  const { className, children } = props.children.props;
   const lang = (className ?? "").replace("language-", "");
   const [theme] = useTheme();
   const [codeStyle, setCodeStyle] = useState<any>({});
@@ -76,23 +77,23 @@ const Pre = (props: any) => {
     };
     async();
   }, [theme]);
+
   return (
     <Syntax
       showLineNumbers
       language={lang}
-      className="text-lg my-4 border dark:border-transparent"
+      className="text-lg my-4 border dark:border-transparent border-slate-200"
       style={{ ...codeStyle, fontFamily: "monospace" }}
       codeTagProps={{ style: { fontFamily: "'Fira Code', monospace" } }}
     >
-      {children[0]?.trim?.()}
+      {children?.trim?.()}
     </Syntax>
   );
 };
 
 export const MdxComponents = {
   pre: Pre,
-  Custom: () => <p>AAA</p>,
-  custom: () => <p>AAA</p>,
+  Input: (props:any) => <Input {...props} className="p-2 border border-slate-300 dark:border-slate-400 rounded bg-transparent" />,
   img: (props: any) => (
     <img
       {...props}
@@ -106,3 +107,13 @@ export const MdxComponents = {
   h5: (props: any) => <HX {...props} tag="h5" />,
   h6: (props: any) => <HX {...props} tag="h6" />,
 };
+
+export const Markdown = (props: { mdx: MDXRemoteSerializeResult }) => (
+  <Fragment>
+    <MDXRemote
+      scope={props.mdx.scope}
+      compiledSource={props.mdx.compiledSource}
+      components={MdxComponents}
+    />
+  </Fragment>
+);

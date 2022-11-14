@@ -19,7 +19,7 @@ const getColors = (JSON_COLOR = {}) => {
 module.exports = {
   content: [
     "./public/**/*.html",
-    "./{pages,styles,components,lib}/**/*.{js,jsx,ts,tsx,vue}",
+    "./{pages,styles,components,lib}/**/*.{ts,tsx}",
   ],
   darkMode: "class", // or 'media' or 'class'
   theme: {

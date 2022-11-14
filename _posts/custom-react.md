@@ -335,7 +335,7 @@ Como falei anteriormente, rotas e menus estão quase sempre ligados. Então a mi
 1. Criar uma lista de objetos com os componentes, ícones utilizados no menu, título do menu e da página, perfil que pode visualizar tal rota
 2. Enumerar todas as dependências (fica ligado nessa palavra, você já deve ter imaginado um `useEffect`) necessárias para as rotas
 3. Separar a lógica de cada rota de forma isolada, o que inclui mais um item no nosso objeto citado no item 1
-4. Configurar o React Router para não utilizar mais o <Route /> hardcode, mas sim um <Route /> que será gerado através de um array.
+4. Configurar o React Router para não utilizar mais o `<Route />` hardcode, mas sim um `<Route />` que será gerado através de um array.
 5. Filtrar o array de acordo com todas as informações dos itens 1, 2 e 3.
 
 Show. Melhor eu mostrar o código logo

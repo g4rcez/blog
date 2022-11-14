@@ -10,7 +10,7 @@ description: "Automatizando tarefas pela linha de comando"
 
 # Introdução
 
-Como no dia 07/08 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/), resolvi escrever esse pequeno post para deixar como referência após a apresentação e também esclarecer as ideias antes de apresentar.
+Como no dia 07/08/2019 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/), resolvi escrever esse pequeno post para deixar como referência após a apresentação e também esclarecer as ideias antes de apresentar.
 
 # Motivação
 
@@ -61,10 +61,10 @@ Usei `npm init -y` pra ser mais rápido. Mas isso já da pra começar a fazer os
 
 Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quanto `bin` são os diretórios de transpilação
 
-> Apesar do mundo inteiro dizer compilar JS, esse termo é errado pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
+> Apesar do mundo inteiro dizer compilar JS, esse termo é errado, pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
 
-<small style="margin-top:-2em">Essa é a sua cara nesse exato momento</small>
-<img alt="Meme" src="https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif" style="width:100%"/>
+<small style={{marginTop:"-2em"}}>Essa é a sua cara nesse exato momento</small>
+<img alt="Meme" src="https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif" style={{width:"100%"}}/>
 
 **Mas como irei programar com TS se NodeJS não roda TS?**
 

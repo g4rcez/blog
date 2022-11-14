@@ -107,7 +107,7 @@ const authReducer = (state = initialState, action: AuthActions) => {
 
 Esse exemplo foi recente. Tive um problema com um `Promise.all` que possuia mais de 10 itens, e sua definição possui suporte somente até 10 itens. Tive que fazer uma _rataria_ pra fazer funcionar no meu caso. Mas para isso, tive que obrigar algumas coisas para que a tipagem funcionasse.
 
-> Obs: PromiseLike<T>: O meu tipo poderia ou não ser uma promise. Esse tipo foi retirado da definição oficial de Promise
+> Obs: {"PromiseLike<T>"}: O meu tipo poderia ou não ser uma promise. Esse tipo foi retirado da definição oficial de Promise
 
 1. Cada item da minha promise deveria ser readonly para que os tipos pudessem ser tratados como constantes/imutáveis.
 2. O array passado para minha função `PromiseAll` deverá ser passado como `as const` para garantir o readonly.
@@ -115,9 +115,9 @@ Esse exemplo foi recente. Tive um problema com um `Promise.all` que possuia mais
 
 Para você não ficar viajando, vou explicar o que é cada tipo antes de você ler o código:
 
-- Unwrap<T>: Esse tipo irá fazer testes no tipo para verificar se o mesmo é uma Promise e o resolve, funcionando mais ou menos como um await
-- ReadonlyPromise<T>: Garantindo que o meu tipo seja _Readonly_ ou seja um _Readonly_ de _PromiseLike_
-- Each<T>: Testa se o tipo é da natureza de Array (o ArrayLike não obriga que seja um array, só que o mesmo tenha uma interface de iterável como Array). Se o mesmo for um array, ele irá iterar nos itens e fazer um Unwrap<T[K]>, onde K é o índice no Array
+- {"Unwrap<T>"}: Esse tipo irá fazer testes no tipo para verificar se o mesmo é uma Promise e o resolve, funcionando mais ou menos como um await
+- {"ReadonlyPromise<T>"}: Garantindo que o meu tipo seja _Readonly_ ou seja um _Readonly_ de _PromiseLike_
+- {"Each<T>"}: Testa se o tipo é da natureza de Array (o ArrayLike não obriga que seja um array, só que o mesmo tenha uma interface de iterável como Array). Se o mesmo for um array, ele irá iterar nos itens e fazer um {"Unwrap<T[K]>"}, onde K é o índice no Array
 
 ```typescript
 interface PromiseLike<T> {

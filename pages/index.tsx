@@ -3,18 +3,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import { Format, toPost } from "../lib/format";
-import { getAllPosts } from "../lib/markdown";
+import { getAllMdFiles } from "../lib/markdown";
+import { getPost, getPostSlugs, Post } from "../lib/posts";
 
 export const getStaticProps = async () => {
-  const posts = getAllPosts([
-    "slug",
-    "date",
-    "subjects",
-    "readingTime",
-    "description",
-    "title",
-    "image",
-  ]);
+  const posts = getAllMdFiles<Post>(
+    [
+      "slug",
+      "date",
+      "subjects",
+      "readingTime",
+      "description",
+      "title",
+      "image",
+    ],
+    getPostSlugs,
+    getPost
+  );
   const subjects = [...new Set(posts.flatMap((post) => post.subjects))];
   return { props: { posts, subjects } };
 };
@@ -115,15 +120,15 @@ export default function IndexPage({
           <article key={x.slug} className="flex flex-col w-full">
             <header className="text-primary-link transition-colors duration-500 cursor-pointer hover:underline">
               <Link href={toPost(x.slug)}>
-                <a href={toPost(x.slug)}>
-                  <h3 className="text-2xl font-bold">{x.title}</h3>
-                </a>
+                <h3 className="text-2xl font-bold">{x.title}</h3>
               </Link>
             </header>
             <p className="text-sm opacity-50 my-2">
               {Format.date(x.date)} - {x.readingTime} min read
             </p>
-            <p className="text-md leading-relaxed dark:text-slate-300">{x.description}</p>
+            <p className="text-md leading-relaxed dark:text-slate-300">
+              {x.description}
+            </p>
             <Subjects search={search} onClick={change} subjects={x.subjects} />
           </article>
         ))}

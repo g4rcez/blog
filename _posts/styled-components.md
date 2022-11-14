@@ -164,7 +164,8 @@ type ClassArray = ClassValue[];
 
 type ClassDictionary = { [id: string]: any };
 
-export type ClassValue = string | number | ClassDictionary | ClassArray | undefined | null | boolean;
+export type ClassValue = string | number | ClassDictionary 
+    | ClassArray | undefined | null | boolean;
 
 export const useClassNames = (dependency: DependencyList, ...classes: ClassValue[]) =>
   useMemo(() => classNamesDedupe(...classes), dependency);
