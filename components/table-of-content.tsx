@@ -5,9 +5,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { Anchor, Markdown } from "./mdx";
+import { Anchor } from "./mdx";
 import { Format } from "../lib/format";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type Heading = { id: string; text: string; order: number };
 

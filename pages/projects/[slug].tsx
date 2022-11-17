@@ -10,6 +10,7 @@ import {
 import { useTableOfContent } from "../../components/table-of-content";
 import { join } from "path";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { Markdown } from "../../components/mdx";
 
 type Params = { params: { slug: string } };
 
@@ -59,7 +60,7 @@ type Props = { post: Project; mdx: MDXRemoteSerializeResult };
 export default function PostPage({ post, mdx }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
   const openGraphImage = `https://garcez.dev/post-graph/${post.slug}.png`;
-  const [Content, ref] = useTableOfContent(mdx);
+  const [Content, ref] = useTableOfContent();
 
   return (
     <section className="block w-full min-w-full">
@@ -109,9 +110,10 @@ export default function PostPage({ post, mdx }: Props) {
       </nav>
       <section
         ref={ref}
+        data-post={post.title}
         className="markdown block w-full min-w-full leading-relaxed antialiased tracking-wide break-words dark:text-slate-200"
       >
-        {Content.content as any}
+        <Markdown mdx={mdx} />
       </section>
     </section>
   );
