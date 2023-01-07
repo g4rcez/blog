@@ -13,7 +13,7 @@ const setColor = (varName: string, color: string, root: HTMLElement) =>
   root.style.setProperty(varName, color);
 
 const Entries = <T, K extends string>(v: T): Array<[keyof T, K]> =>
-  Object.entries(v) as never;
+  Object.entries(v as any) as never;
 
 const setCssVars = (colors: any, element: HTMLElement) => {
   Object.entries(colors).forEach(([key, value]) => {
