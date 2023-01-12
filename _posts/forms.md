@@ -8,7 +8,6 @@ date: "2023-01-12T14:45:00.000Z"
 description: "Como criar formulários sem ter milhões de dependências externas?"
 ---
 
-<!-- TOC -->
 * [Introdução](#introdução)
 * [Os dois tipos de formulários](#os-dois-tipos-de-formulários)
   * [Forms controlados](#forms-controlados)
@@ -18,7 +17,6 @@ description: "Como criar formulários sem ter milhões de dependências externas
     * [Query Selectors](#query-selectors)
 * [Validity State](#validity-state)
 * [Conclusão](#conclusão)
-<!-- TOC -->
 
 # Introdução
 
