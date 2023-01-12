@@ -1,22 +1,14 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Format, toPost } from "../lib/format";
 import { getAllMdFiles } from "../lib/markdown";
-import { getPost, getAllPosts, Post } from "../lib/posts";
+import { allPostInfo, getAllPosts, getPost, Post } from "../lib/posts";
 
 export const getStaticProps = async () => {
   const posts = getAllMdFiles<Post>(
-    [
-      "slug",
-      "date",
-      "subjects",
-      "readingTime",
-      "description",
-      "title",
-      "image",
-    ],
+    allPostInfo.filter((x) => x !== "content"),
     getAllPosts,
     getPost
   );
@@ -35,28 +27,24 @@ const Subjects = ({
   search: string;
   onClick: (str: string) => void;
 }) => {
-  const id = useMemo(() => Math.random().toString(36).substr(2, 16), []);
+  const id = useRef(() => Math.random().toString(36).substring(2, 16)).current;
 
   const list = useMemo(
     () => [...(subjects ?? [])].sort((a, b) => a.localeCompare(b)),
     [subjects]
   );
 
-  const click = useCallback((x: string) => {
-    onClick(x);
-  }, []);
-
   return (
-    <ul className="inline-flex gap-2 mt-2 text-md flex-wrap">
+    <ul className="inline-flex gap-4 mt-2 text-md flex-wrap">
       {list.map((y) => (
         <li key={`${y}-${id}`}>
           <button
-            onClick={() => click(y)}
+            onClick={() => onClick(y)}
             className={`${
               y === search
-                ? "bg-primary-link link:bg-primary-link"
-                : "bg-primary-dark link:bg-primary-dark"
-            } duration-500 transition-colors px-2 rounded text-primary-contrast`}
+                ? "bg-primary-dark link:bg-primary-light px-2 text-white rounded"
+                : "underline underline-offset-4 decoration-primary-dark link:decoration-2"
+            } duration-300 transition-colors`}
           >
             {y}
           </button>
@@ -65,8 +53,8 @@ const Subjects = ({
       {root && (
         <li>
           <button
-            onClick={() => click("")}
-            className={`bg-orange-500 link:bg-orange-300 duration-500 transition-colors px-2 rounded text-primary-contrast`}
+            onClick={() => onClick("")}
+            className="text-orange-600 link:text-orange-500 duration-500 transition-colors"
           >
             Clear
           </button>
@@ -83,9 +71,9 @@ export default function IndexPage({
   const [search, setSearch] = useState("");
   const { push } = useRouter();
 
-  const change = useCallback((text: string) => {
+  const change = useCallback(async (text: string) => {
     setSearch(text);
-    push({ query: { subject: text || undefined } });
+    await push({ query: { subject: text || undefined } });
   }, []);
 
   const viewedPosts = useMemo(

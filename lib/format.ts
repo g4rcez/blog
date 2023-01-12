@@ -1,13 +1,14 @@
 export const Format = {
-  date: (date: string) =>
-    new Intl.DateTimeFormat(undefined, {
+  date: (date: string) => {
+    return new Intl.DateTimeFormat(undefined, {
       year: "numeric",
       month: "long",
       day: "numeric",
       hour12: false,
       hour: "numeric",
       minute: "numeric",
-    }).format(new Date(date)),
+    }).format(new Date(date ?? new Date()));
+  },
   slug: (str: string = "") => {
     str = str.replace(/^\s+|\s+$/g, "");
     str = str.toLowerCase();
