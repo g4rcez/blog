@@ -8,16 +8,6 @@ date: "2023-01-12T14:45:00.000Z"
 description: "Como criar formulários sem ter milhões de dependências externas?"
 ---
 
-* [Introdução](#introdução)
-* [Os dois tipos de formulários](#os-dois-tipos-de-formulários)
-  * [Forms controlados](#forms-controlados)
-    * [Form + useState](#form--usestate)
-  * [Forms não controlados](#forms-não-controlados)
-    * [FormData](#formdata)
-    * [Query Selectors](#query-selectors)
-* [Validity State](#validity-state)
-* [Conclusão](#conclusão)
-
 # Introdução
 
 Porque existem várias libs de formulários? Porque existem sempre tantas complicações quando se trata de formulários?

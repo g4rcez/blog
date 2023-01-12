@@ -34,7 +34,7 @@ const Toc = ({ headers }: { headers: Heading[] }) => (
       {headers.map((hx) => (
         <li
           key={`${hx.id}-${hx.order}`}
-          className="my-2 text-sm underline underline-offset-4"
+          className="my-4 text-sm underline underline-offset-4"
           data-order={hx.order}
         >
           <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
