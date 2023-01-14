@@ -31,8 +31,8 @@
 .markdown ul,
 .markdown ol {
     margin-left: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
     list-style-position: inside;
 }
 
@@ -88,7 +88,17 @@ html.dark .remark-highlight > pre {
 
 .markdown blockquote {
     margin: 1rem 0;
-    padding: 0 0.5rem;
+    padding: 0 2rem;
     border-radius: 0.25rem;
     border: 1px solid var(--gray);
+    border-left: 4px solid var(--main);
+}
+
+.markdown > h1 > a,
+.markdown > h2 > a,
+.markdown > h3 > a,
+.markdown > h4 > a,
+.markdown > h5 > a,
+.markdown > h6 > a {
+    color: var(--on-base);
 }

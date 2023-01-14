@@ -3,6 +3,7 @@
   "transparent": "transparent",
   "current": "currentColor",
   "gray": "#9b9da0",
+  "main": "#0ea5e9",
   "primary": {
     "DEFAULT": "#0ea5e9",
     "light": "#7dd3fc",

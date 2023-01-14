@@ -1,6 +1,6 @@
 import { OmitKeys } from "lib/utility.types";
 import Link from "next/link";
-import { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RiLink } from "react-icons/ri";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
 import { Format } from "../lib/format";
@@ -50,7 +50,7 @@ const HX = ({
   }, []);
 
   return (
-    <Render {...props} id={props.id ?? text}>
+    <Render {...props} id={props.id ?? text} data-tag={Render}>
       <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
         <button className="inline-block transition-opacity duration-300 opacity-0 group-hover:opacity-100 rotate-45 mr-2 text-lg">
           <RiLink aria-hidden="true" className="rotate-45" />
@@ -93,14 +93,19 @@ const Pre = (props: any) => {
 
 export const MdxComponents = {
   pre: Pre,
-  Input: (props:any) => <Input {...props} className="p-2 border border-slate-300 dark:border-slate-400 rounded bg-transparent" />,
+  Input: (props: any) => (
+    <Input
+      {...props}
+      className="p-2 border border-slate-300 dark:border-slate-400 rounded bg-transparent"
+    />
+  ),
   img: (props: any) => (
     <img
       {...props}
       className={`block min-w-full w-full m-0 p-0 ${props.className}`}
     />
   ),
-  h1: (props: any) => <HX {...props} tag="h2" />,
+  h1: (props: any) => <HX {...props} tag="h1" />,
   h2: (props: any) => <HX {...props} tag="h2" />,
   h3: (props: any) => <HX {...props} tag="h3" />,
   h4: (props: any) => <HX {...props} tag="h4" />,

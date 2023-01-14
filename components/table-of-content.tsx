@@ -21,7 +21,7 @@ export const parseTextHeaders = (headers: HTMLHeadingElement[]) =>
     return {
       text,
       id: Format.slug(text),
-      order: Number.parseInt(hx.tagName.replace(/h/i, "")) - 2,
+      order: Number.parseInt(hx.dataset.tag?.replace(/h/i, "") ?? ""),
     };
   });
 
@@ -33,9 +33,10 @@ const Toc = ({ headers }: { headers: Heading[] }) => (
     <ul className="my-4">
       {headers.map((hx) => (
         <li
-          key={`${hx.id}-${hx.order}`}
-          className="my-4 text-sm underline underline-offset-4"
           data-order={hx.order}
+          key={`${hx.id}-${hx.order}`}
+          style={{ marginLeft: `${hx.order * 24}px` }}
+          className="my-4 text-sm underline underline-offset-4"
         >
           <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
         </li>
@@ -57,7 +58,9 @@ export const useTableOfContent = () => {
     const createTableContent = () => {
       if (ref.current === null) return;
       const headers = headersSelector(ref.current);
-      setContent({ toc: () => <Toc headers={parseTextHeaders(headers)} /> });
+      const parsed = parseTextHeaders(headers);
+      console.log(parsed);
+      setContent({ toc: () => <Toc headers={parsed} /> });
     };
     if (ref.current === null) return;
     const observer = new MutationObserver(createTableContent);

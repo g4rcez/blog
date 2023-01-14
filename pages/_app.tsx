@@ -31,6 +31,7 @@ function Root({
     const root = document.documentElement;
     const json = theme === "dark" ? Dark : Light;
     ThemePreference.setCss(json, root);
+    console.log(json);
     ThemePreference.saveTheme(theme);
     root.classList.value = theme;
   }, [theme]);
