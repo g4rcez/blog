@@ -1,7 +1,6 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
-import remarkBreaks from "remark-breaks";
 import gfm from "remark-gfm";
 import { serialize } from "next-mdx-remote/serialize";
 
@@ -10,7 +9,7 @@ export const toMarkdown = async (markdown: string) =>
     parseFrontmatter: false,
     mdxOptions: {
       format: "mdx",
-      remarkPlugins: [gfm, remarkBreaks],
+      remarkPlugins: [gfm],
     },
   });
 
