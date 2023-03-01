@@ -10,7 +10,7 @@ import React, {
 
 export enum Themes {
   Dark = "dark",
-  light = "light",
+  Light = "light",
 }
 
 type Context = [theme: Themes, setTheme: Dispatch<SetStateAction<Themes>>];
@@ -18,10 +18,10 @@ type Context = [theme: Themes, setTheme: Dispatch<SetStateAction<Themes>>];
 const Context = React.createContext<Context>([Themes.Dark, () => {}]);
 
 export const ThemeProvider = (props: PropsWithChildren) => {
-  const [theme, setTheme] = useState(Themes.Dark);
+  const [theme, setTheme] = useState(Themes.Light);
   useEffect(() => {
     setTheme(() =>
-      ThemePreference.prefersDark() ? Themes.Dark : Themes.light
+      ThemePreference.prefersDark() ? Themes.Dark : Themes.Light
     );
   }, []);
   return (

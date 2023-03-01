@@ -3,9 +3,9 @@
   "transparent": "transparent",
   "current": "currentColor",
   "gray": "#373c42",
-  "main": "#8C78C9",
+  "main": "#856BD7",
   "primary": {
-    "DEFAULT": "#8C78C9",
+    "DEFAULT": "#856BD7",
     "light": "#AEA0D9",
     "link": "#AEA0D9"
   },

@@ -1,7 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { Fragment, useCallback, useMemo, useState } from "react";
 import { Format, toPost } from "../lib/format";
 import { getAllMdFiles } from "../lib/markdown";
 import { allPostInfo, getAllPosts, getPost, Post } from "../lib/posts";
@@ -57,14 +57,14 @@ const StickyPosts = ({ posts }: Props) => {
   );
 };
 
-const GroupedPosts = ({ posts }: Props) => {
-  const [search, setSearch] = useState("");
-  const { push } = useRouter();
+const useSearch = () => {
+  const router = useRouter();
+  const params = new URLSearchParams(router.asPath.split("?")[1] ?? "");
+  return params.get("subject") ?? "";
+};
 
-  const change = useCallback(async (text: string) => {
-    setSearch(text);
-    await push({ query: { subject: text || undefined } });
-  }, []);
+const GroupedPosts = ({ posts, subjects }: Props) => {
+  const search = useSearch();
 
   const viewedPosts = useMemo(
     () =>
@@ -72,12 +72,9 @@ const GroupedPosts = ({ posts }: Props) => {
         ? posts
         : posts.filter((post) => {
             const lowerSearch = search.toLowerCase();
-            if (post.title.toLowerCase().includes(lowerSearch)) {
+            if (post.title.toLowerCase().includes(lowerSearch)) return true;
+            if (post?.description?.toLowerCase().includes(lowerSearch))
               return true;
-            }
-            if (post?.description?.toLowerCase().includes(lowerSearch)) {
-              return true;
-            }
             return (post?.subjects ?? []).some((x) =>
               x.toLowerCase().includes(lowerSearch)
             );
@@ -87,7 +84,37 @@ const GroupedPosts = ({ posts }: Props) => {
 
   return (
     <div className="w-full w-full lg:w-3/4">
-      <SectionTitle title="Todos os posts" />
+      <SectionTitle
+        title={
+          <Fragment>
+            Todos os posts
+            {search === "" ? (
+              ""
+            ) : (
+              <Fragment>
+                {" - "} <span className="text-primary-link">{search}</span>
+              </Fragment>
+            )}
+          </Fragment>
+        }
+      />
+      <nav className="my-4 mb-8">
+        <ul className="flex gap-x-4 text-xs text-white">
+          {subjects.map((x) => (
+            <li key={`subject-filter-${x}`}>
+              <Link
+                href={`/?subject=${x}`}
+                className="capitalize rounded px-2 py-1 bg-main link:bg-primary-link transition-colors duration-300"
+              >
+                {x}
+              </Link>
+            </li>
+          ))}
+          <Link href="/" className="underline text-on-base">
+            Limpar
+          </Link>
+        </ul>
+      </nav>
       <section className="w-full gap-y-12">
         {viewedPosts.map((x) => (
           <article key={x.slug} className="flex flex-col w-full mb-8">

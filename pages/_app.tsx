@@ -41,7 +41,7 @@ function Root({
   );
 
   const toggle = useCallback(() => {
-    setTheme((p) => (p === "dark" ? Themes.light : Themes.Dark));
+    setTheme((p) => (p === "dark" ? Themes.Light : Themes.Dark));
   }, []);
 
   return (
