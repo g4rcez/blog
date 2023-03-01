@@ -59,7 +59,6 @@ export const useTableOfContent = () => {
       if (ref.current === null) return;
       const headers = headersSelector(ref.current);
       const parsed = parseTextHeaders(headers);
-      console.log(parsed);
       setContent({ toc: () => <Toc headers={parsed} /> });
     };
     if (ref.current === null) return;
