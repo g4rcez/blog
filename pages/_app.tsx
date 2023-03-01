@@ -75,7 +75,7 @@ function Root({
         <meta name="theme-color" content={themeColor} />
       </Head>
       <Navbar toggle={toggle} theme={theme} />
-      <div className="w-full container mx-auto md:px-6 px-4 block md:max-w-6xl">
+      <div className="w-full container mx-auto md:px-6 px-4 block md:max-w-5xl">
         <Component {...(pageProps as any)} />
       </div>
       <footer className="container mx-auto md:px-6 px-4 block md:max-w-6xl py-8">
@@ -90,7 +90,6 @@ function Root({
             className="cursor-pointer transition-colors duration-500 hover:text-twitter"
           >
             <span className="sr-only">My Twitter</span>
-
             <VscTwitter />
           </a>
           <a

@@ -1,7 +1,7 @@
 import { OmitKeys } from "lib/utility.types";
 import Link from "next/link";
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { RiLink } from "react-icons/ri";
+import { RxFrame } from "react-icons/rx";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
 import { Format } from "../lib/format";
 import { Themes, useTheme } from "./theme.config";
@@ -52,8 +52,8 @@ const HX = ({
   return (
     <Render {...props} id={props.id ?? text} data-tag={Render}>
       <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
-        <button className="inline-block transition-opacity duration-300 opacity-0 group-hover:opacity-100 rotate-45 mr-2 text-lg">
-          <RiLink aria-hidden="true" className="rotate-45" />
+        <button className="inline-block duration-300 mr-2 text-lg opacity-30 transition-opacity active:opacity-100 group-hover:opacity-100">
+          <RxFrame aria-hidden="true" className="mb-0.5" />
         </button>
         <span ref={span}>{props.children}</span>
       </Anchor>

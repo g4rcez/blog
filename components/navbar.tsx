@@ -7,13 +7,11 @@ type Props = {
 };
 export const Navbar = ({ theme, toggle }: Props) => {
   return (
-    <header className="w-full flex mb-8 text-lg bg-zinc-900 text-white sticky top-0 z-50 isolate">
+    <header className="w-full flex mb-8 text-lg bg-on-base dark:bg-black/20 backdrop-blur-xl text-white sticky top-0 z-50 isolate">
       <nav className="w-full py-3 flex flex-row justify-between items-center container mx-auto md:max-w-6xl md:px-6 px-4">
-        <Link href="/">
-          <span className="flex items-center gap-x-2">
-            <SiReact className="inline-block" />
-            Garcez Blog
-          </span>
+        <Link className="flex items-center gap-x-2" href="/">
+          <SiReact className="inline-block" />
+          Blog do Garcez
         </Link>
         <span className="flex gap-x-4 items-center text-sm">
           <Link

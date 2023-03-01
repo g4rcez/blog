@@ -122,7 +122,7 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
         />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">
-        <h1 className="mt-4 mb-2 font-bold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
+        <h1 className="mt-4 mb-2 font-semibold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
           {post.title}
         </h1>
         <p className="mt-4 mb-2 text-sm">{post.description}</p>

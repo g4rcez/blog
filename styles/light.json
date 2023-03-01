@@ -3,13 +3,11 @@
   "transparent": "transparent",
   "current": "currentColor",
   "gray": "#9b9da0",
-  "main": "#0ea5e9",
+  "main": "#856BD7",
   "primary": {
-    "DEFAULT": "#0ea5e9",
-    "light": "#7dd3fc",
-    "link": "#60a5fa",
-    "dark": "#3b82f6",
-    "contrast": "#ffffff"
+    "DEFAULT": "#7060A0",
+    "light": "#856BD7",
+    "link": "#856BD7"
   },
   "danger": {
     "DEFAULT": "#ec4646"
@@ -24,7 +22,7 @@
   "success": {
     "DEFAULT": "#90d4a7"
   },
-  "on-base": "#21272d",
+  "on-base": "#2F3942",
   "base": "#f1f1f1",
   "code": {
     "plain": "#21272d",

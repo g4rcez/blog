@@ -70,7 +70,8 @@
 .markdown .language-unknown,
 .markdown pre,
 .markdown code {
-    color: var(--info-DEFAULT);
+    color: var(--main);
+    font-weight: 600;
     padding: 0;
     margin: 0;
 }
