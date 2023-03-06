@@ -1,7 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { Fragment, useCallback, useMemo, useState } from "react";
+import React, { Fragment, useMemo } from "react";
 import { Format, toPost } from "../lib/format";
 import { getAllMdFiles } from "../lib/markdown";
 import { allPostInfo, getAllPosts, getPost, Post } from "../lib/posts";

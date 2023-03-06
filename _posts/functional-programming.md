@@ -1,6 +1,6 @@
 ---
 useFolks: true
-subjects: ["typescript"]
+subjects: ["typescript", "fp"]
 title: "Functional Typescript"
 language: "pt-br"
 translations: ["pt-br"]
