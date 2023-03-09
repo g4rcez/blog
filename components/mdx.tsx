@@ -116,6 +116,7 @@ export const MdxComponents = {
 export const Markdown = (props: { mdx: MDXRemoteSerializeResult }) => (
   <Fragment>
     <MDXRemote
+      frontmatter={null}
       scope={props.mdx.scope}
       components={MdxComponents}
       compiledSource={props.mdx.compiledSource}

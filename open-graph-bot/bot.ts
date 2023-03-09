@@ -61,7 +61,9 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(5000);
+const PORT = 9999;
+
+server.listen(PORT);
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -81,7 +83,7 @@ server.listen(5000);
         const post = x.replace(/\.md/, "");
         console.log("Printing", post);
         const page = await browser.newPage();
-        await page.goto(`http://localhost:5000/${post}`);
+        await page.goto(`http://localhost:${PORT}/${post}`);
         await page.screenshot({
           path: path.join(imagePath, `${post}.png`),
           encoding: "binary",
