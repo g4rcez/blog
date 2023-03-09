@@ -129,7 +129,7 @@ const pipe = (first: A, ...fns: Fn[]) =>
 
 ### Pipe tipado
 
-Esse cara não vai ser explicado no artigo devido à complexidade dessa tipagem, mas você pode conferir a explicação no artigo [pipe-type](/posts/pipe-type)
+Esse cara não vai ser explicado no artigo devido à complexidade dessa tipagem, mas você pode conferir a explicação no artigo [pipe-type](/post/pipe-type)
 
 ```typescript
 import { L, N } from "ts-toolbelt";
