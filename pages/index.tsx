@@ -2,17 +2,13 @@ import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { Fragment, useMemo } from "react";
-import { Format, toPost } from "../lib/format";
-import { getAllMdFiles } from "../lib/markdown";
-import { allPostInfo, getAllPosts, getPost, Post } from "../lib/posts";
+import { Format } from "../lib/format";
 import { RxBookmark } from "react-icons/rx";
+import { Posts } from "../lib/posts";
+import {CMS} from "../lib/cms";
 
 export const getStaticProps = async () => {
-  const posts = getAllMdFiles<Post>(
-    allPostInfo.filter((x) => x !== "content"),
-    getAllPosts,
-    getPost
-  );
+  const posts = CMS.sort(Posts.all());
   return {
     props: {
       posts,
@@ -36,12 +32,9 @@ const StickyPosts = ({ posts }: Props) => {
         <SectionTitle title="Recentes" />
         <section className="w-full gap-y-8 flex flex-wrap">
           {posts.slice(0, 3).map((x) => (
-            <article key={x.slug} className="flex flex-col w-full">
+            <article key={x.id} className="flex flex-col w-full">
               <header className="transition-colors duration-500 cursor-pointer hover:underline">
-                <Link
-                  href={toPost(x.slug)}
-                  className="flex gap-2 items-baseline"
-                >
+                <Link href={x.href} className="flex gap-2 items-baseline">
                   <RxBookmark
                     aria-hidden="true"
                     className="text-primary-link mt-1"
@@ -117,9 +110,9 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
       </nav>
       <section className="w-full gap-y-12">
         {viewedPosts.map((x) => (
-          <article key={x.slug} className="flex flex-col w-full mb-8">
+          <article key={x.id} className="flex flex-col w-full mb-8">
             <header className="transition-colors duration-500 cursor-pointer hover:underline">
-              <Link href={toPost(x.slug)}>
+              <Link href={x.href}>
                 <h3 className="text-2xl">{x.title}</h3>
               </Link>
             </header>

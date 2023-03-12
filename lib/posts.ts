@@ -1,32 +1,51 @@
-import { join } from "path";
-import { getAllSlugs, getFileByName } from "./markdown";
+import Path, { join } from "path";
+import { z } from "zod";
+import { B } from "./brainiac";
+import { Format } from "./format";
+import { CMS } from "./cms";
 
-export type PostFile = {
-  title: string;
-  description?: string;
-  date: string;
-  image: string;
-};
-export type Post = PostFile & {
-  slug: string;
-  content: string;
-  readingTime: number;
-  subjects: string[];
-};
+export namespace Posts {
+  export enum Language {
+    ptBr = "pt-br",
+    enUs = "en-us",
+  }
 
-export const postsDirectory = join(process.cwd(), "_posts");
+  const schema = z
+    .object({
+      date: B.datetime,
+      title: B.notEmptyString,
+      filename: B.notEmptyString,
+      description: B.notEmptyString,
+      language: z.nativeEnum(Language),
+      subjects: z.array(B.notEmptyString),
+      content: B.notEmptyString.optional().default(""),
+      translations: z.array(z.nativeEnum(Language)).optional().default([]),
+    })
+    .transform((x) => {
+      const slug = Format.slug(x.filename);
+      return {
+        ...x,
+        id: slug,
+        href: Format.toPost(slug),
+        readingTime: Format.readingTime(x.content),
+      };
+    });
 
-export const getAllPosts = getAllSlugs(postsDirectory);
+  const dir = join(process.cwd(), "_posts");
 
-export const getPost = getFileByName<Post>(postsDirectory);
+  export const slugs = (): string[] => CMS.slugs(dir);
 
-export const allPostInfo: (keyof Post)[] = [
-  "title",
-  "readingTime",
-  "date",
-  "slug",
-  "description",
-  "subjects",
-  "content",
-  "image",
-];
+  export const all = (): Post[] => {
+    const result = CMS.getAll(dir, schema);
+    if (result.success) return result.data as Post[];
+    return [];
+  };
+
+  export type Post = z.infer<typeof schema>;
+
+  export const find = (url: string): Post | null => {
+    const result = CMS.find(Path.join(dir, url), schema);
+    if (result.success) return result.data as Post;
+    return null;
+  };
+}

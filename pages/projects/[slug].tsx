@@ -1,16 +1,11 @@
 import Head from "next/head";
 import { Fragment, useMemo } from "react";
 import { Format } from "../../lib/format";
-import {
-  getAllMdFiles,
-  getAllSlugs,
-  getFileByName,
-  toMarkdown,
-} from "../../lib/markdown";
+import { toMarkdown } from "../../lib/markdown";
 import { useTableOfContent } from "../../components/table-of-content";
-import { join } from "path";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { Markdown } from "../../components/mdx";
+import { Projects } from "../../lib/projects";
 
 type Params = { params: { slug: string } };
 
@@ -26,33 +21,16 @@ type Project = {
   npmLink: string;
 };
 
-const projectKeys: Array<keyof Project> = [
-  "title",
-  "description",
-  "date",
-  "slug",
-  "keywords",
-  "content",
-  "npmName",
-  "npmLink",
-];
-
-const projectsDirectory = join(process.cwd(), "_projects");
-
-const getProjectsSlug = getAllSlugs(projectsDirectory);
-
-const getProject = getFileByName<Project>(projectsDirectory);
-
 export const getStaticPaths = () => ({
   fallback: false,
-  paths: getAllMdFiles<Project>(["slug"], getProjectsSlug, getProject).map(
-    (post) => ({ params: { slug: post.slug } })
-  ),
+  paths: Projects.slugs().map((slug) => ({ params: { slug } })),
 });
 
 export const getStaticProps = async ({ params }: Params) => {
-  const post = getProject(params.slug, projectKeys);
-  return { props: { post, mdx: await toMarkdown(post.content || "") } };
+  const project = Projects.find(params.slug);
+  return project === null
+    ? { notFound: true }
+    : { props: { post: project, mdx: await toMarkdown(project.content) } };
 };
 
 type Props = { post: Project; mdx: MDXRemoteSerializeResult };

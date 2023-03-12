@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "gray-matter": "4.0.3",
-    "next": "13.2.3",
+    "next": "13.2.4",
     "next-mdx-remote": "4.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -29,19 +29,20 @@
     "remark-rehype": "10.1.0",
     "storage-manager-js": "4.0.7",
     "the-mask-input": "3.0.8",
-    "unified": "10.1.2"
+    "unified": "10.1.2",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "0.5.9",
-    "@types/node": "18.6.4",
+    "@types/node": "18.15.0",
     "@types/react": "18.0.28",
     "@types/react-syntax-highlighter": "15.5.6",
     "@types/remark-prism": "1.3.4",
-    "autoprefixer": "10.4.13",
+    "autoprefixer": "10.4.14",
     "postcss": "8.4.21",
     "postcss-cli": "10.1.0",
     "prettier": "2.8.4",
-    "puppeteer": "19.7.3",
+    "puppeteer": "19.7.4",
     "tailwindcss": "3.2.7",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",

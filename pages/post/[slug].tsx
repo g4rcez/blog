@@ -1,12 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useMemo } from "react";
-import { Format, toPost } from "../../lib/format";
-import { getAllMdFiles, toMarkdown } from "../../lib/markdown";
+import { Format } from "../../lib/format";
+import { toMarkdown } from "../../lib/markdown";
 import { useTableOfContent } from "../../components/table-of-content";
-import { allPostInfo, getAllPosts, getPost, Post } from "../../lib/posts";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { Markdown } from "../../components/mdx";
+import { Posts } from "../../lib/posts";
 
 type Params = {
   params: {
@@ -16,25 +16,20 @@ type Params = {
 
 export const getStaticPaths = () => ({
   fallback: false,
-  paths: getAllMdFiles(allPostInfo, getAllPosts, getPost).map((post) => ({
-    params: { slug: post.slug },
-  })),
+  paths: Posts.slugs().map((slug) => ({ params: { slug } })),
 });
 
 type AdjacentPosts = {
-  next: Partial<Post> | null;
-  prev: Partial<Post> | null;
+  next: Partial<Posts.Post> | null;
+  prev: Partial<Posts.Post> | null;
 };
 
 export const getStaticProps = async ({ params }: Params) => {
-  const post = getPost(params.slug, allPostInfo);
-  const adjacentPosts = getAllMdFiles<Post>(
-    ["slug", "title", "date"],
-    getAllPosts,
-    getPost
-  ).reduce<AdjacentPosts>(
+  const post = Posts.find(params.slug);
+  if (post === null) return { notFound: true };
+  const adjacentPosts = Posts.all().reduce<AdjacentPosts>(
     (acc, el, index, array) => {
-      if (el.slug === post.slug) {
+      if (el.id === post.id) {
         const next = array[index + 1] ?? null;
         const prev = array[index - 1] ?? null;
         return { next, prev };
@@ -56,22 +51,21 @@ export const getStaticProps = async ({ params }: Params) => {
 };
 
 type Props = {
-  post: Post;
+  post: Posts.Post;
   mdx: MDXRemoteSerializeResult;
   adjacentPosts: {
-    next: Post | null;
-    prev: Post | null;
+    next: Posts.Post | null;
+    prev: Posts.Post | null;
   };
 };
 
 export const WhoIsNext = (
-  props: Post & { label: "next" | "prev"; className: string }
+  props: Posts.Post & { label: "next" | "prev"; className: string }
 ) => {
   const icon = props.label === "next" ? "->" : "<-";
-  const href = toPost(props.slug);
   return (
     <Link
-      href={href}
+      href={props.href}
       className={
         "w-full hover:underline hover:text-primary-link cursor-pointer " +
         props.className
@@ -87,7 +81,7 @@ export const WhoIsNext = (
 export default function PostPage({ post, adjacentPosts, mdx }: Props) {
   const date = useMemo(() => Format.date(post.date), [post]);
   const [Content, ref] = useTableOfContent();
-  const openGraphImage = `https://garcez.dev/post-graph/${post.slug}.png`;
+  const openGraphImage = `https://garcez.dev/post-graph/${post.id}.png`;
   const hasNext = adjacentPosts.next !== null;
 
   return (
@@ -118,7 +112,7 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
         />
         <meta
           property="og:url"
-          content={`https://garcez.dev/post/${post.slug}`}
+          content={`https://garcez.dev/post/${post.id}`}
         />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">

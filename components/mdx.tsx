@@ -102,6 +102,7 @@ export const MdxComponents = {
   img: (props: any) => (
     <img
       {...props}
+      loading="lazy"
       className={`block min-w-full w-full m-0 p-0 ${props.className}`}
     />
   ),
