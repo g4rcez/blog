@@ -1,6 +1,6 @@
 ---
 title: Criando um reduce tipado
-useFolks: true
+level: 1
 subjects: ["typescript","tricks"]
 language: "pt-br"
 translations: ["pt-br"]

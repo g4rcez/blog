@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["frontend"]
 title: "Criando projetos escaláveis"
 language: "pt-br"

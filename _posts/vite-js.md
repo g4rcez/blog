@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 title: "ViteJS"
 language: "pt-br"
 translations: ["pt-br"]

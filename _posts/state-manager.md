@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["javascript", "tricks", "typescript", "react", "hooks"]
 title: "Controle de estado"
 language: "pt-br"

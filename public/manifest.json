@@ -1,18 +1,37 @@
 {
-    "name": "Garcez Blog PWA Version",
-    "short_name": "Garcez Blog",
-    "theme_color": "#21272d",
-    "background_color": "#21272d",
-    "display": "fullscreen",
-    "orientation": "portrait",
-    "scope": "/",
-    "start_url": "/",
-    "icons": [
-        {
-            "src": "vercel.svg",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "splash_pages": null
+  "name": "Blog do Garcez",
+  "short_name": "Blog do Garcez",
+  "theme_color": "#21272d",
+  "background_color": "#21272d",
+  "display": "fullscreen",
+  "keywords": [
+    "Javascript",
+    "Typescript",
+    "CSS",
+    "ReactJS",
+    "React",
+    "HTML",
+    "HTML5",
+    "Node",
+    "Frontend",
+    "Programação web",
+    "Desenvolvimento web",
+    "Web",
+    "Browser",
+    "Responsividade",
+    "SEO"
+  ],
+  "orientation": "portrait",
+  "author": "Allan Garcez",
+  "start_url": "/",
+  "license": "MIT",
+  "description": "Bem-vindo ao Blog do Garcez - o lugar onde compartilho minhas ideias e pensamentos em frontend, React, Typescript, CSS, JavaScript, e Node. Este blog é meu lugar de rascunho, onde escrevo sobre minhas experiências e aprendizados em minha jornada como desenvolvedor. Acredito que compartilhar conhecimentos e opiniões é a chave para o crescimento pessoal e profissional, por isso espero que você encontre valor em meus posts e contribua com suas próprias ideias e pensamentos. Acompanhe-me nesta jornada de aprendizado e descubra como melhorar suas habilidades em frontend.",
+  "icons": [
+    {
+      "src": "vercel.svg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "splash_pages": null
 }

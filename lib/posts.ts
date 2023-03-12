@@ -10,9 +10,16 @@ export namespace Posts {
     enUs = "en-us",
   }
 
+  export enum Levels {
+    Iniciante,
+    Intermediario,
+    Expert,
+  }
+
   const schema = z
     .object({
       date: B.datetime,
+      level: z.nativeEnum(Levels).optional().default(Levels.Iniciante),
       title: B.notEmptyString,
       filename: B.notEmptyString,
       description: B.notEmptyString,
@@ -37,7 +44,8 @@ export namespace Posts {
 
   export const all = (): Post[] => {
     const result = CMS.getAll(dir, schema);
-    if (result.success) return result.data as Post[];
+    if (result.success)
+      return result.data.map((x) => ({ ...x, content: "" })) as Post[];
     return [];
   };
 

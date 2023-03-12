@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["javascript", "tricks"]
 title: "JS Tricks, evitando ifs"
 language: "pt-br"

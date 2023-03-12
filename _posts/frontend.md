@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 1
 subjects: ["react", "frontend", "typescript", "javascript"]
 title: "E se eu precisar mudar só isso aqui?"
 language: "pt-br"

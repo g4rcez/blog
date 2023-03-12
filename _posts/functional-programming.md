@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 1
 subjects: ["typescript", "fp"]
 title: "Functional Typescript"
 language: "pt-br"

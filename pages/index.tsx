@@ -5,7 +5,8 @@ import React, { Fragment, useMemo } from "react";
 import { Format } from "../lib/format";
 import { RxBookmark } from "react-icons/rx";
 import { Posts } from "../lib/posts";
-import {CMS} from "../lib/cms";
+import { CMS } from "../lib/cms";
+import Head from "next/head";
 
 export const getStaticProps = async () => {
   const posts = CMS.sort(Posts.all());
@@ -113,7 +114,7 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
           <article key={x.id} className="flex flex-col w-full mb-8">
             <header className="transition-colors duration-500 cursor-pointer hover:underline">
               <Link href={x.href}>
-                <h3 className="text-2xl">{x.title}</h3>
+                <h2 className="text-2xl">{x.title}</h2>
               </Link>
             </header>
             <p className="text-sm opacity-50 my-2">

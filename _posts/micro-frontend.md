@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 1
 subjects: ["javascript", "tricks", "typescript", "frontend"]
 title: "Micro frontend ou NextJS"
 language: "pt-br"

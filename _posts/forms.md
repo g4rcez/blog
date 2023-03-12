@@ -1,6 +1,6 @@
 ---
+level: 0
 title: Como trabalhar com formulários?
-useFolks: true
 subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
 translations: ["pt-br"]

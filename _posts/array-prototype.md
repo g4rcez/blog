@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["javascript", "tricks", "typescript"]
 title: "Array.prototype"
 language: "pt-br"

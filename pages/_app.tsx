@@ -8,13 +8,15 @@ import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
 import Dark from "../styles/dark.json";
 import "../styles/globals.css";
 import Light from "../styles/light.json";
+import { SEO } from "../lib/SEO";
+import { useRouter } from "next/router";
 
 const googleFont =
   "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
 
 const Me = {
-  TWITTER: "https://twitter.com/garcez_allan",
   GITHUB: "https://github.com/g4rcez",
+  TWITTER: "https://twitter.com/garcez_allan",
   LINKEDIN: "https://www.linkedin.com/in/allan-garcez/",
 };
 
@@ -26,6 +28,7 @@ function Root({
   pageProps: never;
 }) {
   const [theme, setTheme] = useTheme();
+  const router = useRouter();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -47,14 +50,17 @@ function Root({
   return (
     <main className="w-full">
       <Head>
-        <title>Garcez Blog</title>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1"
+        <title key="title">Garcez Blog</title>
+        <base
+          href={
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3000"
+              : "https://garcez.dev"
+          }
         />
+        <link rel="canonical" href={`https://garcez.dev${router.asPath}`} />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <meta name="theme-color" content="#21272d" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link href={googleFont} rel="stylesheet" />
         <link
           rel="preload"
@@ -62,17 +68,35 @@ function Root({
           as="style"
           onLoad={(e) => ((e.target as any).rel = "stylesheet")}
         />
-        <meta
-          name="description"
-          content="Javascript, Typescript, React e provas de conceito sobre diversos casos de frontend"
-        />
         <link rel="manifest" href="/manifest.json" />
         <meta
-          name="keywords"
-          content="Javascript,Typescript,React,CSS,HTML,Frontend,Microfrontend,Software Engineer"
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1"
         />
-        <meta name="twitter:creator" content="@garcez_allan" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta key="keywords" name="keywords" content={SEO.keywords} />
+        <meta key="description" name="description" content={SEO.description} />
+        <meta name="robots" content="index, follow" />
         <meta name="theme-color" content={themeColor} />
+        <meta name="twitter:creator" content={SEO.author.twitter} />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="Brazilian Portuguese" />
+        <meta name="revisit-after" content="1 days" />
+        <meta name="author" content={SEO.author.name} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={SEO.base} />
+        <meta property="og:title" content={SEO.title} />
+        <meta
+          key="og:description"
+          property="og:description"
+          content={SEO.description}
+        />
+        <meta property="og:image" content="" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={SEO.base} />
+        <meta property="twitter:title" content={SEO.title} />
+        <meta key="twitter:description" property="twitter:description" content={SEO.description} />
+        <meta property="twitter:image" content="" />
       </Head>
       <Navbar toggle={toggle} theme={theme} />
       <div className="w-full container mx-auto md:px-6 px-4 block md:max-w-5xl">

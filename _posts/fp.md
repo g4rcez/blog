@@ -1,6 +1,6 @@
 ---
 title: Mergulhando em Programação Funcional
-useFolks: true
+level: 1
 subjects: ["typescript", "javascript", "fp"]
 language: "pt-br"
 translations: ["pt-br"]

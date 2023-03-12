@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 1
 subjects: ["hooks", "react", "typescript", "javascript", "frontend"]
 title: "React Hooks"
 language: "pt-br"

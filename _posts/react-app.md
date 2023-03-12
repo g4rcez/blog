@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 2
 subjects: ["react", "typescript", "frontend", "tricks", "hooks"]
 title: "MultiTenants, autorização e CodeSplitting"
 language: "pt-br"

@@ -1,6 +1,6 @@
 ---
+level: 1
 title: Criando um router fortemente tipado
-useFolks: true
 subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
 translations: ["pt-br"]

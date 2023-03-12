@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["typescript", "tricks"]
 title: "Typescript 101 - [2]"
 language: "pt-br"

@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 1
 title: "Construindo um frontend flexível"
 language: "pt-br"
 translations: ["pt-br"]

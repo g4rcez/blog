@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["typescript", "tricks"]
 title: "Graphql"
 language: "pt-br"

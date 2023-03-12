@@ -1,6 +1,6 @@
 ---
 title: Tipando uma cadeia de funções
-useFolks: true
+level: 2
 subjects: ["typescript", "javascript", "fp"]
 language: "pt-br"
 translations: ["pt-br"]

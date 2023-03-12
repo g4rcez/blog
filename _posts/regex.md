@@ -1,5 +1,5 @@
 ---
-useFolks: true
+level: 0
 subjects: ["tricks", "typescript"]
 title: "Expressões regulares"
 language: "pt-br"
