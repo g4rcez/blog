@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["javascript", "tricks"]
+subjects: ["javascript", "typescript"]
 title: "JS Tricks, evitando ifs"
 language: "pt-br"
 translations: ["pt-br"]

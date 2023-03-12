@@ -1,6 +1,6 @@
 ---
 level: 1
-subjects: ["javascript", "tricks", "typescript", "frontend"]
+subjects: ["javascript", "typescript", "frontend", "nextjs"]
 title: "Micro frontend ou NextJS"
 language: "pt-br"
 translations: ["pt-br"]

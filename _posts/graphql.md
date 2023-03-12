@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["typescript", "tricks"]
+subjects: ["typescript", "nodejs"]
 title: "Graphql"
 language: "pt-br"
 translations: ["pt-br"]

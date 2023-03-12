@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["javascript", "tricks", "typescript"]
+subjects: ["javascript", "typescript"]
 title: "Array.prototype"
 language: "pt-br"
 translations: ["pt-br"]

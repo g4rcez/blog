@@ -7,6 +7,7 @@ import { useTableOfContent } from "../../components/table-of-content";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { Markdown } from "../../components/mdx";
 import { Posts } from "../../lib/posts";
+import { SEO } from "../../lib/SEO";
 
 type Params = {
   params: {
@@ -88,37 +89,13 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
   return (
     <section className="block w-full min-w-full">
       <Head>
-        <title key="title">Garcez Blog | {post.title}</title>
         <link href="/prism.css" rel="stylesheet" />
         <link href="/markdown.css" rel="stylesheet" />
-        <meta name="title" content={post.title} />
-        <meta key="description" name="description" content={post.description} />
-        <meta key="keywords" name="keywords" content={post.subjects.join(",")} />
-        <meta
-          key="og:description"
-          property="og:description"
-          content={post.description}
+        <SEO.Post
+          post={post}
+          postUrl={postUrl}
+          openGraphImage={openGraphImage}
         />
-        <meta property="og:image" content={openGraphImage} />
-        <meta property="og:image:alt" content={post.description} />
-        <meta property="og:image:height" content="280" />
-        <meta property="og:image:width" content="1050" />
-        <meta property="og:site_name" content="Blog do Garcez" />
-        <meta property="og:title" content={`g4rcez/blog: ${post.title}`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={postUrl} />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta
-          key="twitter:description"
-          property="twitter:description"
-          content={post.description}
-        />
-        <meta property="twitter:image" content={openGraphImage} />
-        <meta property="twitter:image:src" content={openGraphImage} />
-        <meta property="twitter:site" content="@garcez.dev" />
-        <meta property="twitter:title" content={`g4rcez/blog: ${post.title}`} />
-        <meta property="twitter:title" content={post.title} />
-        <meta property="twitter:url" content={postUrl} />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">
         <h2 className="mt-4 mb-2 font-semibold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">

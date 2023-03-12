@@ -1,7 +1,7 @@
 ---
 title: Tipando uma cadeia de funções
 level: 2
-subjects: ["typescript", "javascript", "fp"]
+subjects: ["typescript", "javascript"]
 language: "pt-br"
 translations: ["pt-br"]
 date: "2023-03-06T11:45:00.000Z"

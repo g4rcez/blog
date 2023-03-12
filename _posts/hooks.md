@@ -1,6 +1,6 @@
 ---
 level: 1
-subjects: ["hooks", "react", "typescript", "javascript", "frontend"]
+subjects: ["react", "typescript", "javascript", "frontend"]
 title: "React Hooks"
 language: "pt-br"
 translations: ["pt-br"]

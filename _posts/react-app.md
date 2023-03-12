@@ -1,6 +1,6 @@
 ---
 level: 2
-subjects: ["react", "typescript", "frontend", "tricks", "hooks"]
+subjects: ["react", "typescript", "frontend"]
 title: "MultiTenants, autorização e CodeSplitting"
 language: "pt-br"
 translations: ["pt-br"]

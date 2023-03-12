@@ -1,7 +1,7 @@
 ---
 title: Criando um reduce tipado
 level: 1
-subjects: ["typescript","tricks"]
+subjects: ["typescript"]
 language: "pt-br"
 translations: ["pt-br"]
 date: "2023-01-25T11:47:51.314Z"

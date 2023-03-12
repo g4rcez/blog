@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["tricks", "typescript"]
+subjects: ["typescript", "nodejs"]
 title: "Expressões regulares"
 language: "pt-br"
 translations: ["pt-br"]

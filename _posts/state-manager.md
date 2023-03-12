@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["javascript", "tricks", "typescript", "react", "hooks"]
+subjects: ["javascript", "typescript", "react"]
 title: "Controle de estado"
 language: "pt-br"
 translations: ["pt-br"]

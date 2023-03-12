@@ -53,7 +53,7 @@ const HX = ({
     <Render {...props} id={props.id ?? text} data-tag={Render}>
       <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
         <button className="inline-block duration-300 mr-2 text-lg opacity-30 transition-opacity active:opacity-100 group-hover:opacity-100">
-          <RxFrame aria-hidden="true" className="mb-0.5" />
+          <RxFrame className="mb-3" aria-hidden="true" />
         </button>
         <span ref={span}>{props.children}</span>
       </Anchor>

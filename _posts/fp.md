@@ -1,7 +1,7 @@
 ---
 title: Mergulhando em Programação Funcional
 level: 1
-subjects: ["typescript", "javascript", "fp"]
+subjects: ["typescript", "javascript"]
 language: "pt-br"
 translations: ["pt-br"]
 date: "2023-03-05T21:45:00.000Z"

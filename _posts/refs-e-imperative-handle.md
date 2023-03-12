@@ -1,6 +1,6 @@
 ---
 level: 1
-subjects: ["javascript", "react", "hooks", "frontend"]
+subjects: ["javascript", "react", "frontend"]
 title: "useRef e useImperativeHandle"
 language: "pt-br"
 translations: ["pt-br"]

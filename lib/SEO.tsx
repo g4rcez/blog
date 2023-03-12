@@ -1,3 +1,6 @@
+import React, { Fragment } from "react";
+import { Posts } from "./posts";
+
 export namespace SEO {
   export const author = {
     twitter: "@garcez_allan",
@@ -31,4 +34,82 @@ export namespace SEO {
     "Responsividade",
     "SEO",
   ].join(",");
+
+  export const Index = () => {
+    const title = "Blog do Garcez";
+    return (
+      <Fragment>
+        <meta name="title" content={title} />
+        <meta key="description" name="description" content={description} />
+        <meta key="keywords" name="keywords" content={keywords} />
+        <meta
+          key="og:description"
+          property="og:description"
+          content={description}
+        />
+        <meta property="og:site_name" content="Blog do Garcez" />
+        <meta property="og:title" content={title} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={base} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          key="twitter:description"
+          property="twitter:description"
+          content={description}
+        />
+        <meta property="twitter:site" content="@garcez.dev" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:url" content={base} />
+      </Fragment>
+    );
+  };
+
+  export const Post = ({
+    post,
+    postUrl,
+    openGraphImage,
+  }: {
+    post: Posts.Post;
+    postUrl: string;
+    openGraphImage: string;
+  }) => {
+    return (
+      <Fragment>
+        <title key="title">Garcez Blog | {post.title}</title>
+        <meta name="title" content={post.title} />
+        <meta key="description" name="description" content={post.description} />
+        <meta
+          key="keywords"
+          name="keywords"
+          content={post.subjects.join(",")}
+        />
+        <meta
+          key="og:description"
+          property="og:description"
+          content={post.description}
+        />
+        <meta property="og:image" content={openGraphImage} />
+        <meta property="og:image:alt" content={post.description} />
+        <meta property="og:image:height" content="280" />
+        <meta property="og:image:width" content="1050" />
+        <meta property="og:site_name" content="Blog do Garcez" />
+        <meta property="og:title" content={`g4rcez/blog: ${post.title}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={postUrl} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          key="twitter:description"
+          property="twitter:description"
+          content={post.description}
+        />
+        <meta property="twitter:image" content={openGraphImage} />
+        <meta property="twitter:image:src" content={openGraphImage} />
+        <meta property="twitter:site" content="@garcez.dev" />
+        <meta property="twitter:title" content={`g4rcez/blog: ${post.title}`} />
+        <meta property="twitter:title" content={post.title} />
+        <meta property="twitter:url" content={postUrl} />
+      </Fragment>
+    );
+  };
 }

@@ -7,6 +7,7 @@ import { RxBookmark } from "react-icons/rx";
 import { Posts } from "../lib/posts";
 import { CMS } from "../lib/cms";
 import Head from "next/head";
+import { SEO } from "../lib/SEO";
 
 export const getStaticProps = async () => {
   const posts = CMS.sort(Posts.all());
@@ -33,14 +34,19 @@ const StickyPosts = ({ posts }: Props) => {
         <SectionTitle title="Recentes" />
         <section className="w-full gap-y-8 flex flex-wrap">
           {posts.slice(0, 3).map((x) => (
-            <article key={x.id} className="flex flex-col w-full">
+            <article key={x.id} className="w-full">
               <header className="transition-colors duration-500 cursor-pointer hover:underline">
-                <Link href={x.href} className="flex gap-2 items-baseline">
-                  <RxBookmark
-                    aria-hidden="true"
-                    className="text-primary-link mt-1"
-                  />
-                  <h3 className="leading-relaxed">{x.title}</h3>
+                <Link
+                  href={x.href}
+                  className="inline-block w-full whitespace-pre-wrap"
+                >
+                  <h3 className="leading-relaxed inline-block">
+                    <RxBookmark
+                      aria-hidden="true"
+                      className="text-primary-link inline-block mr-1"
+                    />
+                    {x.title}
+                  </h3>
                 </Link>
               </header>
             </article>
@@ -81,13 +87,10 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
       <SectionTitle
         title={
           <Fragment>
-            Todos os posts
             {search === "" ? (
               ""
             ) : (
-              <Fragment>
-                {" - "} <span className="text-primary-link">{search}</span>
-              </Fragment>
+              <h2 className="text-primary-link">{search}</h2>
             )}
           </Fragment>
         }
@@ -98,7 +101,7 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
             <li key={`subject-filter-${x}`}>
               <Link
                 href={`/?subject=${x}`}
-                className="capitalize rounded px-2 py-1 bg-main link:bg-primary-link transition-colors duration-300"
+                className="rounded px-2 py-1 bg-main link:bg-primary-link transition-colors duration-300"
               >
                 {x}
               </Link>
@@ -110,21 +113,31 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
         </ul>
       </nav>
       <section className="w-full gap-y-12">
-        {viewedPosts.map((x) => (
-          <article key={x.id} className="flex flex-col w-full mb-8">
-            <header className="transition-colors duration-500 cursor-pointer hover:underline">
-              <Link href={x.href}>
-                <h2 className="text-2xl">{x.title}</h2>
-              </Link>
-            </header>
-            <p className="text-sm opacity-50 my-2">
-              {Format.date(x.date)} - {x.readingTime} min read
-            </p>
-            <p className="text-sm leading-relaxed dark:text-slate-300">
-              {x.description}
-            </p>
-          </article>
-        ))}
+        {viewedPosts.map((x) => {
+          const date = Format.date(x.date);
+          return (
+            <article key={x.id} className="flex flex-col w-full mb-8">
+              <time dateTime={date} className="text-sm opacity-70">
+                {date} - {x.readingTime} min read
+              </time>
+              <header className="transition-colors duration-500 cursor-pointer hover:underline my-2">
+                <Link href={x.href}>
+                  <h2 className="text-3xl font-bold">{x.title}</h2>
+                </Link>
+              </header>
+              <nav className="flex w-full gap-2 text-sm mb-2 opacity-70">
+                {x.subjects.map((x) => (
+                  <Link href={`/?subject=${x}`} className="link:underline">
+                    #{x}
+                  </Link>
+                ))}
+              </nav>
+              <p className="text-sm leading-relaxed dark:text-slate-300">
+                {x.description}
+              </p>
+            </article>
+          );
+        })}
       </section>
     </div>
   );
@@ -133,6 +146,10 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
 export default function IndexPage({ posts, subjects }: Props) {
   return (
     <div className="w-full min-w-full flex gap-x-8">
+      <Head>
+        <title key="title">Garcez Blog</title>
+        <SEO.Index />
+      </Head>
       <GroupedPosts posts={posts} subjects={subjects} />
       <StickyPosts posts={posts} subjects={[]} />
     </div>

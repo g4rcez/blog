@@ -1,6 +1,6 @@
 ---
 level: 1
-subjects: ["javascript", "tricks", "typescript", "frontend", "react"]
+subjects: ["javascript", "typescript", "frontend", "react"]
 title: "Recriando o Styled Components"
 language: "pt-br"
 translations: ["pt-br"]

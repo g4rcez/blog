@@ -1,6 +1,6 @@
 ---
 level: 1
-subjects: ["typescript", "fp"]
+subjects: ["typescript", "javascript"]
 title: "Functional Typescript"
 language: "pt-br"
 translations: ["pt-br"]

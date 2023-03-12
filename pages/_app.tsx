@@ -10,6 +10,7 @@ import "../styles/globals.css";
 import Light from "../styles/light.json";
 import { SEO } from "../lib/SEO";
 import { useRouter } from "next/router";
+import { IconContext } from "react-icons";
 
 const googleFont =
   "https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap";
@@ -25,7 +26,7 @@ function Root({
   pageProps,
 }: {
   Component: React.FC<unknown>;
-  pageProps: never;
+  pageProps: any;
 }) {
   const [theme, setTheme] = useTheme();
   const router = useRouter();
@@ -50,7 +51,6 @@ function Root({
   return (
     <main className="w-full">
       <Head>
-        <title key="title">Garcez Blog</title>
         <base
           href={
             process.env.NODE_ENV === "development"
@@ -74,8 +74,6 @@ function Root({
           content="width=device-width,initial-scale=1,minimum-scale=1"
         />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta key="keywords" name="keywords" content={SEO.keywords} />
-        <meta key="description" name="description" content={SEO.description} />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content={themeColor} />
         <meta name="twitter:creator" content={SEO.author.twitter} />
@@ -84,23 +82,10 @@ function Root({
         <meta name="revisit-after" content="1 days" />
         <meta name="author" content={SEO.author.name} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={SEO.base} />
-        <meta property="og:title" content={SEO.title} />
-        <meta
-          key="og:description"
-          property="og:description"
-          content={SEO.description}
-        />
-        <meta property="og:image" content="" />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={SEO.base} />
-        <meta property="twitter:title" content={SEO.title} />
-        <meta key="twitter:description" property="twitter:description" content={SEO.description} />
-        <meta property="twitter:image" content="" />
       </Head>
       <Navbar toggle={toggle} theme={theme} />
-      <div className="w-full container mx-auto md:px-6 px-4 block md:max-w-5xl">
-        <Component {...(pageProps as any)} />
+      <div className="w-full container mx-auto block w-full lg:w-3/4 px-4 md:px-0">
+        <Component {...pageProps} />
       </div>
       <footer className="container mx-auto md:px-6 px-4 block md:max-w-6xl py-8">
         <div className="mt-8 mb-4 text-lg flex flex-row justify-center font-bold gap-x-4">
@@ -158,7 +143,11 @@ function Root({
 export default function MyApp(props: any) {
   return (
     <ThemeProvider>
-      <Root {...props} />
+      <IconContext.Provider
+        value={{ style: { verticalAlign: "middle", display: "inline-block" } }}
+      >
+        <Root {...props} />
+      </IconContext.Provider>
     </ThemeProvider>
   );
 }

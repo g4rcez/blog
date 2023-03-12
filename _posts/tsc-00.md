@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["typescript", "tricks"]
+subjects: ["typescript"]
 title: "Typescript 101 - [0]"
 language: "pt-br"
 translations: ["pt-br"]
@@ -16,7 +16,7 @@ Antes de tudo, vamos prestar bastante atenção no que diz o site do [typescript
 
 Ou em português...
 
-> TypeScript é um superconjunto tipado de JavaScript que é compilado para JavaScript simples.
+> TypeScript é um superconjunto tipado de JavaScript compilado para JavaScript simples.
 
 Então essa série é sobre um **superset** de Javascript e não uma nova linguagem. Não vou dizer que a migração é super tranquila pois o transpilador (sim, é transpilador pois não gera código de máquina) do Typescript impede por padrão algumas das besteiras que fazemos com Javascript, sejam elas acidentais ou não.
 

@@ -1,6 +1,6 @@
 ---
 level: 2
-subjects: ["javascript", "tricks", "typescript"]
+subjects: ["javascript", "typescript"]
 title: "Criando seu próprio Router"
 language: "pt-br"
 translations: ["pt-br"]

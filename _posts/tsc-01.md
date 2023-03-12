@@ -1,6 +1,6 @@
 ---
 level: 0
-subjects: ["typescript", "tricks"]
+subjects: ["typescript"]
 title: "Typescript 101 - [1]"
 language: "pt-br"
 translations: ["pt-br"]
