@@ -39,7 +39,7 @@ export namespace Either {
   export const wrap =
     <Fn extends (...a: any[]) => any, E>(fn: Fn) =>
     (
-      ...params: Parameters<Fn>
+      ...params: Parameters<Fn>[]
     ): ReturnType<Fn> extends Promise<infer R>
       ? Promise<Either<E, R>>
       : Either<E, ReturnType<Fn>> => {

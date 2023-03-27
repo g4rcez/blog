@@ -71,16 +71,13 @@ export default function PostPage({ post, mdx }: Props) {
           content={`https://garcez.dev/post/${post.slug}`}
         />
       </Head>
-      <header className="mb-8 w-full container flex flex-col flex-wrap">
-        <h1 className="mt-4 mb-2 font-bold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
+      <header className="mb-6 w-full container flex flex-col flex-wrap">
+        <h1 className="mt-4 mb-2 font-extrabold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
           {post.title}
         </h1>
-        <p className="mt-4 mb-2 text-sm">{post.description}</p>
-        <time className="text-md text-sm">
-          {date} | {post.readingTime} min read
-        </time>
+        <p className="mt-2 mb-2 text-sm">{post.description}</p>
       </header>
-      <nav className="table-of-content my-8">
+      <nav className="table-of-content mb-8">
         <Fragment>
           <h2 className="text-xl font-bold mb-2">Table of Content</h2>
           {Content.toc && <Content.toc />}

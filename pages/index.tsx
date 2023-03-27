@@ -23,13 +23,13 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const SectionTitle = ({ title }: { title: string | React.ReactElement }) => (
   <header className="w-full min-w-full mb-6">
-    <h2 className="text-4xl font-semibold">{title}</h2>
+    <h2 className="text-4xl font-extrabold tracking-wide">{title}</h2>
   </header>
 );
 
 const StickyPosts = ({ posts }: Props) => {
   return (
-    <aside className="lg:w-1/4 w-full order-0 sm:order-1">
+    <aside className="lg:w-1/4 w-full hidden sm:flex">
       <div className="sticky top-20 z-50 isolate">
         <SectionTitle title="Recentes" />
         <section className="w-full gap-y-8 flex flex-wrap">
@@ -83,7 +83,7 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
   );
 
   return (
-    <div className="w-full w-full lg:w-3/4">
+    <section className="w-full w-full lg:w-3/4">
       <SectionTitle
         title={
           <Fragment>
@@ -96,7 +96,7 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
         }
       />
       <nav className="my-4 mb-8">
-        <ul className="flex gap-x-4 text-xs text-white">
+        <ul className="flex w-full flex-wrap gap-x-4 gap-y-6 text-xs text-white">
           {subjects.map((x) => (
             <li key={`subject-filter-${x}`}>
               <Link
@@ -118,40 +118,44 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
           return (
             <article key={x.id} className="flex flex-col w-full mb-8">
               <time dateTime={date} className="text-sm opacity-70">
-                {date} - {x.readingTime} min read
+                {date} - Tempo de leitura: {x.readingTime} min
               </time>
-              <header className="transition-colors duration-500 cursor-pointer hover:underline my-2">
+              <header className="transition-colors duration-500 cursor-pointer hover:underline mt-1 mb-2">
                 <Link href={x.href}>
-                  <h2 className="text-3xl font-bold">{x.title}</h2>
+                  <h2 className="text-3xl font-extrabold tracking-wide">
+                    {x.title}
+                  </h2>
                 </Link>
               </header>
-              <nav className="flex w-full gap-2 text-sm mb-2 opacity-70">
+              <p className="text-sm leading-relaxed dark:text-slate-300">
+                {x.description}
+              </p>
+              <nav className="flex w-full gap-2 text-sm mt-2 opacity-70">
                 {x.subjects.map((x) => (
                   <Link href={`/?subject=${x}`} className="link:underline">
                     #{x}
                   </Link>
                 ))}
               </nav>
-              <p className="text-sm leading-relaxed dark:text-slate-300">
-                {x.description}
-              </p>
             </article>
           );
         })}
       </section>
-    </div>
+    </section>
   );
 };
 
 export default function IndexPage({ posts, subjects }: Props) {
   return (
-    <div className="w-full min-w-full flex gap-x-8">
+    <Fragment>
       <Head>
         <title key="title">Garcez Blog</title>
         <SEO.Index />
       </Head>
-      <GroupedPosts posts={posts} subjects={subjects} />
-      <StickyPosts posts={posts} subjects={[]} />
-    </div>
+      <div className="w-full min-w-full flex-nowrap flex gap-x-8">
+        <GroupedPosts posts={posts} subjects={subjects} />
+        <StickyPosts posts={posts} subjects={[]} />
+      </div>
+    </Fragment>
   );
 }

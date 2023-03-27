@@ -52,13 +52,18 @@ const HX = ({
   return (
     <Render {...props} id={props.id ?? text} data-tag={Render}>
       <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
-        <button className="inline-block duration-300 mr-2 text-lg opacity-30 transition-opacity active:opacity-100 group-hover:opacity-100">
+        <span className="inline-block duration-300 mr-2 text-lg opacity-30 transition-opacity active:opacity-100 group-hover:opacity-100">
           <RxFrame className="mb-3" aria-hidden="true" />
-        </button>
+        </span>
         <span ref={span}>{props.children}</span>
       </Anchor>
     </Render>
   );
+};
+
+type PreTheme = {
+  [Themes.Dark]: null | {};
+  [Themes.Light]: null | {};
 };
 
 const Pre = (props: any) => {
@@ -66,14 +71,20 @@ const Pre = (props: any) => {
   const lang = (className ?? "").replace("language-", "");
   const [theme] = useTheme();
   const [codeStyle, setCodeStyle] = useState<any>({});
+  const ref = useRef<PreTheme>({ [Themes.Dark]: null, [Themes.Light]: null });
 
   useEffect(() => {
     const async = async () => {
-      const css =
-        theme === Themes.Dark
-          ? await import("./dracula.theme")
-          : await import("./material-light.theme");
-      return setCodeStyle(css.default);
+      const cache = ref.current[theme];
+      if (cache === null) {
+        const css =
+          theme === Themes.Dark
+            ? await import("./dracula.theme")
+            : await import("./material-light.theme");
+        ref.current[theme] = css.default;
+        return setCodeStyle(css.default);
+      }
+      return setCodeStyle(ref.current[theme]);
     };
     async();
   }, [theme]);
