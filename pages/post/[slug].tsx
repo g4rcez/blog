@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { Format } from "../../lib/format";
 import { toMarkdown } from "../../lib/markdown";
 import { useTableOfContent } from "../../components/table-of-content";
@@ -8,6 +8,7 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { Markdown } from "../../components/mdx";
 import { Posts } from "../../lib/posts";
 import { SEO } from "../../lib/SEO";
+import { useComment } from "../../lib/use-comment";
 
 type Params = {
   params: {
@@ -85,6 +86,8 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
   const openGraphImage = `https://garcez.dev/post-graph/${post.id}.png`;
   const hasNext = adjacentPosts.next !== null;
   const postUrl = `https://garcez.dev/post/${post.id}`;
+  const comment = useRef<HTMLDivElement | null>(null);
+  useComment(comment);
 
   return (
     <section className="block w-full min-w-full">
@@ -116,6 +119,7 @@ export default function PostPage({ post, adjacentPosts, mdx }: Props) {
       >
         <Markdown mdx={mdx} />
       </section>
+      <div className="w-full block min-w-full" ref={comment}></div>
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (
           <WhoIsNext

@@ -33,3 +33,8 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+.utterances, .utterances-frame {
+    width: 100%;
+    max-width: 100%;
+}
