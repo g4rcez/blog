@@ -10,11 +10,7 @@ import { Posts } from "../../lib/posts";
 import { SEO } from "../../lib/SEO";
 import { useComment } from "../../lib/use-comment";
 
-type Params = {
-  params: {
-    slug: string;
-  };
-};
+type Params = { params: { slug: string } };
 
 export const getStaticPaths = () => ({
   fallback: false,
@@ -55,10 +51,7 @@ export const getStaticProps = async ({ params }: Params) => {
 type Props = {
   post: Posts.Post;
   mdx: MDXRemoteSerializeResult;
-  adjacentPosts: {
-    next: Posts.Post | null;
-    prev: Posts.Post | null;
-  };
+  adjacentPosts: { next: Posts.Post | null; prev: Posts.Post | null };
 };
 
 export const WhoIsNext = (

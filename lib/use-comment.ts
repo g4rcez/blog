@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const params = {
   url: "https://utteranc.es/client.js",
   theme: "preferred-color-scheme",
-  issueTerm: "pathname",
+  issueTerm: "url",
   label: "comment",
   repo: "g4rcez/blog",
 };
