@@ -31,7 +31,7 @@ export const useComment = (
     script.setAttribute("issue-term", params.issueTerm);
     script.setAttribute("repo", params.repo);
     element.appendChild(script);
-    const setAttributeStatus = (event) =>
+    const setAttributeStatus = (event: any) =>
       void setStatus(event.type === "load" ? "ready" : "error");
 
     script.addEventListener("load", setAttributeStatus);
