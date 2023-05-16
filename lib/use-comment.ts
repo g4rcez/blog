@@ -39,7 +39,7 @@ export const useComment = (
 
     return () => {
       if (element) {
-        element.removeChild(script);
+        if (element.contains(script)) element.removeChild(script);
       }
       if (script) {
         script.removeEventListener("load", setAttributeStatus);
