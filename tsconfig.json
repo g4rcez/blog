@@ -28,13 +28,19 @@
     "strict": true,
     "baseUrl": ".",
     "strictNullChecks": true,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "open-graph-bot/*.ts"
+    "open-graph-bot/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
