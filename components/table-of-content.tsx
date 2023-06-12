@@ -11,9 +11,11 @@ import { Format } from "../lib/format";
 type Heading = { id: string; text: string; order: number };
 
 const headersSelector = (node: HTMLDivElement) =>
-  Array.from(
-    node.querySelectorAll("h1,h2,h3,h4,h5,h6")
-  ) as HTMLHeadingElement[];
+  (
+    Array.from(
+      node.querySelectorAll("h1,h2,h3,h4,h5,h6")
+    ) as HTMLHeadingElement[]
+  ).filter((x) => x.dataset.toc !== "true");
 
 export const parseTextHeaders = (headers: HTMLHeadingElement[]) =>
   headers.map((hx): Heading => {
