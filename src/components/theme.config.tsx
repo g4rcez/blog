@@ -1,4 +1,4 @@
-import { ThemePreference } from "lib/theme-preference";
+import { ThemePreference } from "~/lib/theme-preference";
 import React, {
   Dispatch,
   PropsWithChildren,

@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from "react";
 import { Posts } from "./posts";
-import { useTitle } from "./use-title";
 
 export namespace SEO {
   export const author = {
@@ -38,9 +37,9 @@ export namespace SEO {
 
   export const Index = () => {
     const title = "Blog do Garcez";
-    useTitle(title);
     return (
       <Fragment>
+        <title key="title">{title}</title>
         <meta name="title" content={title} />
         <meta key="description" name="description" content={description} />
         <meta key="keywords" name="keywords" content={keywords} />
@@ -77,7 +76,6 @@ export namespace SEO {
     openGraphImage: string;
   }) => {
     const title = `Garcez - ${post.title}`;
-    useTitle(title);
     return (
       <Fragment>
         <title key="title">{title}</title>
