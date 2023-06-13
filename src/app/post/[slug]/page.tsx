@@ -1,24 +1,20 @@
 import Head from "next/head";
-import Link from "next/link";
-import React, { useMemo, useRef } from "react";
+import React from "react";
 import { Format } from "~/lib/format";
 import { toMarkdown } from "~/lib/markdown";
-import { useTableOfContent } from "~/components/table-of-content";
-import { Markdown } from "~/components/mdx";
 import { Posts } from "~/lib/posts";
 import { SEO } from "~/lib/SEO";
-import { useComment } from "~/lib/use-comment";
-
-type Params = { params: { slug: string } };
+import { Comments, TableOfContent, WhoIsNext } from "~/components/post";
+import "../../../styles/markdown.css";
 
 type AdjacentPosts = {
-  next: Partial<Posts.Post> | null;
-  prev: Partial<Posts.Post> | null;
+  next: Posts.Post | null;
+  prev: Posts.Post | null;
 };
 
-const getProps = async ({ params }: Params) => {
-  const post = Posts.find(params.slug);
-  if (post === null) return { notFound: true };
+const getContent = async (slug: string) => {
+  const post = Posts.find(slug);
+  if (post === null) return null;
   const adjacentPosts = Posts.all().reduce<AdjacentPosts>(
     (acc, el, index, array) => {
       if (el.id === post.id) {
@@ -31,50 +27,26 @@ const getProps = async ({ params }: Params) => {
     { next: null, prev: null }
   );
   return {
+    post,
     adjacentPosts,
     mdx: await toMarkdown(post.content || ""),
-    post: {
-      ...post,
-      content: await toMarkdown(post.content || ""),
-    },
   };
 };
 
-export const WhoIsNext = (
-  props: Posts.Post & { label: "next" | "prev"; className: string }
-) => {
-  const icon = props.label === "next" ? "->" : "<-";
-  return (
-    <Link
-      href={props.href}
-      className={
-        "w-full hover:underline hover:text-primary-link cursor-pointer " +
-        props.className
-      }
-    >
-      {props.label === "prev" && <span className="mx-2">{icon}</span>}
-      {props.title}
-      {props.label === "next" && <span className="mx-2">{icon}</span>}
-    </Link>
-  );
-};
-
 export default async function PostPage(props: any) {
-  const { post, adjacentPosts, mdx } = await getProps(props.params);
-  if (!post) throw new Error("");
-  const date = useMemo(() => Format.date(post.date), [post]);
-  const [Content, ref] = useTableOfContent();
+  const content = await getContent(props.params.slug);
+  if (!content) {
+    return <p>Not found</p>;
+  }
+  const { post, adjacentPosts, mdx } = content;
+  const date = Format.date(post.date);
   const openGraphImage = `https://garcez.dev/post-graph/${post.id}.png`;
   const hasNext = adjacentPosts?.next !== null;
   const postUrl = `https://garcez.dev/post/${post.id}`;
-  const comment = useRef<HTMLDivElement | null>(null);
-  useComment(comment);
 
   return (
     <section className="block w-full min-w-full">
       <Head>
-        <link href="/prism.css" rel="stylesheet" />
-        <link href="/markdown.css" rel="stylesheet" />
         <SEO.Post
           post={post}
           postUrl={postUrl}
@@ -90,17 +62,8 @@ export default async function PostPage(props: any) {
           {date} | Tempo de leitura: {post.readingTime} min
         </time>
       </header>
-      <nav className="table-of-content my-8">
-        <Content.toc />
-      </nav>
-      <section
-        ref={ref}
-        data-post={post.title}
-        className="markdown block w-full min-w-full leading-relaxed antialiased tracking-wide break-words dark:text-slate-200"
-      >
-        <Markdown mdx={mdx} />
-      </section>
-      <div className="w-full block min-w-full" ref={comment}></div>
+      <TableOfContent post={post} mdx={mdx} />
+      <Comments />
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (
           <WhoIsNext

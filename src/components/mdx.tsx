@@ -1,3 +1,4 @@
+"use client";
 import { OmitKeys } from "~/lib/utility.types";
 import Link from "next/link";
 import React, { Fragment, useEffect, useRef, useState } from "react";
@@ -51,12 +52,12 @@ const HX = ({
 
   return (
     <Render {...props} id={props.id ?? text} data-tag={Render}>
-      <Anchor className="font-extrabold no-underline group" href={`#${text}`}>
+      <a className="font-extrabold no-underline group" href={`#${text}`}>
         <span className="inline-block duration-300 mr-2 text-lg opacity-30 transition-opacity active:opacity-100 group-hover:opacity-100">
           <RxFrame className="mb-3" aria-hidden="true" />
         </span>
         <span ref={span}>{props.children}</span>
-      </Anchor>
+      </a>
     </Render>
   );
 };
@@ -152,7 +153,7 @@ const CookiesComponent = () => {
 export const MdxComponents = {
   pre: Pre,
   Input: (props: any) => (
-    <Input
+    <input
       {...props}
       className="p-2 border border-slate-300 dark:border-slate-400 rounded bg-transparent"
     />

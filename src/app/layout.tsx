@@ -64,7 +64,7 @@ export default function RootLayout(props: PropsWithChildren) {
       </head>
       <body>
         <ClientRoot>
-          <div className="container mx-auto block w-full lg:w-3/4 px-4 md:px-0">
+          <div className="container mx-auto block w-full lg:w-3/4 px-4 lg:px-0">
             {props.children}
           </div>
         </ClientRoot>

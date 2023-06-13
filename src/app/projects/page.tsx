@@ -32,7 +32,7 @@ export default function ProjectsPage() {
           <li key={project.name}>
             <Link
               href={project.link}
-              className="p-8 border border-slate-600 text-slate-600 dark:text-slate-200 link:border-primary-link dark:link:border-primary-light duration-500 transition-colors link:text-primary-link dark:link:text-primary-light border-white rounded-lg block"
+              className="p-8 border border-slate-400 text-slate-600 dark:text-slate-200 link:border-primary-link dark:link:border-primary-light duration-500 transition-colors link:text-primary-link dark:link:text-primary-light rounded-lg block"
             >
               <h2 className="text-3xl leading-relaxed tracking-wide font-medium">
                 {project.name}

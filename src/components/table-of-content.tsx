@@ -1,11 +1,5 @@
-import {
-  Fragment,
-  FunctionComponent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Anchor } from "./mdx";
+"use client";
+import { useEffect, useRef, useState } from "react";
 import { Format } from "~/lib/format";
 
 type Heading = { id: string; text: string; order: number };
@@ -27,9 +21,7 @@ export const parseTextHeaders = (headers: HTMLHeadingElement[]) =>
     };
   });
 
-const initialState = () => ({ toc: Fragment });
-
-const Toc = ({ headers }: { headers: Heading[] }) => (
+export const Toc = ({ headers }: { headers: Heading[] }) => (
   <header>
     <hr className="dark:border-slate-700 border-slate-300" />
     <ul className="my-4">
@@ -40,7 +32,7 @@ const Toc = ({ headers }: { headers: Heading[] }) => (
           style={{ marginLeft: `${hx.order * 24}px` }}
           className="my-4 text-sm underline underline-offset-4"
         >
-          <Anchor href={`#${hx.id}`}>{hx.text}</Anchor>
+          <a href={`#${hx.id}`}>{hx.text}</a>
         </li>
       ))}
     </ul>
@@ -48,12 +40,8 @@ const Toc = ({ headers }: { headers: Heading[] }) => (
   </header>
 );
 
-type State = {
-  toc: FunctionComponent;
-};
-
 export const useTableOfContent = () => {
-  const [Content, setContent] = useState<State>(initialState);
+  const [content, setContent] = useState<Heading[]>([]);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -61,17 +49,15 @@ export const useTableOfContent = () => {
       if (ref.current === null) return;
       const headers = headersSelector(ref.current);
       const parsed = parseTextHeaders(headers);
-      setContent({ toc: () => <Toc headers={parsed} /> });
+      setContent(parsed);
     };
-    if (ref.current === null) return;
+    createTableContent();
     const observer = new MutationObserver(createTableContent);
-    observer.observe(ref.current, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-    });
-    return () => observer.disconnect();
+    if (ref.current) {
+      observer.observe(ref.current, { childList: true, attributes: true });
+      return () => observer.disconnect();
+    }
   }, []);
 
-  return [Content, ref] as const;
+  return [content, ref] as const;
 };

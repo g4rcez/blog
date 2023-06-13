@@ -261,7 +261,7 @@ const initializeStore = (middleware: Middleware) => {
   return store;
 };
 
-// src/index.tsx - Onde iremos criar nosso wraper do estado do Redux
+// src/page.tsx - Onde iremos criar nosso wraper do estado do Redux
 
 const sagasMiddleware = reduxSaga();
 const middlewares = applyMiddleware(sagasMiddleware, logger);
