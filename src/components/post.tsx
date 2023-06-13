@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Markdown } from "~/components/mdx";
 import { useComment } from "~/lib/use-comment";
 import { Toc, useTableOfContent } from "~/components/table-of-content";
+import { Projects } from "~/lib/projects";
 
 export const WhoIsNext = (
   props: Posts.Post & { label: "next" | "prev"; className: string }
@@ -29,7 +30,7 @@ export const TableOfContent = ({
   post,
   mdx,
 }: {
-  post: Posts.Post;
+  post: Posts.Post | Projects.Project;
   mdx: any;
 }) => {
   const [content, ref] = useTableOfContent();

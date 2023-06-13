@@ -129,7 +129,7 @@ const CookiesComponent = () => {
         />
         <button
           type="submit"
-          className="transition-colors duration-300 bg-blue-600 rounded-lg link:bg-blue-800 px-4 py-1"
+          className="transition-colors text-white duration-300 bg-blue-600 rounded-lg link:bg-blue-800 px-4 py-1"
         >
           Criar cookie
         </button>
@@ -141,7 +141,7 @@ const CookiesComponent = () => {
         </a>
         <button
           onClick={() => alert(JSON.stringify(Cookie.json(), null, 4))}
-          className="transition-colors duration-300 bg-blue-600 rounded-lg link:bg-blue-800 px-4 py-1"
+          className="transition-colors text-white duration-300 bg-blue-600 rounded-lg link:bg-blue-800 px-4 py-1"
         >
           Visualizar cookies
         </button>
@@ -152,6 +152,13 @@ const CookiesComponent = () => {
 
 export const MdxComponents = {
   pre: Pre,
+  Cookies: CookiesComponent,
+  h1: (props: any) => <HX {...props} tag="h1" />,
+  h2: (props: any) => <HX {...props} tag="h2" />,
+  h3: (props: any) => <HX {...props} tag="h3" />,
+  h4: (props: any) => <HX {...props} tag="h4" />,
+  h5: (props: any) => <HX {...props} tag="h5" />,
+  h6: (props: any) => <HX {...props} tag="h6" />,
   Input: (props: any) => (
     <input
       {...props}
@@ -165,13 +172,6 @@ export const MdxComponents = {
       className={`block min-w-full w-full m-0 p-0 ${props.className}`}
     />
   ),
-  h1: (props: any) => <HX {...props} tag="h1" />,
-  h2: (props: any) => <HX {...props} tag="h2" />,
-  h3: (props: any) => <HX {...props} tag="h3" />,
-  h4: (props: any) => <HX {...props} tag="h4" />,
-  h5: (props: any) => <HX {...props} tag="h5" />,
-  h6: (props: any) => <HX {...props} tag="h6" />,
-  Cookies: CookiesComponent,
 };
 
 export const Markdown = (props: { mdx: MDXRemoteSerializeResult }) => (
