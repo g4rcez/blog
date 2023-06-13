@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Anchor } from "./mdx";
-import { Format } from "../lib/format";
+import { Format } from "~/lib/format";
 
 type Heading = { id: string; text: string; order: number };
 

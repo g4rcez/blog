@@ -1,25 +1,16 @@
-import { InferGetStaticPropsType } from "next";
+import { CMS } from "~/lib/cms";
+import { Posts } from "~/lib/posts";
+import React, { Fragment } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { Fragment, useMemo } from "react";
-import { Format } from "../lib/format";
 import { RxBookmark } from "react-icons/rx";
-import { Posts } from "../lib/posts";
-import { CMS } from "../lib/cms";
+import { Format } from "~/lib/format";
 import Head from "next/head";
-import { SEO } from "../lib/SEO";
+import { SEO } from "~/lib/SEO";
 
-export const getStaticProps = async () => {
-  const posts = CMS.sort(Posts.all());
-  return {
-    props: {
-      posts,
-      subjects: [...new Set(posts.flatMap((post) => post.subjects))],
-    },
-  };
+type Props = {
+  posts: Posts.Post[];
+  subjects: string[];
 };
-
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const SectionTitle = ({ title }: { title: string | React.ReactElement }) => (
   <header className="w-full min-w-full mb-6">
@@ -57,44 +48,11 @@ const StickyPosts = ({ posts }: Props) => {
   );
 };
 
-const useSearch = () => {
-  const router = useRouter();
-  const params = new URLSearchParams(router.asPath.split("?")[1] ?? "");
-  return params.get("subject") ?? "";
-};
-
 const GroupedPosts = ({ posts, subjects }: Props) => {
-  const search = useSearch();
-
-  const viewedPosts = useMemo(
-    () =>
-      search === ""
-        ? posts
-        : posts.filter((post) => {
-            const lowerSearch = search.toLowerCase();
-            if (post.title.toLowerCase().includes(lowerSearch)) return true;
-            if (post?.description?.toLowerCase().includes(lowerSearch))
-              return true;
-            return (post?.subjects ?? []).some((x) =>
-              x.toLowerCase().includes(lowerSearch)
-            );
-          }),
-    [posts, search]
-  );
-
+  const viewedPosts = posts;
   return (
-    <section className="w-full w-full lg:w-3/4">
-      <SectionTitle
-        title={
-          <Fragment>
-            {search === "" ? (
-              ""
-            ) : (
-              <h2 className="text-primary-link">{search}</h2>
-            )}
-          </Fragment>
-        }
-      />
+    <section className="w-full lg:w-3/4">
+      <SectionTitle title={""} />
       <nav className="my-4 mb-8">
         <ul className="flex w-full flex-wrap gap-x-4 gap-y-6 text-xs text-white">
           {subjects.map((x) => (
@@ -145,7 +103,9 @@ const GroupedPosts = ({ posts, subjects }: Props) => {
   );
 };
 
-export default function IndexPage({ posts, subjects }: Props) {
+export default async function RootPage() {
+  const posts = CMS.sort(Posts.all());
+  const subjects = [...new Set(posts.flatMap((post) => post.subjects))];
   return (
     <Fragment>
       <Head>

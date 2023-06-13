@@ -1,9 +1,9 @@
-import { OmitKeys } from "lib/utility.types";
+import { OmitKeys } from "~/lib/utility.types";
 import Link from "next/link";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RxFrame } from "react-icons/rx";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
-import { Format } from "../lib/format";
+import { Format } from "~/lib/format";
 import { Themes, useTheme } from "./theme.config";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import Input from "the-mask-input";

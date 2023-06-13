@@ -1,5 +1,5 @@
 const plugin = require("tailwindcss/plugin");
-const colors = require("./styles/dark.json");
+const colors = require("./src/styles/dark.json");
 
 const getColors = (JSON_COLOR = {}) => {
   const colors = {};
@@ -17,11 +17,8 @@ const getColors = (JSON_COLOR = {}) => {
 };
 
 module.exports = {
-  content: [
-    "./public/**/*.html",
-    "./{pages,styles,components,lib}/**/*.{ts,tsx}",
-  ],
   darkMode: "class", // or 'media' or 'class'
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     screens: {
       sm: "640px",

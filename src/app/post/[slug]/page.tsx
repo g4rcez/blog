@@ -1,28 +1,22 @@
 import Head from "next/head";
 import Link from "next/link";
 import React, { useMemo, useRef } from "react";
-import { Format } from "../../lib/format";
-import { toMarkdown } from "../../lib/markdown";
-import { useTableOfContent } from "../../components/table-of-content";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { Markdown } from "../../components/mdx";
-import { Posts } from "../../lib/posts";
-import { SEO } from "../../lib/SEO";
-import { useComment } from "../../lib/use-comment";
+import { Format } from "~/lib/format";
+import { toMarkdown } from "~/lib/markdown";
+import { useTableOfContent } from "~/components/table-of-content";
+import { Markdown } from "~/components/mdx";
+import { Posts } from "~/lib/posts";
+import { SEO } from "~/lib/SEO";
+import { useComment } from "~/lib/use-comment";
 
 type Params = { params: { slug: string } };
-
-export const getStaticPaths = () => ({
-  fallback: false,
-  paths: Posts.slugs().map((slug) => ({ params: { slug } })),
-});
 
 type AdjacentPosts = {
   next: Partial<Posts.Post> | null;
   prev: Partial<Posts.Post> | null;
 };
 
-export const getStaticProps = async ({ params }: Params) => {
+const getProps = async ({ params }: Params) => {
   const post = Posts.find(params.slug);
   if (post === null) return { notFound: true };
   const adjacentPosts = Posts.all().reduce<AdjacentPosts>(
@@ -37,21 +31,13 @@ export const getStaticProps = async ({ params }: Params) => {
     { next: null, prev: null }
   );
   return {
-    props: {
-      adjacentPosts,
-      mdx: await toMarkdown(post.content || ""),
-      post: {
-        ...post,
-        content: await toMarkdown(post.content || ""),
-      },
+    adjacentPosts,
+    mdx: await toMarkdown(post.content || ""),
+    post: {
+      ...post,
+      content: await toMarkdown(post.content || ""),
     },
   };
-};
-
-type Props = {
-  post: Posts.Post;
-  mdx: MDXRemoteSerializeResult;
-  adjacentPosts: { next: Posts.Post | null; prev: Posts.Post | null };
 };
 
 export const WhoIsNext = (
@@ -73,11 +59,13 @@ export const WhoIsNext = (
   );
 };
 
-export default function PostPage({ post, adjacentPosts, mdx }: Props) {
+export default async function PostPage(props: any) {
+  const { post, adjacentPosts, mdx } = await getProps(props.params);
+  if (!post) throw new Error("");
   const date = useMemo(() => Format.date(post.date), [post]);
   const [Content, ref] = useTableOfContent();
   const openGraphImage = `https://garcez.dev/post-graph/${post.id}.png`;
-  const hasNext = adjacentPosts.next !== null;
+  const hasNext = adjacentPosts?.next !== null;
   const postUrl = `https://garcez.dev/post/${post.id}`;
   const comment = useRef<HTMLDivElement | null>(null);
   useComment(comment);

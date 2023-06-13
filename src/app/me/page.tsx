@@ -1,6 +1,6 @@
 import React from "react";
-import { me } from "../me";
 import Head from "next/head";
+import { me } from "~/me";
 
 const formatMonthYear = (date: Date) =>
   date.toLocaleDateString(undefined, {
