@@ -1,10 +1,12 @@
+import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import Head from "next/head";
+import Link from "next/link";
 import React from "react";
+import { Comments, MarkdownPost, WhoIsNext } from "~/components/post";
 import { Format } from "~/lib/format";
 import { toMarkdown } from "~/lib/markdown";
 import { Posts } from "~/lib/posts";
 import { SEO } from "~/lib/SEO";
-import { Comments, TableOfContent, WhoIsNext } from "~/components/post";
 import "../../../styles/markdown.css";
 
 type AdjacentPosts = {
@@ -26,18 +28,12 @@ const getContent = async (slug: string) => {
     },
     { next: null, prev: null }
   );
-  return {
-    post,
-    adjacentPosts,
-    mdx: await toMarkdown(post.content || ""),
-  };
+  return { post, adjacentPosts, mdx: await toMarkdown(post.content || "") };
 };
 
 export default async function PostPage(props: any) {
   const content = await getContent(props.params.slug);
-  if (!content) {
-    return <p>Not found</p>;
-  }
+  if (!content) return <p>Not found</p>;
   const { post, adjacentPosts, mdx } = content;
   const date = Format.date(post.date);
   const openGraphImage = `https://garcez.dev/post-graph/${post.id}.png`;
@@ -54,15 +50,21 @@ export default async function PostPage(props: any) {
         />
       </Head>
       <header className="mb-8 w-full container flex flex-col flex-wrap">
-        <h2 className="mt-4 mb-2 font-extrabold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
-          {post.title}
-        </h2>
-        <p className="mt-4 mb-2 text-sm">{post.description}</p>
-        <time className="text-md text-sm">
+        <time className="text-xs">
           {date} | Tempo de leitura: {post.readingTime} min
         </time>
+        <h2 className="mt-4 mb-2 gap-4 items-center font-extrabold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
+          <Link
+            href="/"
+            className="p-2 dark:text-indigo-50 text-indigo-300 h-fit link:text-indigo-400 border rounded-full link:underline border-indigo-300 link:border-indigo-400 transition-colors duration-300"
+          >
+            <ChevronLeftIcon />
+          </Link>
+          {post.title}
+        </h2>
+        <p className="mt-4 mb-2 text-xs">{post.description}</p>
       </header>
-      <TableOfContent post={post} mdx={mdx} />
+      <MarkdownPost post={post} mdx={mdx} />
       <Comments />
       <div className="w-full flex justify-between mt-8 border-t border-code-bg pt-4">
         {adjacentPosts.prev !== null && (

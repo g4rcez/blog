@@ -1,10 +1,8 @@
-import React, { Fragment, PropsWithChildren } from "react";
-import { SEO } from "~/lib/SEO";
-import { VscGithubInverted, VscTwitter } from "react-icons/vsc";
-import { FaLinkedin } from "react-icons/fa";
-import "../styles/globals.css";
-import { ClientRoot } from "~/components/client-root";
 import { Inter } from "next/font/google";
+import React, { Fragment, PropsWithChildren } from "react";
+import { ClientRoot } from "~/components/client-root";
+import { SEO } from "~/lib/SEO";
+import "../styles/globals.css";
 
 const inter = Inter({
   display: "swap",
@@ -22,7 +20,11 @@ const Me = {
 
 export default function RootLayout(props: PropsWithChildren) {
   return (
-    <html className={inter.className} style={inter.style} lang="pt-BR">
+    <html
+      className={`h-full antialiased ${inter.className}`}
+      style={inter.style}
+      lang="pt-BR"
+    >
       <head>
         <title>Blog do Garcez</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -41,13 +43,6 @@ export default function RootLayout(props: PropsWithChildren) {
         <meta name="revisit-after" content="1 days" />
         <meta name="author" content={SEO.author.name} />
         <meta property="og:type" content="website" />
-        <base
-          href={
-            process.env.NODE_ENV === "development"
-              ? "http://localhost:3000"
-              : "https://garcez.dev"
-          }
-        />
         {GA_TRACKING_ID ? (
           <Fragment>
             <script
@@ -62,61 +57,8 @@ export default function RootLayout(props: PropsWithChildren) {
           </Fragment>
         ) : null}
       </head>
-      <body>
-        <ClientRoot>
-          <div className="container mx-auto block w-full lg:w-3/4 px-4 lg:px-0">
-            {props.children}
-          </div>
-        </ClientRoot>
-        <footer className="container mx-auto md:px-6 px-4 block md:max-w-6xl py-8">
-          <div className="mt-8 mb-4 text-lg flex flex-row justify-center font-bold gap-x-4">
-            <a href={Me.GITHUB} className="cursor-pointer" title="My Github">
-              <span className="sr-only">My Github</span>
-              <VscGithubInverted />
-            </a>
-            <a
-              href={Me.TWITTER}
-              title="My twitter"
-              className="cursor-pointer transition-colors duration-500 hover:text-twitter"
-            >
-              <span className="sr-only">My Twitter</span>
-              <VscTwitter />
-            </a>
-            <a
-              href={Me.LINKEDIN}
-              title="My Linkedin"
-              className="cursor-pointer transition-colors duration-500 hover:text-linkedin"
-            >
-              <span className="sr-only">My Linkedin</span>
-              <FaLinkedin />
-            </a>
-          </div>
-          <div className="w-full block text-xs text-center pt-2">
-            Sun/Moon icons made by{" "}
-            <a
-              href="https://www.freepik.com"
-              title="Freepik"
-              className="text-primary-link hover:underline italic"
-            >
-              Freepik
-            </a>{" "}
-            from{" "}
-            <a
-              href="https://www.flaticon.com/"
-              title="Flaticon"
-              className="text-primary-link hover:underline italic"
-            >
-              www.flaticon.com
-            </a>{" "}
-            <b className="mx-2">|</b> Brand Icons by{" "}
-            <a
-              className="text-primary-link hover:underline italic"
-              href="https://react-icons.github.io/react-icons/"
-            >
-              react-icons
-            </a>
-          </div>
-        </footer>
+      <body className="flex min-h-full flex-col bg-white dark:bg-zinc-900">
+        <ClientRoot>{props.children}</ClientRoot>
       </body>
     </html>
   );

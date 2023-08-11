@@ -1,14 +1,10 @@
 "use client";
-import {
-  Fragment,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import * as amplitude from "@amplitude/analytics-browser";
+import { Fragment, PropsWithChildren, useCallback, useEffect } from "react";
+import { IconContext } from "react-icons";
 import { Navbar } from "~/components/navbar";
 import { ThemeProvider, Themes, useTheme } from "~/components/theme.config";
-import { IconContext } from "react-icons";
+import { Track } from "~/components/track";
 import { ThemePreference } from "~/lib/theme-preference";
 import Dark from "../styles/dark.json";
 import Light from "../styles/light.json";
@@ -24,28 +20,30 @@ const Base = (props: PropsWithChildren) => {
     root.classList.value = theme;
   }, [theme]);
 
-  const themeColor = useMemo(
-    () => (theme === "dark" ? Dark.primary.DEFAULT : Light.primary.DEFAULT),
-    []
-  );
-
   const toggle = useCallback(() => {
     setTheme((p) => (p === "dark" ? Themes.Light : Themes.Dark));
   }, []);
+
   return (
     <Fragment>
-      <Navbar toggle={toggle} theme={themeColor} />
+      <Navbar toggle={toggle} theme={theme} />
       {props.children}
     </Fragment>
   );
 };
 
 export const ClientRoot = (props: PropsWithChildren) => {
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") return;
+    amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE!);
+  }, []);
+
   return (
     <ThemeProvider>
       <IconContext.Provider
         value={{ style: { verticalAlign: "middle", display: "inline-block" } }}
       >
+        <Track event="PageView" />
         <Base>{props.children}</Base>
       </IconContext.Provider>
     </ThemeProvider>

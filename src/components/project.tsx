@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Projects } from "~/lib/projects";
-import { TableOfContent } from "~/components/post";
+import { MarkdownPost } from "~/components/post";
 
 export const ProjectClient = ({
   project,
@@ -9,4 +9,4 @@ export const ProjectClient = ({
 }: {
   project: Projects.Project;
   mdx: any;
-}) => <TableOfContent post={project} mdx={mdx} />;
+}) => <MarkdownPost post={project} mdx={mdx} />;

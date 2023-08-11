@@ -17,7 +17,7 @@ const getColors = (JSON_COLOR = {}) => {
 };
 
 module.exports = {
-  darkMode: "class", // or 'media' or 'class'
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     screens: {
@@ -29,6 +29,18 @@ module.exports = {
     },
     extend: {
       colors: getColors(colors),
+      fontSize: {
+        "2xs": ".6875rem",
+      },
+      fontFamily: {
+        sans: "var(--font-inter)",
+        display: "var(--font-mona-sans)",
+      },
+      opacity: {
+        2.5: "0.025",
+        7.5: "0.075",
+        15: "0.15",
+      },
     },
   },
   plugins: [

@@ -30,7 +30,7 @@ export const Toc = ({ headers }: { headers: Heading[] }) => (
           data-order={hx.order}
           key={`${hx.id}-${hx.order}`}
           style={{ marginLeft: `${hx.order * 24}px` }}
-          className="my-4 text-sm underline underline-offset-4"
+          className="my-4 text-sm underline underline-offset-4 link:text-indigo-400 duration-300 transition-colors"
         >
           <a href={`#${hx.id}`}>{hx.text}</a>
         </li>
