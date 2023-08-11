@@ -23,7 +23,7 @@ export const parseTextHeaders = (headers: HTMLHeadingElement[]) =>
 
 export const Toc = ({ headers }: { headers: Heading[] }) => (
   <header>
-    <hr className="dark:border-slate-700 border-slate-300" />
+    <hr className="dark:border-neutral-700 border-neutral-300" />
     <ul className="my-4">
       {headers.map((hx) => (
         <li
@@ -36,7 +36,7 @@ export const Toc = ({ headers }: { headers: Heading[] }) => (
         </li>
       ))}
     </ul>
-    <hr className="dark:border-slate-700 border-slate-300" />
+    <hr className="dark:border-neutral-700 border-neutral-300" />
   </header>
 );
 

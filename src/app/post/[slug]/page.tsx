@@ -41,7 +41,7 @@ export default async function PostPage(props: any) {
   const postUrl = `https://garcez.dev/post/${post.id}`;
 
   return (
-    <section className="block w-full min-w-full">
+    <section className="block w-full min-w-full px-4 md:px-0">
       <Head>
         <SEO.Post
           post={post}

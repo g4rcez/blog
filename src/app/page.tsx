@@ -105,7 +105,7 @@ const IconLink = ({
     {...props}
     className={clsx(
       className,
-      "group relative flex items-center rounded-lg px-2 py-0.5 text-[0.8125rem]/6 font-medium text-white/30 transition-colors hover:text-indigo-300",
+      "group relative flex items-center rounded-lg px-2 py-0.5 text-[0.8125rem]/6 font-medium text-slate-600 dark:text-white/30 transition-colors hover:text-indigo-300",
       compact ? "gap-x-2" : "gap-x-3"
     )}
   >

@@ -72,7 +72,7 @@ const projects: Project[] = [
 
 export default function ProjectsPage() {
   return (
-    <div className="w-full container mt-12 mx-auto lg:w-3/4">
+    <div className="w-full container mt-12 mx-auto lg:w-3/4 px-4 md:px-0">
       <Head>
         <title>My projects</title>
       </Head>

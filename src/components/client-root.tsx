@@ -35,7 +35,8 @@ const Base = (props: PropsWithChildren) => {
 export const ClientRoot = (props: PropsWithChildren) => {
   useEffect(() => {
     if (process.env.NODE_ENV === "development") return;
-    amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE!);
+    if (process.env.NEXT_PUBLIC_AMPLITUDE)
+      amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE!);
   }, []);
 
   return (

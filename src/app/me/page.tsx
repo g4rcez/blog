@@ -155,7 +155,7 @@ const Social = () => (
 
 export default function MePage() {
   return (
-    <section className="flex gap-8 w-full flex-row flex-nowrap min-w-full">
+    <section className="flex gap-8 w-full md:flex-row flex-col flex-nowrap min-w-full px-4 md:px-0">
       <Track event="my-profile" />
       <div className="w-full lg:w-1/4 print:w-1/3 space-y-4">
         <img

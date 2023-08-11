@@ -19,7 +19,7 @@ export default async function PostPage(props: any) {
   const openGraphImage = `https://garcez.dev/post-graph/${project.slug}.png`;
 
   return (
-    <section className="block w-full min-w-full">
+    <section className="block w-full min-w-full px-4 md:px-0">
       <Head>
         <meta name="description" content={project.description} />
         <meta name="keywords" content={project.keywords.join(",")} />
