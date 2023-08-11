@@ -48,7 +48,12 @@ const MyTechnologies = () => {
         <SectionTitle Icon={BackpackIcon} title="Languages and Tools" />
         <ul className="flex dark:bg-white p-4 rounded-md gap-6 items-center justify-between flex-wrap">
           {me.skills.map((tech, i) => (
-            <li aria-label={tech.name} data-balloon-pos="up" className="w-10" key={`education-key-${tech.name}-${i}`}>
+            <li
+              aria-label={tech.name}
+              data-balloon-pos="up"
+              className="w-10"
+              key={`education-key-${tech.name}-${i}`}
+            >
               <img alt={tech.name} src={tech.link} />
             </li>
           ))}
