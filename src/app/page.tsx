@@ -130,7 +130,7 @@ const Tags = ({ tags, id }: { tags: string[]; id: string }) => (
   </ul>
 );
 
-export function Intro({ tags }: { tags: string[] }) {
+function Intro({ tags }: { tags: string[] }) {
   return (
     <Fragment>
       <nav>
