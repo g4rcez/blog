@@ -1,14 +1,14 @@
 "use client";
-import { OmitKeys } from "~/lib/utility.types";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import Link from "next/link";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RxFrame } from "react-icons/rx";
 import { PrismAsyncLight as Syntax } from "react-syntax-highlighter";
-import { Format } from "~/lib/format";
-import { Themes, useTheme } from "./theme.config";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import Input from "the-mask-input";
 import { Cookie } from "storage-manager-js";
+import Input from "the-mask-input";
+import { Format } from "~/lib/format";
+import { OmitKeys } from "~/lib/utility.types";
+import { Themes, useTheme } from "./theme.config";
 
 type Tag = "a" | typeof Link;
 
@@ -22,18 +22,6 @@ type Props = OmitKeys<
   tag?: Tag;
   href: string;
 };
-
-export const Anchor = ({ tag: Tag = Link, ...props }: Props) => (
-  <Tag
-    className={`link:underline underline-offset-4 link:text-sky-600 dark:link:text-sky-400 transition-colors duration-200 ${
-      props.className ?? ""
-    }`}
-    {...props}
-    passHref
-  >
-    {props.children}
-  </Tag>
-);
 
 const HX = ({
   tag: Render,

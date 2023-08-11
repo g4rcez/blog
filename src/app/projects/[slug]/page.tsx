@@ -1,8 +1,9 @@
 import Head from "next/head";
+import { ProjectClient } from "~/components/project";
+import { Track } from "~/components/track";
 import { toMarkdown } from "~/lib/markdown";
 import { Projects } from "~/lib/projects";
 import "../../../styles/markdown.css";
-import { ProjectClient } from "~/components/project";
 
 const getProject = async (slug: string) => {
   const project = Projects.find(slug);
@@ -47,6 +48,7 @@ export default async function PostPage(props: any) {
         />
       </Head>
       <header className="mb-6 w-full container flex flex-col flex-wrap">
+        <Track event="project" title={project.title} />
         <h1 className="mt-4 mb-2 font-extrabold whitespace-pre-wrap w-full text-4xl md:text-5xl flex flex-wrap">
           {project.title}
         </h1>

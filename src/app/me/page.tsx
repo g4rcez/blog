@@ -1,5 +1,10 @@
-import React from "react";
-import Head from "next/head";
+import {
+  BackpackIcon,
+  BookmarkFilledIcon,
+  LaptopIcon,
+} from "@radix-ui/react-icons";
+import React, { Fragment } from "react";
+import { Track } from "~/components/track";
 import { me } from "~/me";
 
 const formatMonthYear = (date: Date) =>
@@ -14,25 +19,57 @@ const Title = ({ children }: any) => (
   </h2>
 );
 
+const FromTo = ({
+  from,
+  to,
+}: {
+  from: Date;
+  to: Date | "present" | undefined | null;
+}) => (
+  <p className="text-xs">
+    From {formatMonthYear(from)}
+    {to instanceof Date ? (
+      <Fragment>{` to ${formatMonthYear(to!)}`}</Fragment>
+    ) : null}
+    {to === "present" ? " to present" : null}
+  </p>
+);
+
+const SectionTitle = ({ Icon, title }: { Icon: any; title: string }) => (
+  <h2 className="flex items-center font-medium text-xl gap-1">
+    <Icon className="text-indigo-500" /> {title}
+  </h2>
+);
+
+const MyTechnologies = () => {
+  return (
+    <section className="grid grid-cols-1 gap-8 w-full min-w-full leading-relaxed antialiased tracking-wide break-words">
+      <section className="flex flex-col gap-4">
+        <SectionTitle Icon={BackpackIcon} title="Languages and Tools" />
+        <ul className="flex dark:bg-white p-4 rounded-md gap-6 items-center justify-between flex-wrap">
+          {me.skills.map((tech, i) => (
+            <li aria-label={tech.name} data-balloon-pos="up" className="w-10" key={`education-key-${tech.name}-${i}`}>
+              <img alt={tech.name} src={tech.link} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    </section>
+  );
+};
+
 const EducationSection = () => {
   return (
     <section className="grid grid-cols-1 gap-8 w-full min-w-full leading-relaxed antialiased tracking-wide break-words">
       <section className="flex flex-col gap-4">
-        <Title>Education</Title>
+        <SectionTitle Icon={BookmarkFilledIcon} title="My education" />
         <ul>
           {me.education.map((edu, i) => (
             <li key={`education-key-${edu.school}-${i}`}>
-              <h3 className="text-lg">
+              <FromTo from={edu.from} to={edu.to} />
+              <h3 className="text-lg font-medium">
                 {edu.school}. {edu.subject}
               </h3>
-              <p>
-                From: {formatMonthYear(edu.from)}
-                {edu.to === undefined
-                  ? null
-                  : typeof edu.to === "string"
-                  ? edu.to
-                  : formatMonthYear(edu.to)}
-              </p>
             </li>
           ))}
         </ul>
@@ -44,26 +81,33 @@ const EducationSection = () => {
 const JobSection = () => {
   return (
     <section className="flex flex-col gap-4 w-full">
-      <Title>Job Experiences</Title>
+      <SectionTitle Icon={LaptopIcon} title="My education" />
       <ul>
         {me.jobs.map((job, i) => {
           const roles = job.roles
             .sort((a, b) => b.from.getTime() - a.from.getTime())
             .filter(Boolean);
+          const first = roles.at(0);
           return (
-            <li key={`education-key-${job.company}-${i}`} className="mb-8">
-              <h3 className="text-2xl font-medium">
-                <b>{job.company}</b>{" "}
-                {i === 0 ? <span> - {roles[0].title}</span> : null}
-              </h3>
-              <ul className="space-y-4">
+            <li
+              key={`education-key-${job.company}-${i}`}
+              className="mb-8 first:border-t-0 border-t border-b last:border-b-0 border-zinc-300"
+            >
+              <FromTo from={job.startedAt} to={first?.to} />
+              <h3 className="text-lg font-medium">{job.company}</h3>
+              <ul className="space-y-4 px-8">
                 {roles.map((role, i) => (
-                  <li key={`job-title-${role.title}-${i}`} className="my-4">
-                    <h3 className="text-lg">
+                  <li
+                    key={`job-title-${role.title}-${i}`}
+                    className="mb-6 mt-2 text-sm"
+                  >
+                    <h4>
                       {role.title} - {formatMonthYear(role.from)} -{" "}
-                      {role.to ? formatMonthYear(role.to) : "Present"}
-                    </h3>
-                    <ul className="list-inside list-disc">
+                      {role.to instanceof Date
+                        ? formatMonthYear(role.to)
+                        : "Present"}
+                    </h4>
+                    <ul className="list-inside mb-4 px-8 space-y-4">
                       {role.milestones.map((x, y) => (
                         <li className="my-2" key={`${x}-${y}`}>
                           {x}
@@ -81,74 +125,57 @@ const JobSection = () => {
   );
 };
 
-const Social = ({ className }: { className: string }) => (
-  <div className={`w-full ${className}`}>
-    <ul className="flex flex-row gap-2 w-fit">
-      {me.contacts.map((contact) => (
-        <li key={contact.link}>
-          <a
-            href={contact.link}
-            title={contact.name}
-            className="aspect-square link:text-main transition-colors duration-300 ease-in-out"
-          >
-            {contact.icon ? (
-              <contact.icon className="w-6 h-6 aspect-square" />
-            ) : (
-              contact.name
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const Header = () => (
-  <header className="w-full container flex flex-col md:flex-row items-center md:items-start gap-4 min-w-full">
-    <div className="min-w-fit w-fit flex flex-col gap-4">
-      <img
-        src={me.avatar}
-        width={256}
-        height={256}
-        alt="My image"
-        className="md:w-56 md:h-56 h-48 w-48 aspect-square rounded-full block max-w-full drop-shadow-xl shadow-xl"
-      />
-      <Social className="hidden md:flex justify-center" />
-    </div>
-    <section className="flex flex-col gap-4 flex-wrap w-full">
-      <h1 className="font-bold text-center md:text-left w-full text-4xl md:text-5xl">
-        {me.name}
-      </h1>
-      <p className="text-lg font-medium text-center md:text-left">{me.role}</p>
-      <p className="text-sm whitespace-break-spaces break-words">{me.about}</p>
-      <nav className="w-full space-y-4">
-        {me.skills.length > 0 ? (
-          <ul className="flex flex-wrap flex-row w-full gap-2 items-center">
-            {me.skills.map((skill) => (
-              <li
-                key={`skill-${skill.name}`}
-                className="px-4 py-0.5 bg-main text-white rounded-lg"
-              >
-                {skill.name}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        <Social className="block md:hidden" />
-      </nav>
-    </section>
-  </header>
+const Social = () => (
+  <ul className="space-y-2">
+    {me.contacts.map((contact) => (
+      <li key={contact.link}>
+        <a
+          href={contact.link}
+          title={contact.name}
+          className="flex gap-1 flex-row items-center link:text-indigo-400 transition-colors duration-300 ease-in-out"
+        >
+          {contact.icon ? (
+            <Fragment>
+              <contact.icon className="w-5 h-5 aspect-square" />
+              {contact.name}
+            </Fragment>
+          ) : (
+            contact.name
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
 );
 
 export default function MePage() {
   return (
-    <section className="flex flex-wrap gap-8 w-full min-w-full">
-      <Head>
-        <title key="title">About me - {me.name}</title>
-      </Head>
-      <Header />
-      <EducationSection />
-      <JobSection />
+    <section className="flex gap-8 w-full flex-row flex-nowrap min-w-full">
+      <Track event="my-profile" />
+      <div className="w-full lg:w-1/4 print:w-1/3 space-y-4">
+        <img
+          src={me.avatar}
+          width={256}
+          height={256}
+          alt="My image"
+          className="w-full rounded-lg aspect-square block max-w-full shadow-md"
+        />
+        <h1 className="font-medium text-3xl">Allan Garcez</h1>
+        <p className="text-lg font-medium">{me.role}</p>
+        <h2 className="text-md opacity-80 gap-2 text-indigo-500 dark:text-indigo-300">
+          About
+        </h2>
+        <p className="text-xs">{me.about}</p>
+        <h2 className="text-md flex items-center opacity-80 gap-1 text-indigo-500 dark:text-indigo-300">
+          My links
+        </h2>
+        <Social />
+      </div>
+      <main className="w-full lg:w-3/4 print:w-2/3 flex flex-col gap-8">
+        <MyTechnologies />
+        <EducationSection />
+        <JobSection />
+      </main>
     </section>
   );
 }
