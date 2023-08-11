@@ -81,7 +81,7 @@ const EducationSection = () => {
 const JobSection = () => {
   return (
     <section className="flex flex-col gap-4 w-full">
-      <SectionTitle Icon={LaptopIcon} title="My education" />
+      <SectionTitle Icon={LaptopIcon} title="My career" />
       <ul>
         {me.jobs.map((job, i) => {
           const roles = job.roles

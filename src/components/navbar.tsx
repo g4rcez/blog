@@ -16,6 +16,12 @@ export const Navbar = ({ theme, toggle }: Props) => (
       </h1>
       <span className="flex gap-x-4 items-center text-sm">
         <Link
+            href={"/me"}
+            className="link:text-primary-link duration-300 transition-colors link:underline"
+        >
+          About me
+        </Link>
+        <Link
           href={"/projects"}
           className="link:text-primary-link duration-300 transition-colors link:underline"
         >

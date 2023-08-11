@@ -34,7 +34,12 @@ function Project(project: Project) {
               <Link2Icon className="h-6 w-5 text-gray-400" aria-hidden="true" />
             </dt>
             <dd className="text-sm leading-6 text-gray-500">
-              <Link href={project.link}>{project.host}</Link>
+              <Link
+                className="link:text-indigo-500 link:underliner duration-300 transition-colors"
+                href={project.link}
+              >
+                {project.host}
+              </Link>
             </dd>
           </div>
         </dl>
