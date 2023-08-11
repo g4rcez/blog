@@ -3,6 +3,7 @@ import React, {
   PropsWithChildren,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -17,6 +18,15 @@ const Context = React.createContext<Context>([Themes.Dark, () => {}]);
 
 export const ThemeProvider = (props: PropsWithChildren) => {
   const [theme, setTheme] = useState(Themes.Light);
+
+  useEffect(() => {
+    const t = window.localStorage.getItem("@blog/theme") as Themes;
+    setTheme((prev) => (t ? t : prev));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("@blog/theme", theme);
+  }, [theme]);
 
   return (
     <Context.Provider value={[theme, setTheme]}>
