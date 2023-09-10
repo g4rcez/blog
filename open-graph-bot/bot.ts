@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
 
         const data = {
             title: metadata.title,
-            description: metadata.description,
+            description: metadata.description.slice(0, 140),
             tags: metadata.subjects
                 .map((x) => `<li>${x}</li>`)
                 .slice(0, 2)
@@ -61,12 +61,12 @@ const server = http.createServer((req, res) => {
 
 const PORT = 3000;
 
-server.listen(9999);
+server.listen(PORT);
 
 (async () => {
     const browser = await puppeteer.launch({
         defaultViewport: {
-            height: 210,
+            height: 250,
             width: 750,
         },
         headless: true,
@@ -83,8 +83,9 @@ server.listen(9999);
                 const page = await browser.newPage();
                 await page.goto(`http://localhost:${PORT}/${post}`);
                 await page.screenshot({
-                    path: path.join(imagePath, `${post}.png`),
+                    quality: 100,
                     encoding: "binary",
+                    path: path.join(imagePath, `${post}.png`),
                 });
                 await page.close();
             })

@@ -17,11 +17,13 @@
             padding: 0;
         }
 
+        html, body, main {
+            height: 250px;
+            width: 100%;
+        }
+
         main {
             margin: 0.25rem;
-            width: 100%;
-            border: 1px solid #eee;
-            box-shadow: 5px 5px 5px #eee;
             padding: 1.5rem 2rem;
         }
 
@@ -33,11 +35,6 @@
             row-gap: 1rem;
             flex-direction: row;
             flex-wrap: nowrap;
-        }
-
-        .img-post {
-            width: 92px;
-            display: inline-block;
         }
 
         #header {
@@ -85,21 +82,20 @@
     </style>
 </head>
 <body>
-    <main>
-        <header id="header">
-            <div class="titles">
-                <h1>{{ title }}</h1>
-                <h3>{{ description }}</h3>
-            </div>
-        </header>
-        <section>
-            <ul id="tags">
-                {{ tags }}
-            </ul>
-            <div>Read time: <b>{{time}}</b></div>
-            <div>Release Date: <b>{{releaseDate}}</b></div>
-        </section>
-    </main>
+<main>
+    <header id="header">
+        <div class="titles">
+            <h1>{{ title }}</h1>
+            <h3>{{ description }}</h3>
+        </div>
+    </header>
+    <section>
+        <ul id="tags">
+            {{ tags }}
+        </ul>
+        <div>{{releaseDate}} - {{time}}</div>
+    </section>
+</main>
 </body>
 
 </html>
