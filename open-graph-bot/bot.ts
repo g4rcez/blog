@@ -61,9 +61,9 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const PORT = 9999;
+const PORT = 3000;
 
-server.listen(PORT);
+server.listen(9999);
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -81,7 +81,7 @@ server.listen(PORT);
     await Promise.allSettled(
       allPosts.map(async (x) => {
         const post = x.replace(/\.md/, "");
-        console.log("Printing", post);
+        console.log("Taking a screenshot", post);
         const page = await browser.newPage();
         await page.goto(`http://localhost:${PORT}/${post}`);
         await page.screenshot({
@@ -94,7 +94,9 @@ server.listen(PORT);
   } catch (error) {
     console.log(error);
   } finally {
-    console.log("print page");
+    console.log("Finished!!!");
     process.exit(0);
   }
 })();
+
+export {}

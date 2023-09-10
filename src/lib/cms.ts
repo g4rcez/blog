@@ -1,5 +1,4 @@
 import Path from "path";
-import Fs from "fs";
 import fs from "fs";
 import matter from "gray-matter";
 import { z } from "zod";
@@ -14,7 +13,7 @@ export namespace CMS {
     };
   };
 
-  const open = (path: string) => Fs.readFileSync(path, "utf-8");
+  const open = (path: string) => fs.readFileSync(path, "utf-8");
 
   export const getAll = <T extends string, S extends {}>(
     dir: T,
@@ -23,7 +22,7 @@ export namespace CMS {
     z
       .array(schema)
       .safeParse(
-        Fs.readdirSync(dir).map((file) =>
+        fs.readdirSync(dir).map((file) =>
           parse(file, open(Path.join(dir, file)))
         )
       );
