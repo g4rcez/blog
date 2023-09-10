@@ -8,89 +8,19 @@
     <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Inter', sans-serif;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body, main {
-            height: 250px;
-            width: 100%;
-        }
-
-        main {
-            margin: 0.25rem;
-            padding: 1.5rem 2rem;
-        }
-
-        section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            row-gap: 1rem;
-            flex-direction: row;
-            flex-wrap: nowrap;
-        }
-
-        #header {
-            margin-bottom: 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .titles {
-            width: 100%;
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        #header h1 {
-            font-size: 2.25rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            color: #212121;
-        }
-
-        #header h3 {
-            font-size: 1rem;
-            font-weight: 100;
-            color: #353535;
-        }
-
-        #tags {
-            display: inline-flex;
-            list-style: none;
-            list-style-position: inside;
-        }
-
-        #tags li {
-            margin-right: 1rem;
-            font-size: 0.95rem;
-            padding: 0.25rem 0.5rem;
-            background-color: #7207aa;
-            color: #fff;
-            border-radius: 0.5rem;
-        }
-    </style>
 </head>
 <body>
-<main>
-    <header id="header">
-        <div class="titles">
-            <h1>{{ title }}</h1>
-            <h3>{{ description }}</h3>
+<main class="w-full h-[210px] flex flex-col justify-center gap-8 bg-slate-100 p-8">
+    <header id="header" class="w-full">
+        <div class="w-full text-center">
+            <h1 class="text-4xl font-medium leading-relaxed">{{ title }}</h1>
+            <p class="text-sm">{{ description }}</p>
         </div>
     </header>
-    <section>
-        <ul id="tags">
+    <section class="flex flex-row justify-between items-center">
+        <ul id="tags" class="flex gap-4 text-indigo-600">
             {{ tags }}
         </ul>
         <div>{{releaseDate}} - {{time}}</div>

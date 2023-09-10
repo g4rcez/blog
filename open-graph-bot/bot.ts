@@ -66,7 +66,7 @@ server.listen(PORT);
 (async () => {
     const browser = await puppeteer.launch({
         defaultViewport: {
-            height: 250,
+            height: 210,
             width: 750,
         },
         headless: true,
@@ -76,17 +76,18 @@ server.listen(PORT);
     const imagePath = path.resolve(path.join(root, "public", "post-graph"));
     const allPosts = fs.readdirSync(path.join(root, "_posts"));
     try {
-        await Promise.allSettled(
+        await Promise.all(
             allPosts.map(async (x) => {
                 const post = x.replace(/\.md/, "");
-                console.log("Taking a screenshot", post);
                 const page = await browser.newPage();
                 await page.goto(`http://localhost:${PORT}/${post}`);
                 await page.screenshot({
-                    quality: 100,
                     encoding: "binary",
-                    path: path.join(imagePath, `${post}.png`),
+                    omitBackground: true,
+                    type: "webp",
+                    path: path.join(imagePath, `${post}.webp`),
                 });
+                console.log("Screenshot taken from", post, "in path", imagePath);
                 await page.close();
             })
         );

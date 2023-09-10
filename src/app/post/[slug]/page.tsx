@@ -50,7 +50,7 @@ export const generateMetadata = async (props: any): Promise<Metadata> => {
     const id = props.params.slug;
     const content = await Posts.content(id);
     if (!content) return notFound();
-    const openGraphImage = `https://garcez.dev/post-graph/${content.post.id}.png`;
+    const openGraphImage = `https://garcez.dev/post-graph/${content.post.id}.webp`;
     const postUrl = `https://garcez.dev/post/${content.post.id}`;
     const seo = SEO.Post({ post: content.post, postUrl, openGraphImage });
     return {
