@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "bot": "ts-node-dev open-graph-bot/bot.ts --watch",
+    "bot": "ts-node -P tsconfig.bot.json open-graph-bot/bot.ts",
     "start": "next start"
   },
   "dependencies": {
