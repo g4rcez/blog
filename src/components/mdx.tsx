@@ -148,7 +148,7 @@ export const MdxComponents = {
   h5: (props: any) => <HX {...props} tag="h5" />,
   h6: (props: any) => <HX {...props} tag="h6" />,
   Input: (props: any) => (
-    <input
+    <Input
       {...props}
       className="p-2 border border-slate-300 dark:border-slate-400 rounded bg-transparent"
     />

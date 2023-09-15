@@ -81,8 +81,8 @@ dependencies:
     specifier: 4.2.1
     version: 4.2.1
   the-mask-input:
-    specifier: 3.1.5
-    version: 3.1.5(react-dom@18.2.0)(react@18.2.0)
+    specifier: 3.2.2
+    version: 3.2.2(react-dom@18.2.0)(react@18.2.0)
   unified:
     specifier: 10.1.2
     version: 10.1.2
@@ -3462,8 +3462,8 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /the-mask-input@3.1.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-auO9gSQouh1ZxShCGnj1hMhQxZZnQrF+PZos1R4mu3IZEvzZD7QXt/Sn98MSsg0QZwyECkgHFTAD8vqP0Myvrw==}
+  /the-mask-input@3.2.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-TYzBr1Ng8k+MyLSV4LlnLUz6HUhFsJhs5XE6SnbtfzvOgIXFkBWzrdvsh3E+byJMnhCehZc8QksmOEgWE4HHWw==}
     engines: {node: '>=8', npm: '>=4'}
     peerDependencies:
       react: '>= 16.8.3'

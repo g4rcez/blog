@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import Link, { LinkProps } from "next/link";
 import { Fragment, PropsWithChildren, useId } from "react";
 import { Article } from "~/components/landing/article";
+import { I18n } from "~/i18n/i18n";
 import { CMS } from "~/lib/cms";
 import { Posts } from "~/lib/posts";
 import { me } from "~/me";
@@ -107,16 +108,14 @@ const Tags = ({ tags, id }: { tags: string[]; id: string }) => (
 );
 
 function Intro({ tags }: { tags: string[] }) {
+    const fmt = new I18n.Fmt(I18n.DEFAULT_LOCALE);
     return (
         <Fragment>
             <nav>
                 <Link href="/">Blog do Garcez</Link>
             </nav>
-            <h1 className="mt-6 font-display text-4xl/tight font-medium dark:text-white">Bem vindo ao meu blog</h1>
-            <p className="mt-4 text-md/6 dark:text-zinc-200">
-                Aqui você vai encontrar conteúdo sobre frontend em geral, focando em Typescript, React, Tailwindcss,
-                NextJS e mais da sopa de letrinhas do universo frontend
-            </p>
+            <h1 className="mt-6 font-display text-4xl/tight font-medium dark:text-white">{fmt.get("welcomeTitle")}</h1>
+            <p className="mt-4 text-md/6 dark:text-zinc-200">{fmt.get("welcome")}</p>
             <div className="flex flex-col">
                 <form className="border text-sm dark:border-slate-600 border-slate-300 flex flex-row items-center flex-nowrap text-white w-full rounded-lg my-4">
                     <input

@@ -5,48 +5,49 @@ import { IconContext } from "react-icons";
 import { Navbar } from "~/components/navbar";
 import { ThemeProvider, Themes, useTheme } from "~/components/theme.config";
 import { Track } from "~/components/track";
+import { I18nProvider } from "~/i18n/component";
+import { I18n } from "~/i18n/i18n";
 import { ThemePreference } from "~/lib/theme-preference";
 import Dark from "../styles/dark.json";
 import Light from "../styles/light.json";
 
 const Base = (props: PropsWithChildren) => {
-  const [theme, setTheme] = useTheme();
+    const [theme, setTheme] = useTheme();
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const json = theme === "dark" ? Dark : Light;
-    ThemePreference.setCss(json, root);
-    ThemePreference.saveTheme(theme);
-    root.classList.value = theme;
-  }, [theme]);
+    useEffect(() => {
+        const root = document.documentElement;
+        const json = theme === "dark" ? Dark : Light;
+        ThemePreference.setCss(json, root);
+        ThemePreference.saveTheme(theme);
+        root.classList.value = theme;
+    }, [theme]);
 
-  const toggle = useCallback(() => {
-    setTheme((p) => (p === "dark" ? Themes.Light : Themes.Dark));
-  }, []);
+    const toggle = useCallback(() => {
+        setTheme((p) => (p === "dark" ? Themes.Light : Themes.Dark));
+    }, []);
 
-  return (
-    <Fragment>
-      <Navbar toggle={toggle} theme={theme} />
-      {props.children}
-    </Fragment>
-  );
+    return (
+        <Fragment>
+            <Navbar toggle={toggle} theme={theme} />
+            {props.children}
+        </Fragment>
+    );
 };
 
 export const ClientRoot = (props: PropsWithChildren) => {
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
-    if (process.env.NEXT_PUBLIC_AMPLITUDE)
-      amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE!);
-  }, []);
+    useEffect(() => {
+        if (process.env.NODE_ENV === "development") return;
+        if (process.env.NEXT_PUBLIC_AMPLITUDE) amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE!);
+    }, []);
 
-  return (
-    <ThemeProvider>
-      <IconContext.Provider
-        value={{ style: { verticalAlign: "middle", display: "inline-block" } }}
-      >
-        <Track event="PageView" />
-        <Base>{props.children}</Base>
-      </IconContext.Provider>
-    </ThemeProvider>
-  );
+    return (
+        <I18nProvider locale={I18n.DEFAULT_LOCALE}>
+            <ThemeProvider>
+                <IconContext.Provider value={{ style: { verticalAlign: "middle", display: "inline-block" } }}>
+                    <Track event="PageView" />
+                    <Base>{props.children}</Base>
+                </IconContext.Provider>
+            </ThemeProvider>
+        </I18nProvider>
+    );
 };
