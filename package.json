@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "bot": "ts-node -P tsconfig.bot.json open-graph-bot/bot.ts",
     "start": "next start"
@@ -36,6 +36,7 @@
     "storage-manager-js": "4.2.1",
     "the-mask-input": "3.2.2",
     "unified": "10.1.2",
+    "use-typed-reducer": "3.3.3",
     "zod": "3.21.4"
   },
   "devDependencies": {

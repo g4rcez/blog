@@ -12,7 +12,7 @@ import { me } from "~/me";
 const Glow = () => {
     const id = useId();
     return (
-        <div className="absolute opacity-20 dark:opacity-100 dark:bg-neutral-950 inset-0 -z-10 overflow-hidden lg:right-[calc(max(2rem,50%-38rem)+40rem)] lg:min-w-[32rem]">
+        <div className="absolute opacity-20 text-red dark:opacity-100 dark:bg-neutral-950 inset-0 -z-10 overflow-hidden lg:right-[calc(max(2rem,50%-38rem)+40rem)] lg:min-w-[32rem]">
             <svg
                 className="absolute -bottom-48 left-[-40%] h-[80rem] w-[180%] lg:-right-40 lg:bottom-auto lg:left-auto lg:top-[-40%] lg:h-[180%] lg:w-[80rem]"
                 aria-hidden="true"
@@ -120,7 +120,7 @@ function Intro({ tags }: { tags: string[] }) {
                 <form className="border text-sm dark:border-slate-600 border-slate-300 flex flex-row items-center flex-nowrap text-white w-full rounded-lg my-4">
                     <input
                         name="q"
-                        className="bg-transparent p-2.5 w-full placeholder-slate-600"
+                        className="bg-transparent text-zinc-600 dark:text-zinc-200 text-inherit p-2.5 w-full placeholder-slate-600"
                         placeholder="Busque por..."
                     />
                     <button className="p-1.5 px-4 bg-indigo-800 mx-1 rounded-lg flex text-sm">Buscar</button>
@@ -180,6 +180,15 @@ export default function NewPage(props: any) {
                             <Tags tags={post.subjects} id={post.title} />
                         </Article>
                     ))}
+                    <Article id="Ops..." date={null}>
+                        <header>Nenhum resultado encontrado</header>
+                        <p className="text-sm text-slate-400">
+                            Tente buscar por outros termos ou{" "}
+                            <Link href="/" className="underline">
+                                volte a página inicial
+                            </Link>
+                        </p>
+                    </Article>
                 </main>
             </div>
         </Fragment>
