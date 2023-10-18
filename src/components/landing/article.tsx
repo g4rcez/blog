@@ -30,10 +30,10 @@ const ContentWrapper = ({ className, ...props }: HTMLAttributes<HTMLDivElement>)
     </div>
 );
 
-const ArticleHeader = ({ id, date }: { id: string; date: Date | null }) => (
+const ArticleHeader = ({ id, date, title }: { id: string; date: Date | null; title:string }) => (
     <header className="relative mb-10 xl:mb-0">
         <div className="pointer-events-none absolute left-[max(-0.5rem,calc(50%-18.625rem))] top-0 z-50 flex h-4 items-center justify-end gap-x-2 lg:left-0 lg:right-[calc(max(2rem,50%-38rem)+40rem)] lg:min-w-[32rem] xl:h-8">
-            <Link href={`#${id}`} className="inline-flex">
+            <Link aria-label={title} href={`#${id}`} className="inline-flex">
                 <FormattedDate
                     date={date}
                     className="hidden xl:pointer-events-auto xl:block xl:text-2xs/4 xl:font-medium dark:xl:text-white/50"
@@ -54,7 +54,7 @@ const ArticleHeader = ({ id, date }: { id: string; date: Date | null }) => (
     </header>
 );
 
-export const Article = ({ id, date, children }: PropsWithChildren<{ id: string; date: Date | null }>) => {
+export const Article = ({ id, date, children, title }: PropsWithChildren<{ id: string; date: Date | null; title: string }>) => {
     const heightRef = useRef<HTMLDivElement>(null);
     const [heightAdjustment, setHeightAdjustment] = useState(0);
 
@@ -74,7 +74,7 @@ export const Article = ({ id, date, children }: PropsWithChildren<{ id: string; 
     return (
         <article id={id} className="scroll-mt-16" style={{ paddingBottom: `${heightAdjustment}px` }}>
             <div ref={heightRef}>
-                <ArticleHeader id={id} date={date} />
+                <ArticleHeader title={title} id={id} date={date} />
                 <ContentWrapper className="typography" data-mdx-content>
                     {children}
                 </ContentWrapper>

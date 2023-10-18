@@ -169,26 +169,28 @@ export default function NewPage(props: any) {
                 <Timeline />
                 <main className="space-y-20 bg-transparent dark:text-slate-100 py-20 sm:space-y-32 sm:py-32">
                     {posts.map((post) => (
-                        <Article id={post.title} date={new Date(post.date)}>
+                        <Article title={post.title} id={post.title} date={new Date(post.date)}>
                             <header>
                                 <Link href={post.href}>
                                     <p className="opacity-70 text-sm">{post.readingTime} min</p>
-                                    <h3 className="font-bold text-2xl my-2">{post.title}</h3>
+                                    <h2 className="font-bold text-2xl my-2">{post.title}</h2>
                                 </Link>
                             </header>
                             <p className="text-sm text-slate-400">{post.description}</p>
                             <Tags tags={post.subjects} id={post.title} />
                         </Article>
                     ))}
-                    <Article id="Ops..." date={null}>
-                        <header>Nenhum resultado encontrado</header>
-                        <p className="text-sm text-slate-400">
-                            Tente buscar por outros termos ou{" "}
-                            <Link href="/" className="underline">
-                                volte a página inicial
-                            </Link>
-                        </p>
-                    </Article>
+                    {posts.length === 0 ? (
+                        <Article title="Nenhum resultado encontrado" id="Ops..." date={null}>
+                            <header>Nenhum resultado encontrado</header>
+                            <p className="text-sm text-slate-400">
+                                Tente buscar por outros termos ou{" "}
+                                <Link href="/" className="underline">
+                                    volte a página inicial
+                                </Link>
+                            </p>
+                        </Article>
+                    ) : null}
                 </main>
             </div>
         </Fragment>
