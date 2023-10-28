@@ -12,40 +12,18 @@ type Project = {
 
 const Project = (project: Project) => (
     <li className="w-full">
-        <h2 className="sr-only">{project.name}</h2>
-        <div className="rounded-lg shadow-sm dark:border-zinc-600 border-slate-200 border">
-            <dl className="flex flex-wrap">
-                <div className="flex-auto pl-6 pt-6">
-                    <dt className="text-sm font-semibold leading-6">Name</dt>
-                    <dd className="mt-1 text-base font-semibold leading-6 dark:text-white text-zinc-800">
-                        {project.name}
-                    </dd>
-                </div>
-                <div className="flex-none self-end px-6 pt-4">
-                    <dt className="sr-only"></dt>
-                    <dd className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-green-600/20">
-                        {project.language}
-                    </dd>
-                </div>
-                <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
-                    <dt className="flex-none">
-                        <span className="sr-only">Link</span>
-                        <Link2Icon className="h-6 w-5 text-gray-400" aria-hidden="true" />
-                    </dt>
-                    <dd className="text-sm leading-6 text-gray-500">
-                        <Link
-                            className="link:text-indigo-500 link:underliner duration-300 transition-colors"
-                            href={project.link}
-                        >
-                            {project.host}
-                        </Link>
-                    </dd>
-                </div>
-            </dl>
-            <div className="mt-6 border-t dark:border-zinc-700 border-slate-100 px-6 py-6">
-                <span className="text-sm font-semibold leading-6 text-gray-900">{project.description}</span>
-            </div>
-        </div>
+        <Link
+            href={project.link}
+            className="rounded-lg p-5 flex group flex-col gap-4 dark:shadow-lg shadow-sm link:bg-slate-50 dark:link:bg-zinc-800 transition-colors duration-300"
+        >
+            <h2 className="text-base font-semibold leading-6 dark:text-white text-zinc-800">{project.name}</h2>
+            <p className="duration-300 text-md font-display text-normal tracking-wide dark:text-slate-400 text-zinc-600 transition-colors">{project.description}</p>
+            <p className="flex w-full flex-none text-sm items-center text-slate-400 group-hover:text-main transition-colors duration-300 gap-x-2">
+                <span className="sr-only">Link</span>
+                <Link2Icon className="h-4 w-4 text-current" aria-hidden="true" />
+                <span>{new URL(project.link, "https://garcez.dev").host}</span>
+            </p>
+        </Link>
     </li>
 );
 
@@ -55,21 +33,21 @@ const projects: Project[] = [
         link: "/projects/use-typed-reducer",
         host: "Test on my blog",
         language: "React + Typescript",
-        description: "A fully typed way to control your local or global state",
+        description: "Fully typed way to control your local or global state",
     },
     {
         name: "Brouther",
         link: "https://brouther.vercel.app",
         host: "Website",
         language: "React + Typescript",
-        description: "The brother router to help in React apps",
+        description: "Your brother when you need to route your frontend.",
     },
     {
         name: "The Mask Input",
         link: "/projects/the-mask-input",
         host: "Test on my blog",
         language: "React + Typescript",
-        description: "Mask component for your <input/>",
+        description: "Component for inputs with masked values, works like <input />.",
     },
 ];
 
@@ -83,7 +61,7 @@ export default function ProjectsPage() {
                 <h1 className="text-4xl leading-relaxed tracking-wide font-bold">Projects</h1>
                 <p className="opacity-80">A list my personal projects</p>
             </header>
-            <ul className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <ul className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
                 {projects.map((project) => (
                     <Project {...project} key={`project-${project.name}`} />
                 ))}

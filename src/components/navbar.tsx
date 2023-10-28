@@ -14,7 +14,7 @@ const links = [
 ];
 
 export const Navbar = ({ theme, toggle }: Props) => (
-    <header className="w-full z-[100] flex text-lg bg-indigo-950 dark:bg-zinc-900 text-white sticky top-0 isolate print:hidden">
+    <header className="w-full z-[100] dark:shadow-lg flex text-lg bg-indigo-950 dark:bg-zinc-900 text-white sticky top-0 isolate print:hidden">
         <nav className="w-full lg:w-3/4 py-3 flex flex-row justify-between items-center container mx-auto px-4 lg:px-0">
             <h1>
                 <Link aria-label="Logo do site" className="flex items-center gap-x-2" href="/">
