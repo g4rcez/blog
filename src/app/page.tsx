@@ -100,8 +100,8 @@ const IconLink = ({
 const Tags = ({ tags, id }: { tags: string[]; id: string }) => (
     <ul className="flex flex-row gap-4 text-xs my-2 flex-wrap">
         {tags.map((x) => (
-            <li key={`${id}-${x}-tag`} className="px-4 py-1 bg-indigo-900 text-white rounded-lg">
-                <Link href={`?q=${x}`}>{x}</Link>
+            <li key={`${id}-${x}-tag`}>
+                <Link href={`?q=${x}`} className="px-4 py-1 bg-indigo-900 text-white rounded-lg">{x}</Link>
             </li>
         ))}
     </ul>

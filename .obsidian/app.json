@@ -1,0 +1,9 @@
+{
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "absolute",
+  "useMarkdownLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "public",
+  "vimMode": true
+}
