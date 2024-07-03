@@ -11,9 +11,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Fragment, Suspense, useEffect, useState } from "react";
 
-export const HeroBanner = () => {
+const useIsHome = () => {
     const pathname = usePathname();
-    const isHomePage = pathname === "/";
+    return pathname === "/";
+};
+
+export const HeroBanner = () => {
+    const isHomePage = useIsHome();
     return <Fragment>{isHomePage && <Hero />}</Fragment>;
 };
 
@@ -25,6 +29,7 @@ const GitHubIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
 
 export function Header() {
     const showToc = useTocLink();
+    const isHomePage = useIsHome();
     const [isScrolled, setIsScrolled] = useState(false);
     useEffect(() => {
         function onScroll() {
@@ -60,11 +65,17 @@ export function Header() {
                 <Search />
             </div>
             <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
-                <Link scroll={false} className="block lg:hidden" href={{ query: showToc ? "toc=false" : "toc=true" }}>
-                    <Suspense fallback={null}>
-                        <TocBulb />
-                    </Suspense>
-                </Link>
+                {isHomePage ? null : (
+                    <Link
+                        scroll={false}
+                        className="block lg:hidden"
+                        href={{ query: showToc ? "toc=false" : "toc=true" }}
+                    >
+                        <Suspense fallback={null}>
+                            <TocBulb />
+                        </Suspense>
+                    </Link>
+                )}
                 <ThemeSelector className="relative z-10" />
                 <Link href={BlogConfig.github} className="group" aria-label="GitHub">
                     <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
