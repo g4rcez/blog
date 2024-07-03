@@ -10,7 +10,7 @@ export const dynamic = "force-static";
 
 const getPosts = () =>
     glob
-        .sync("**/posts/**/*/page.md")
+        .sync(path.resolve(path.join(process.cwd(), "src", "app", "posts", "**", "page.md")))
         .map((file) => {
             const href = file.replace(/\/page\.mdx?$/, "").replace("src/app", "");
             const fullPath = path.resolve(file);
