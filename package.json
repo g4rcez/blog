@@ -14,6 +14,7 @@
         "@headlessui/react": "2.1.1",
         "@markdoc/markdoc": "0.4.0",
         "@markdoc/next.js": "0.3.7",
+        "@mdx-js/mdx": "3.0.1",
         "@sindresorhus/slugify": "2.2.1",
         "clsx": "2.1.1",
         "fast-glob": "3.3.2",

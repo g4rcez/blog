@@ -1,5 +1,7 @@
 import { Posts } from "@/components/server/list-posts";
 
+export const dynamic = "force-static";
+
 export default function IndexPage(props: any) {
     const q = props.searchParams?.q || "";
     const value = Array.isArray(q) ? q[0] : q;
