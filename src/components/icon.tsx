@@ -21,7 +21,7 @@ const iconStyles = {
     amber: "[--icon-foreground:theme(colors.amber.900)] [--icon-background:theme(colors.amber.100)]",
 };
 
-export function Icon({
+export const Icon = ({
     icon,
     color = "blue",
     className,
@@ -29,7 +29,7 @@ export function Icon({
 }: {
     color?: keyof typeof iconStyles;
     icon: keyof typeof icons;
-} & Omit<React.ComponentPropsWithoutRef<"svg">, "color">) {
+} & Omit<React.ComponentPropsWithoutRef<"svg">, "color">) => {
     let id = useId();
     let IconComponent = icons[icon];
 
@@ -44,7 +44,7 @@ export function Icon({
             <IconComponent id={id} color={color} />
         </svg>
     );
-}
+};
 
 const gradients = {
     blue: [{ stopColor: "#0EA5E9" }, { stopColor: "#22D3EE", offset: ".527" }, { stopColor: "#818CF8", offset: 1 }],
@@ -54,25 +54,23 @@ const gradients = {
     ],
 };
 
-export function Gradient({
+export const Gradient = ({
     color = "blue",
     ...props
 }: {
     color?: keyof typeof gradients;
-} & Omit<React.ComponentPropsWithoutRef<"radialGradient">, "color">) {
-    return (
-        <radialGradient cx={0} cy={0} r={1} gradientUnits="userSpaceOnUse" {...props}>
-            {gradients[color].map((stop, stopIndex) => (
-                <stop key={stopIndex} {...stop} />
-            ))}
-        </radialGradient>
-    );
-}
+} & Omit<React.ComponentPropsWithoutRef<"radialGradient">, "color">) => (
+    <radialGradient cx={0} cy={0} r={1} gradientUnits="userSpaceOnUse" {...props}>
+        {gradients[color].map((stop, stopIndex) => (
+            <stop key={stopIndex} {...stop} />
+        ))}
+    </radialGradient>
+);
 
-export function LightMode({ className, ...props }: React.ComponentPropsWithoutRef<"g">) {
-    return <g className={clsx("dark:hidden", className)} {...props} />;
-}
+export const LightMode = ({ className, ...props }: React.ComponentPropsWithoutRef<"g">) => (
+    <g className={clsx("dark:hidden", className)} {...props} />
+);
 
-export function DarkMode({ className, ...props }: React.ComponentPropsWithoutRef<"g">) {
-    return <g className={clsx("hidden dark:inline", className)} {...props} />;
-}
+export const DarkMode = ({ className, ...props }: React.ComponentPropsWithoutRef<"g">) => (
+    <g className={clsx("hidden dark:inline", className)} {...props} />
+);

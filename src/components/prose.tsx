@@ -1,13 +1,13 @@
 import clsx from "clsx";
 import type React from "react";
 
-export function Prose<T extends React.ElementType = "div">({
+export const Prose = <T extends React.ElementType = "div">({
     as,
     className,
     ...props
 }: React.ComponentPropsWithoutRef<T> & {
     as?: T;
-}) {
+}) => {
     const Component = as ?? "div";
     return (
         <Component
@@ -30,4 +30,4 @@ export function Prose<T extends React.ElementType = "div">({
             )}
         />
     );
-}
+};

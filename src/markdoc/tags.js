@@ -1,8 +1,17 @@
 import { Callout } from "@/components/callout";
-import { ListPosts } from "@/components/server/list-posts";
 import { QuickLink, QuickLinks } from "@/components/quick-links";
+import { comment, link, script } from "@markdoc/next.js/tags";
 
 const tags = {
+    comment,
+    link,
+    script,
+    "quick-links": { render: QuickLinks },
+    "quick-link": {
+        selfClosing: true,
+        render: QuickLink,
+        attributes: { title: { type: String }, description: { type: String }, href: { type: String } },
+    },
     callout: {
         attributes: {
             title: { type: String },
@@ -29,19 +38,6 @@ const tags = {
                 <figcaption>{caption}</figcaption>
             </figure>
         ),
-    },
-    posts: { selfClosing: true, render: ListPosts },
-    "quick-links": {
-        render: QuickLinks,
-    },
-    "quick-link": {
-        selfClosing: true,
-        render: QuickLink,
-        attributes: {
-            title: { type: String },
-            description: { type: String },
-            href: { type: String },
-        },
     },
 };
 

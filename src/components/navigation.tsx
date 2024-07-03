@@ -4,15 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-export function Navigation({
-    className,
-    onLinkClick,
-}: {
+type Props = {
     className?: string;
     onLinkClick?: React.MouseEventHandler<HTMLAnchorElement>;
-}) {
-    let pathname = usePathname();
+};
 
+export const Navigation = ({ className, onLinkClick }: Props) => {
+    const pathname = usePathname();
     return (
         <nav className={clsx("text-base lg:text-sm", className)}>
             <ul role="list" className="space-y-9">
@@ -45,4 +43,4 @@ export function Navigation({
             </ul>
         </nav>
     );
-}
+};

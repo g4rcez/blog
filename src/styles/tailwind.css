@@ -1,7 +1,7 @@
 @import 'tailwindcss/base';
-@import './prism.css';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './prism.css';
 
 @layer base {
   [inert] ::-webkit-scrollbar {

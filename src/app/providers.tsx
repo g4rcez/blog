@@ -1,11 +1,9 @@
-'use client'
+"use client";
+import { ThemeProvider } from "next-themes";
+import React from "react";
 
-import { ThemeProvider } from 'next-themes'
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  return (
+export const Providers = ({ children }: { children: React.ReactNode }) => (
     <ThemeProvider attribute="class" disableTransitionOnChange>
-      {children}
+        {children}
     </ThemeProvider>
-  )
-}
+);

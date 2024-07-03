@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useState } from "react";
 
-export function TableOfContents({ tableOfContents }: { tableOfContents: Array<Section> }) {
+export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Section> }) => {
     const showToc = useTocLink();
     const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id);
     const getHeadings = useCallback(
@@ -15,10 +15,8 @@ export function TableOfContents({ tableOfContents }: { tableOfContents: Array<Se
                 .map((id) => {
                     let el = document.getElementById(id);
                     if (!el) return null;
-
                     let style = window.getComputedStyle(el);
                     let scrollMt = parseFloat(style.scrollMarginTop);
-
                     let top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
                     return { id, top };
                 })
@@ -58,7 +56,7 @@ export function TableOfContents({ tableOfContents }: { tableOfContents: Array<Se
     }
 
     const items = (
-        <nav aria-labelledby="on-this-page-title" className="w-56">
+        <nav aria-labelledby="on-this-page-title" className="w-60 whitespace-nowrap">
             {tableOfContents.length > 0 && (
                 <>
                     <h2
@@ -120,4 +118,4 @@ export function TableOfContents({ tableOfContents }: { tableOfContents: Array<Se
             </div>
         </Fragment>
     );
-}
+};

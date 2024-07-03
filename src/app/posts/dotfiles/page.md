@@ -1,19 +1,19 @@
 ---
 level: 1
 title: Dotfiles
-subjects: ["javascript"]
+subjects: ["tips-and-tricks", "nodejs"]
 language: "pt-br"
 translations: ["pt-br"]
 date: "2024-01-14T04:49:37.896Z"
 description: "Como configurar o seu ambiente de programação?"
 ---
-Nesse post iremos abordar algumas técnicas, ferramentas e configurações para você ter um ambiente de desenvolvimento que não te dê dor de cabeça.
+Nesse post iremos abordar algumas técnicas, ferramentas e configurações para você ter um ambiente de desenvolvimento que não te dê dor de cabeça. 
 
 Para não haver problemas de configuração, iremos adotar como base que você esteja utilizando um Linux, pode ser um Ubuntu, Arch Linux ou qualquer outra distro. E claro, para não ficar dando vários exemplos, os comandos do Ubuntu serão os utilizados aqui.
 
 # dotfiles
 
-Se você costuma fazer várias configurações no seu terminal, já deve ter ouvido falar sobre dotfiles. Esses dotfiles são arquivos de configuração que os programas utilizam como base para mudar comportamentos padrões e adicionar suas preferências.
+Se você costuma fazer várias configurações no seu terminal, já deve ter ouvido falar sobre dotfiles. Esses dotfiles são arquivos de configuração que os programas utilizam como base para mudar comportamentos padrões e adicionar suas preferências. 
 
 Existe um repositório só sobre isso no github, você pode ler mais sobre [neste link](https://dotfiles.github.io/).
 
@@ -25,7 +25,7 @@ Caso queira ver um exemplo de configuração, você pode olhar os [meus dotfiles
 
 Vamos começar pelo terminal, trazendo uma melhor interação, autocomplete, melhoria nas funcionalidades de `<TAB>`, melhoria do histórico e tudo mais.
 
-Por padrão, os sistemas linux vem com o shell [bash](https://www.gnu.org/software/bash/), mas iremos substituir utilizando o [zsh](https://www.zsh.org/) que é um tipo de shell bem mais extensivo, graças a grande comunidade que possui.
+Por padrão, os sistemas linux vem com o shell [bash](https://www.gnu.org/software/bash/), mas iremos substituir utilizando o [zsh](https://www.zsh.org/) que é um tipo de shell bem mais extensivo, graças a grande comunidade que possui. 
 
 Sem mais delongas, vamos instalar primeiro o zsh e depois iremos instalar o [oh-my-zsh](https://ohmyz.sh/). Para a configuração correta, iremos precisar ter instalado o zsh, [curl](https://curl.se/) e [git](https://git-scm.com/)
 
@@ -51,7 +51,7 @@ Para melhorar ainda mais sua experiência com o terminal, aqui deixo uma lista d
 
 Você irá conseguir fazer a instalação desses plugins sem problemas, apenas seguindo o guia de cada um dos plugins.
 
-Com o oh-my-zsh instalado, você terá várias funcionalidades que te auxiliaram na produtividade dentro do terminal. Mais pro fim do artigo vou deixar uma lista de temas, plugins e afins que você poder utilizar.
+Com o oh-my-zsh instalado, você terá várias funcionalidades que te auxiliaram na produtividade dentro do terminal. Mais pro fim do artigo vou deixar uma lista de temas, plugins e afins que você poder utilizar. 
 
 # Node
 
@@ -85,7 +85,7 @@ volta install npm@latest
 
 ## Utilitários node
 
-Caso você esteja estudando Typescript, com certeza vai precisar do CLI do Typescript para rodar seus projetos, ou até mesmo o ts-node para rodar seus scripts. Com o setup **Node + NPM**.
+Caso você esteja estudando Typescript, com certeza vai precisar do CLI do Typescript para rodar seus projetos, ou até mesmo o ts-node para rodar seus scripts. Com o setup **Node + NPM**. 
 
 ```bash
 npm install -g typescript ts-node
@@ -147,9 +147,10 @@ nos meus dotfiles, na pasta [`vscode`](https://github.com/g4rcez/dotfiles/tree/m
 
 Esse é só um tutorial rápido de configuração e customização do seu ambiente de desenvolvimento. Há muito mais coisas que
 você pode evoluir com o tempo, basta procurar inspirações em [awesome lists](https://github.com/topics/awesome) ou
-dotfiles.
+dotfiles. 
 
 Espero que tenha gostado e até a próxima. 
+
 
 
 
