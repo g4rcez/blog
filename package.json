@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build; cp -r ./src .vercel/output; ls -a",
+        "build": "next build; cp -r ./src/app/posts .vercel/output; ls -a .vercel/output",
         "start": "next start",
         "lint": "next lint"
     },
