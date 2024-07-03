@@ -6,6 +6,8 @@ import yaml from "js-yaml";
 import fs from "node:fs";
 import path from "node:path";
 
+export const dynamic = "force-static";
+
 const getPosts = () =>
     glob
         .sync("**/posts/**/*/page.md")
