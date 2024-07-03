@@ -109,7 +109,7 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
     return (
         <Fragment>
             {showToc ? (
-                <div className="fixed right-0 top-16 isolate block rounded p-8 xl:hidden dark:bg-slate-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75">
+                <div className="fixed right-0 top-16 isolate block rounded p-8 xl:hidden dark:bg-slate-900/95 backdrop-blur [@supports(backdrop-filter:blur(0))]:bg-slate-50/75 dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75">
                     <div className="relative">{items}</div>
                 </div>
             ) : null}

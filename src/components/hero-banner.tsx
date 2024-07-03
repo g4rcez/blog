@@ -60,7 +60,7 @@ export function Header() {
                 <Search />
             </div>
             <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
-                <Link className="block lg:hidden" href={{ query: showToc ? "toc=false" : "toc=true" }}>
+                <Link scroll={false} className="block lg:hidden" href={{ query: showToc ? "toc=false" : "toc=true" }}>
                     <Suspense fallback={null}>
                         <TocBulb />
                     </Suspense>
