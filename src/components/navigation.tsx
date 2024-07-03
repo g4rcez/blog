@@ -1,3 +1,4 @@
+"use client";
 import { navigation } from "@/lib/navigation";
 import clsx from "clsx";
 import Link from "next/link";
