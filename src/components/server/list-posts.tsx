@@ -8,35 +8,46 @@ import path from "node:path";
 
 export const dynamic = "force-static";
 
-const getPosts = () =>
-    glob
-        .sync(path.resolve(path.join(process.cwd(), "public", "posts", "**", "page.md")))
+const base = path.resolve(path.join(process.cwd(), "src", "app"));
+
+const POSTS_PATH = "./src/posts.json";
+
+const getPosts = () => {
+    if (process.env.NODE_ENV === "production") {
+        return JSON.parse(fs.readFileSync(POSTS_PATH, "utf-8"));
+    }
+    return glob
+        .sync(path.join(base, "posts", "**", "page.md"))
         .map((file) => {
-            const href = file.replace(/\/page\.mdx?$/, "").replace("src/app", "");
+            const href = file.replace(/\/page\.mdx?$/, "").replace(base, "");
             const fullPath = path.resolve(file);
             const content = fs.readFileSync(fullPath, "utf-8");
             const doc = Markdoc.parse(content);
             const info = PostSchema.parse(yaml.load(doc.attributes.frontmatter));
             const date = info.date;
-            return { href, info, content, filename: file, date };
+            return { href, info, date, readingTime: readingTime(content) };
         })
         .toSorted((a, b) => (a.date < b.date ? 1 : -1));
+};
 
 export function Posts(props: { search: string }) {
     const items = getPosts();
+    if (process.env.NODE_ENV !== "production") {
+        fs.writeFileSync(POSTS_PATH, JSON.stringify(items, null, 4), "utf-8");
+    }
     const filter = filterPosts(props.search, items);
     return (
         <QuickLinks>
-            {filter.map(({ info, href, filename, content }) => {
+            {filter.map((post) => {
                 return (
                     <QuickLink
-                        date={info.date}
-                        readingTime={readingTime(content)}
-                        tags={info.subjects}
-                        description={info.description}
-                        href={href}
-                        key={filename}
-                        title={info.title}
+                        date={post.info.date}
+                        readingTime={post.readingTime}
+                        tags={post.info.subjects}
+                        description={post.info.description}
+                        href={post.href}
+                        key={post.href}
+                        title={post.info.title}
                     />
                 );
             })}

@@ -12,8 +12,7 @@ export const PostSchema = z.object({
 
 export type Post = {
     href: string;
-    content: string;
-    filename: string;
+    readingTime: number
     date: string;
     info: {
         title: string;
