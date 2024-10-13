@@ -2,7 +2,7 @@ import { BlogConfig } from "@/blog.config";
 import { getPosts } from "@/components/server/list-posts";
 import { Metadata } from "next";
 
-export const getPathnameFromMetadataState = (state: any): string => {
+const getPathnameFromMetadataState = (state: any): string => {
     const res = Object.getOwnPropertySymbols(state || {})
         .map((p) => state[p])
         .find((state) => state?.hasOwnProperty?.("urlPathname"));
