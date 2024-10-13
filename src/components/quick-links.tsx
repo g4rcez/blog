@@ -1,6 +1,7 @@
 import { Dates } from "@/components/client/dates";
 import Link from "next/link";
 import React, { PropsWithChildren } from "react";
+import { SearchTag } from "./search-tag";
 
 type Props = { title: string; description: string; href: string; tags?: string[]; readingTime: number; date: string };
 const noop: string[] = [];
@@ -26,9 +27,7 @@ export const QuickLink = ({ title, description, tags = noop, href, date }: Props
             </span>
             <ul className="mt-auto flex flex-wrap gap-2 text-sm">
                 {tags.map((tag) => (
-                    <li key={`${title}-${tag}`} className="rounded bg-sky-600 px-2 py-0.5 text-white">
-                        {tag}
-                    </li>
+                    <SearchTag key={`${title}-${tag}`} tag={tag} title={title} />
                 ))}
             </ul>
         </div>
