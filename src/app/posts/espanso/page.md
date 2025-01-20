@@ -162,8 +162,8 @@ Ou caso você precise de algum CNPJ
 
 Claro que você pode executar comandos com Node, exemplo, gerar um UUID
 ```yaml
-  - trigger: ";cnpj"
-    replace: "{{cnpj}}"
+  - trigger: ";uuid"
+    replace: "{{uuid}}"
     vars:
       - name: output
         type: shell
