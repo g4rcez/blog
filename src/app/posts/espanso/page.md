@@ -50,7 +50,7 @@ Os blocos apresentados serão adicionados no arquivo `base.yml`, dentro da propr
 
 ## Substituição estática
 
-Essa é a mais simples de todas, mas não deixa de ser importante. Sabe aquela mensagem ou valor que você vive digitando ou salva em algum arquivo pra copiar e colar? Agora ele pode virar um macro do espanso para te auxiliar nisso. 
+Essa é a mais simples de todas, mas não deixa de ser importante. Sabe aquela mensagem ou valor que você vive digitando ou salva em algum arquivo para copiar e colar? Agora ele pode virar um macro do espanso para te auxiliar nisso. 
 
 ```yaml
 - trigger: ;email
@@ -68,12 +68,12 @@ Particularmente, além dos citados, utilizado pra preencher com links de redes s
 Por padrão o espanso fornece algumas diretivas para substituir valores e criar funcionalidades práticas como por exemplo, datas:
 
 ```yaml
-- trigger: ;now  
+- trigger: ;now
   replace: {{time}}
-  vars:  
+  vars:
     - name: time
-	type: date  
-	params:  
+	type: date
+	params:
 	  format: "%H:%M"
 ```
 
@@ -107,7 +107,7 @@ Neste tópico de Substituição dinâmica nós vimos as [match-extensions](https
 
 # Integrando seus scripts
 
-Um dos grandes poderes do espanso é poder executar comandos shell quando os ativadores forem digitados. Isso trás grande poder ao seu fluxo de trabalho, podendo simplesmente programar os resultados gerados de forma dinâmica. E quando dizemos comandos shell, isso não se limita somente ao bash/zsh/fish, mas qualquer comando que você tiver instalado no seu sistema. Simplificando, você pode criar um programa em [deno](https://deno.com) e o output dele vai ser o seu autocomplete.
+Um dos grandes poderes do espanso é poder executar comandos shell quando os ativadores forem digitados. Isso traz grande poder ao seu fluxo de trabalho, podendo simplesmente programar os resultados gerados de forma dinâmica. E quando dizemos comandos shell, isso não se limita somente ao bash/zsh/fish, mas qualquer comando que você tiver instalado no seu sistema. Simplificando, você pode criar um programa em [deno](https://deno.com) e o output dele vai ser o seu autocomplete.
 
 Mas vamos com calma, primeiro analisando o exemplo mostrado na documentação oficial
 
@@ -123,7 +123,7 @@ Mas vamos com calma, primeiro analisando o exemplo mostrado na documentação of
 
 Simples e efetivo. Utilizando o [curl](https://curl.se/) para fazer um GET no [ipify.org](https://api.ipify.org) e obter o seu IP externo.
 
-É importante lembrar que a forma como será executado pode variar entre os sistemas operacionais, mas mantendo o padrão você não deve encontrar problemas.
+É importante lembrar que, a execução pode variar entre os sistemas operacionais, mas mantendo o padrão você não deve encontrar problemas.
 
 Como sabemos que podemos executar comandos shell, vamos explorar algumas possibilidades.
 
@@ -135,9 +135,9 @@ Como sabemos que podemos executar comandos shell, vamos explorar algumas possibi
 - Navegar até a opção `Gerador de CPF`
 - Clicar em `GERAR CPF`
 
-Para quem já está acostumado, pode ser um processo comum. Mas você não precisa mais disso. Agora você pode simplesmente só digitar `;cpf` e pronto...você tem seu CPF válido bem onde estava digitando, sem precisar sair do lugar. 
+Para quem já está acostumado, pode ser um processo comum. Mas você não precisa mais disso. Agora você pode simplesmente só digitar `;cpf` e pronto... você tem seu CPF válido bem onde estava digitando, sem precisar sair do lugar. 
 
-Como dito anteriormente, podemos criar programas em quaisquer linguagens e executar para obter o resultado. Afim de facilitar o artigo, vamos utilizar o [funcoeszz](https://github.com/funcoeszz/funcoeszz), um compilado de vários aplicativos de linha de comando que possui a geração de CPF e mais alguns utilitários
+Como dito anteriormente, podemos criar programas em quaisquer linguagens e executar para obter o resultado. Para facilitar o artigo, vamos utilizar o [funcoeszz](https://github.com/funcoeszz/funcoeszz), um compilado de vários aplicativos de linha de comando que possui a geração de CPF e mais alguns utilitários
 
 ```yaml
   - trigger: ";cpf"
@@ -171,12 +171,12 @@ Claro que você pode executar comandos com Node, exemplo, gerar um UUID
           cmd: "node -e 'console.log(require(\"node:crypto\").randomUUID())'"
 ```
 
-A partir daqui, o céu é o limite para você. Você pode transformar quaisquer tarefas em um fluxo do espanso. Para alguns amigos que já apresentei este programa, alguns deles estão usando para criar templates de email, preencher formulários automático, gerar CPF/CNPJ
+A partir daqui, o céu é o limite para você. Você pode transformar quaisquer tarefas em um fluxo do espanso. Para alguns amigos que já apresentei este programa, alguns deles estão usando para criar modelos de email, preencher formulários automáticos, gerar CPF/CNPJ
 
 # Conclusão
 
-Tenho usado o espanso há pouco mais de 1 ano e meio e não tenho o que falar, ele melhorou muito a minha forma de trabalhar com formulários, escrever emails, preencher dados, criar queries SQL, snippets de código e muito mais. Todas essas automações você consegue ver lá no meu [arquivo de configuração do espanso](https://github.com/g4rcez/dotfiles/blob/master/espanso.config.ts). 
+Tenho usado o espanso há pouco mais de 1 ano e meio e não tenho o que falar, ele melhorou muito a minha forma de trabalhar com formulários, escrever e-mails, preencher dados, criar queries SQL, snippets de código e muito mais. Todas essas automações você consegue ver lá no meu [arquivo de configuração do espanso](https://github.com/g4rcez/dotfiles/blob/master/espanso.config.ts). 
 
-O único porém é a escrita de YAML, que é um formato que eu particularmente não gosto. E por isso minha configuração é feita em Typescript + Deno, o que evita de ter que lidar com problemas de espaçamento e indentação. Mas caso queira a configuração em YAML, só olhar no [gist](https://gist.github.com/g4rcez/dc52c404526753edcf4519b85854c1db). 
+O único porém é a escrita de YAML, que é um formato que eu particularmente não gosto. E por isso minha configuração é feita em Typescript + Deno, o que evita ter que lidar com problemas de espaçamento e indentação. Mas caso queira a configuração em YAML, só olhar no [gist](https://gist.github.com/g4rcez/dc52c404526753edcf4519b85854c1db). 
 
 E por hoje é isso, galera. Espero que esse post tenha sido útil para te apresentar uma nova ferramenta. Agradeço a atenção e até a próxima 👋🏾.
