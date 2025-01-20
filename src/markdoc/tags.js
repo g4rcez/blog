@@ -2,7 +2,25 @@ import { Callout } from "@/components/callout";
 import { QuickLink, QuickLinks } from "@/components/quick-links";
 import { comment, link, script } from "@markdoc/next.js/tags";
 
+const Img = {
+    selfClosing: true,
+    attributes: {
+        src: { type: String },
+        alt: { type: String },
+        caption: { type: String },
+    },
+    render: ({ src = "", alt = "", caption }) => (
+        <figure>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src.replace(/^\/public/g, "")} alt={alt} />
+            <figcaption>{caption}</figcaption>
+        </figure>
+    ),
+};
+
 const tags = {
+    img: Img,
+    figure: Img,
     comment,
     link,
     script,
@@ -23,21 +41,6 @@ const tags = {
             },
         },
         render: Callout,
-    },
-    figure: {
-        selfClosing: true,
-        attributes: {
-            src: { type: String },
-            alt: { type: String },
-            caption: { type: String },
-        },
-        render: ({ src, alt = "", caption }) => (
-            <figure>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt={alt} />
-                <figcaption>{caption}</figcaption>
-            </figure>
-        ),
     },
 };
 

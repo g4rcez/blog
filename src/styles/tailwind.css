@@ -4,7 +4,16 @@
 @import './prism.css';
 
 @layer base {
-  [inert] ::-webkit-scrollbar {
-    display: none;
-  }
+    [inert] ::-webkit-scrollbar {
+        display: none;
+    }
 }
+
+.markdown-img {
+    @apply relative flex flex-col container mx-auto;
+}
+
+.markdown-img img {
+    @apply mb-1;
+}
+

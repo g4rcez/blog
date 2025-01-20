@@ -4,15 +4,14 @@ import { Prose } from "@/components/prose";
 import { TableOfContents } from "@/components/table-of-contents";
 import { collectSections } from "@/lib/sections";
 import { type Node } from "@markdoc/markdoc";
-import Head from "next/head";
 import React, { Fragment, Suspense } from "react";
 
 type Frontmatter = { title: string; type: string; description: string };
 
 type Props = {
-    children: React.ReactNode;
-    frontmatter: Frontmatter;
     nodes: Array<Node>;
+    frontmatter: Frontmatter;
+    children: React.ReactNode;
 };
 
 export const DocsLayout = ({ children, frontmatter, nodes }: Props) => {

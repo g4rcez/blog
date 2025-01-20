@@ -63,8 +63,8 @@ Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quant
 
 > Apesar do mundo inteiro dizer compilar JS, esse termo é errado, pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
 
-<small style={{marginTop:"-2em"}}>Essa é a sua cara nesse exato momento</small>
-<img alt="Meme" src="https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif" style={{width:"100%"}}/>
+![](https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif)
+Essa é a sua cara nesse exato momento
 
 **Mas como irei programar com TS se NodeJS não roda TS?**
 

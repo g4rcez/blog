@@ -3,8 +3,26 @@ import { slugifyWithCounter } from "@sindresorhus/slugify";
 import yaml from "js-yaml";
 import { DocsLayout } from "@/components/docs-layout";
 import { Fence } from "@/components/fence";
+import { Fragment } from "react";
 
 const documentSlugifyMap = new Map();
+
+const Img = {
+    ...defaultNodes.image,
+    selfClosing: true,
+    attributes: {
+        src: { type: String },
+        alt: { type: String },
+        caption: { type: String },
+    },
+    render: ({ src = "", caption = "", alt = "" }) => (
+        <span className="markdown-img">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src.replace(/^\/public/g, "")} alt={alt} />
+            <small>{caption || alt}</small>
+        </span>
+    ),
+};
 
 const nodes = {
     fence: {
@@ -39,6 +57,7 @@ const nodes = {
         ...defaultNodes.th,
         attributes: { ...defaultNodes.th.attributes, scope: { type: String, default: "col" } },
     },
+    image: Img,
 };
 
 export default nodes;

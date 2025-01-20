@@ -22,9 +22,6 @@ export const navigation = [
         links: [
             { title: "Racha aí", href: "https://racha.ai" },
             { title: "Brouther", href: "https://brouther.vercel.app/" },
-            { title: "The Mask Input", href: "/projects/neuralink-integration" },
-            { title: "Storage Manager JS", href: "/docs/temporal-paradoxes" },
-            { title: "Use Typed Reducer", href: "/docs/compile-time-caching" },
         ],
     },
 ];
