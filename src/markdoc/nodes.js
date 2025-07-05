@@ -49,7 +49,7 @@ const nodes = {
             const children = node.transformChildren(config);
             const text = children.filter((child) => typeof child === "string").join(" ");
             const id = attributes.id ?? slugify(text);
-            return new Tag(`h${level}`, { ...attributes, id }, children);
+            return new Tag(`h${level}`, { ...attributes, "data-level": node.attributes.level, id }, children);
         },
     },
     th: {

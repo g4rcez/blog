@@ -1,6 +1,6 @@
 export const BlogConfig = {
     user: {
-        name: "Allan Garcez"
+        name: "Allan Garcez",
     },
     author: "g4rcez",
     name: "Blog do Garcez",
@@ -22,7 +22,20 @@ export const BlogConfig = {
         { title: "Typescript", href: "/?q=typescript" },
     ],
     terminal: [
-        { title: "g4rcez/brouther", description: "roteamento fortemente tipado em React" },
-        { title: "g4rcez/use-reducer", description: "reimplementação do useReducer com tipagem" },
-    ]
+        {
+            title: "dotfiles",
+            description: "My dotfiles for awesome setup/shell",
+            href: "https://github.com/g4rcez/dotfiles",
+        },
+        {
+            title: "brouther",
+            description: "The brother router to help in React apps",
+            href: "https://brouther.vercel.app",
+        },
+        {
+            title: "use-reducer",
+            description: "Another way to use React.useReducer, with types",
+            href: "https://github.com/g4rcez/use-reducer",
+        },
+    ],
 };

@@ -1,5 +1,6 @@
 import { Callout } from "@/components/callout";
 import { QuickLink, QuickLinks } from "@/components/quick-links";
+import { Terminal } from "@/components/terminal";
 import { comment, link, script } from "@markdoc/next.js/tags";
 
 const Img = {
@@ -24,6 +25,7 @@ const tags = {
     comment,
     link,
     script,
+    terminal: { render: Terminal },
     "quick-links": { render: QuickLinks },
     "quick-link": {
         selfClosing: true,

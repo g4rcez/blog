@@ -29,6 +29,8 @@ const Terminal = () => {
             }),
             {},
         );
+        const help = bin.map(x => `\t${x.name}: ${x.description}`)
+        map.help = () => help
         return map;
     }, []);
 

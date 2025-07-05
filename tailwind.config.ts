@@ -27,7 +27,7 @@ export default {
                 primary: {
                     darkest: "oklch(12.9% 0.042 264.695)",
                     darker: "oklch(13% 0.028 261.692)",
-                    DEFAULT: "#1e3a8a",
+                    DEFAULT: "#93c5fd",
                     btn: "oklch(50% 0.134 242.749)",
                     "btn-hover": "oklch(39.1% 0.09 240.876)",
                     "btn-text": "#ffffff",

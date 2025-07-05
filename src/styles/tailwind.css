@@ -17,3 +17,6 @@
     @apply mb-1;
 }
 
+h2[data-level="1"] {
+    @apply text-3xl;
+}
