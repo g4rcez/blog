@@ -21,12 +21,36 @@ export default {
             "9xl": ["8rem", { lineHeight: "1" }],
         },
         extend: {
+            maxWidth: { "8xl": "88rem" },
+            colors: {
+                typography: "#aeaeae",
+                primary: {
+                    darkest: "oklch(12.9% 0.042 264.695)",
+                    darker: "oklch(13% 0.028 261.692)",
+                    DEFAULT: "#1e3a8a",
+                    btn: "oklch(50% 0.134 242.749)",
+                    "btn-hover": "oklch(39.1% 0.09 240.876)",
+                    "btn-text": "#ffffff",
+                },
+                secondary: {
+                    darker: "oklch(20.8% 0.042 265.755)",
+                    DEFAULT: "oklch(21% 0.034 264.665)",
+                    btn: "oklch(21% 0.034 264.665)",
+                    "btn-hover": "oklch(21% 0.034 264.665)",
+                    "btn-text": "#ffffff",
+                },
+                glow: {
+                    left: "#93c5fd",
+                    middle: "#93c5fd",
+                    right: "#60a5fa",
+                    divider: "oklch(27.9% 0.041 260.031)",
+                    light: "#ffffff",
+                    glass: "#121212"
+                }
+            },
             fontFamily: {
                 sans: "var(--font-inter)",
                 display: ["var(--font-lexend)", { fontFeatureSettings: '"ss01"' }],
-            },
-            maxWidth: {
-                "8xl": "88rem",
             },
         },
     },

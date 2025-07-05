@@ -3,7 +3,6 @@ import { slugifyWithCounter } from "@sindresorhus/slugify";
 import yaml from "js-yaml";
 import { DocsLayout } from "@/components/docs-layout";
 import { Fence } from "@/components/fence";
-import { Fragment } from "react";
 
 const documentSlugifyMap = new Map();
 

@@ -17,4 +17,4 @@ export const highlight = async (code: string, lang: string) => {
         ],
     });
     return html;
-};
+}
