@@ -1,12 +1,11 @@
 import withMarkdoc from "@markdoc/next.js";
 import withSearch from "./src/markdoc/search.mjs";
+import * as path from "path-browserify";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-    experimental: {
-        serverComponentsExternalPackages: ["shiki", "vscode-oniguruma", "@shikijs/twoslash"],
-    },
+    serverExternalPackages: ["shiki", "vscode-oniguruma", "@shikijs/twoslash"],
 };
 
 export default withSearch(
