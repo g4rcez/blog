@@ -14,7 +14,7 @@ export const Prose = <T extends React.ElementType = "div">({
             {...props}
             className={clsx(
                 className,
-                "prose prose-slate max-w-none dark:prose-invert dark:text-slate-300",
+                "prose prose-slate max-w-none dark:prose-invert dark:text-foreground",
                 // headings
                 "prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem]",
                 // lead

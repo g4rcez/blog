@@ -3,7 +3,7 @@ level: 1
 title: Dotfiles
 subjects: ["tips-and-tricks", "nodejs"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2024-01-14T04:49:37.896Z"
 description: "Como configurar o seu ambiente de programação?"
 ---

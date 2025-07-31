@@ -1,5 +1,6 @@
 "use client";
-import { navigation } from "@/lib/navigation";
+import { getNavigation } from "@/lib/navigation";
+import { useTranslation } from "@/lib/i18n";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +13,9 @@ type Props = {
 
 export const Navigation = ({ className, onLinkClick }: Props) => {
     const pathname = usePathname();
+    const { locale } = useTranslation();
+    const navigation = getNavigation(locale);
+    
     return (
         <nav className={clsx("text-base lg:text-sm", className)}>
             <ul role="list" className="space-y-9">

@@ -65,7 +65,6 @@ export default function withSearch(nextConfig = {}) {
                                 extractSections(ast, sections);
                                 cache.set(file, [md, sections]);
                             }
-
                             return { url, sections };
                         });
                         return `

@@ -1,6 +1,7 @@
 "use client";
-import { BlogConfig } from "@/blog.config";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import { BlogConfig, getLocalizedContent } from "@/blog.config";
+import { useTranslation } from "@/lib/i18n";
+import React, { useState, useEffect, useRef, useMemo, Fragment } from "react";
 
 type Command = (args: string[]) => Array<string | React.ReactElement>;
 
@@ -8,18 +9,19 @@ type Commands = Record<string, Command>;
 
 type HistoryItem = { type: string; content: string | React.ReactElement; cmd: string };
 
-export const Terminal = () => {
+export const Shell = (props: { className?: string }) => {
+    const { t, locale } = useTranslation();
     const [input, setInput] = useState("");
     const [history, setHistory] = useState<HistoryItem[]>([
-        { type: "output", content: "Type 'help' to see all available commands", cmd: "help" },
+        { type: "output", content: t("terminal.initialMessage"), cmd: "help" },
     ]);
     const inputRef = useRef<HTMLInputElement>(null);
     const terminalRef = useRef<HTMLDivElement>(null);
 
     const commands = useMemo(() => {
         const bin = [
-            { name: "clear", exec: () => (setHistory([]), []), description: "Clear history" },
-            { name: "whoami", exec: () => [BlogConfig.author], description: "User name" },
+            { name: "clear", exec: () => (setHistory([]), []), description: t("terminal.commands.clear.description") },
+            { name: "whoami", exec: () => [BlogConfig.author], description: t("terminal.commands.whoami.description") },
             {
                 name: "ls",
                 exec: () =>
@@ -33,10 +35,10 @@ export const Terminal = () => {
                             >
                                 {x.title}
                             </a>
-                            : {x.description}
+                            : {getLocalizedContent(x.description, locale)}
                         </span>
                     )),
-                description: "List my projects",
+                description: t("terminal.commands.ls.description"),
             },
         ];
         const map = bin.reduce<Commands>(
@@ -47,7 +49,7 @@ export const Terminal = () => {
             {},
         );
         const help = [
-            "Available commands:",
+            t("terminal.commands.help.description"),
             <ul>
                 {bin.map((x) => (
                     <li className="ml-4" key={`cmd-${x.name}`}>
@@ -97,6 +99,45 @@ export const Terminal = () => {
     }, []);
 
     return (
+        <Fragment>
+            <div
+                ref={terminalRef}
+                onClick={() => inputRef.current?.focus()}
+                className={`h-96 overflow-y-auto p-4 font-mono ${props.className}`}
+            >
+                {history.map((entry, index) => (
+                    <div key={index} className="mb-1">
+                        {entry.type === "input" ? (
+                            <div className="text-primary">{entry.content}</div>
+                        ) : (
+                            <div className="text-gray-300 whitespace-pre-line">{entry.content}</div>
+                        )}
+                    </div>
+                ))}
+                <div className="flex items-center">
+                    <span className="mr-2 text-primary">{">_"}</span>
+                    <input
+                        type="text"
+                        value={input}
+                        ref={inputRef}
+                        autoComplete="off"
+                        spellCheck="false"
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder={history.at(0)?.cmd || "help"}
+                        className="flex-1 text-gray-300 bg-transparent outline-none caret-primary"
+                        onKeyDown={(e) => {
+                            if (e.key === "l" && e.ctrlKey) return setHistory([]);
+                            if (e.key === "Enter") return handleSubmit(e);
+                        }}
+                    />
+                </div>
+            </div>
+        </Fragment>
+    );
+};
+
+export const Terminal = () => {
+    return (
         <div className="mx-auto max-w-4xl font-mono">
             <div className="overflow-hidden bg-gray-800 rounded-lg border border-gray-700 shadow-2xl">
                 <div className="flex items-center py-3 px-4 space-x-2 bg-gray-700">
@@ -111,38 +152,7 @@ export const Terminal = () => {
                         </span>
                     </div>
                 </div>
-                <div
-                    ref={terminalRef}
-                    className="overflow-y-auto p-4 h-96 text-sm bg-gray-900"
-                    onClick={() => inputRef.current?.focus()}
-                >
-                    {history.map((entry, index) => (
-                        <div key={index} className="mb-1">
-                            {entry.type === "input" ? (
-                                <div className="text-primary">{entry.content}</div>
-                            ) : (
-                                <div className="text-gray-300 whitespace-pre-line">{entry.content}</div>
-                            )}
-                        </div>
-                    ))}
-                    <div className="flex items-center">
-                        <span className="mr-2 text-primary">{">_"}</span>
-                        <input
-                            type="text"
-                            value={input}
-                            ref={inputRef}
-                            autoComplete="off"
-                            spellCheck="false"
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder={history.at(0)?.cmd || "help"}
-                            className="flex-1 text-gray-300 bg-transparent outline-none caret-primary"
-                            onKeyDown={(e) => {
-                                if (e.key === "l" && e.ctrlKey) return setHistory([]);
-                                if (e.key === "Enter") return handleSubmit(e);
-                            }}
-                        />
-                    </div>
-                </div>
+                <Shell className="bg-slate-950 text-sm" />
             </div>
         </div>
     );

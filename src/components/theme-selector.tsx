@@ -1,4 +1,5 @@
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { useTranslation } from "@/lib/i18n";
 import clsx from "clsx";
 import { useTheme } from "next-themes";
 import React, { Fragment, useEffect, useState } from "react";
@@ -33,14 +34,19 @@ const SystemIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
     </svg>
 );
 
-const themes = [
-    { name: "Light", value: "light", icon: LightIcon },
-    { name: "Dark", value: "dark", icon: DarkIcon },
-    { name: "System", value: "system", icon: SystemIcon },
-];
+function useThemeOptions() {
+    const { t } = useTranslation();
+    return [
+        { name: t("theme.light"), value: "light", icon: LightIcon },
+        { name: t("theme.dark"), value: "dark", icon: DarkIcon },
+        { name: t("theme.system"), value: "system", icon: SystemIcon },
+    ];
+}
 
 export function ThemeSelector(props: React.ComponentPropsWithoutRef<typeof Listbox<"div">>) {
     const { theme, setTheme } = useTheme();
+    const { t } = useTranslation();
+    const themes = useThemeOptions();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -53,10 +59,10 @@ export function ThemeSelector(props: React.ComponentPropsWithoutRef<typeof Listb
 
     return (
         <Listbox as="div" value={theme} onChange={setTheme} {...props}>
-            <Label className="sr-only">Theme</Label>
+            <Label className="sr-only">{t("theme.label")}</Label>
             <ListboxButton
                 className="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-slate-700 dark:ring-inset dark:ring-white/5"
-                aria-label="Theme"
+                aria-label={t("theme.label")}
             >
                 <LightIcon
                     className={clsx("h-4 w-4 dark:hidden", theme === "system" ? "fill-slate-400" : "fill-sky-400")}

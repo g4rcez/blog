@@ -13,7 +13,7 @@ export const TocBulb = () => {
         <Icon
             icon="lightbulb"
             color={toc ? "amber" : "blue"}
-            className="h-6 w-6 !fill-yellow-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300"
+            className="size-6 !fill-yellow-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300"
         />
     );
 };

@@ -69,7 +69,11 @@ class Component extends React.PureComponent {
 }
 ```
 
-# {"React.forwardRef<Ref, Props>(props, externalRef)"}
+# React.forwardRef(p, e)
+
+```typescript
+React.forwardRef<Ref, Props>(props, externalRef)
+```
 
 De cara já temos a assinatura tipada + parâmetros do forwardRef. Mas para poder explicar o `forwardRef` de forma tranquila, vamos voltar um pouco em como chamamos o nosso JSX e como nós criamos nossos componentes de função:
 

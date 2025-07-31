@@ -1,9 +1,11 @@
 "use client";
-import { ThemeProvider } from "next-themes";
-import React from "react";
+import { LocaleProvider } from "@/lib/i18n";
+import { PropsWithChildren } from "react";
 
-export const Providers = ({ children }: { children: React.ReactNode }) => (
-    <ThemeProvider attribute="class" disableTransitionOnChange>
-        {children}
-    </ThemeProvider>
+type Props = {
+    lang?: string;
+};
+
+export const Providers = (props: PropsWithChildren<Props>) => (
+    <LocaleProvider lang={props.lang}>{props.children}</LocaleProvider>
 );

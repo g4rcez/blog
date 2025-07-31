@@ -1,19 +1,21 @@
 "use client";
 import { BlogConfig } from "@/blog.config";
 import { Hero } from "@/components/hero";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { Logo, Logomark } from "@/components/logo";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { Search } from "@/components/search";
-import { ThemeSelector } from "@/components/theme-selector";
 import { TocBulb, useTocLink } from "@/hooks/use-toc-link";
-import clsx from "clsx";
+import { useTranslation } from "@/lib/i18n";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Fragment, Suspense, useEffect, useState } from "react";
 
+const pathnameLanguages = ["/", "/en"]
+
 const useIsHome = () => {
     const pathname = usePathname();
-    return pathname === "/";
+    return pathnameLanguages.includes(pathname);
 };
 
 export const HeroBanner = () => {
@@ -28,13 +30,13 @@ const GitHubIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
 );
 
 export function Header() {
+    const { t } = useTranslation();
     const showToc = useTocLink();
     const isHomePage = useIsHome();
     const [isScrolled, setIsScrolled] = useState(false);
+
     useEffect(() => {
-        function onScroll() {
-            setIsScrolled(window.scrollY > 0);
-        }
+        const onScroll = () => setIsScrolled(window.scrollY > 0);
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => {
@@ -44,9 +46,9 @@ export function Header() {
 
     return (
         <div
-            className={`sticky top-0 z-50 w-full bg-white shadow-md shadow-slate-900/5 transition duration-500 ease-in-out ${isScrolled
-                    ? "dark:bg-slate-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75"
-                    : "dark:bg-transparent"
+            className={`sticky top-0 z-20 w-full bg-white shadow-md shadow-slate-900/5 transition duration-500 ease-in-out ${isScrolled
+                ? "bg-background dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-background/75"
+                : "dark:bg-transparent"
                 }`}
         >
             <header className="container flex flex-wrap flex-none justify-between items-center py-5 px-4 mx-auto sm:px-6 lg:px-8 dark:shadow-none">
@@ -54,9 +56,9 @@ export function Header() {
                     <MobileNavigation />
                 </div>
                 <div className="flex relative flex-grow items-center basis-0">
-                    <Link href="/" aria-label="Home page">
+                    <Link href="/" aria-label={t("common.home")}>
                         <Logomark className="lg:hidden" />
-                        <Logo className="hidden lg:block fill-slate-700 dark:fill-sky-100" />
+                        <Logo className="hidden lg:block text-foreground" />
                     </Link>
                 </div>
                 <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
@@ -74,8 +76,8 @@ export function Header() {
                             </Suspense>
                         </Link>
                     )}
-                    <ThemeSelector className="relative z-10" />
-                    <Link href={BlogConfig.github} className="group" aria-label="GitHub">
+                    <LanguageSwitcher />
+                    <Link target="_blank" href={BlogConfig.github} className="group" aria-label={t("hero.github")}>
                         <GitHubIcon className="w-6 h-6 fill-slate-400 dark:group-hover:fill-slate-300 group-hover:fill-slate-500" />
                     </Link>
                 </div>

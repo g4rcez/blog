@@ -1,9 +1,11 @@
 import typographyPlugin from "@tailwindcss/typography";
 import { type Config } from "tailwindcss";
+import Preset from "@g4rcez/components/preset.tailwind";
 
 export default {
-    content: ["./src/**/*.{js,jsx,ts,tsx,md,mjs}"],
-    darkMode: "selector",
+    presets: [Preset],
+    content: ["./src/**/*.{js,jsx,ts,tsx,md,mjs}", "./node_modules/@g4rcez/components/dist/**/*.{js,jsx,ts,tsx}"],
+    darkMode: "class",
     theme: {
         fontSize: {
             xs: ["0.75rem", { lineHeight: "1rem" }],
@@ -23,7 +25,6 @@ export default {
         extend: {
             maxWidth: { "8xl": "88rem" },
             colors: {
-                typography: "#aeaeae",
                 primary: {
                     darkest: "oklch(12.9% 0.042 264.695)",
                     darker: "oklch(13% 0.028 261.692)",
@@ -45,8 +46,8 @@ export default {
                     right: "#60a5fa",
                     divider: "oklch(27.9% 0.041 260.031)",
                     light: "#ffffff",
-                    glass: "#121212"
-                }
+                    glass: "#121212",
+                },
             },
             fontFamily: {
                 sans: "var(--font-inter)",
