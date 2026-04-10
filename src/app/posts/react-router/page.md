@@ -11,13 +11,13 @@ description: "Desmistificando o conceito por trás do React Router"
 # Introdução
 
 
-Fala aí galera, tudo tranquilo? Nesse post eu gostaria de trazer pra vocês uma experiência que tive recriando o [React Router](https://reactrouter.com/).
+Este post apresenta a experiência de recriar o [React Router](https://reactrouter.com/) do zero.
 
 Como todos sabemos, React Router é quase que a biblioteca oficial para roteamento em React, e quase ninguém conhece alguma alternativa. Durante algumas criações de telas, utilizando [Query String](https://en.wikipedia.org/wiki/Query_string), acabei enfrentando alguns problemas com isso, principalmente em como recuperar meu objeto dado a minha query string.
 
 # TL;DR
 
-[Repositório com o resultado da brincadeira](https://github.com/g4rcez/brouther)
+[Repositório com o resultado](https://github.com/g4rcez/brouther)
 
 # Definindo o escopo
 
@@ -43,7 +43,7 @@ const App = () => (
 );
 ```
 
-Esse é o resultado final, agora é só fazer acontecer haha
+Esse é o resultado final. A seguir, a implementação de cada parte.
 
 # {"<Router />"}
 
@@ -251,7 +251,7 @@ yarn add qs
 
 *Você pode conferir no [github](https://github.com/g4rcez/brouther/blob/main/src/brouther/use-qs.ts) a implementação do query string.*
 
-Pós instalação, é só partir pro código do nosso hook
+Com a dependência instalada, segue o código do hook:
 
 
 ```tsx
@@ -280,4 +280,4 @@ export const useQueryString = <T extends object>(): T => {
 
 E assim o nosso `useQs` e `<Router />` estão prontos para serem usados (mas tome cuidado, ainda não vi o comportamento desse router). Mas o que vale aqui é o aprendizado sobre como criar o seu router e ver como os hooks podem ser nossos amigos se bem utilizados.
 
-É isso galera, vou ficando por aqui, e caso você tenha perdido, o [link desse repositório](https://github.com/g4rcez/brouther) para que você possa se aventurar pelo código.
+O [repositório completo](https://github.com/g4rcez/brouther) está disponível para consulta. Obrigado pelo seu tempo, tamo junto e até a próxima

@@ -3,14 +3,14 @@ level: 1
 subjects: ["javascript", "typescript", "frontend", "nextjs"]
 title: "Micro frontend ou NextJS"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2020-12-24T00:00:00.000Z"
 description: "Tecnologia nova, conceito velho. Nada muda"
 ---
 
 # Introdução
 
-[NextJS](https://nextjs.org/) é um dos projetos da atualidade mais sinistros que tem. O conceito de SSR que ele trouxe (que não é nada inovador) junto de todo o tooling + ecossistema React, realmente, é impressionante.
+[NextJS](https://nextjs.org/) é um dos projetos mais impressionantes da atualidade. O conceito de SSR que ele adotou (que não é nada inovador) aliado a todo o tooling e ecossistema React é, de fato, notável.
 
 Mas nada disso é novo, na verdade, o conceito de SSR é bem antigo. Se você programou em PHP, Dotnet, Java, talvez você já tenha se deparado com técnicas para escrever um código backend dentro do seu frontend e a cada request, o seu server iria processar aquela página e retornar o conteúdo dinâmico.
 
@@ -26,7 +26,7 @@ Confesso que quando comecei a estudar, achava um conceito bastante utópico, poi
 
 São diversos problemas realmente, olhando assim, até parece mais interessante não separar, já que você cria vários problemas. Mas ter um frontend monolítico também tem seus problemas, tais eles:
 
-- Código gigante e várias pessoas trabalhando no mesmo (mesmo com Git, sempre vai ter alguma cagada)
+- Código extenso com muitas pessoas trabalhando no mesmo repositório — mesmo com Git, conflitos e inconsistências são comuns
 - Código gigante[2], porque códigos com milhares de linhas se tornam confusos
 - Build demorado
 - Lentidão no desenvolvimento
@@ -56,7 +56,7 @@ Explicando os 3 pontos em evidência.
 2. Esse é um caso opcional, dependerá da sua arquitetura, caso você não tenha um BFF (Backend for Frontend). No caso de chamadas para a nossa API, o Render irá resolver as URLs, chamando a ou as APIs que o nosso front fizer request, fazendo assim um proxy para que você tenha somente um entry point.
 3. Um problema muito comum desde sempre é o cache. Se você builda seu front usando CRA (Create React App), por exemplo, ele irá gerar um hash para cada arquivo e assim poderá evitar o cache. Mas e se os seus assets forem versionados na URL? Sendo assim, mesmo que o conteúdo do arquivo seja o mesmo, o próprio browser não irá reconhecer como o mesmo arquivo e irá fazer um novo request para a nova versão. Como citado, `/app/v0.0.1/` é uma versão do front que irá ser usada até que `/app/v0.0.2/` seja lançada.
 
-Talvez esse trecho fique um pouco abstrato, mas fica tranquilo que vou fazer mais um post sobre trazendo toda a parte de como o código funciona, primeiro vamos focar no conceito.
+Este trecho pode parecer abstrato, mas um post futuro cobrirá toda a parte de implementação do código. Por ora, o foco é no conceito.
 
 # Primeiras impressões
 
@@ -72,4 +72,4 @@ Compartilhar estado foi um desafio bem interessante, apenas com um useEffect + u
 
 Sem dúvida, microfrontends são um desafio totalmente diferente daquilo que a maioria dos frontends estão habituados, é approach diferente para resolver problemas que talvez seriam complexos mantendo milhares de linhas de código. Em breve, eu irei escrever sobre a parte de código do render e sobre um pequeno Hello World usando um microfrontend.
 
-Isso é tudo, pessoal.
+Obrigado pelo seu tempo, tamo junto e até a próxima

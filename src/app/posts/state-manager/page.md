@@ -78,7 +78,7 @@ Para manter tudo familiar, fiz um pequeno exemplo do `useCounterPlus` retornando
 
 - Sempre que possível, deve-se utilizar o `useState` como função para obter sempre o último valor do estado. Utilizando como função você irá evitar observar a variável state, matando a necessidade de haver várias execuções do `useEffect` e várias recriações do nosso `useMemo`.
 - O formato de tupla + `useMemo` só foi utilizado para trazer mais clareza no uso
-- Também pode-se utilizar o approach de múltiplos useCallback para as funções, e na hora do uso, fazer o destruct do objeto de ações. _O que deixa o código mais sujo na minha opinião_
+- Também pode-se utilizar o approach de múltiplos useCallback para as funções, e na hora do uso, fazer o destruct do objeto de ações.
 
 ```tsx
 import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
@@ -190,4 +190,4 @@ Com o `useTypedReducer` conseguimos trazer um código mais conciso e nos permiti
 
 Não há um melhor jeito de se abordar estados complexos, certos casos onde existem estados globais, você poderá optar por ContextAPI, Redux, Jotai, Mobx e vários outros, mas para estados locais, é sempre bom optar pela simplicidade e flexibilidade para ajudar na hora da manutenção ou quando existir uma nova feature a ser criada.
 
-Atualmente tenho adotado a abordagem do use-typed-reducer por trazer um ecossistema forte de tipos e uma flexibilidade maior. E a partir de agora, qual será a sua abordagem na hora de controlar o estado local?
+A abordagem do use-typed-reducer se destaca por oferecer um ecossistema de tipos robusto e maior flexibilidade no gerenciamento de estado local. Obrigado pelo seu tempo, tamo junto e até a próxima

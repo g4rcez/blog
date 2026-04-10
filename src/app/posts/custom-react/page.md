@@ -2,19 +2,19 @@
 level: 1
 title: "Construindo um frontend flexível"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 subjects: ["frontend", "react", "typescript", "javascript"]
 date: "2019-08-28T23:59:59.999Z"
 description: "Você vai se impressionar o quão flexível vai ser essa aplicação"
 ---
 
-Como havia escrito no post anterior, acabei fazendo um parser de BB code pra ter um frontend flexível. Cores, textos, ícones, imagens...Uma porrada de coisa teve que ser dinâmica pois quem controla cada um dos itens citados é o **tenant** das aplicações
+Como havia escrito no post anterior, acabei fazendo um parser de BB code para ter um frontend flexível. Cores, textos, ícones, imagens — muitos elementos tiveram que ser dinâmicos, pois quem controla cada um desses itens é o **tenant** das aplicações.
 
-Sem mais delongas, vamos para a parte técnica e junto a isso eu irei explicar o requisito ou necessidade para tal problema. A partir daqui, os sub títulos serão frases que ouvi após todo o desenho da arquitetura do frontend e começo do desenvolvimento de alguns componentes ou até mesmo páginas do frontend
+A seguir está a parte técnica, com a explicação do requisito ou necessidade por trás de cada problema. Os subtítulos são frases reais ouvidas após o desenho da arquitetura do frontend e o início do desenvolvimento de alguns componentes e páginas.
 
 # "Preciso de um site que mude de acordo com a marca"
 
-Foi nesse ponto que toda a bagunça começou. Já havia definido junto a equipe tudo o que seria usado, alguns componentes já haviam sido escritos. Grande parte da futura stack já havia sido definida. _Calma, eu vou falar a stack_
+Foi nesse ponto que a complexidade do projeto começou a emergir. Já havia sido definido em equipe tudo o que seria usado, alguns componentes já haviam sido escritos e grande parte da stack já estava estabelecida:
 
 - React - SPA (Single Page Application)
 - Typescript
@@ -41,9 +41,9 @@ const root: any = document.querySelector(":root");
 Object.keys(config).forEach((x: string) => root.style.setProperty(`--${x}`, `${config[x]}`));
 ```
 
-Show! Problema das variáveis resolvidas, temos um arquivo de configuração (ainda está estático) que define nossas variáveis do frontend e depois podemos usar sem maiores problemas.
+Problema das variáveis CSS resolvido. Temos um arquivo de configuração (ainda estático) que define as variáveis do frontend, e a partir daí é possível usá-las sem maiores problemas.
 
-2. Temos um CSS agnóstico a cores, ele entende nossas variáveis de acordo com todo o objeto de configuração, mas como vou ter um arquivo de configuração dinâmico? Como vou fazer a aplicação não exibir tal arquivo sempre que eu estiver em um determinado domínio ou subdomínio? Bom, esse problema não foi resolvido no frontend e também não foi resolvido em um único lugar. Para tal situação, tivemos que incluir uma prática já existente na equipe e uma ferramenta CLI para controlar os temas. Se você leu meu post anterior, vai lembrar do roteador de UI que comentei, mas se não leu **VOCÊ DEVERIA LER, POR FAVOR**.
+2. Temos um CSS agnóstico a cores, ele entende nossas variáveis de acordo com todo o objeto de configuração, mas como vou ter um arquivo de configuração dinâmico? Como vou fazer a aplicação não exibir tal arquivo sempre que eu estiver em um determinado domínio ou subdomínio? Bom, esse problema não foi resolvido no frontend e também não foi resolvido em um único lugar. Para tal situação, tivemos que incluir uma prática já existente na equipe e uma ferramenta CLI para controlar os temas. Se você leu o post anterior, vai lembrar do roteador de UI mencionado — caso não tenha lido, recomenda-se a leitura.
 
 O roteador de UI é um webserver em F# que escuta as requisições feitas aos domínios registrados (no nosso caso, xpto.com e abcd.dev). Ao receber uma request vinda de `xpto.com` ele vai em um bucket S3 da Amazon e o path de todos os arquivos que temos (esses arquivos são os assets, js e css gerados no build do React) e monta um `index.html` customizado. Alguns valores são passados por ele para o HTML, sendo eles
 
@@ -55,7 +55,7 @@ Como ele monta um arquivo `.html`, significa que nele eu posso injetar código j
 
 **_Apenas customizar o build do react para gerar pastas de acordo com o nome dos tenants, assim a própria URL diz qual arquivo o roteador de UI deverá pegar_**
 
-Simples, prático, eficiente e limpo. Mas para isso funcionar, precisávamos de N arquivos de configuração para nossos tenants, o que ainda é ruim. Mas manter arquivos `.json` ainda é bem mais fácil do que manter toneladas de código, pense nisso. Manter arquivos diferentes é ruim, podem causar inconsistências, acréscimos feitos em um e retiradas em outro, coisas de trabalho em equipe que você já deve ter visto. O famoso **A gente faz a sua parte e no final junta tudo**. E caras, git ajuda muito, sem dúvidas, mas nesse caso, toda edição gera conflito (você ainda vai entender o porquê disso, calma amiguinho). Primeiro, vamos ver o arquivo de configuração:
+Simples, prático, eficiente e limpo. Mas para isso funcionar, precisávamos de N arquivos de configuração para nossos tenants, o que ainda é ruim. Mas manter arquivos `.json` ainda é bem mais fácil do que manter toneladas de código, pense nisso. Manter arquivos diferentes é arriscado: pode causar inconsistências, acréscimos em um arquivo e remoções em outro — situações comuns em trabalho em equipe. E mesmo com o git ajudando, nesse caso toda edição gera conflito (o motivo ficará claro mais adiante). Primeiro, vamos ver o arquivo de configuração:
 
 ```javascript
 {
@@ -266,13 +266,13 @@ FS.readdir(CONFIGS_DIR, (_, files) => {
 });
 ```
 
-Mais uma vez, perdão pelo código um pouco maior. Alguns erros podem ser encontrados devido ao ato de deletar algumas linhas que contém informações que não podem ser publicadas. Vale lembrar que esse `if (file==="reference.json")` é para criar um arquivo de desenvolvimento, servindo de _esqueleto_, já que toda a configuração é feita num html do roteador de UI. Isso é apenas um _hack_ ou **gambiarra** para rodar o projeto sem erros em desenvolvimento.
+O código é um pouco mais extenso neste trecho. Alguns erros podem aparecer devido à remoção de linhas com informações que não podem ser publicadas. Vale lembrar que esse `if (file==="reference.json")` é para criar um arquivo de desenvolvimento, servindo de _esqueleto_, já que toda a configuração é feita num html do roteador de UI. Isso é apenas um _hack_ ou **gambiarra** para rodar o projeto sem erros em desenvolvimento.
 
 # "Eu preciso que esse texto seja em negrito e aquele botão mande uma mensagem no Zap da loja"
 
-Sem dúvidas esse foi o que me deixou mais puto na hora que ouvi. Pois o setup para textos já estava todo feito, todos os textos definidos, e mudanças visuais não eram possíveis pois como eu iria separar dentro de uma string em tempo de execução. E pior ainda, saber qual string deveria ficar em negrito, qual deveria virar um link. Eu ainda dei uma enrolada pra tentar não fazer essa mudança, mas não rolou.
+Sem dúvidas, este foi o requisito mais desafiador. O setup de textos já estava todo definido, e mudanças visuais não eram possíveis — como separar, em tempo de execução, qual parte de uma string deveria ficar em negrito ou virar um link? Foi tentado adiá-la, mas não havia como evitar.
 
-A primeira solução que veio na cabeça foi "Vou usar um parser de markdown e ta tudo show". Achei bons parsers de markdown, mas eles não iam resolver o meu problema do "Zap". Então desisti dessa ideia e tive uma outra ideia super brilhante que todo programador JS tem. **Se não existe uma lib que faz exatamente que faz isso, vou criar a minha própria do zero. Com zero dependências.** Apesar de eu ver isso como um meme, eu realmente tive que fazer isso, pois mesmo com muita pesquisa, nada fazia o que eu queria.
+A primeira solução considerada foi usar um parser de markdown, mas os parsers disponíveis não resolveriam o problema do "Zap". Essa ideia foi descartada, e surgiu então uma decisão que muitos programadores JS conhecem bem: **criar uma lib própria do zero, com zero dependências.** Apesar de eu ver isso como um meme, eu realmente tive que fazer isso, pois mesmo com muita pesquisa, nada fazia o que eu queria.
 
 Desde que comecei a mexer com programação, sempre curti muito a ideia dos parsers. Um dos meus primeiros desafios pessoais foi criar um parser de BBCode para HTML, usando Shellscript. _Se você é tarado por programação, faça isso, mas no intuito de apenas aprender Regex e a ideia de parsers, yacc e afins_. Eu sei que BBCode não é melhor do que Markdown para pessoas leigas usarem, mas como era o que eu já tinha feito alguma vez na vida, só precisei de umas boas doses de energético pra fazer esse código em Javascript, e o melhor [esse código ta público, e vai ser atualizado no meio de setembro](https://github.com/g4rcez/code-markup-parser). Não é a coisa mais linda do mundo, mas ele funciona bem pro meu problema e ainda cria o linkão bolado pro Zap.
 
@@ -282,7 +282,7 @@ Esse **code-markup-parser** gera um HTML, e como faço pra interpretar HTML puro
 <span dangerouslySetInnerHTML={{ __html: codeMarkupParser(parsed) }} />
 ```
 
-Aposto que você já deve estar pensando em achar onde esses sistemas estão sendo feitos e tentar um ataque de XSS, mas uma das seguranças que tomei foi limpar todo o HTML de entrada, logo, você não pode escrever HTML + JS malicioso nas strings parseadas pois as tags serão apagadas xD
+Uma das proteções adotadas foi sanitizar todo o HTML de entrada — não é possível escrever HTML + JS malicioso nas strings parseadas, pois as tags são removidas antes do parse.
 
 Ao final de tudo, bastou criar um método pra pegar as strings do nosso objeto de configuração e transformar em uma string HTML para ser interpretada. Assim poderíamos ter um texto escrito em negrito com `[b]Isso ta em negrito no meu site[/b]`.
 
@@ -305,7 +305,7 @@ export function resolve({ text, textParams = {} }: ResolverType) {
 }
 ```
 
-E claro, eu deveria aceitar variáveis nessas string, um outro problema que foi resolvido com as funções `remapTexts` e `parseWithParams`. A sintaxe para os meus textos que exigem variáveis e customização ficaram dessa forma: `[b]Esse texto ta em negrito[/b] e esse texto usa uma variável {{ varName }}`. Essa sintáxe nem é inspirada no template string do Rails/Laravel, imagina kkk. E usando ele dentro do JSX:
+Também foi necessário aceitar variáveis nessas strings, problema resolvido com as funções `remapTexts` e `parseWithParams`. A sintaxe para textos com variáveis e customização ficou assim: `[b]Esse texto ta em negrito[/b] e esse texto usa uma variável {{ varName }}`. Usando dentro do JSX:
 
 ```jsx
 <p>
@@ -338,7 +338,7 @@ Como falei anteriormente, rotas e menus estão quase sempre ligados. Então a mi
 4. Configurar o React Router para não utilizar mais o `<Route />` hardcode, mas sim um `<Route />` que será gerado através de um array.
 5. Filtrar o array de acordo com todas as informações dos itens 1, 2 e 3.
 
-Show. Melhor eu mostrar o código logo
+O código a seguir demonstra a implementação:
 
 ```jsx
 import resolve from "@/config/texts";
@@ -409,21 +409,11 @@ Por incrível que pareça, quando eu foquei só nesse problema, eu consegui reso
 
 1. Criar um proxy no roteador de UI que recebe as requisições e a cada pattern de chunk do webpack, ele redireciona para o bucket S3 correto do tenant. Obviamente essa solução é custosa ao extremo, ineficiente e extremamente maluca. Isso se chama desespero
 
-2. Criar um script que força a URL dos tenants e mudar o versionamento da UI para v0.0.0-nome-do-tenant. E na hora de fazer o build, ter um script `.sh` que faz um replace no pattern dos chunks para a minha URL do bucket S3, de acordo com o `nome-do-tenant`. Essa ideia eu considerei muito, apesar de ser uma master gambiarra que iria impactar em toda a vida do software, e com um impacto negativo.
+2. Criar um script que força a URL dos tenants e mudar o versionamento da UI para v0.0.0-nome-do-tenant. E na hora de fazer o build, ter um script `.sh` que faz um replace no pattern dos chunks para a minha URL do bucket S3, de acordo com o `nome-do-tenant`. Essa ideia foi seriamente considerada, apesar de ser uma solução improvisada que impactaria negativamente toda a vida útil do software.
 
-3. Orar
+3. Estudar o webpack em profundidade.
 
-4. Chorar
-
-5. Espernear
-
-6. Reza braba
-
-7. Ritual da placa mãe (isso pareceu engraçado na minha cabeça)
-
-8. Estudar o webpack num nível absurdo
-
-Bom, não preciso falar qual desses itens eu fiz. A resposta é **Todos, exceto o primeiro e segundo**.
+A resposta sobre qual caminho foi seguido é a **terceira opção**.
 
 Eu sempre odiei ter que lidar com o webpack, acho que mexer num webpack gerado pelo CRA é pior ainda. Apesar disso tudo, sempre soube do poder do webpack, mas nunca soube que ele fazia mágica, e não é sacanagem, a parada é mágica mesmo.
 
@@ -438,7 +428,7 @@ declare let __webpack_public_path__: string;
 __webpack_public_path__ = `https://buckets.amazao/${$__OBJECT__.tenant}/sites/${$__OBJECT__.version}/`;
 ```
 
-Pronto, é isso aí. Problema resolvido. Nem eu acreditei, e escrevendo isso agora eu estou rindo feito bobo que apenas isso resolveu um problema que eu queria resolver a mais de 3 meses.
+Problema resolvido. É difícil acreditar que uma solução tão simples resolveu um problema que estava em aberto há mais de 3 meses.
 
 Vale lembrar que a nota de performance do lighthouse saiu de 3 (no pior caso de internet lenta e celulares fracos) para 92 (no mesmo caso citado).
 
@@ -450,4 +440,4 @@ Eu também pensei a mesma coisa logo que comecei com tudo isso, mas cara...é Ja
 
 E lembre-se _"Se o Facebook controla a versão que do React fazendo um append no objeto window, por que eu não posso configurar a minha UI da mesma forma?"_
 
-Pense nisso amiguinho, o errado é não resolver seu problema. Se a solução atende o seu negócio, sua equipe entrou em concenso sobre a adoção da técnica e a manutenção não está custosa, meus parabéns, você é um verdadeiro engenheiro da computação. E pra finalizar, aquele abraço e quaisquer dúvidas, você sabe onde me encontrar xD
+Se a solução atende ao negócio, a equipe chegou a um consenso sobre a técnica e a manutenção não é custosa, então ela cumpre seu propósito. Obrigado pelo seu tempo, tamo junto e até a próxima

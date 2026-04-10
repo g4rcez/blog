@@ -3,16 +3,16 @@ level: 1
 title: Como estudar frontend?
 subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2023-12-21T05:30:00.000Z"
 description: "Como definir sua trilha de estudos com frontend?"
 ---
 
 > Ainda não pude escrever sobre, mas comecei a fazer lives na [twitch.tv/allangarcez](https://twitch.tv/allangarcez) falando sobre desenvolvimento Backend/Frontend, com foco em NodeJS, React e Typescript.
 
-Que a área de TI tem sido o hype do momento, todo mundo sabe. Mas o que nem todo mundo sabe é como realmente começar a estudar. Nem eu sei, mas posso tentar ajudar você que está tentando começar a trilhar seus estudos e falar um pouco sobre carreira. Esse vai ser meu primeiro post não técnico do blog, então é tão novidade para você quanto para mim.
+A área de TI é bastante comentada, mas nem sempre é claro como começar a estudar. Este artigo tem como objetivo orientar quem está iniciando a trilha de estudos em frontend e dar uma visão sobre carreira.
 
-E só lembrando, esse post irá dar foco a carreira de frontend. Se você gosta muito da parte de backend, fica tranquilo que eu ainda vou escrever sobre 😄.
+Este post terá foco na carreira de frontend. Conteúdo sobre backend será abordado em artigos futuros.
 
 # Por onde começar?
 
@@ -24,7 +24,7 @@ Não é o foco do post ensinar cada uma das tecnologias, mas te dar um direciona
 
 # HTML, onde tudo começa
 
-HTML ou Hyper Text Markup Language é uma linguagem de marcação para sinalizar ao navegador a estrutura da sua página. Pense no HTML como o esqueleto e músculos do corpo humano, sendo a base que sustenta tudo no corpo, mas não se engane, você ainda precisa ter a aparência ([CSS](#css)) e o sistema nervoso ([Javascript](#javascript)) para tudo funcionar como deveria. O HTML permite você marcar suas páginas com títulos, textos, blocos, links para acessar outros sites, parágrafos ou até mesmo referências para outros sites (você irá conhecer esse cara como iframe).
+HTML ou Hyper Text Markup Language é uma linguagem de marcação para sinalizar ao navegador a estrutura da sua página. Pense no HTML como o esqueleto e músculos do corpo humano, sendo a base que sustenta tudo no corpo, mas não se engane, você ainda precisa ter a aparência ([CSS](#css)) e o sistema nervoso ([Javascript](#javascript)) para tudo funcionar como deveria. O HTML permite marcar páginas com títulos, textos, blocos, links e parágrafos — ou até mesmo referências para outros sites através do elemento `iframe`.
 
 O HTML é essencial para você começar a desenvolver seus sites, sem saber a semântica do HTML, você não irá evoluir nos seus estudos, então é bom fundamentar a base nessa tecnologia e principalmente nos conceitos ao redor dela.
 
@@ -40,13 +40,13 @@ Aqui vou deixar uma lista de conceitos que são aconselhados a serem estudados, 
 
 - [O que é o DOM?](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
 - [Acessibilidade](https://www.a11yproject.com/): Por uma web sem barreiras, não importa como você usa o browser.
-- [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState): Se você já preencheu um formulário e quer fazer o seu próprio, esse cara vai te ajudar com isso
+- [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState): API nativa do navegador para validação de formulários
 
 ## Você pode precisar de ferramentas
 
 - [Can I use?](https://caniuse.com/): Será que você pode usar um recurso em todos os browsers?
 - [Icon Monster](https://iconmonstr.com/): Você pode precisar de ícones customizados para seus sites.
-- [W3c Validator](https://validator.w3.org/): Use esse cara para saber se o seu trabalho está correto
+- [W3c Validator](https://validator.w3.org/): Ferramenta para verificar se o HTML está correto conforme os padrões
 
 # CSS
 
@@ -68,7 +68,7 @@ Basta dizer o nome do que deseja estilizar, as propriedades que quer estilizar e
 
 ## Frameworks 
 
-Com CSS você será capaz de trazer toda a identidade visual de uma marca, as animações e elementos estilizados para o seu frontend. E para isso, você pode usar várias técnicas e frameworks *(ferramentas que funcionam como um pacote de c√≥digo pronto)* para te auxiliar
+Com CSS é possível trazer toda a identidade visual de uma marca, animações e elementos estilizados ao frontend. Para isso, existem diversas técnicas e frameworks (ferramentas que oferecem um conjunto de código pronto) disponíveis:
 
 - [FCSS](https://www.htmlgoodies.com/css/brief-introduction-to-functional-css/): Uma solução para o problema de cascata do CSS
 - [Bem Syntax](https://getbem.com/introduction/): Monte os seus estilos através de blocos
@@ -76,8 +76,8 @@ Com CSS você será capaz de trazer toda a identidade visual de uma marca, as an
 
 ## Ferramentas
 
-- [Bootstrap](https://getbootstrap.com/): Se você não sabe como deixar algo bonito, use esse framework. Bootstrap é um dos mais famosos no mundo CSS. Você já deve ter visto estilos bem parecidos ou até iguais a esse cara.
-- [Tailwindcss](https://tailwindcss.com/): 
+- [Bootstrap](https://getbootstrap.com/): Um dos frameworks CSS mais conhecidos e utilizados no mundo. Oferece componentes e estilos prontos para uso.
+- [Tailwindcss](https://tailwindcss.com/): Framework utility-first que permite estilizar diretamente no HTML com classes utilitárias.
 
 # Javascript
 
@@ -87,9 +87,9 @@ Por ser uma linguagem de programação, Javascript tem um poder absurdo de fazer
 
 ## Referências para Javascript
 
-- [W3c Schools](https://www.w3schools.com/js/): Preciso nem falar desse cara mais
-- [MDN](https://developer.mozilla.org/en-US/docs/Web/Javascript): E nem desse né?
-- [The Algorithms]()
+- [W3c Schools](https://www.w3schools.com/js/): Ponto de partida para aprender os fundamentos do JavaScript
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/Javascript): Referência completa sobre JavaScript e APIs do navegador
+- [The Algorithms](https://github.com/TheAlgorithms/JavaScript): Implementações de algoritmos em JavaScript
 
 # Typescript
 
@@ -133,3 +133,5 @@ Esses daqui são tópicos interessantes a se estudarem, mas que não se englobam
 - [D3js](https://d3js.org/): A mais famosa biblioteca para se trabalhar com gráficos
 - [Axios](https://axios-http.com/docs/intro): Biblioteca para requests HTTP
 - [Ant Design](https://ant.design/): Uma biblioteca de componentes visuais para ReactJS
+
+Obrigado pelo seu tempo, tamo junto e até a próxima

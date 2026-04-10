@@ -16,7 +16,7 @@ Infelizmente, o Create-React-App utiliza o webpack e isso não encaixava bem no 
 
 # Hello [ViteJS](http://vitejs.dev/)
 
-Apesar de ser do "mundo React", as vezes me aventuro um pouco com VueJS e leio bastante discussões da comunidade Vue no twitter. E foi assim que conheci o [ViteJS](http://vitejs.dev/), que se diz ser a próxima geração de ferramentas para frontend.
+O [ViteJS](http://vitejs.dev/) se apresenta como a próxima geração de ferramentas para frontend e tem ganhado espaço significativo na comunidade.
 
 De começo eu fiquei um pouco receoso pela ferramenta, mas com menos de uma hora utilizando para experimentar microfrontends eu já estava gostando demais. Bom, gostando demais até [ter um problema](https://github.com/vitejs/vite/issues/2906) para buildar chunks separados por nome da biblioteca e versão. A [issue 2906](https://github.com/vitejs/vite/issues/2906) foi aberta no dia 6 de Abril de 2021 e no dia 14 de Abril de 2021 ela foi mergeada. Com menos de 12 dias a correção já estava pronta com a correção do meu problema, o que foi interessante demais.
 
@@ -28,7 +28,7 @@ Se você não pensa em fazer diversas configurações, é quase certeza de não 
 
 Assim como o CreateReactApp possui alguns templates, o Vite também possui seus templates que atendem a diversos frameworks, indo de Vue até Svelte. No nosso caso, iremos utilizar React com Typescript, que corresponde ao template `react-ts`.
 
-Sem mais delongas, para criar um projeto:
+Para criar um projeto:
 
 ```bash
 # Utilizando npm
@@ -40,7 +40,7 @@ yarn create @vitejs/app react-app --template react-ts
 
 Vale notar algumas diferenças do CreateReactApp.
 
-- Ao terminar o setup, você precisará fazer `MANUALMENTE` o install com `yarn` ou `npm install`.
+- Ao terminar o setup, é necessário executar manualmente o `yarn` ou `npm install`.
 - O script para iniciar o desenvolvimento é `yarn dev` ou `npm run dev`
 
 Após o install manual, você já poderá rodar `yarn dev` e começar a fazer seu projeto.
@@ -51,24 +51,20 @@ Como o próprio nome sugere, CRA é específico para React e por isso o suporte 
 
 Por outro lado, o ViteJS trás mais rapidez no build e no reload das mudanças. É incrível ver que até suporte ao [Fast Refresh](https://reactnative.dev/docs/fast-refresh) o Vite possui. Outro ponto que achei bastante bacana foi o [arquivo de configuração](https://vitejs.dev/config/) ser em Typescript, o que nos permite saber com clareza o que podemos configurar.
 
-Enquanto que o Create React App utiliza o Webpack+Babel para o bundle das aplicações, o ViteJS utiliza Rollup+EsBuild. E como podemos ver no repositório do [EsBuild](https://github.com/evanw/esbuild), ele é incrivelmente mais rápido. Nem preciso comentar que isso é um grande ganho né?
-
-> No final de 2019 eu conheci o esbuild e tive certos problemas com ele. E agora ver ele sendo utilizado num tooling para frontend é algo fantástico
+Enquanto o Create React App utiliza Webpack+Babel, o ViteJS utiliza Rollup+EsBuild. O [EsBuild](https://github.com/evanw/esbuild) é consideravelmente mais rápido, o que se traduz em ganhos visíveis no tempo de build.
 
 Algumas coisas como utilizar variáveis de ambiente acabam sendo diferentes no ViteJS, ao invés do clássico `process.env` nós temos `import.meta.env`. Isso não nenhum problema, apenas um choque pela troca de ferramenta. A estrutura inicial do projeto Vite também é diferente do CRA, trazendo o nosso `index.html` na raiz do projeto, e isso é possível alterar via `vite.config.ts`.
 
 Um posto interessante é a ideia de trazer o build utilizando [Server Side Rendering](https://vitejs.dev/guide/ssr.html), apesar de ser experimental, isso nos mostra o quão comprometida a ferramenta está com a entrega de um frontend otimizado. Também comprova o fato de ser a ferramenta de frontend do próximo nível.
 
-> Até quando o hype de SSR vai existir? É engraçado parar pra pensar que SSR é algo feito no PHP desde 1995 e agora estamos tratando isso como uma técnica inovadora.
+> Vale notar que SSR é um conceito antigo, presente no PHP desde 1995. O que é novo é a integração com ferramentas modernas de frontend.
 
-Trazer o Rollup no lugar do Webpack foi uma jogada sensacional, na minha visão. Isso nos permite fazer as próprias configurações sem ter que estudar um sistema de plugins e configurações bizarras do Webpack. Como você pode ver na documentação do [Rollup](https://rollupjs.org/), a configuração é bem mais simples e o sistema de plugins não exige uma configuração muito avançada.
+A adoção do Rollup no lugar do Webpack simplifica a configuração consideravelmente, dispensando o estudo de um sistema de plugins mais complexo. Como você pode ver na documentação do [Rollup](https://rollupjs.org/), a configuração é bem mais simples e o sistema de plugins não exige uma configuração muito avançada.
 
 # Conclusão
 
-Deu pra notar que eu curti bastante o Vite né? Haha. Sem dúvidas é uma ferramenta excelente, mas que talvez pela existência do CRA ela seja ofuscada por não ter o mesmo tooling para desenvolvimento. Em questão de build, não tem nem chance pro CRA.
+Sem dúvidas é uma ferramenta excelente, mas que talvez pela existência do CRA ela seja ofuscada por não ter o mesmo tooling para desenvolvimento. Em questão de build, o desempenho do ViteJS é consideravelmente superior.
 
-Vale a pena você fazer os seus testes e tirar as próprias conclusões. Garanto que você vai curtir e se impressionar principalmente com o build ridiculamente rápido.
+Sobre a issue mencionada, o repositório utilizado para análise está disponível [no GitHub](https://github.com/g4rcez/vite-testing), com um arquivo de configuração específico para separar dependências nos testes de microfrontends.
 
-Sobre a issue que comentei ter tido, tive que subir o repositório para que fizessem a análise. Só conferir [no meu github](https://github.com/g4rcez/vite-testing). Lá tem um arquivo de configuração bem diferente do comum, criado justamente para separar dependências nos testes de microfrontends.
-
-E é isso galera, um salve e espero que tenham gostado do conteúdo
+Obrigado pelo seu tempo, tamo junto e até a próxima

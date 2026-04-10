@@ -27,7 +27,7 @@ Vamos começar pelo terminal, trazendo uma melhor interação, autocomplete, mel
 
 Por padrão, os sistemas linux vem com o shell [bash](https://www.gnu.org/software/bash/), mas iremos substituir utilizando o [zsh](https://www.zsh.org/) que é um tipo de shell bem mais extensivo, graças a grande comunidade que possui. 
 
-Sem mais delongas, vamos instalar primeiro o zsh e depois iremos instalar o [oh-my-zsh](https://ohmyz.sh/). Para a configuração correta, iremos precisar ter instalado o zsh, [curl](https://curl.se/) e [git](https://git-scm.com/)
+O primeiro passo é instalar o zsh e, em seguida, o [oh-my-zsh](https://ohmyz.sh/). Para a configuração correta, iremos precisar ter instalado o zsh, [curl](https://curl.se/) e [git](https://git-scm.com/)
 
 ```bash
 sudo apt install zsh curl git
@@ -51,19 +51,19 @@ Para melhorar ainda mais sua experiência com o terminal, aqui deixo uma lista d
 
 Você irá conseguir fazer a instalação desses plugins sem problemas, apenas seguindo o guia de cada um dos plugins.
 
-Com o oh-my-zsh instalado, você terá várias funcionalidades que te auxiliaram na produtividade dentro do terminal. Mais pro fim do artigo vou deixar uma lista de temas, plugins e afins que você poder utilizar. 
+Com o oh-my-zsh instalado, você terá várias funcionalidades que te auxiliaram na produtividade dentro do terminal. Ao final do artigo há uma lista de temas, plugins e recursos adicionais para explorar.
 
 # Node
 
-O principal da nossa lista será o [Node](https://nodejs.org). Você pode instalar através do site oficial (o que não recomendo) ou utilizar algum gerenciador virtual. Muitos tutoriais na internet irão te falar para utilizar o [nvm](https://github.com/nvm-sh/nvm), mas por experiência própria...as vezes é bem ruim de utilizar esse cara, principalmente se você for esquecido e não lembrar de rodar os comandos corretos.
+O principal da nossa lista será o [Node](https://nodejs.org). Você pode instalar através do site oficial (o que não recomendo) ou utilizar algum gerenciador virtual. Muitos tutoriais recomendam o [nvm](https://github.com/nvm-sh/nvm), mas sua experiência de uso pode ser inconsistente — especialmente quando os comandos de troca de versão são esquecidos no fluxo do dia a dia.
 
-Para melhorar sua experiência com Node no terminal, aconselho utilizar o [volta.sh](https://volta.sh/). Esse cara faz a mesma coisa do nvm, mas trás automações para vc evitar dores de cabeça com versionamento. Sua instalação é muito simples, basta você rodar o seguinte comando:
+Uma alternativa mais ergonômica é o [volta.sh](https://volta.sh/). Ele cumpre o mesmo papel do nvm, mas adiciona automações que evitam problemas de versionamento. Sua instalação é muito simples, basta você rodar o seguinte comando:
 
 ```bash
 curl https://get.volta.sh | bash
 ```
 
-Pronto! É só isso. Agora você está apto para utilizar o NodeJS no seu terminal da forma mais simples possível. O volta é um gerenciador virtual de versões do NodeJS, ele permite que você tenha várias versões instaladas e gerenciadas por ele. Você só precisa dizer qual versão quer instalar e utilizar.
+Com isso, o NodeJS já está disponível no terminal. O volta é um gerenciador virtual de versões do NodeJS, ele permite que você tenha várias versões instaladas e gerenciadas por ele. Você só precisa dizer qual versão quer instalar e utilizar.
 
 ## Node + NPM
 
@@ -94,7 +94,7 @@ npm install -g typescript ts-node
 Com essa instalação `-g` você vai instalar globalmente os seus scripts e permitirá que você execute os comandos de qualquer lugar.
 # Vscode
 
-Com certeza essa vai ser a melhor ferramenta que você terá para fazer edição de código. Existem outros bons editores
+O VSCode é uma das ferramentas mais completas para edição de código. Existem outros bons editores
 como [WebStorm](https://www.jetbrains.com/webstorm) ou [Neovim](https://neovim.io/), mas o Vscode ganha em simplicidade
 e possui uma menor curva de aprendizado.
 
@@ -149,7 +149,7 @@ Esse é só um tutorial rápido de configuração e customização do seu ambien
 você pode evoluir com o tempo, basta procurar inspirações em [awesome lists](https://github.com/topics/awesome) ou
 dotfiles. 
 
-Espero que tenha gostado e até a próxima. 
+Obrigado pelo seu tempo, tamo junto e até a próxima
 
 
 

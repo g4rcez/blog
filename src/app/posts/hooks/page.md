@@ -3,17 +3,14 @@ level: 1
 subjects: ["react", "typescript", "javascript", "frontend"]
 title: "React Hooks"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2020-02-02T00:00:00.000Z"
 description: "Uma nova forma (nem tão nova) de pensar"
 ---
 
 # Introdução
 
-Fala galera, beleza? Tem um tempão, mas um tempão mesmo que eu quero escrever sobre hooks e nunca consigo. Acabo lendo
-muitos artigos sobre e nunca escrevi um pouco da minha visão e algumas das técnicas que tenho adotado.
-
-Sem mais delongas, vamos lá começar a escrever...
+Há algum tempo havia o objetivo de escrever sobre hooks. Este artigo apresenta uma perspectiva própria sobre o tema e algumas das técnicas adotadas na prática.
 
 # Rule of Hooks.
 
@@ -27,8 +24,7 @@ fazer um `deep dive` na [documentação](https://pt-br.reactjs.org/docs/hooks-ru
 
 # Mas em classes era assim
 
-Não. Não. De novo, não. A primeira coisa que precisei fazer para ter um bom entendimento de hooks foi parar de pensar em
-como eu faria as coisas com classes, apesar de ambos os approaches nos entregarem componentes, temos uma diferença
+A primeira coisa necessária para um bom entendimento de hooks foi parar de pensar em como as mesmas coisas seriam feitas com classes. apesar de ambos os approaches nos entregarem componentes, temos uma diferença
 enorme entre eles.
 
 Se você já conhece componentes de classes, então esqueça um pouco do ciclo de vida para entender sobre hooks. As vezes
@@ -407,12 +403,9 @@ existe e um caso de uso.
 
 # Conclusão: vou ficar devendo 2 hooks
 
-Faltou eu apresentar o `useContext` e o `useDebugValue`. O `useDebugValue` eu realmente NUNCA usei graças ao nosso vício
-de socar `console.log` + `debugger` em tudo. Sei que é um hook que nos ajuda, mas nunca tive necessidade de fazer o uso.
+Ficaram de fora o `useContext` e o `useDebugValue`. O `useDebugValue` raramente é utilizado na prática, pois o hábito de depurar com `console.log` e `debugger` acaba prevalecendo. É um hook útil, mas situacional.
 
-Agora o `useContext`...fica tranquilo que eu vou fazer uma experiência bem maneira com ele e escrever um post somente
-sobre esse hook. Mas já adianto que podemos usar a `ContextAPI` (não a legada, a da versão 16.3) para substituir o uso
+O `useContext` merece um artigo próprio. Mas já adianto que podemos usar a `ContextAPI` (não a legada, a da versão 16.3) para substituir o uso
 de Redux em alguns casos.
 
-E é isso pessoal, espero que tenham gostado. Não sei concluir esse post por que ainda queria demonstrar mais alguns
-casos, mas vamos com calma. Até a próxima.
+Ainda seria possível demonstrar mais alguns casos de uso, mas esses ficam para um próximo artigo. Obrigado pelo seu tempo, tamo junto e até a próxima

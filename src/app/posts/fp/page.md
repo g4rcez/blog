@@ -3,7 +3,7 @@ title: Mergulhando em Programação Funcional
 level: 1
 subjects: ["typescript", "javascript"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2023-03-05T21:45:00.000Z"
 description: "Tentando mais uma vez falar sobre programação funcional, trazendo uma introdução detalhada dos conceitos
 mais importantes e fazendo um mergulho em conceitos de forma explicativa."
@@ -158,7 +158,7 @@ const pipe = (first: A, ...fns: Fn[]) =>
 
 ### Pipe tipado
 
-Esse cara não vai ser explicado no artigo devido à complexidade dessa tipagem, mas você pode conferir a explicação no
+Esta implementação não será detalhada no artigo devido à complexidade da tipagem, mas é possível conferir a explicação no
 artigo [pipe-type](/post/pipe-type)
 
 ```typescript
@@ -235,9 +235,8 @@ export namespace Either {
 }
 ```
 
-Essa implementação não é totalmente fiel ao conceito real, tentei trazer uma forma um pouco simplificada para podermos
-entender o conceito e apresentar um pouco
-de [Type Assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+Esta implementação não é totalmente fiel ao conceito original — foi simplificada para facilitar a compreensão e apresentar
+o uso de [Type Assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
 
 Agora um pequeno exercício para aprender o Either. Primeiro vamos um request `GET HTTP` para exemplificar o uso de
 utilitários que utilizarão o Either.
@@ -302,8 +301,6 @@ trazer muito mais predição para o seu código.
 
 # Conclusão
 
-Com tudo o que observamos no artigo hoje, podemos fazer um `.reduce` do conteúdo e assimilar melhor. Não necessariamente
-você precisa adotar o paradigma funcional por completo, você pode utilizar o conceito para melhorar seus hábitos de
-programação.
+Com tudo o que foi apresentado, fica mais claro como absorver e aplicar os conceitos. Não é necessário adotar o paradigma funcional por completo — é possível utilizá-lo seletivamente para aprimorar os hábitos de programação.
 
-E isso é tudo, pessoal, espero que tenham gostado.
+Obrigado pelo seu tempo, tamo junto e até a próxima

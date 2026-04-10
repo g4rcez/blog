@@ -20,7 +20,7 @@ There's a repository dedicated to this on GitHub, you can read more about it at 
 
 If you want to see a configuration example, you can look at [my dotfiles](https://github.com/g4rcez/dotfiles) for inspiration or even install and use exactly as I do.
 
-> Fun fact: I keep all my configurations on GitHub publicly, so I can easily restore all configurations on any PC and still version all my files. I started adopting this pattern since 2019 and have been using it until the current date of this article, 2024
+> All configurations are kept publicly on GitHub, making it easy to restore them on any machine and maintain a full version history. This practice has been in use since 2019.
 
 # Shell
 
@@ -56,7 +56,7 @@ With oh-my-zsh installed, you'll have various features that will help you with p
 
 # Node
 
-The main item on our list will be [Node](https://nodejs.org). You can install it through the official website (which I don't recommend) or use some virtual manager. Many tutorials on the internet will tell you to use [nvm](https://github.com/nvm-sh/nvm), but from personal experience... sometimes it's quite bad to use it, especially if you're forgetful and don't remember to run the correct commands.
+The main item on our list will be [Node](https://nodejs.org). You can install it through the official website (which I don't recommend) or use some virtual manager. Many tutorials recommend [nvm](https://github.com/nvm-sh/nvm), but from personal experience it can be problematic — particularly when it is easy to forget to run the necessary version-switch commands.
 
 To improve your Node experience in the terminal, I advise using [volta.sh](https://volta.sh/). This tool does the same thing as nvm, but brings automations so you can avoid versioning headaches. Its installation is very simple, just run the following command:
 
@@ -144,7 +144,7 @@ With these extensions, you already have a good setup for frontend programming wi
 
 This is just a quick tutorial for configuring and customizing your development environment. There are many more things you can evolve over time, just look for inspiration in [awesome lists](https://github.com/topics/awesome) or dotfiles.
 
-I hope you enjoyed it and see you next time. 
+Thank you for your time, see you soon, bye bye
 
 
 

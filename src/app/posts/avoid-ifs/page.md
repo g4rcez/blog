@@ -3,35 +3,31 @@ level: 0
 subjects: ["javascript", "typescript"]
 title: "JS Tricks, evitando ifs"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2019-12-16T23:59:59.999Z"
 description: "Estratégia para substituir ninhos de if"
 ---
 
 # Introdução
 
-_Antes de mais nada, provavelmente existe um nome muito maneiro para este tipo de pattern, mas eu não lembro. E pra não
-perder a ideia do post, vou escrever sem pesquisar o nome, foi mal :cry:_
+_Provavelmente existe um nome bem definido para este tipo de pattern, mas não foi possível identificá-lo antes de escrever o post._
 
-Estava num grupo do telegram e vi um cara falando:
+Em um grupo do Telegram, um desenvolvedor perguntou:
 
 > Preciso fazer este algoritmo sem usar if. Alguém poderia me ajudar?
 
 O algoritmo era basicamente pegar o sexo, idade e tempo de trabalho para dizer se a pessoa poderia se aposentar ou não.
-Antes que eu pudesse responder, alguém escrever o algoritmo com um ternário, fucking gênio :sunglasses:. Mas isso é um
-hack.
+Antes que fosse possível responder, alguém escreveu o algoritmo com um ternário — uma solução engenhosa, mas essencialmente um hack.
 
 Essa situação me fez lembrar um algoritmo de IMC que tive que fazer na faculdade, utilizando Java e ele precisava ter
-uma complexidade baixa e ser facilmente testável (a matéria era sobre testes). Todo mundo começou a escrever no melhor
-estilo GoHorse e fizeram **ifs** e **ifs** para realizar os cálculos. Eu já achei melhor parar pra pensar antes de
+uma complexidade baixa e ser facilmente testável (a matéria era sobre testes). Todos começaram a escrever de forma apressada e não estruturada, produzindo ninhos de **ifs** para realizar os cálculos. Eu já achei melhor parar pra pensar antes de
 escrever e acabei fazendo o seguinte:
 
 1. Criar um enum para masculino e outro para feminino, onde havia o menor índice e o maior índice para cada categoria
 2. Receber a entrada e fazer o cálculo normalmente.
    3 Com o resultado, buscar nos enums o intervalo que satisfaça a condição do resultado obtido no cálculo
 
-Claro que em Java isso fica complexo, acabou dando uns 6 arquivos para uma coisa simples, mas atendi a todas as
-condições do desafio hehehe
+Em Java isso fica bem mais verboso — chegou a gerar cerca de seis arquivos para algo relativamente simples — mas todas as condições do desafio foram atendidas.
 
 Como o título deste post é evitar os **ifs**, vamos pra essa trick agora em JS/TS.
 
@@ -126,8 +122,7 @@ mais e mais **ifs**
 > Mas Allan, nesse caso com vários ifs, nós temos um "else" para caso não seja atendido e no seu exemplo de objetos não
 > tem isso
 
-Muito perspicaz, caro leitor. Onde eu estava com a cabeça? Precisamos proteger a entrada de casos absurdos. Não é nada
-absurdo, apenas um if e tá "safe":
+Um ponto válido. É necessário proteger a entrada contra casos inválidos. Um simples guard clause resolve isso:
 
 ```typescript
 if (!parametros.hasOwnProperty(sexo)) {
@@ -137,4 +132,4 @@ if (!parametros.hasOwnProperty(sexo)) {
 // É legal abortar os erros primeiro
 ```
 
-Bom, agora sim ficou tudo esclarecido, assim espero. Qualquer coisa você sabe onde me encontrar :joy:
+Com isso, a abordagem fica completa. Obrigado pelo seu tempo, tamo junto e até a próxima

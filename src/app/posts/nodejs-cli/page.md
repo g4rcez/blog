@@ -3,7 +3,7 @@ level: 0
 subjects: ["nodejs", "javascript", "typescript"]
 title: "Node CLI"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2019-08-03T03:18:00.000Z"
 description: "Automatizando tarefas pela linha de comando"
 ---
@@ -14,13 +14,13 @@ Como no dia 07/08/2019 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.
 
 # Motivação
 
-Durante um bom tempo eu utilizei bastante Bash e Python para fazer minhas ferramentas CLI, era um bom arsenal para realizar as tarefas, mas a manutenção começava a ficar ruim depois de um tempo, problemas de edentação quando havia migração de editores...
+Durante um bom tempo, Bash e Python foram as ferramentas utilizadas para construir CLIs. Eram soluções funcionais, mas a manutenção se tornava custosa com o tempo — especialmente com problemas de indentação ao migrar entre editores.
 
-Um dia eu decidi começar a pesquisar sobre o ferramental de NodeJS e tudo mudou. Como eu sempre tendi mais ao lado de frontend, Javascript era uma linguagem que estava no sangue, e então comecei a fazer todos os meus scripts de Python em NodeJS e com isso obtive o mesmo resultado, porém com um código mais consiso. **_Ainda mais quando decidi colocar [Typescript](https://www.typescriptlang.org) no meio disso tudo_**.
+Ao começar a pesquisar sobre o ferramental de NodeJS, a perspectiva mudou. Com maior familiaridade com frontend e JavaScript, foi possível reescrever os scripts em NodeJS e obter os mesmos resultados com um código mais conciso. **_Ainda mais quando decidi colocar [Typescript](https://www.typescriptlang.org) no meio disso tudo_**.
 
 # npm init
 
-Como o mundo de JS é bastante vasto, existem centenas de boilerplates pra você seguir, como configurar, best practices e blábláblá...mas eu prefiro o basicão pra seguir o [KISS](https://en.wikipedia.org/wiki/KISS_principle).
+Como o ecossistema de JavaScript é bastante vasto, existem centenas de boilerplates disponíveis, cada um com suas configurações e boas práticas. Neste post, a preferência é pelo mínimo necessário, seguindo o princípio [KISS](https://en.wikipedia.org/wiki/KISS_principle).
 
 Vou me ater ao simples de uma CLI pra ordenar versões de tags do git. Usando bash, poderiamos usar o comando `sort`, fazendo o seguinte comando `git tag | sort -V`. Mas como o foco é um CLI em NodeJS, vamos lá:
 
@@ -30,13 +30,13 @@ $ cd my-cli
 $ npm init -y
 ```
 
-Usei `npm init -y` pra ser mais rápido. Mas isso já da pra começar a fazer os ajustes necessários pra começar a escrever código. Temos uns passos a serem executados:
+O flag `-y` aceita os valores padrão do `npm init` automaticamente. A partir daí, os ajustes necessários para começar a escrever código são os seguintes:
 
 1. Inserir a chave `main` e `bin` com o path de entrypoint da aplicação no `package.json`
 2. Criar o diretório para código TS
 3. Configurar o `tsconfig.json` e um `tslint.json` para fortalecer o desenvolvimento
 4. Instalar as dependências
-5. Codar!!! Codar!!! Codar!!!
+5. Implementar o código
 
 # Main no package.json
 
@@ -63,10 +63,7 @@ Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quant
 
 > Apesar do mundo inteiro dizer compilar JS, esse termo é errado, pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
 
-![](https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif)
-Essa é a sua cara nesse exato momento
-
-**Mas como irei programar com TS se NodeJS não roda TS?**
+**Mas como programar em TS se NodeJS não executa TypeScript diretamente?**
 
 # Escrevendo TS
 
@@ -101,7 +98,7 @@ E pronto, já temos o nosso `tsconfig.json` e vamos deixar ele com essa cara:
 
 Se você estiver no VsCode, aconselho usar `CTRL+Space` nos campos para ver o que há disponível e se aventurar com suas próprias configurações. Caso queira alguma referência, [esse é o meu `tsconfig.json` que costumo usar no trabalho/projetos](https://gist.github.com/g4rcez/0848b503288f08e7a9592f04576c7f4a).
 
-Como vamos usar TS, é bom em conjunto usar o [`TSLint`](https://palantir.github.io/tslint/) pra evitar quaisquer :shit:.
+Para manter a qualidade do código TypeScript, recomenda-se utilizar o [`TSLint`](https://palantir.github.io/tslint/).
 
 ```bash
 npm i -g tslint
@@ -112,9 +109,7 @@ E caso queira [referência, esse é o meu `tslint.json`](https://gist.github.com
 
 # Dependências
 
-Como todo bom programador em NodeJS, você deve ser dependente de diversos...pacotes. E pra fazer uma CLI não é diferente.
-
-> Eu curto utilizar o yarn sempre que possível nos meus projetos, pra caso um dia eu pense em usar o workspaces do yarn
+Como é comum em projetos NodeJS, algumas dependências são necessárias para o desenvolvimento de uma CLI.
 
 ```bash
 $ yarn add typescript semver commander signale chalk
@@ -132,7 +127,7 @@ Os types são `devDependencies` para nos auxiliar com o typing do TS
 
 # Desenvolvimento selvagem
 
-Pronto, tudo certo (eu espero que sim...) para o desenvolvimento selvagem. Primeiro o código e depois a explicação
+Com as dependências instaladas, é possível começar a implementação. O código completo vem primeiro, seguido da explicação.
 
 ```typescript
 import cli from "commander";
@@ -209,7 +204,7 @@ Não vou deixar de explicar como podemos fazer para receber os parâmetros no ca
     Agora iremos receber params para ter acesso ao que foi recebido.
     Vou colocar o tipo any pra não ficar
     muito verboso (e nesse caso específico),
-    eu acabo não tipando pois as vezes é no GoHorse
+    a tipagem explícita não é obrigatória neste contexto específico
 
     Acaba que na própria definição no seu schema do commander vc anota
     os tipos que irá receber com os seus argumentos do programa
@@ -262,5 +257,4 @@ if (process.argv.length === 2) {
 program.parse(process.argv);
 ```
 
-Bom, creio que isso seja o necessário para que todos possam começar a fazer suas CLI com NodeJS
-e considerar manter como sua linguagem para scripts, afinal de conta NodeJS é Java**SCRIPT**.
+Com isso, é possível começar a construir CLIs com NodeJS e considerá-lo como alternativa viável para scripts. Obrigado pelo seu tempo, tamo junto e até a próxima

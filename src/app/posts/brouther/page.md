@@ -3,7 +3,7 @@ level: 1
 title: Criando um router fortemente tipado
 subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2023-01-13T18:30:00.000Z"
 description: "Melhorando a DX na hora de trabalhar com rotas, links e redirecionamentos"
 ---
@@ -61,17 +61,11 @@ nos leva ao tanstack-router
 O mais novo router da comunidade visa resolver certos problemas, principalmente problemas relacionados a DX. Visando
 esses problemas, eles criaram um ecossistema que consegue entregar o melhor dos dois mundos entre **roteamento vs DX**.
 
-Nesse cara não posso opinar muito porque ainda não tive muitas experiências com o mesmo, mas dando uma olhada na
-documentação é possível ver que o mesmo ainda não possui documentação de todos os seus hooks e formas canônicas de
-resolver um problema. Seu ecossistema possui muitas coisas que acabam não sendo responsabilidade de uma lib de
+Por não ter tido muitas experiências com o tanstack-router, a análise aqui é limitada. Dando uma olhada na documentação, é possível ver que ainda não possui documentação de todos os seus hooks e formas canônicas de resolver um problema. Seu ecossistema possui muitas coisas que acabam não sendo responsabilidade de uma lib de
 roteamento e ainda possui uma arquitetura voltada para integrar com bibliotecas de controle de estado, como
 react-query (sendo do grupo desenvolvedor 🤔), Apollo, SWR e etc.
 
-Por ser um cara bem novo, não vou comentar tanto, mas num geral, é uma tecnologia a se observar caso você possua muitos
-problemas com estado/roteamento sincronizado
-
-Por ser um cara bem novo, não vou comentar tanto, mas num geral, é uma tecnologia a se observar caso você possua muitos
-problemas com estado/roteamento sincronizado
+Por ser uma biblioteca relativamente nova, os comentários aqui são breves, mas, de forma geral, é uma tecnologia a se observar caso haja muitos problemas com estado e roteamento sincronizados.
 
 # Brouther
 
@@ -194,3 +188,5 @@ ninguém precise procurar diversos métodos
 - [ts-toolbelt](https://millsp.github.io/ts-toolbelt/)
 - [RFC 1738](https://www.rfc-editor.org/rfc/rfc1738)
 - [MDN - URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
+
+Obrigado pelo seu tempo, tamo junto e até a próxima

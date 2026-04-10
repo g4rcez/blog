@@ -16,7 +16,7 @@ O problema de regex é que não são human friendly, e isso atrapalha o entendim
 
 # Meta caracteres
 
-São os caracteres que possuem _super poderes_ dentro da nossa regex, apesar de serem caracteres normais, eles trazem consigo uma regra para casar os padrões. Se liga em quais são:
+São os caracteres que possuem _super poderes_ dentro da regex, apesar de serem caracteres normais, cada um carrega uma regra para casar padrões. Estes são os principais:
 
 | Meta carácter | Regra                                                                |
 | ------------- | -------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ São os caracteres que possuem _super poderes_ dentro da nossa regex, apesar de 
 
 Esses são alguns meta caracteres interessantes para começarmos nossa brincadeira. Um bom lugar para treinar regex é no [regex101](https://regex101.com). Lá você pode escrever a sua regex e visualizar o resultados dos casamentos com suas strings de teste.
 
-Sem mais delongas, vamos pegar alguns valores para fazermos validações usando regex
+A seguir, alguns exemplos práticos de validações usando regex.
 
 # Máscara de CPF
 
@@ -45,12 +45,12 @@ Sabemos para validar CPF, precisamos do algoritmo de CPF e caso queira garantir,
 const cpfRegex = /^(\d{3}\.){2}\d{3}-\d{2}$/;
 ```
 
-Moleza né? Brincadeira. Vamos analisar essa regex por passos:
+Analisando a regex por partes:
 
 - `^`: Comece com. O chapéu nos ajuda nesse caso pois queremos validar estritamente a string
 - `(\d{3}\.)`: Um grupo de 3 dígitos seguido de ponto literal `\.`. O ponto literal é escrito assim, sendo necessário escapar com contra barra. Caso não fosse escapado, o casamento seria com qualquer string.
 - `(\d{3}\.){2}`: continuando a explicação acima, temos o grupo com a regra para casar duas vezes. Ou seja, encontrar 2 grupos com o padrão `(\d{3}\.)`
-- `\d{3}`: Essa é moleza, 3 dígitos seguidos
+- `\d{3}`: 3 dígitos seguidos
 - `-`: Essa nem precisa falar, como não está dentro de um colchetes, o traço realmente significa um traço
 - `\d{2}$`: Como a nossa validação é estrita, temos o final de dois dígitos e o dólar($), dizendo termine com `\d{2}`.
 
@@ -88,12 +88,10 @@ Ainda temos a presença do `|`, entre os parenteses de grupo. Esse pipe signific
 - `"[\S\s]*?"`: Case tudo o que estiver dentro de aspas duplas, tendo pelo menos um carácter no padrão
 - `src="javascript:\S+"`: O nosso segundo casamento de padrões é `src=javascript:` que irá barrar qualquer `src` que tentar utilizar javascript na URL.
 
-Claro que essa regex possui alguns problemas de segurança ainda, mas que graça teria se eu passasse a regex final? Você não ia ficar curioso e tentar resolver.
+Esta regex ainda possui algumas limitações de segurança — o aperfeiçoamento fica como exercício.
 
 # Conclusão
 
 Com estes 2 casos já foi possível explicar algumas das artimanhas de regex e demonstrar como pode ser mais tranquilo estudar regex. É um estudo que exige paciência e que trás uma ferramenta absurda para você utilizar na hora de resolver os seus problemas.
 
-Espero que com isso você possa se aventurar mais com regex sem que tenha tanta dor de cabeça
-
-EOF
+Obrigado pelo seu tempo, tamo junto e até a próxima

@@ -25,10 +25,10 @@ export const BlogConfig = {
     github: "https://github.com/g4rcez",
     twitter: "https://x.com/garcez_allan",
     projects: [
-        { title: { "pt-BR": "brouther", "en-US": "brouther", }, href: "https://brouther.vercel.app/", },
-        { title: { "pt-BR": "dotfiles", "en-US": "dotfiles", }, href: "https://github.com/g4rcez/dotfiles", },
-        { title: { "pt-BR": "racha aí", "en-US": "racha aí", }, href: "https://racha.ai", },
-        { title: { "pt-BR": "useReducer", "en-US": "useReducer", }, href: "https://github.com/g4rcez/use-reducer", },
+        { title: { "pt-BR": "brouther", "en-US": "brouther" }, href: "https://brouther.vercel.app/" },
+        { title: { "pt-BR": "dotfiles", "en-US": "dotfiles" }, href: "https://github.com/g4rcez/dotfiles" },
+        { title: { "pt-BR": "writeme", "en-US": "writeme" }, href: "https://app.writeme.dev" },
+        { title: { "pt-BR": "useReducer", "en-US": "useReducer" }, href: "https://github.com/g4rcez/use-reducer" },
     ] as LocalizedLink[],
     topics: [
         {

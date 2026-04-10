@@ -10,7 +10,7 @@ description: "Muito além de /components e /pages"
 
 # Introdução
 
-> Apesar de utilizar estruturas de pastas do React, esse artigo vai servir pra qualquer projeto e em qualquer linguagem, tire proveito do mindset e faça bom proveito das dicas :heart:
+> Apesar de utilizar estruturas de pastas do React, os conceitos deste artigo se aplicam a qualquer projeto e em qualquer linguagem.
 
 Bom, como comentado no meu post ["Construindo um frontend flexível"](https://blog.garcez.now.sh/custom-react/), estou com uma experiência em aplicações multitenants. Chega num ponto em que cada projeto seu já está com umas 72~80k linhas de código e você não sabe onde está cada coisa porque sua estrutura inicial não favorecia a ser algo escalar.
 
@@ -18,7 +18,7 @@ Isso é um problema absurdo, por que acaba-se andando muito entre diretórios e 
 
 # Organização
 
-Entre conversas, leituras do DDD (Domain Driven Design) e podcasts, acabei adotando uma estrutura de projeto um pouco diferente do comum, mas que faz muito sentido. Talvez você possa fazer alguma associação com ducks (se vier da comunidade React), mas acho que a parada é um pouco diferente. Um nome que ouvi bastante para isso foi `Scope named packages`. Se liga numa estrutura básica
+Entre conversas, leituras do DDD (Domain Driven Design) e podcasts, acabei adotando uma estrutura de projeto um pouco diferente do comum, mas que faz muito sentido. Talvez você possa fazer alguma associação com ducks (se vier da comunidade React), mas a abordagem é ligeiramente diferente. Um nome comum para isso é `Scope named packages`. Observe a estrutura a seguir:
 
 ```bash
 ├── build
@@ -106,7 +106,7 @@ Um projeto para o uso de clientes e empresas foi quebrado da seguinte maneira
         componentes     model       services-hooks-actions         
 ```
 
-Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa e a área para cadastro e faq de ambos. Somente com essa quebra, o bundle size pode ser reduzido de 620KB para 2 bundles de ~340KB (isso porque tive que ter uma replicação de código para evitar a quebra de alguns pacotes). Quebrando ainda mais a lógica e componentes, conseguimos uma redução para 290KB (eliminando código duplicado, actions não usadas, simplificando a lógica e reescrevendo alguns componentes que ainda utilizávamos de outras bibliotecas). O projeto que possuia ~80k linhas agora está com ~42K linhas. **FUCKING REDUÇÃO**.
+Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa e a área para cadastro e faq de ambos. Somente com essa quebra, o bundle size pode ser reduzido de 620KB para 2 bundles de ~340KB (isso porque tive que ter uma replicação de código para evitar a quebra de alguns pacotes). Quebrando ainda mais a lógica e componentes, conseguimos uma redução para 290KB (eliminando código duplicado, actions não usadas, simplificando a lógica e reescrevendo alguns componentes que ainda utilizávamos de outras bibliotecas). O projeto que possuía ~80k linhas agora está com ~42K linhas — uma redução significativa.
 
 Óbviamente essa redução tem seus "mistérios", pois parte da lógica foi abstraída para outros repositórios, mas o projeto principal se tornou mais fácil de manter, e os subprojetos agora podem ser mantidos por uma pessoa sem muita dificuldade.
 
@@ -129,8 +129,4 @@ Um grande projeto maior foi quebrado em 3, uma área de clientes, uma de empresa
 - A quebra em N repositórios pode facilitar o trabalho da equipe quando há uma feature que envolve mais do que um repositório, evitando problemas de merge e alterações erradas.
 - Mantendo a regra de altura 2, você irá rodar menos até achar algo e tenderá a não se perder tanto na estrutura do projeto.
 
-Isso tudo que foi falado não é um padrão, não irá gerar tendência, é apenas uma forma que deu certo em um projeto grande e quis compartilhar com você.
-
-**Sim, eu disse você, a única pessoa que lê o meu blog :heart:**
-
-E como de costume...
+Esta abordagem não é um padrão universal e não pretende se tornar tendência. É uma estrutura que funcionou bem em um projeto de grande porte e que pode servir como referência para situações similares. Obrigado pelo seu tempo, tamo junto e até a próxima

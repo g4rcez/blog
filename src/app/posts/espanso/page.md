@@ -3,7 +3,7 @@ level: 1
 title: Espanso. Uma nova forma de digitar
 subjects: ["tips-and-tricks"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2025-01-18T13:07:22.874Z"
 description: "Mudando sua forma de digitar com macros e automações."
 ---
@@ -179,4 +179,4 @@ Tenho usado o espanso há pouco mais de 1 ano e meio e não tenho o que falar, e
 
 O único porém é a escrita de YAML, que é um formato que eu particularmente não gosto. E por isso minha configuração é feita em Typescript + Deno, o que evita ter que lidar com problemas de espaçamento e indentação. Mas caso queira a configuração em YAML, só olhar no [gist](https://gist.github.com/g4rcez/dc52c404526753edcf4519b85854c1db). 
 
-E por hoje é isso, galera. Espero que esse post tenha sido útil para te apresentar uma nova ferramenta. Agradeço a atenção e até a próxima 👋🏾.
+Obrigado pelo seu tempo, tamo junto e até a próxima

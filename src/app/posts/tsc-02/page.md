@@ -10,8 +10,7 @@ description: "Não sei criar tipos pra N objetos, e agora?"
 
 # Introdução
 
-Fala aí galera, tranquilos? Eu demorei pra lançar esse artigo pois queria construir algo com bastante tipagem complexa para
-conseguir fazer um _deep dive_ em TS. Sem mais delongas, vamos lá
+Este artigo apresenta técnicas de tipagem mais complexas, com exemplos que exigem um entendimento mais aprofundado de TypeScript.
 
 # Generics - Inferindo os tipos de qualquer lugar
 
@@ -19,7 +18,7 @@ Generics é uma técnica interessante para que possamos trabalhar com um tipo qu
 sua condição de uso. Os _generics_ vão ser por padrão um tipo não estabelecido e não iterável (significa que você precisará informar
 quando um tipo genérico for um Array).
 
-Beleza, mas quando eu vou usar isso?
+Um exemplo simples para entender o conceito:
 
 ```typescript
 type Arrays<T> = T[];
@@ -33,7 +32,7 @@ _Generics_ é uma poderosa forma de criar tipos com base nos nossos objetos, arr
 
 # Utility Types - Readonly
 
-[Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) são tipos builtin do Typescript para que você possa criar seus tipos com uma ajudinha extra. Nessa parte irei falar do tipo readonly. Iremos usa-lo para impedir reatribuição de valores numa função
+[Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) são tipos built-in do TypeScript que oferecem recursos adicionais para a criação de tipos. Nessa parte irei falar do tipo readonly. Iremos usa-lo para impedir reatribuição de valores numa função
 
 ```typescript
 const map = <T>(a: Readonly<T[]>, newValue: T) => {
@@ -66,7 +65,7 @@ E antes que eu esqueça, todos os tipos builtin do _Utility Types_ são tipos qu
 
 # Redux Action
 
-Momento de puxar para o lado do React. Se você nunca programou, não tem problema, vou fazer um exemplo bem comum
+O exemplo a seguir aplica generics em um contexto de Redux com React:
 
 ```typescript
 enum ActionsTypes {
@@ -105,7 +104,7 @@ const authReducer = (state = initialState, action: AuthActions) => {
 
 # Hack PromiseAll
 
-Esse exemplo foi recente. Tive um problema com um `Promise.all` que possuia mais de 10 itens, e sua definição possui suporte somente até 10 itens. Tive que fazer uma _rataria_ pra fazer funcionar no meu caso. Mas para isso, tive que obrigar algumas coisas para que a tipagem funcionasse.
+Esse exemplo foi recente. Tive um problema com um `Promise.all` que possuia mais de 10 itens, e sua definição possui suporte somente até 10 itens. A solução exigiu alguns contornos específicos para que a tipagem funcionasse corretamente.
 
 > Obs: {"PromiseLike<T>"}: O meu tipo poderia ou não ser uma promise. Esse tipo foi retirado da definição oficial de Promise
 
@@ -113,7 +112,7 @@ Esse exemplo foi recente. Tive um problema com um `Promise.all` que possuia mais
 2. O array passado para minha função `PromiseAll` deverá ser passado como `as const` para garantir o readonly.
 3. Foi usado `...values: ReadonlyPromise<T>[]` e `values[0]` foram usados para "trapacear" a tipagem original, assim como o `as any` no `Promise.all` e após a invocação do método.
 
-Para você não ficar viajando, vou explicar o que é cada tipo antes de você ler o código:
+A seguir, uma explicação de cada tipo utilizado:
 
 - {"Unwrap<T>"}: Esse tipo irá fazer testes no tipo para verificar se o mesmo é uma Promise e o resolve, funcionando mais ou menos como um await
 - {"ReadonlyPromise<T>"}: Garantindo que o meu tipo seja _Readonly_ ou seja um _Readonly_ de _PromiseLike_
@@ -155,3 +154,5 @@ PromiseAll([promise, promise, 1]).then((e) => {
   console.log(e, f);
 });
 ```
+
+Obrigado pelo seu tempo, tamo junto e até a próxima

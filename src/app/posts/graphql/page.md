@@ -3,22 +3,22 @@ level: 0
 subjects: ["typescript", "nodejs"]
 title: "Graphql"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2021-06-07T23:20:20.492Z"
 description: "O 'matador' do REST ou só mais um hype?"
 ---
 
 # Introdução
 
-[Graphql](https://graphql.org/) é uma tecnologia muito com um hype absurdo, que propõe a resolver problemas de centralização dos dados, trazer o poder do cliente escolher quais dados julga necessários receber, trás um [_schema_](https://graphql.org/learn/schema/) que já possui uma documentação dos tipos entregues...só coisa boa né?
+[Graphql](https://graphql.org/) é uma tecnologia que gerou considerável hype ao propor resolver problemas de centralização de dados, dar ao cliente o poder de selecionar exatamente os dados necessários e fornecer um [_schema_](https://graphql.org/learn/schema/) com documentação dos tipos entregues.
 
-> PS: quando conheci graphql em 2017, fiquei num hype absurdo e até hoje ainda não consegui subir um sistema em produção que fosse amplamente usado. Triste...mas continuo na luta de implementar um graphql em larga escala
+> Nota pessoal: ao conhecer GraphQL em 2017, o entusiasmo foi imediato. Até hoje, porém, ainda não foi possível colocar em produção um sistema com uso amplo da tecnologia — a busca continua.
 
 # O que é o graphql?
 
 Graphql é uma query language que permite que o consumidor dos dados possam fazer queries com os dados que desejam receber. O servidor cria _schemas_ que definem as queries feitas. Cada _schema_ fornece meios para que você possa acessar dados dos objetos entregues pelo servidor.
 
-Se liga nesse exemplo de schema:
+Observe o seguinte exemplo de schema:
 
 ```graphql
 query {
@@ -44,12 +44,12 @@ type Character {
 }
 ```
 
-Agora ficou fácil saber né? Mais ou menos. Vamos desmembrar essa query:
+Com esses tipos definidos, fica mais fácil compreender a query anterior. A seguir, uma análise de cada elemento:
 
 - `enum Episode`: Esse é um tipo especial que define os possíveis valores para um determinado campo. Você já deve ter ouvido falar de [enum em Typescript](https://www.typescriptlang.org/docs/handbook/enums.html)
 - `type Character`: Definição do tipo do nosso objeto, neste caso, iremos chamar de **Character**
 - `name: String`: definição da property name do tipo _String_, pertencente ao grupo de _scalar types_ ou em tradução literal, tipos escalares. Que são os tipos primários para a construção de outros tipos
-- `name: String!`: Ainda sobre name, temos um `!`. Em graphql, o `!` (se você viu o meu [vídeo no YouTube](https://www.youtube.com/watch?v=EUJ5vWBT2iA&) vai saber que o nome certo é **brabo operator**) significa o NonNullable, ou não nulo.
+- `name: String!`: Ainda sobre `name`, temos um `!`. Em GraphQL, o `!` significa NonNullable — o campo não pode ser nulo.
 - `appearsIn: [Episode!]!`: A notação `[]` significa um array/lista de types `Episode`. O `!` aparecendo duas vezes remete a um array não nulo e um `Episode` não nulo.
 
 # [Scalar Types](https://graphql.org/learn/schema/#scalar-types)
@@ -65,9 +65,9 @@ Você também pode estender a possibilidade de scalar types com a keyword `scala
 
 # Matador do [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 
-**Apenas não...é isso.**
+A resposta curta é: não.
 
-Graphql e REST não deveriam ser considerados "adversários", na minha opinião. Graphql é uma tecnologia muito maneira, que trás diversos ganhos para sua vida como dev, mas trás muitos outros diversos problemas. Talvez até mais problemas do que benefícios. Eis alguns pontos de vistas a se considerar:
+GraphQL e REST não deveriam ser considerados adversários. GraphQL é uma tecnologia relevante, que traz ganhos concretos para o desenvolvimento, mas também traz problemas significativos — em alguns cenários, possivelmente mais problemas do que benefícios. Eis alguns pontos de vistas a se considerar:
 
 - **Mais uma camada de abstração**: É isso, o graphql acrescenta mais uma camada entre os seus dados e a lógica da sua aplicação. Isso pode não ser muito levado em conta por que utilizamos frameworks que abstraem isso, mas não se esqueça, a abstração está no framework.
 - **Qualidade da implementação**: Ainda sobre acrescentar uma camada, temos o problema de implementação do graphql na linguagem que você utiliza. É preciso aplicar um parser na string que você recebe como query, transformar a string em um *schema parseavel* pelo algoritmo para que esse algoritmo transforme tudo isso em objetos da sua linguagem alvo.
@@ -79,4 +79,4 @@ Graphql e REST não deveriam ser considerados "adversários", na minha opinião.
 
 Graphql é sem dúvidas uma grande tecnologia que podemos utilizar no nosso dia a dia. Não import a linguagem, você vai ter uma implementação em graphql. [Só olhar essa lista](https://graphql.org/code/). Como disse anteriormente, não faz sentido compararmos Rest e Graphql pois ambos se propõe a resolver o problema da entrega de dados com *approaches* diferentes, trazendo seus próprios benefícios e problemas.
 
-Vale super a pena estudar essa tecnologia, fazer suas provas de conceitos e ver se faz sentido ou não implementar na arquitetura. 
+Vale a pena estudar esta tecnologia, realizar provas de conceito e avaliar se faz sentido adotá-la na arquitetura. Obrigado pelo seu tempo, tamo junto e até a próxima

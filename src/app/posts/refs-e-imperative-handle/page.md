@@ -102,7 +102,7 @@ const Main = () => {
 };
 ```
 
-Tudo certo? **NÃOOOOOOOOOOOOOOOOO**. De repente, brotou um mega erro no console e nós estamos perdidos sobre como usar a ref. Se você tentar acessar a ref de um componente sem o `forwardRef`, você verá o seguinte erro:
+Não exatamente. Ao tentar isso, um erro aparecerá no console: Se você tentar acessar a ref de um componente sem o `forwardRef`, você verá o seguinte erro:
 
 ![Erro ao usar ref sem forward ref](/ref-error.png)
 
@@ -141,7 +141,7 @@ Dessa forma apresentada, nós só conseguimos fazer um forward da ref de um elem
 
 # useImperativeHandle
 
-Aaah, os hooks...Como eles facilitam nossa vida. Este aqui eu deixei por último pois para usar o `useImperativeHandle` você precisa do `forwardRef`. Nosso array de dependências pra esse hook já está preenchido, agora só aprender
+Este hook foi deixado por último porque depende do `forwardRef` para funcionar. Com os conceitos anteriores já apresentados, é possível entender seu uso:
 
 ```tsx
 import { useImperativeHandle, forwardRef } from "react";
@@ -193,4 +193,4 @@ Refs são uma verdadeira mágica que nos permite trabalhar diretamente com o DOM
 
 Apesar dessa mágica toda, usar o Ref pode ser um tiro pela culatra e acabar gerando problemas, uma vez que você fará mudanças diretas no DOM e o React irá fazer mudanças no Shadow DOM para posteriormente aplicar as mudanças. Seria mais ou menos um efeito de fazer 2 setStates ao mesmo tempo.
 
-Espero que vocês tenham curtido e entendido como funcionam as refs e como fazer para transitar as refs entre componentes. E isso é tudo pessoal.
+Obrigado pelo seu tempo, tamo junto e até a próxima

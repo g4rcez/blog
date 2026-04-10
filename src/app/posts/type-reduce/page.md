@@ -28,7 +28,7 @@ tipos, podendo transformar o seu Array em qualquer coisa. No nosso caso, um obje
 padrão `Record<string, string>`. Fazer dessa forma genérica não faz sentido, pois você perde toda a inferência de tipos,
 por isso a necessidade do `reduce` tipado.
 
-# Cadê o código?
+# Implementação
 
 Antes de jogar uma tipagem super complexa aqui, é preciso explicar o uso do ts-toolbelt nesse código. Foram utilizados
 dois métodos da biblioteca, `F.Narrow` e `N.Add`, que são basicamente são namespaces correspondentes a `Function` e `Number`,
@@ -36,8 +36,7 @@ respectivamente.
 
 - `F.Narrow`: uma forma de garantir imutabilidade total do nosso array. Apenas o `as const` não foi totalmente válido em
   alguns casos, mas ele é opcional para objetos simples
-- `N.Add`: o método de adicionar números através de tipos, você pode fazer `N.Add<1,1>` e o resultado será `2`. Esse
-  cara é o mais importante na lógica do nosso `Reduce`.
+- `N.Add`: o método de adicionar números através de tipos, você pode fazer `N.Add<1,1>` e o resultado será `2`. Este é o elemento mais importante na lógica do nosso `Reduce`.
 
 Agora uma explicação da lógica necessária para chegar no resultado. Dado que você conheça o `.reduce` e os índices de
 arrays, será tranquilo chegar na lógica desse tipo (não dá para falar que foi fácil executar).
@@ -52,8 +51,7 @@ arrays, será tranquilo chegar na lógica desse tipo (não dá para falar que fo
    nosso tipo, indo de 0 até o tamanho máximo do array
 5. Caso `C` seja igual ao tamanho máximo do array, retorne um objeto vazio. Como os índices do array vão de 0
    até `tamanho máximo - 1` essa condição encerra a recursividade
-6. Caso `C` não seja o mesmo valor do tamanho do array, crie um objeto `{ readonly [_ in T[C][K]]: T[C][V] }`. Calma que
-   eu vou explicar. `T[C]` é para pegar o item corrente do array, ou seja, para a posição `C=0`, pegue o primeiro
+6. Caso `C` não seja o mesmo valor do tamanho do array, crie um objeto `{ readonly [_ in T[C][K]]: T[C][V] }`. A seguir, uma explicação de cada parte: `T[C]` é para pegar o item corrente do array, ou seja, para a posição `C=0`, pegue o primeiro
    item, `C=2` pegue o segundo item e assim até que o array seja todo percorrido. `T[C][K]` serve para pegar a chave do
    item corrente no array, equivalente a `array[0].id`. E por último `T[C][V]` é responsável por pegar o valor,
    equivalente a `array[0].path`
@@ -98,4 +96,6 @@ console.log(map);
 ```
 
 Caso tenha interesse em ver o funcionamento desse código, pode dar uma olhada
-no [playground](https://www.typescriptlang.org/play?ssl=17&ssc=1&pln=18&pc=1#code/JYWwDg9gTgLgBDAnmApnA3nAcgGjgMTgF84AzKCEOAIhgGcBaGCCAGwCMVWZqBuAKH5JUcAEooAJgFcAxigA8AFTgoAHjBQA7CXThQUAQwkRNrRHAObEAbQC6eANIr1WnXADWKRBFJxF1zSkQTih7OAA1Zw1tXU9vX39A4JRQvABhKNddJJC4AF44AAYAPnz+OAq4DLVot39qVi0AcxgAC2pbOAB+DBIALgxyyuH9IxMzOGsAfThgTT9rNNtrB1tbAf8l63DbIYqSADIxSVkFRUc8cLwsADoAQQkJeTS8AEZi4sEZEzp4fWk5GVhkpMjE9IZjKZzJYbGEnDUsh4vD4FjkUmFIgiwXEUYkgiFbMUABQUKQaOgDfA3LAGKAUADuSmKeHcAwceAAbgNwgBKPp7YbHAFnC4RUp5UokiBklC6Ay6RQ8m7-U5EokGGQyPBcHn5SWYG6GjVayZcazuNYDM0czpEHl4dB2ixyqxfH7wEAGMD5cHConWAWYYASAbUKR0FJ0ah4MAGNqhgD04cj1GIOEDsxDNCMIDm0bgsfjNATObzaYzwdDFAgPBjcdaierPHLwyDWeoTS0KQMrHzhYbxc7mm7vfLnXlcG+ml+eGowfz1H71B5gn4CYTs00pBSCGQsrIFCohhkrVmGioKO8UigcAg7AAVigZDB+FPfnoWDAaSA0AVPWAblLTQBDfP5Px9f9lU-V8fjYFAblYCAmiJf8eV4IA). 
+no [playground](https://www.typescriptlang.org/play?ssl=17&ssc=1&pln=18&pc=1#code/JYWwDg9gTgLgBDAnmApnA3nAcgGjgMTgF84AzKCEOAIhgGcBaGCCAGwCMVWZqBuAKH5JUcAEooAJgFcAxigA8AFTgoAHjBQA7CXThQUAQwkRNrRHAObEAbQC6eANIr1WnXADWKRBFJxF1zSkQTih7OAA1Zw1tXU9vX39A4JRQvABhKNddJJC4AF44AAYAPnz+OAq4DLVot39qVi0AcxgAC2pbOAB+DBIALgxyyuH9IxMzOGsAfThgTT9rNNtrB1tbAf8l63DbIYqSADIxSVkFRUc8cLwsADoAQQkJeTS8AEZi4sEZEzp4fWk5GVhkpMjE9IZjKZzJYbGEnDUsh4vD4FjkUmFIgiwXEUYkgiFbMUABQUKQaOgDfA3LAGKAUADuSmKeHcAwceAAbgNwgBKPp7YbHAFnC4RUp5UokiBklC6Ay6RQ8m7-U5EokGGQyPBcHn5SWYG6GjVayZcazuNYDM0czpEHl4dB2ixyqxfH7wEAGMD5cHConWAWYYASAbUKR0FJ0ah4MAGNqhgD04cj1GIOEDsxDNCMIDm0bgsfjNATObzaYzwdDFAgPBjcdaierPHLwyDWeoTS0KQMrHzhYbxc7mm7vfLnXlcG+ml+eGowfz1H71B5gn4CYTs00pBSCGQsrIFCohhkrVmGioKO8UigcAg7AAVigZDB+FPfnoWDAaSA0AVPWAblLTQBDfP5Px9f9lU-V8fjYFAblYCAmiJf8eV4IA).
+
+Obrigado pelo seu tempo, tamo junto e até a próxima 

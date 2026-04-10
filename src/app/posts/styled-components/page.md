@@ -9,11 +9,11 @@ description: "Que tal fazer o seu próprio styled-components da forma simples?"
 ---
 # Introdução
 
-**TL;DRSe você só quiser código: [Link do Gist](https://gist.github.com/g4rcez/743ac98956f47ec7c58ad1149f5dc02e)**
+**TL;DR — Se você só quiser o código: [Link do Gist](https://gist.github.com/g4rcez/743ac98956f47ec7c58ad1149f5dc02e)**
 
 Você conhece o [styled-components](https://styled-components.com/)? Se não, te apresento agora a famosa biblioteca de CSS-in-JS mais utilizada no mundo React. 
 
-> Particularmente, prefiro trabalhar com CSS e JS em arquivos separados, mas isso fica pra próxima
+> Trabalhar com CSS e JS em arquivos separados é uma abordagem igualmente válida, mas não é o foco deste post.
 
 Se você nunca utilizou styled-components, observe um exemplo que peguei da documentação oficial:
 
@@ -49,9 +49,7 @@ const App = () => (
 );
 ```
 
-Incrível né? Você escreveu CSS dentro do JS e isso funcionou. Parece até magia. E é exatamente por parecer magia que estou escrevendo esse post. 
-
-Até o momento ainda não consegui entender o código todo do styled-components, mas analisando seu funcionamento em algumas páginas, é possível perceber que:
+O resultado é CSS escrito dentro do JavaScript, funcionando como esperado. Analisando o comportamento da biblioteca em algumas páginas, é possível perceber que:
 
 1. Ao carregar a página, o styled-components insere no `<head>` da aplicação uma tag `<style>` com alguns atributos para identificação
 2. Insere os estilos passados no CSS-in-JS nos elementos que são filhos de styled-components
@@ -155,7 +153,7 @@ const computedProps = useMemo(() => {
 }, [props, str]);
 ```
 
-> Pera um pouco. Tem um hook de brinde para você utilizar na hora de compor seu `className`
+> Um hook utilitário para compor o `className`:
 
 ```typescript
 import React, { useState, DependencyList, useMemo } from "react";
@@ -239,7 +237,7 @@ function Styled<ExtraProps = unknown, Element = Html>(tag: string) {
 }
 ```
 
-Olhando assim, não parece tão difícil né? E pra utilizar fica bem parecido com o styled-components original:
+O uso fica bastante próximo ao styled-components original:
 
 ```tsx
 type DIV = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
@@ -271,6 +269,4 @@ const App = () => {
 
 # Conclusão
 
-E então, o que achou? Claro que o styled-components faz algumas melhorias de performance durante a compilação do projeto, através das `macros`. Mas em projetos pequenos ou para fins de estudo, vale a pena você utilizar essa versão para observar o comportamento do React de forma mais *profunda*. 
-
-É isso aí amiguinhos, até a próxima
+O styled-components original realiza otimizações de performance durante a compilação através das `macros`. Em projetos pequenos ou para fins de estudo, no entanto, esta implementação simplificada é suficiente para observar o comportamento do React de forma mais direta. Obrigado pelo seu tempo, tamo junto e até a próxima

@@ -3,16 +3,16 @@ level: 1
 subjects: ["react", "frontend", "typescript", "javascript"]
 title: "E se eu precisar mudar só isso aqui?"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2019-08-08T03:18:00.000Z"
 description: "Criando frontends customizaveis com arquivos de setup"
 ---
 
-Quem nunca teve que parar o desenvolvimento pra ter que ouvir "Muda aquela corzinha ali de verde pra vermelho magenta?" ou então "Tem que trocar uma palavrinha só em tal lugar". Se você nunca ouviu, você têm muita sorte.
+Interrupções durante o desenvolvimento para atender pedidos como "Muda aquela cor de verde para vermelho magenta" ou "Troca só uma palavra em tal lugar" são mais comuns do que deveriam. Este post apresenta uma abordagem para tornar esse tipo de mudança mais controlada.
 
 # Historinhas
 
-A motivação desse post foi pra explicar um pouco da ferramenta que eu desenvolvi num projeto da empresa, projeto esse que eu apresentei no primeiro Meetup de NodeJS do Rio de Janeiro (somente uma parte dele). Eu fui falar de criação de CLIs, mas acabou que a ideia dessa minha CLI pra **gerar configurações do frontend** intrigou mais uma galera do que o próprio assunto de CLI em si.
+A motivação deste post é explicar uma ferramenta desenvolvida em um projeto real, apresentada no primeiro Meetup de NodeJS do Rio de Janeiro. Embora o tema da apresentação fosse criação de CLIs, a ideia de uma CLI para **gerar configurações do frontend** gerou mais interesse do que o assunto principal.
 
 Esse CLI foi feito para criar parâmetros de configuração do meu frontend que precisa mudar de cara de acordo com o tenant que está sendo acessado.
 
@@ -184,7 +184,7 @@ export default () => (
 );
 ```
 
-Bem simples né? O processo para a criação disso foi complexo, até existiam soluções prontas, mas todo e qualquer uso de bibliotecas de terceiros para estilização visual nos tiram a flexibilidade e aí acaba que mais ajuda do que atrapalha.
+O processo de criação foi complexo, e existiam soluções prontas, mas o uso de bibliotecas de terceiros para estilização visual retira flexibilidade e acaba criando mais problemas do que resolve.
 
 > Esse caso de usar bibliotecas de terceiro foi tão crítico que tive que reescrever toda a parte usada do [antd](https://ant.design) para o padrão com `var()`, assim não teria problemas em fazer o uso do componente sem quebrar as regras de cor do meu frontend
 
@@ -194,4 +194,4 @@ Ainda quero escrever um pequeno projeto com o exemplo dessa aplicação, usando 
 
 > Como nem tudo são flores, criaram a necessidade de customizar os textos com negrito, itálico, mudar de cor, aceitar valores dinâmicos de acordo com a ação do usuário e até mesmo criar links para instagram, facebook e whatsapp. Essa parada toda eu tenho tentado resolver [nesse repositório](https://github.com/g4rcez/code-markup-parser), porém não está tão atualizado ainda, mas ele esboça a ideia do parser baseado em [BBCode](https://www.bbcode.org)
 
-É isso aí leitor, espero que você tenha entendido o funcionamento. Qualquer dúvida, você sabe como me achar...até a próxima
+Obrigado pelo seu tempo, tamo junto e até a próxima

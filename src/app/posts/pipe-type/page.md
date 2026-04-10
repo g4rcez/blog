@@ -140,9 +140,7 @@ Como nós visamos receber pelo menos duas funções, os primeiros dois argumento
 
 O problema do *rest parameter* nesse caso é que precisamos aplicar uma regra nos parâmetros, sendo que eles não foram recebidos e tratados da forma devida da linguagem. Alterar os parâmetros da função diretamente no construtor da função acabam confundindo o nosso type system e jogando toda a inferência para o lado `any` da força.
 
-Tendo isso em mente, ao invés de testar os parâmetros em sua entrada, por que nós não podemos modificar a saída em caso da entrada estar errada? ***Quê?????????????????????????????***
-
-Fica tranquilo, vamos entender um pouco melhor essa frase.
+Tendo isso em mente, ao invés de testar os parâmetros em sua entrada, por que não modificar a saída quando a entrada estiver incorreta? A ideia pode parecer incomum à primeira vista, mas faz sentido ao entender a seguinte lógica.
 
 1. Iremos receber 3 parâmetros na nossa função `first`, `second` e um `rest`, sendo esse um rest parameter (N funções permitidas).
        1. O parâmetro `first` precisa extender `(...params: any[]) => any`. Pois, a entrada pode ter N argumentos.
@@ -264,4 +262,4 @@ console.log(result)
 
 # Conclusão
 
-Esse tipo deu trabalho, mas conseguimos e ainda descobrimos uma técnica interessante sobre como debuggar os nossos tipos, visto que agora nossa função pipe pode nos alertar sobre o index errado e qual a assinatura da função errada. Por hoje é só isso tudão. Espero que tenham gostado e até a próxima.
+A implementação exigiu algumas iterações, mas o resultado é uma técnica interessante para depurar tipos — a função `pipe` agora pode alertar sobre o index incorreto e a assinatura da função problemática. Obrigado pelo seu tempo, tamo junto e até a próxima

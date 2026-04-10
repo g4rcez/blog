@@ -3,7 +3,7 @@ title: "Estado global, local ou no navegador?"
 level: 2
 subjects: [ "typescript", "javascript", "react" ]
 language: "pt-br"
-translations: [ "pt-br" ]
+translations: [ "pt-br", "en-us" ]
 date: "2023-09-05T01:00:00.000Z"
 description: "O estado é responsabilidade do componente local, global ou do browser? Conheça as diversas formas de armazenamento de estado"
 ---
@@ -78,8 +78,7 @@ setCount(count + 1);
 
 O resultado será 1 devido
 às [atualizações em lote ou batch updates](https://react.dev/learn/queueing-a-series-of-state-updates#react-batches-state-updates).
-Estranho, não? Não, não é estranho. É apenas
-como o React se comporta em relação à atualização do estado. E exatamente por isso que é importante utilizar a
+Este é o comportamento esperado do React em relação à atualização do estado. E exatamente por isso que é importante utilizar a
 atualização de estado da forma de função e não pegando diretamente o valor do estado atual.
 
 2. ***Referências e referências***
@@ -385,10 +384,10 @@ Esses são os formulários são os mais chatos, onde o campo X depende do valor 
 
 ## Informações do usuário
 
-Esse é um caso clássico de estado global, seja utilizando redux, zustand, jotai ou qualquer outro. Esse cara em específico é importante estar no estado global para que você possa reagir às informações do perfil, seja para ocultar ou exibir componentes, evidenciar a conta logada, trocar perfil...são muitas coisas que fazem sentido.
+Esse é um caso clássico de estado global, seja utilizando redux, zustand, jotai ou qualquer outro. Este estado em específico é importante estar no estado global para que seja possível reagir às informações do perfil, seja para ocultar ou exibir componentes, evidenciar a conta logada, trocar perfil...são muitas coisas que fazem sentido.
 
 # Conclusão
 
 São diversas formas de manipular estado, para não se confundir, conheça bem cada uma delas e principalmente conhecer bem o seu problema. Nem sempre é necessário um estado global só porque a informação é utilizada em duas telas diferentes, às vezes um hook com a lógica implementada pode fazer bem o trabalho. Tente não otimizar as coisas antes de realmente precisar, e assim, você conseguirá conviver bem com os estados e suas múltiplas fontes. 
 
-Espero que tenha gostado e até a próxima. 
+Obrigado pelo seu tempo, tamo junto e até a próxima

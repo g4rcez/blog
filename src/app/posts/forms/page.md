@@ -3,7 +3,7 @@ level: 0
 title: Como trabalhar com formulários?
 subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2023-01-12T14:45:00.000Z"
 description: "Como criar formulários sem ter milhões de dependências externas?"
 ---
@@ -103,9 +103,7 @@ Para casos onde você não tem uma validação customizada, esse approach é per
 - Tipagem conforme o estado
 - Código simples
 
-Claro que assim é simplista demais, mas você pode fazer o uso da [[#^ada748|Validity State]] para garantir algumas
-consistências como valor numérico, min e max, range, checkbox ou radiobox. E o melhor de tudo, isso é nativo do
-navegador. Mas daqui a pouco vamos ver melhor esses exemplo com validity State
+Claro que assim é simplista demais, mas é possível utilizar a [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) para garantir consistências como valor numérico, min e max, range, checkbox ou radiobox. O melhor é que isso é nativo do navegador. Esse exemplo será explorado com mais detalhes mais adiante.
 
 ## Forms não controlados
 
@@ -159,7 +157,7 @@ O uso do querySelector é bem simples, basta escrever
 um [CSS Selector](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors) e você terá
 um `NodeListOf` desses elementos.
 
-Sem mais delongas, vamos para o código
+O código a seguir ilustra essa abordagem:
 
 ```typescript
 type State = {
@@ -204,7 +202,7 @@ Essa é uma das APIs mais subestimadas do navegador. Pouquissimo se usa ela em d
 como [Yup](https://github.com/jquense/yup) ou [Zod](https://github.com/colinhacks/zod) junto de alguma outra lib de
 validação como [react-hook-form](https://react-hook-form.com/) e similares.
 
-Esse combo de bibliotecas é até interessante, mas talvez em situações onde vc queira manter um tamanho de build menor,
+Esse combo de bibliotecas é até interessante, mas talvez em situações onde você queira manter um tamanho de build menor,
 eles não vão ser tão efetivos assim. E é exatamente aqui onde
 a [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) brilha. E vale lembrar que você **só
 pode utilizar ela com inputs dentro da tag `<form/>`**, caso contrário, nenhuma validação será feita
@@ -259,4 +257,4 @@ Uma mentalidade legal de adotar, não só para formulários, é utilizar mais do
 custom. Isso reduz a quantidade de código entregue para o cliente e melhora a experiência, trazendo uma experiência mais
 nativa/familiar.
 
-É isso, espero que tenham curtido e até a próxima.
+Obrigado pelo seu tempo, tamo junto e até a próxima

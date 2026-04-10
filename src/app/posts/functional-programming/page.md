@@ -3,15 +3,14 @@ level: 1
 subjects: ["typescript", "javascript"]
 title: "Functional Typescript"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2020-04-06T23:29:59.999Z"
 description: "FP além do .reduce"
 ---
 
 # Introdução
 
-Talvez você nunca tenha ouvido falar de programação funcional, mas com certeza já usou os conceitos básicos desse paradigma de programação.
-Atire uma pedra se você nunca usou um `Array.forEach`, `Array.map`, `Array.reduce` ou `Array.filter`. Se você nunca fez `[...array1, ...array2]`, então pode tacar uma pedra também.
+Talvez você nunca tenha ouvido falar de programação funcional, mas é muito provável que já tenha utilizado seus conceitos básicos. Métodos como `Array.forEach`, `Array.map`, `Array.reduce` e `Array.filter`, ou a sintaxe `[...array1, ...array2]`, são todos exemplos de programação funcional aplicada.
 
 Viu como sem saber você já usa conceitos de FP `(functional programming ou programação funcional)`? Mas afinal de contas, que conceitos são esses?
 
@@ -80,7 +79,7 @@ const list = [
 const total = list.reduce((acc, el) => acc + el.value, 0);
 ```
 
-Fica até mais simples, não? Talvez esses exemplos não sejam suficiente para você pescar o fio da meada, mas imagine uma situação onde você tem arrays e objetos.
+A solução fica mais concisa. Caso esses exemplos ainda não sejam suficientes para captar o conceito completo, considere uma situação com arrays e objetos.
 
 ```typescript
 // Ao executar essa função, você irá alterar o seu array original e não terá consistência nas informações
@@ -95,15 +94,13 @@ const safeConcatToArray = <T>(array: T[], newItem: T) => [...array, newItem];
 
 # Funções de primeira classe
 
-> Mas se é função como vai ser de classe? HAHA
-
 Funções de primeira classe ou `first class function` é o conceito que diz
 
 > Funções podem ser tratadas como simples valores, sendo manipulados e retornados (assim como fazemos com inteiros e strings). Quer dizer que podemos passar uma função para uma função e operarmos com ela como valor simples
 
 Isso com certeza você já usou em algum momento, afinal de contas, você já ouviu falar de callback né? Isso nos trás outro conceito que é `função de alta ordem`, que é uma função que recebe ou retorna uma função.
 
-Esses dois conceitos já foram usados no exemplo anterior, quando fizemos um `.reduce`. Se liga na assinatura do `Array.reduce`
+Esses dois conceitos já aparecem no exemplo anterior, quando foi utilizado `.reduce`. Observe a assinatura do `Array.reduce`:
 
 ```typescript
 Array.reduce(
@@ -117,7 +114,7 @@ Podemos ler da seguinte forma: _Array.reduce é uma função que recebe uma fun�
 2. Itera uma lista ou objeto aplicando a função recebida
 3. Processa um valor sem alterar a sua própria variável
 
-Ao reparar nisso, você vai ver que conhece muito mais de programação funcional do que imagina, apenas não sabia "dar nome aos bois".
+Ao analisar esses pontos, fica claro que o uso de programação funcional é mais comum do que se imagina — muitas vezes sem o conhecimento explícito dos conceitos por trás.
 
 # Imutabilidade
 
@@ -136,9 +133,9 @@ a(b);
 console.log(b); // {a: 1, c: 2}
 ```
 
-Aí você faz a seguinte pergunta
+Uma dúvida comum é:
 
-> Se eu to usando const, pq ele deixa eu alterar o valor do meu objeto?
+> Se estou usando `const`, por que ainda consigo alterar o valor do objeto?
 
 Simples, o `const` previne somente a `reatribuição` de valores, e não que ele altere as refêrencias de objetos. **MAS COMO EU NÃO VOU ALTERAR UM VALOR NO OBJETO SEM MUDAR A REFERÊNCIA DELE?**. Simples, basta criar uma cópia para manipular e entregar um novo objeto.
 
@@ -156,6 +153,6 @@ console.log(b); // {a: 1}
 
 E assim garantiríamos a imutabilidade do nosso objeto recebido na função.
 
-# Calma que tem mais...
+# Próximos conceitos
 
-Mas só no próximo artigo haha. Esse fica com os conceitos básicos pra tentar triggar aos poucos a forma funcional de como podemos pensar funcional.
+Este artigo cobre os fundamentos. Os próximos conceitos serão explorados no artigo seguinte, com o objetivo de introduzir gradualmente o pensamento funcional. Obrigado pelo seu tempo, tamo junto e até a próxima

@@ -20,7 +20,7 @@ Ou em português...
 
 Então essa série é sobre um **superset** de Javascript e não uma nova linguagem. Não vou dizer que a migração é super tranquila pois o transpilador (sim, é transpilador pois não gera código de máquina) do Typescript impede por padrão algumas das besteiras que fazemos com Javascript, sejam elas acidentais ou não.
 
-Sem mais delongas e histórias do que é o Typescript, vamos pro código
+A seguir, os conceitos fundamentais com exemplos de código.
 
 # Getting started
 
@@ -30,13 +30,11 @@ Simples e direto ao ponto:
 npm install -g typescript
 ```
 
-Se você quiser tentar algo sem precisar instalar, tenta o [playground online](https://www.typescriptlang.org/play/index.html).
-
-É isso.
+Caso prefira não instalar localmente, o [playground online](https://www.typescriptlang.org/play/index.html) é uma boa alternativa.
 
 # Tipos primitivos
 
-Se você veio do Java, C#, F#, Haskell ou qualquer linguagem tipada, então já está em casa. Se você é javascriptero de primeira viagem, seja bem vindo ao mundo onde você sabe **EXATAMENTE** o que é o que.
+Quem vem de Java, C#, F# ou Haskell já estará familiarizado com o conceito. Para quem vem exclusivamente do JavaScript, este é o ponto de entrada para um sistema onde os tipos das variáveis são explícitos e verificados em tempo de desenvolvimento.
 
 > JsDoc não é tipagem e nem todos os editores conseguem saber o que são suas variáveis, objetos, quais os tipos do seu array e afins.
 
@@ -65,13 +63,11 @@ type NomePessoa =
 const pessoa: NomePessoa = "John";  //
 ```
 
-> Já começou dando merda?
+O tipo `NomePessoa` aceita somente os valores literais definidos na union: "Fu", "Bá", "Joãozinho", "Mariazinha" ou "Fulano". "John" não é um valor aceito, portanto não pode ser atribuído a uma variável do tipo `NomePessoa`.
 
-Não, calma aí. O nosso tipo `NomePessoa` é um tipo que pode ser "Fu" ou "Bá" ou "Joãozinho" ou "Mariazinha" ou "Fulano". Sacou? "John" não é um tipo aceito, então ele não pode ser considerado um `NomePessoa`.
+Esse é o tipo de segurança que o TypeScript oferece em tempo de desenvolvimento. Mas é importante lembrar que o TypeScript garante isso apenas durante o desenvolvimento, mas em runtime isso não pode ser garantido caso o input seja algo que não esteja no nosso type. Se você escrever um código que garanta que o input não vai ser uma `string` genérica, mas sim um `NomePessoa`, você pode ficar despreocupado.
 
-Entendeu o _segurança_ que eu disse? Maneiro né. Mas...Typescript é nos garante que isso funcione em desenvolvimento, mas em runtime isso não pode ser garantido caso o input seja algo que não esteja no nosso type. Se você escrever um código que garanta que o input não vai ser uma `string` genérica, mas sim um `NomePessoa`, você pode ficar despreocupado.
-
-> Mas cara, como eu posso garantir que meu código fique blindado com essas paradas?
+> Uma dúvida natural: como garantir que o código fique totalmente protegido contra valores inválidos?
 
 A resposta é simples, **não pode**. Mas podemos evitar ao máximo que o input seja malicioso.
 
@@ -87,7 +83,7 @@ getChar("Fu", 2); // Isso passa
 getChar("FULANO", 0); // Isso dá erro
 ```
 
-HMMMMMMMMMMMMMMMMM AGORA EU ENTENDI.
+Este é o comportamento esperado.
 
 Em desenvolvimento, o transpilador do Typescript irá impedir você passar qualquer valor diferente de `NomePessoa` para a sua função `getChar`. Da mesma maneira que ele irá garantir que o primeiro parâmetro seja uma string do tipo `NomePessoa`, ele vai garantir que seu segundo parâmetro seja um número e não uma string numérica.
 
@@ -110,7 +106,7 @@ const numbers: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Que é o mesmo que
 const numbers: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 ```
 
-> Calma aí cara. Já colocou array no bagulho. Explica isso
+> Uma nota sobre como tipar arrays em TypeScript:
 
 Tipar arrays é muito simples, e existem duas formas que são **quase idênticas**. Uma é usando o tipo `Array` e outro é usando o seu `shorthand`, como já vimos, é o `[]`. A diferença deles é apenas essa:
 
@@ -155,7 +151,7 @@ type User = {
 
 Com nosso novo tipo `User` e `Linguagens` iremos conseguir tipar as nossas chaves e valores de cada objeto que seja do tipo `User`.
 
-Fica de bônus...
+Como exemplo adicional de uso do `readonly`:
 
 Como falei do `readonly` mais acima, vamos usa-lo aqui para garantir imutabilidade ao nosso objeto. Ou seja, toda vez que alguém tentar reatribuir um valor a propriedade de `User`, irá ganhar um erro para evitar isso.
 
@@ -189,8 +185,4 @@ Assim você garante que seus valores nunca irão ser reatribuídos. Em caso de o
 
 # Conclusão
 
-A primeira parte fica por aqui, e espero que você esteja igual ao Bender...
-
-![Agora eu entendi, agora eu saquei, agora todas as peças se encaixaram](https://media.tenor.com/images/683e4bf8ac0e8ca61dd29e15e94558b8/tenor.gif)
-
-Planejo continuar essa série para explicar alguns tipos complexos, até chegar em algo parecido com o meu hook [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer/). Se tiver dúvidas, pode abrir uma issue no repositório ou me procurar no telegram [@g4rcez](https://t.me/g4rcez).
+A série continuará nos próximos artigos com tipos mais complexos, avançando até padrões como o [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer/). Obrigado pelo seu tempo, tamo junto e até a próxima

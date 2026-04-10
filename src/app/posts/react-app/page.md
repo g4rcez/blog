@@ -19,10 +19,9 @@ Minha última experiência tem sido bastante peculiar. Acabei tendo de usar/dese
 - Roteamento dinâmico
 - Controle de acesso
 
-Ficou bastante coisa, um pouco complexo e com certeza um caso de over engineering, mas foi a forma
-que mais fez sentido e a que na minha cabeça ficou da melhor forma.
+O resultado foi uma solução complexa — possivelmente um caso de over engineering — mas foi a abordagem que melhor atendeu aos requisitos.
 
-Vamos por parte explicando o setup, mas se quiser ver o resultado, é só [ir lá no meu github](https://github.com/g4rcez/react-app-multitenant).
+O setup será explicado por partes. O resultado completo está disponível no [repositório no GitHub](https://github.com/g4rcez/react-app-multitenant).
 
 # create-react-app
 
@@ -320,7 +319,7 @@ Se você precisa de uma aplicação que seja modularizada, algo próximo de um m
 
 O over engineering foi aceito para tal solução, infelizmente ainda não vi uma forma de reduzir a quantidade absurda de voltas e alguns boilerplates que isso requer, mas é um preço a se pagar dado a necessidade.
 
-E é isso galerinha, espero que isso possa ajudar você a dar uma clareada na mente e fique como material de pesquisa. Quaisquer problemas, posta uma issue lá no repositório que a gente troca uma ideia xD
+Obrigado pelo seu tempo, tamo junto e até a próxima
 
 # Referências
 

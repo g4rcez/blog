@@ -3,7 +3,7 @@ level: 1
 subjects: ["react", "redux", "frontend", "typescript", "javascript"]
 title: "Hooks + Redux"
 language: "pt-br"
-translations: ["pt-br"]
+translations: ["pt-br", "en-us"]
 date: "2019-09-29T11:33:00.000Z"
 description: "Unido os hooks ao estado global"
 ---
@@ -12,7 +12,7 @@ description: "Unido os hooks ao estado global"
 
 Desde que saiu a versão estável de Hooks para React, eu vejo muitos artigos com a ideia de **Usando Hooks para eliminar o Redux da sua aplicação**. Alguns desses têm até umas ideias interessantes, mas não é esse o propósito de Hooks, se você quer criar uma biblioteca que substitua o Redux, você deverá estudar ContextAPI e não Hooks.
 
-Estou usando Hooks desde a versão Alpha, e também comecei a usar Redux Hooks em Alpha. **AMBOS EM PRODUÇÃO, PORQUE AQUI É VIDA LOUCA.**
+Hooks e Redux Hooks foram adotados ainda em Alpha — ambos em produção.
 
 # Hands on
 
@@ -101,11 +101,11 @@ const Component = (externalProps) => {
 };
 ```
 
-Agora sim eu tenho um hook que entrega algo mais semelhante a quem está acostumado com classes, porém sem o this. O `useConnect` faz um comportamento bem similar ao do `connect` mas não cria um componente wrapper para passar props da sua store. Show.
+O resultado é um hook que entrega algo mais semelhante ao uso com classes, porém sem o `this`. O `useConnect` tem comportamento similar ao `connect`, mas sem criar um componente wrapper para passar props da store.
 
-# Tá, mas só isso?
+# Apenas isso?
 
-Não...
+Não apenas isso.
 
 Com os hooks básicos: `useState` e `useEffect`, podemos criar ações que iram abstrair bastante do código e ao invés de entregar um valor de forma mais "mastigada" pra quem consumir os hooks. Dois exemplos que vou mostrar aqui são `Filtrar listas` (com o uso do Redux) e `Exibir o um loading` (sem o uso do Redux).
 
@@ -224,4 +224,4 @@ E assim podemos ter uma ação com estado próprio, sem a necessidade de criar a
 
 # Por hoje é só
 
-Era isso que eu queria demonstrar hoje, da próxima vez que ver um artigo **Usando hooks para matar o Redux**, pense bem em como vc pode utilizar as duas tecnologias para os seu próprio bem e que elas não são concorrentes, e sim tecnologias complementares que juntas irão proporcionar uma produtividade maior a você e sua equipe.
+Este artigo demonstra que ao deparar com um artigo do tipo **Usando hooks para eliminar o Redux**, vale refletir sobre como as duas tecnologias podem ser usadas em conjunto. Elas não são concorrentes, mas sim complementares — juntas proporcionam maior produtividade para o time. Obrigado pelo seu tempo, tamo junto e até a próxima

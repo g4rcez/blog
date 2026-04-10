@@ -93,6 +93,6 @@ const statusComponents: StatusComponents = {
 };
 ```
 
-Muito simples, não é? Tudo bem definido com os tipos e sem quebrar nada. O melhor de tudo é que se o enum receber uma nova property ou tiver alguma property removida, o `statusComponents` irá alertar um erro e vc terá que corrigir, sem precisar se preocupar se está esquecendo alguma coisa. O mesmo também vale pra caso você mude o nome das properties.
+Muito simples, não é? Tudo bem definido com os tipos e sem quebrar nada. O melhor de tudo é que se o enum receber uma nova property ou tiver alguma property removida, o `statusComponents` irá alertar um erro e você terá que corrigir, sem precisar se preocupar se está esquecendo alguma coisa. O mesmo também vale pra caso você mude o nome das properties.
 
-Era esse caso bem simples que queria trazer pra vocês hoje. Um truque simples e poderosíssimo, que vai ajudar bastante na hora da sua _codada_ do dia a dia.
+Este é um padrão simples e eficaz que se mostra bastante útil no dia a dia. Obrigado pelo seu tempo, tamo junto e até a próxima

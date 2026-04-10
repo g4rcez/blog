@@ -10,11 +10,11 @@ description: "Desmascarando Array em JS"
 
 # Introdução
 
-Como todo bom escritor de artigos JS, eu vou ter que escrever a minha série `Map, Filter e Reduce`. Mas to pensando em ser um pouco diferente da maioria de todos os artigos e fazer um deep dive do pacote `Array`. Sem mais delongas, vamos lá.
+Este artigo explora a série `Map, Filter e Reduce` com uma abordagem mais aprofundada do pacote `Array`, indo além do que a maioria dos artigos costuma cobrir.
 
 # Array
 
-Criar um Array em JS é simples, se liga só
+Criar um Array em JS é simples:
 
 ```javascript
 const pessoas = ["João", "Maria"]; // ou então
@@ -110,7 +110,7 @@ const string = "Socorram-me em Marrocos";
 
 "Sintaxe de propagação" como está na [MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Spread_operator) é o nosso querido _SpreadOperator_. Ele permite expandir os objetos iteráveis para o uso em funções e também desestruturar iteráveis.
 
-Apesar de não ser muito o foco desse artigo, vou mostrar umas tricks com o SpreadOperator em array, se tiver dúvida, posta uma issue no repositório do blog que eu te explico :smile:
+Apesar de não ser muito o foco desse artigo, vou mostrar algumas demonstrações com o SpreadOperator em arrays. Em caso de dúvida, abra uma issue no repositório do blog.
 
 ```javascript
 const [primeiro, segundo, ...n] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -130,7 +130,7 @@ a.push([1, 2, 3, 4, 5, 6, 7]); // Vai colocar o array como um único elemento
 a.push(...[1, 2, 3, 4, 5, 6, 7]); // Separa de acordo com cada elemento
 ```
 
-O Spread é sinistro, você pode fazer bom uso dele para evitar `.call` e `.apply` em algumas funções. Pode usar em objetos...mas fica para você descobrir como funcionam os outros usos.
+O Spread é bastante poderoso — é possível fazer bom uso dele para evitar `.call` e `.apply` em algumas funções. Pode usar em objetos...mas fica para você descobrir como funcionam os outros usos.
 
 # Array.join
 
@@ -144,25 +144,23 @@ const toStringAgain = toArray.join("");
 
 # Array.find
 
-Esse é o método que eu costumo chamar de **mãe**, porque se ele não achar, não existe. E é isso mesmo que ele faz. Ele vai procurar a primeira ocorrência de acordo com o seu callback, caso nada dê match, não existe e retorna `undefined`;
+O `find` busca a primeira ocorrência de acordo com o callback fornecido. Caso nenhum elemento corresponda, retorna `undefined`.
 
-> Esse exemplo a seguir pode ser um pouco pesado, mas não leve a sério, é só brincadeira didática
+> O exemplo a seguir é apenas ilustrativo.
 
 ```javascript
 const seusAmores = ["mãe", "pai", "irmã", "irmão", "cachorro", "papagaio"];
 seusAmores.find((x) => Voce.meAmaPeloNome(x)); // undefined
-// O exemplo acima retorna undefined porque ninguém te ama
-// Mas não fique triste, isso vai mudar
+// O exemplo acima retorna undefined pois nenhum elemento satisfaz a condição
 seusAmores.find(Boolean); // mãe
 ```
 
-Não se preocupe pessoa, se o find não curou a sua carência de ter somente um amor, vamos pra um próximo método que vai te deixar bem feliz
+O próximo método retorna todas as ocorrências em vez de apenas a primeira:
 
 # Array.filter
 
 Se o find retorna a primeira ocorrência, o filter retorna **TODAS** as ocorrências de acordo com o seu callback
 
-> Dessa vez você será amado :heart:
 
 ```javascript
 const seusAmores = ["mãe", "pai", "irmã", "irmão", "cachorro", "papagaio"];
@@ -184,7 +182,6 @@ const novaVida = vida.map((element) => Vida.melhorar(x, 1000));
 novaVida; // ["Ricão", "s(ua|eu) crush apaixonad(o|a)", "Brasil+++"]
 ```
 
-> Desculpa algumas brincadeiras, eu juro que isso parece ser didático na minha cabeça
 
 Uma coisa que o `map` não faz é converter o seu array pra valores únicos, então pra isso nós iremos entender o `reduce`
 
@@ -209,18 +206,18 @@ const novaPessoa = keysArray.reduce((acc, el) => {
 }, {}); // { nome: "Fu", sobrenome: "Ba", altura: 1.8 }
 ```
 
-Mas cara, o que é `acc` e `el`? São os parâmetros recebidos pela função :smile:. Como são parâmetros posicionais, temos:
+Os parâmetros `acc` e `el` são recebidos pela função de callback. Como são posicionais, temos:
 
 1. Acumulador. Definido um valor inicial, ele irá respeitar aquele tipo, a menos que você mude sem mais nem menos em um retorno errado (nunca faça isso ou nunca deixe acontecer)
 2. Valor atual. O nome diz tudo
 3. Índice do valor atual. O nome também diz tudo
 4. Array de origem iterável. Preciso nem falar que o nome também diz tudo né?
 
-Caso não tenha prestado atenção, o método `reduce` recebe dois parâmetros, o callback e o valor inicial, caso você esqueça de passar o valor inicial, o `reduce` irá usar o primeiro item do seu array e a redução será feita a partir do índice 1 e não do índice 0. Para o seu bem, nunca esqueça do valor inicial :smile:
+O método `reduce` recebe dois parâmetros: o callback e o valor inicial. Caso o valor inicial não seja fornecido, o `reduce` utilizará o primeiro item do array e a redução será feita a partir do índice 1. Portanto, sempre forneça o valor inicial.
 
 # Tricks
 
-Umas tricks boladonas pra você assimilar o conteúdo lido. Não vai ter explicação. Se você não entendeu, tente exercitar e postar uma issue de dúvida pra gente discutir
+Exemplos práticos para consolidar o conteúdo apresentado. Sem explicações adicionais — tente exercitar e, em caso de dúvida, abra uma issue no repositório.
 
 ```javascript
 const newArray = (number, transformCallback) =>
@@ -235,4 +232,4 @@ const pipeAsyncFunctions =
     fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
 ```
 
-Pra finalizar, aquele abraço e espero que tenha entendido tudo. Se não entendeu, pode entrar em contato ou postar uma issue que eu terei o maior prazer em te ajudar :smile:
+Obrigado pelo seu tempo, tamo junto e até a próxima
