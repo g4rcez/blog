@@ -2,27 +2,27 @@
 level: 0
 subjects: ["nodejs", "javascript", "typescript"]
 title: "Node CLI"
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-08-03T03:18:00.000Z"
-description: "Automatizando tarefas pela linha de comando"
+description: "Automating tasks through the command line"
 ---
 
-# Introdução
+# Introduction
 
-Como no dia 07/08/2019 irei [apresentar sobre NodeJS e CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/), resolvi escrever esse pequeno post para deixar como referência após a apresentação e também esclarecer as ideias antes de apresentar.
+This post was written to accompany a [presentation about NodeJS and CLIs](https://www.meetup.com/pt-BR/Node-js-Rio/events/263378339/) on 2019-07-08, serving as both a reference after the talk and a way to organize ideas beforehand.
 
-# Motivação
+# Motivation
 
-Durante um bom tempo, Bash e Python foram as ferramentas utilizadas para construir CLIs. Eram soluções funcionais, mas a manutenção se tornava custosa com o tempo — especialmente com problemas de indentação ao migrar entre editores.
+For a long time, Bash and Python were the primary tools for CLI development. They served well, but maintenance became increasingly difficult — particularly due to indentation inconsistencies when switching editors.
 
-Ao começar a pesquisar sobre o ferramental de NodeJS, a perspectiva mudou. Com maior familiaridade com frontend e JavaScript, foi possível reescrever os scripts em NodeJS e obter os mesmos resultados com um código mais conciso. **_Ainda mais quando decidi colocar [Typescript](https://www.typescriptlang.org) no meio disso tudo_**.
+Researching NodeJS tooling changed everything. Coming from a frontend background, JavaScript was a natural fit. Rewriting the Python scripts in NodeJS produced the same results with more concise code. **_Even more so after adding [TypeScript](https://www.typescriptlang.org) to the mix._**
 
 # npm init
 
-Como o ecossistema de JavaScript é bastante vasto, existem centenas de boilerplates disponíveis, cada um com suas configurações e boas práticas. Neste post, a preferência é pelo mínimo necessário, seguindo o princípio [KISS](https://en.wikipedia.org/wiki/KISS_principle).
+The JavaScript ecosystem offers countless boilerplates, configuration guides, and best practice frameworks. The preference here is to keep things simple, following the [KISS](https://en.wikipedia.org/wiki/KISS_principle) principle.
 
-Vou me ater ao simples de uma CLI pra ordenar versões de tags do git. Usando bash, poderiamos usar o comando `sort`, fazendo o seguinte comando `git tag | sort -V`. Mas como o foco é um CLI em NodeJS, vamos lá:
+I'll stick to the simple of a CLI to sort git tag versions. Using bash, we could use the `sort` command, doing the following command `git tag | sort -V`. But since the focus is a NodeJS CLI, let's go:
 
 ```bash
 $ mkdir my-cli
@@ -30,15 +30,15 @@ $ cd my-cli
 $ npm init -y
 ```
 
-O flag `-y` aceita os valores padrão do `npm init` automaticamente. A partir daí, os ajustes necessários para começar a escrever código são os seguintes:
+The `-y` flag skips interactive prompts. This is sufficient to begin making the necessary adjustments before writing code. We have some steps to execute:
 
-1. Inserir a chave `main` e `bin` com o path de entrypoint da aplicação no `package.json`
-2. Criar o diretório para código TS
-3. Configurar o `tsconfig.json` e um `tslint.json` para fortalecer o desenvolvimento
-4. Instalar as dependências
-5. Implementar o código
+1. Insert the `main` and `bin` keys with the application entrypoint path in `package.json`
+2. Create the directory for TS code
+3. Configure `tsconfig.json` and a `tslint.json` to strengthen development
+4. Install dependencies
+5. Code!!! Code!!! Code!!!
 
-# Main no package.json
+# Main in package.json
 
 ```json
 {
@@ -59,22 +59,24 @@ O flag `-y` aceita os valores padrão do `npm init` automaticamente. A partir da
 }
 ```
 
-Como vamos usar [Typescript](https://www.typescriptlang.org), tanto `main` quanto `bin` são os diretórios de transpilação
+Since we're going to use [Typescript](https://www.typescriptlang.org), both `main` and `bin` are the transpilation directories
 
-> Apesar do mundo inteiro dizer compilar JS, esse termo é errado, pois TS transpila JS e não compila. Afinal de contas, o bundle não é um arquivo binário.
+> Although "compile" is commonly used in JavaScript contexts, it is technically incorrect — TypeScript *transpiles* to JavaScript rather than compiling to binary. The output is not a binary file.
 
-**Mas como programar em TS se NodeJS não executa TypeScript diretamente?**
+![](https://media.giphy.com/media/1L5YuA6wpKkNO/source.gif)
 
-# Escrevendo TS
+**But how will I program with TS if NodeJS doesn't run TS?**
 
-O primeiro passo antes de tudo é criar um `tsconfig.json`. Caso você não tenha typescript no PC, vamos resolver isso agora para fazer nossa CLI
+# Writing TS
+
+The first step before everything is to create a `tsconfig.json`. If you don't have typescript on your PC, let's solve this now to make our CLI
 
 ```bash
 $ npm i -g typescript
 $ tsc --init
 ```
 
-E pronto, já temos o nosso `tsconfig.json` e vamos deixar ele com essa cara:
+And that's it, we already have our `tsconfig.json` and let's make it look like this:
 
 ```json
 {
@@ -96,38 +98,40 @@ E pronto, já temos o nosso `tsconfig.json` e vamos deixar ele com essa cara:
 }
 ```
 
-Se você estiver no VsCode, aconselho usar `CTRL+Space` nos campos para ver o que há disponível e se aventurar com suas próprias configurações. Caso queira alguma referência, [esse é o meu `tsconfig.json` que costumo usar no trabalho/projetos](https://gist.github.com/g4rcez/0848b503288f08e7a9592f04576c7f4a).
+If you're in VsCode, I advise using `CTRL+Space` in fields to see what's available and venture with your own configurations. If you want some reference, [this is my `tsconfig.json` that I usually use at work/projects](https://gist.github.com/g4rcez/0848b503288f08e7a9592f04576c7f4a).
 
-Para manter a qualidade do código TypeScript, recomenda-se utilizar o [`TSLint`](https://palantir.github.io/tslint/).
+Since we're going to use TS, it's good to use [`TSLint`](https://palantir.github.io/tslint/) together to avoid any mess.
 
 ```bash
 npm i -g tslint
 tslint --init
 ```
 
-E caso queira [referência, esse é o meu `tslint.json`](https://gist.github.com/g4rcez/1218bcfe10e930adf1e4f8aa0be91cf9).
+And if you want [reference, this is my `tslint.json`](https://gist.github.com/g4rcez/1218bcfe10e930adf1e4f8aa0be91cf9).
 
-# Dependências
+# Dependencies
 
-Como é comum em projetos NodeJS, algumas dependências são necessárias para o desenvolvimento de uma CLI.
+As with most NodeJS projects, a few dependencies are needed. Building a CLI is no exception.
+
+> I like to use yarn whenever possible in my projects, in case one day I think about using yarn workspaces
 
 ```bash
 $ yarn add typescript semver commander signale chalk
 $ yarn add --dev @types/node @types/semver @types/signale
 ```
 
-Tirando `typescript`, os demais são novos, então vou explicar
+Except for `typescript`, the others are new, so I'll explain
 
-- [semver](https://github.com/npm/node-semver): Para versionamento semântico. Você pode olhar sobre o [semver no site oficial e entender sobre versionamento de software](https://semver.org)
-- [commander](https://github.com/tj/commander.js/): Esse é o meu gerenciador de argumentos da CLI favorito. Um ótimo suporte para codar no estilo `getopt.h` do C ou programas no `git style`
-- [signale](https://github.com/klaussinani/signale): Um log extremamente útil e com diversas features para exibir mensagens
-- [chalk](https://github.com/chalk/chalk): Pense num CSS para seu terminal, é o mais simples pra explicar
+- [semver](https://github.com/npm/node-semver): For semantic versioning. You can look at [semver on the official site and understand about software versioning](https://semver.org)
+- [commander](https://github.com/tj/commander.js/): This is my favorite CLI argument manager. Great support for coding in the `getopt.h` style from C or programs in `git style`
+- [signale](https://github.com/klaussinani/signale): An extremely useful log with several features for displaying messages
+- [chalk](https://github.com/chalk/chalk): Think of CSS for your terminal, it's the simplest to explain
 
-Os types são `devDependencies` para nos auxiliar com o typing do TS
+The types are `devDependencies` to help us with TS typing
 
-# Desenvolvimento selvagem
+# Wild development
 
-Com as dependências instaladas, é possível começar a implementação. O código completo vem primeiro, seguido da explicação.
+With everything in place, development can begin. The code comes first, followed by an explanation:
 
 ```typescript
 import cli from "commander";
@@ -137,8 +141,8 @@ import signale from "signale";
 const program = new cli.Command();
 
 /*
-    Vamos usar $ por ser o símbolo que identifica a shell usuários
-    no Unix, não por causa do Jquery
+    We'll use $ as it's the symbol that identifies the user shell
+    in Unix, not because of Jquery
 */
 const $ = (command: string): Promise<string> =>
   new Promise((res, rej) =>
@@ -150,13 +154,13 @@ const $ = (command: string): Promise<string> =>
     })
   );
 
-//  Como não exigimos parâmetros aqui, então não esperamos receber nada
+// Since we don't require parameters here, we don't expect to receive anything
 const Tags = () => {
   try {
-    const gitOutput = await $("git tag"); // Output de todas as tags
+    const gitOutput = await $("git tag"); // Output of all tags
     const tags = gitOutput.split("\n");
-    // Uma ordenação simples de acordo com as versões apresentadas
-    // Versões não válidas ficaram no topo da pilha
+    // A simple sort according to the presented versions
+    // Invalid versions will stay at the top of the stack
     tags.sort((v1: string, v2: string) => {
       if (semver.valid(v1) && semver.valid(v2)) {
         if (semver.eq(v1, v2)) {
@@ -173,12 +177,12 @@ const Tags = () => {
 program
   .version("0.0.1")
   .allowUnknownOption(false)
-  .description("Ordenador de tags")
+  .description("Tag sorter")
   .usage("tag")
   .command("tag")
   .name("my-cli")
   .alias("t")
-  .description("Ordena as tags do repositório git corrente")
+  .description("Sorts the tags of the current git repository")
   .action(Tags);
 
 if (process.argv.length === 2) {
@@ -188,31 +192,31 @@ if (process.argv.length === 2) {
 program.parse(process.argv);
 ```
 
-E pronto, temos nosso primeiro CLI em TS. Para você rodar ele como Node, basta realizar esses passos
+And that's it, we have our first CLI in TS. To run it as Node, just follow these steps
 
 ```bash
-$ tsc # Isso irá transpilar do diretório src para cli
-$ node cli tag # Ou então
-$ node cli t # alias definido no programa
+$ tsc # This will transpile from src directory to cli
+$ node cli tag # Or
+$ node cli t # alias defined in the program
 ```
 
-Não vou deixar de explicar como podemos fazer para receber os parâmetros no caso de ser necessário, é bem simples usando a interface do commander, só fazer da seguinte maneira
+Adding parameter support is straightforward using the commander interface:
 
 ```typescript
 /*
-    Os mesmos imports anteriormente e quase o mesmo código.
-    Agora iremos receber params para ter acesso ao que foi recebido.
-    Vou colocar o tipo any pra não ficar
-    muito verboso (e nesse caso específico),
-    a tipagem explícita não é obrigatória neste contexto específico
+    The same imports from before and almost the same code.
+    Now we'll receive params to have access to what was received.
+    I'll put the any type so it doesn't get
+    too verbose (and in this specific case),
+    I end up not typing because sometimes it's GoHorse
 
-    Acaba que na própria definição no seu schema do commander vc anota
-    os tipos que irá receber com os seus argumentos do programa
+    It ends up that in the commander schema definition you annotate
+    the types you'll receive with your program arguments
 */
 const Tags = (params: any) => {
   try {
-    // Até o próximo comentário, ta tudo igual
-    const gitOutput = await $("git tag"); // Output de todas as tags
+    // Until the next comment, everything is the same
+    const gitOutput = await $("git tag"); // Output of all tags
     const tags = gitOutput.split("\n");
     tags.sort((v1: string, v2: string) => {
       if (semver.valid(v1) && semver.valid(v2)) {
@@ -223,8 +227,8 @@ const Tags = (params: any) => {
       }
       return -1;
     });
-    // Até aqui, nada mudou, mas vamos colocar um info e estilizar
-    // com o chalk pra dizer que mostrei ele
+    // Up to here, nothing changed, but let's put an info and style
+    // with chalk to show that I showed it
     signale.info(chalk.bold.visible.underline.blue(params.msg));
     signale.success(tags.join("\n"));
   } catch (e) {}
@@ -233,21 +237,21 @@ const Tags = (params: any) => {
 program
   .version("0.0.1")
   .allowUnknownOption(false)
-  .description("Ordenador de tags")
+  .description("Tag sorter")
   .usage("tag")
   .command("tag")
   .name("my-cli")
   .alias("t")
-  // Aqui está o novo trecho no commander
-  // Ele irá entregar uma property "msg" para você usar como valor
-  // caso não exista, ela será o valor padrão que definiu
-  // E se não definir, será undefined
+  // Here's the new snippet in commander
+  // It will deliver a "msg" property for you to use as value
+  // if it doesn't exist, it will be the default value you defined
+  // And if not defined, it will be undefined
   .option(
-    "-m, --msg <mensagem>",
-    "Mensagem a ser exibida antes de exibir as tags",
-    "Ordenação de tags"
-  ) // "Ordenação de tags" é a mensagem padrão caso não haja
-  .description("Ordena as tags do repositório git corrente")
+    "-m, --msg <message>",
+    "Message to be displayed before showing tags",
+    "Tag sorting"
+  ) // "Tag sorting" is the default message if there's none
+  .description("Sorts the tags of the current git repository")
   .action(Tags);
 
 if (process.argv.length === 2) {
@@ -257,4 +261,4 @@ if (process.argv.length === 2) {
 program.parse(process.argv);
 ```
 
-Com isso, é possível começar a construir CLIs com NodeJS e considerá-lo como alternativa viável para scripts. Obrigado pelo seu tempo, tamo junto e até a próxima
+This covers the essentials for building CLIs with NodeJS — reason enough to consider it as the preferred language for script development. Thank you for your time, see you soon, bye bye

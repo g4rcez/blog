@@ -1,75 +1,75 @@
 ---
 level: 1
 subjects: ["javascript", "typescript", "frontend", "nextjs"]
-title: "Micro frontend ou NextJS"
-language: "pt-br"
+title: "Micro frontend or NextJS"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2020-12-24T00:00:00.000Z"
-description: "Tecnologia nova, conceito velho. Nada muda"
+description: "New technology, old concept. Nothing changes"
 ---
 
-# Introdução
+# Introduction
 
-[NextJS](https://nextjs.org/) é um dos projetos mais impressionantes da atualidade. O conceito de SSR que ele adotou (que não é nada inovador) aliado a todo o tooling e ecossistema React é, de fato, notável.
+[NextJS](https://nextjs.org/) is one of the most impressive modern projects in the React ecosystem. The SSR concept it popularized — though not new in itself — combined with its tooling and the React ecosystem, is genuinely remarkable.
 
-Mas nada disso é novo, na verdade, o conceito de SSR é bem antigo. Se você programou em PHP, Dotnet, Java, talvez você já tenha se deparado com técnicas para escrever um código backend dentro do seu frontend e a cada request, o seu server iria processar aquela página e retornar o conteúdo dinâmico.
+However, none of this is truly new. SSR is a well-established concept. Those who have worked with PHP, .NET, or Java have likely encountered techniques for embedding server-side logic within frontend code, where each request causes the server to process and return dynamic content.
 
-Na real, o grande diferencial do Next está na geração estática do conteúdo em build-time, no cache incremental e possibilitar tudo isso usando um dos melhores frameworks (ou bibliotecas, se você preferir) que é o [ReactJS](https://reactjs.org/). Com tudo isso, talvez nem faça sentido nós exportarmos a responsabilidade de renderizar nossas aplicações pro cliente. Afinal de contas, SPA são renderizadas no cliente e ainda prejudicam o [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide) da sua página.
+Actually, Next's big differentiator is in the static content generation at build-time, incremental cache and enabling all this using one of the best frameworks (or libraries, if you prefer) which is [ReactJS](https://reactjs.org/). With all this, maybe it doesn't even make sense for us to export the responsibility of rendering our applications to the client. After all, SPAs are rendered on the client and still harm the [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide) of your page.
 
-Mesmo com todos esses benefícios, o NextJS não é a bala de prata que estamos vendo por aí. Talvez seu problema não necessite de um SEO (aplicações internas) e renderizar a página no cliente não é problema, dado que hoje em dia os browsers estão cada vez mais rápidos (e mais comedores de RAM). Antes de continuar, gostaria de te perguntar... **Você já ouviu falar sobre micro frontends?**
+Even with all these benefits, NextJS is not a universal solution. For applications that do not require SEO — such as internal tools — client-side rendering may be perfectly adequate, especially given the increasing performance of modern browsers. **Have you ever heard about micro frontends?**
 
 # Micro Frontends
 
-Se existem micro serviços, por que não podemos modularizar nosso frontend? Precisa realmente o frontend ser uma aplicação monolítica com centenas de milhares de linhas? Você pode buscar uma referência técnica no [micro-frontends](https://micro-frontends.org/) e o [artigo do Martin Fowler](https://martinfowler.com/articles/micro-frontends.html).
+If there are microservices, why can't we modularize our frontend? Does the frontend really need to be a monolithic application with hundreds of thousands of lines? You can look for a technical reference at [micro-frontends](https://micro-frontends.org/) and [Martin Fowler's article](https://martinfowler.com/articles/micro-frontends.html).
 
-Confesso que quando comecei a estudar, achava um conceito bastante utópico, pois a ideia de separar nosso frontend em vários repositórios...Como ficaria o compartilhamento de dependências? Como poderia agregar múltiplas SPAs em uma SPA maior? Como compartilhar estados entre as minhas SPAs? E o CSS que pode atrapalhar os estilos de outras páginas?
+Admittedly, the concept seemed quite utopian at first. Separating the frontend into multiple repositories raises immediate questions: How would dependency sharing work? How could multiple SPAs be aggregated into a larger SPA? How would state be shared between them? And how would CSS be prevented from leaking across pages?
 
-São diversos problemas realmente, olhando assim, até parece mais interessante não separar, já que você cria vários problemas. Mas ter um frontend monolítico também tem seus problemas, tais eles:
+There are really several problems, looking at it this way, it even seems more interesting not to separate, since you create several problems. But having a monolithic frontend also has its problems, such as:
 
-- Código extenso com muitas pessoas trabalhando no mesmo repositório — mesmo com Git, conflitos e inconsistências são comuns
-- Código gigante[2], porque códigos com milhares de linhas se tornam confusos
-- Build demorado
-- Lentidão no desenvolvimento
-- Grande probabilidade de dead code (código não utilizado)
-- Refatorações de códigos gigantes tendem a ser mais complicadas do que gostaríamos
+- Giant code and several people working on it (even with Git, there will always be some mess)
+- Giant code[2], because codes with thousands of lines become confusing
+- Slow build
+- Slowness in development
+- High probability of dead code (unused code)
+- Refactoring giant codes tends to be more complicated than we would like
 
-Dados estes pontos, adotar uma estratégia de microfrontend talvez não seja algo tão doloroso assim.
+Given these points, adopting a microfrontend strategy may not be so painful.
 
-**Mas o que seria necessário para adotarmos um microfrontend?**
+**But what would be necessary to adopt a microfrontend?**
 
 # NextJS vs Render
 
-Antes de falar do Render, vamos analisar o ponto do NextJS. Com NextJS, podemos adotar uma estratégia de SSR e páginas que são cacheadas com valores preestabelecidos em tempo de build, isso realmente é incrível, performático e não nos dá nenhum trabalho adicional. Mas...ele ainda não resolve o nosso problema de ter múltiplos frontends conectados, mesmo sendo de repositórios diferentes.
+Before talking about Render, let's analyze the NextJS point. With NextJS, we can adopt an SSR strategy and pages that are cached with pre-established values at build-time, this is really incredible, performant and gives us no additional work. But...it still doesn't solve our problem of having multiple connected frontends, even if they're from different repositories.
 
-Agora podemos falar do Render. Esse conceito de _Render_ não é exatamente um conceito que você encontrará com esse nome, foi um nome dado por um grande amigo e mentor que desenvolveu uma aplicação que entregava frontends versionados. Ao conhecer esse conceito, tentei entender e adaptar para uma situação de microfrontends. Antes, vamos entender as funcionalidades do render.
+Now we can talk about Render. This concept of _Render_ is not exactly a concept you'll find with this name, it was a name given by a great friend and mentor who developed an application that delivered versioned frontends. Upon learning this concept, I tried to understand and adapt it to a microfrontend situation. First, let's understand the render functionalities.
 
 - Http Server
-- Ser um _proxy_ para onde os frontends estão armazenados [1]
-- Ser um _proxy_ para as APIs chamadas pelos nossos frontends [2]
-- Cachear os assets do nosso frontend
-- Separar aplicações
-- Versionar aplicações [3]
+- Be a _proxy_ to where the frontends are stored [1]
+- Be a _proxy_ for the APIs called by our frontends [2]
+- Cache our frontend assets
+- Separate applications
+- Version applications [3]
 
-Explicando os 3 pontos em evidência.
+Explaining the 3 highlighted points.
 
-1. Na estratégia do render, nossos frontends ficarão salvos em um cloud storage (AKA S3). Nesse cloud storage, teremos os builds do nosso frontend, cada build irá gerar uma versão, qual você poderá acessar como `/app/v0.0.1/`. Esse será o path da nossa aplicação
-2. Esse é um caso opcional, dependerá da sua arquitetura, caso você não tenha um BFF (Backend for Frontend). No caso de chamadas para a nossa API, o Render irá resolver as URLs, chamando a ou as APIs que o nosso front fizer request, fazendo assim um proxy para que você tenha somente um entry point.
-3. Um problema muito comum desde sempre é o cache. Se você builda seu front usando CRA (Create React App), por exemplo, ele irá gerar um hash para cada arquivo e assim poderá evitar o cache. Mas e se os seus assets forem versionados na URL? Sendo assim, mesmo que o conteúdo do arquivo seja o mesmo, o próprio browser não irá reconhecer como o mesmo arquivo e irá fazer um novo request para a nova versão. Como citado, `/app/v0.0.1/` é uma versão do front que irá ser usada até que `/app/v0.0.2/` seja lançada.
+1. In the render strategy, our frontends will be saved in cloud storage (AKA S3). In this cloud storage, we'll have the builds of our frontend, each build will generate a version, which you can access as `/app/v0.0.1/`. This will be our application path
+2. This is an optional case, it will depend on your architecture, if you don't have a BFF (Backend for Frontend). In case of calls to our API, Render will resolve the URLs, calling the API or APIs that our front makes requests to, thus making a proxy so you have only one entry point.
+3. A very common problem has always been cache. If you build your front using CRA (Create React App), for example, it will generate a hash for each file and thus can avoid cache. But what if your assets are versioned in the URL? Thus, even if the file content is the same, the browser itself will not recognize it as the same file and will make a new request for the new version. As mentioned, `/app/v0.0.1/` is a version of the front that will be used until `/app/v0.0.2/` is released.
 
-Este trecho pode parecer abstrato, mas um post futuro cobrirá toda a parte de implementação do código. Por ora, o foco é no conceito.
+Maybe this section gets a bit abstract, but rest assured that I'll make another post bringing the entire code part of how it works, first let's focus on the concept.
 
-# Primeiras impressões
+# First impressions
 
-De começo, trabalhar com microfrontend não foi tão simples. Tive que entender como fazer o compartilhamento de dependência, gastar um pouco do tempo em configurações de webpack, e principalmente, compartilhar estado entre aplicações React que estão em árvores diferentes.
+In the beginning, working with microfrontend was not so simple. I had to understand how to do dependency sharing, spend some time on webpack configurations, and mainly, share state between React applications that are in different trees.
 
-Compartilhar dependências ainda é o maior problema de todos, por que uma aplicação não conhece o build da outra, então não descobri uma forma decente de compartilhar dependências entre os frontends, a não ser fazendo um append em `window` da biblioteca que você quer, algo do tipo `window.React = React`.
+Sharing dependencies is still the biggest problem of all, because one application doesn't know the build of the other, so I didn't find a decent way to share dependencies between frontends, except by doing an append to `window` of the library you want, something like `window.React = React`.
 
-A configuração do webpack precisou um pouco de boilerplate para JSX e Typescript, além do CSS Loader e Image Loader. Talvez o image loader não faça tanto sentido, já que imagens podem ser hospedadas em CDNs e assim, não estarem versionadas no projeto.
+The webpack configuration needed some boilerplate for JSX and Typescript, besides CSS Loader and Image Loader. Maybe the image loader doesn't make much sense, since images can be hosted on CDNs and thus, not be versioned in the project.
 
-Compartilhar estado foi um desafio bem interessante, apenas com um useEffect + useState foi possível compartilhar o estado entre aplicações. Para isso, foi necessário utilizar `window.addEventListener` para notificar os subscribers do estado compartilhado.
+Sharing state was an interesting challenge. By combining `useEffect` and `useState`, it was possible to share state between applications. This required `window.addEventListener` to notify subscribers whenever shared state changed.
 
-# Conclusão
+# Conclusion
 
-Sem dúvida, microfrontends são um desafio totalmente diferente daquilo que a maioria dos frontends estão habituados, é approach diferente para resolver problemas que talvez seriam complexos mantendo milhares de linhas de código. Em breve, eu irei escrever sobre a parte de código do render e sobre um pequeno Hello World usando um microfrontend.
+Without a doubt, microfrontends are a totally different challenge from what most frontends are used to, it's a different approach to solve problems that might be complex maintaining thousands of lines of code. Soon, I'll write about the code part of render and about a small Hello World using a microfrontend.
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

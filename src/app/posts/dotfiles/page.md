@@ -2,41 +2,42 @@
 level: 1
 title: Dotfiles
 subjects: ["tips-and-tricks", "nodejs"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2024-01-14T04:49:37.896Z"
-description: "Como configurar o seu ambiente de programação?"
+description: "How to set up your programming environment?"
 ---
-Nesse post iremos abordar algumas técnicas, ferramentas e configurações para você ter um ambiente de desenvolvimento que não te dê dor de cabeça. 
 
-Para não haver problemas de configuração, iremos adotar como base que você esteja utilizando um Linux, pode ser um Ubuntu, Arch Linux ou qualquer outra distro. E claro, para não ficar dando vários exemplos, os comandos do Ubuntu serão os utilizados aqui.
+In this post, we'll cover some techniques, tools, and configurations so you can have a development environment that doesn't give you headaches.
+
+To avoid configuration problems, we'll assume you're using Linux - it could be Ubuntu, Arch Linux, or any other distro. And of course, to avoid giving multiple examples, Ubuntu commands will be used here.
 
 # dotfiles
 
-Se você costuma fazer várias configurações no seu terminal, já deve ter ouvido falar sobre dotfiles. Esses dotfiles são arquivos de configuração que os programas utilizam como base para mudar comportamentos padrões e adicionar suas preferências. 
+If you're used to making various configurations in your terminal, you've probably heard about dotfiles. These dotfiles are configuration files that programs use as a base to change default behaviors and add your preferences.
 
-Existe um repositório só sobre isso no github, você pode ler mais sobre [neste link](https://dotfiles.github.io/).
+There's a repository dedicated to this on GitHub, you can read more about it at [this link](https://dotfiles.github.io/).
 
-Caso queira ver um exemplo de configuração, você pode olhar os [meus dotfiles](https://github.com/g4rcez/dotfiles) como inspiração ou até mesmo instalar e usar exatamente como eu uso.
+If you want to see a configuration example, you can look at [my dotfiles](https://github.com/g4rcez/dotfiles) for inspiration or even install and use exactly as I do.
 
-> Curiosidade: Mantenho todas as minhas configurações no github de forma pública, assim consigo restaurar de forma fácil todas as configurações em qualquer PC e ainda consigo versionar todos os meus arquivos. Comecei a adotar esse padrão desde 2019 e venho usando até a data atual do artigo, 2024
+> All configurations are kept publicly on GitHub, making it easy to restore them on any machine and maintain a full version history. This practice has been in use since 2019.
 
 # Shell
 
-Vamos começar pelo terminal, trazendo uma melhor interação, autocomplete, melhoria nas funcionalidades de `<TAB>`, melhoria do histórico e tudo mais.
+Let's start with the terminal, bringing better interaction, autocomplete, improvements to `<TAB>` functionality, history improvements, and everything else.
 
-Por padrão, os sistemas linux vem com o shell [bash](https://www.gnu.org/software/bash/), mas iremos substituir utilizando o [zsh](https://www.zsh.org/) que é um tipo de shell bem mais extensivo, graças a grande comunidade que possui. 
+By default, Linux systems come with the [bash](https://www.gnu.org/software/bash/) shell, but we'll replace it using [zsh](https://www.zsh.org/) which is a much more extensive type of shell, thanks to the large community it has.
 
-O primeiro passo é instalar o zsh e, em seguida, o [oh-my-zsh](https://ohmyz.sh/). Para a configuração correta, iremos precisar ter instalado o zsh, [curl](https://curl.se/) e [git](https://git-scm.com/)
+Without further ado, let's first install zsh and then we'll install [oh-my-zsh](https://ohmyz.sh/). For the correct configuration, we'll need to have zsh, [curl](https://curl.se/), and [git](https://git-scm.com/) installed.
 
 ```bash
 sudo apt install zsh curl git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-Após rodar esses comandos, você vai ver algumas interações acontecendo e algumas perguntas serão feitas. Basta seguir o processo e tudo será instalado corretamente. Quando toda a instalação for feita, você só precisará abrir e fechar seu terminal de novo e tudo estará funcionando.
+After running these commands, you'll see some interactions happening and some questions will be asked. Just follow the process and everything will be installed correctly. When the entire installation is done, you'll just need to open and close your terminal again and everything will be working.
 
-Caso aconteça algum problema, você pode executar o comanda baixo para garantir a troca da shell (e reiniciar o terminal após isso).
+If any problem occurs, you can run the command below to ensure the shell change (and restart the terminal after that).
 
 ```bash
 chsh -s /bin/zsh
@@ -44,112 +45,107 @@ chsh -s /bin/zsh
 
 ## Plugins - oh-my-zsh
 
-Para melhorar ainda mais sua experiência com o terminal, aqui deixo uma lista de plugins que costumo usar
+To further improve your terminal experience, here's a list of plugins I usually use:
 
-- [zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting): Syntax highlight para o seu terminal, marcando tokens de linguagem como parêntesis, chaves, colchetes e afins
-- [zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions): Sugestões melhoradas para o seu terminal, num estilo de autocomplete do Vscode
+- [zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting): Syntax highlighting for your terminal, marking language tokens like parentheses, braces, brackets, and so on
+- [zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions): Improved suggestions for your terminal, in a VSCode autocomplete style
 
-Você irá conseguir fazer a instalação desses plugins sem problemas, apenas seguindo o guia de cada um dos plugins.
+You'll be able to install these plugins without problems, just following the guide for each plugin.
 
-Com o oh-my-zsh instalado, você terá várias funcionalidades que te auxiliaram na produtividade dentro do terminal. Ao final do artigo há uma lista de temas, plugins e recursos adicionais para explorar.
+With oh-my-zsh installed, you'll have various features that will help you with productivity within the terminal. Towards the end of the article, I'll leave a list of themes, plugins, and such that you can use.
 
 # Node
 
-O principal da nossa lista será o [Node](https://nodejs.org). Você pode instalar através do site oficial (o que não recomendo) ou utilizar algum gerenciador virtual. Muitos tutoriais recomendam o [nvm](https://github.com/nvm-sh/nvm), mas sua experiência de uso pode ser inconsistente — especialmente quando os comandos de troca de versão são esquecidos no fluxo do dia a dia.
+The main item on our list will be [Node](https://nodejs.org). You can install it through the official website (which I don't recommend) or use some virtual manager. Many tutorials recommend [nvm](https://github.com/nvm-sh/nvm), but from personal experience it can be problematic — particularly when it is easy to forget to run the necessary version-switch commands.
 
-Uma alternativa mais ergonômica é o [volta.sh](https://volta.sh/). Ele cumpre o mesmo papel do nvm, mas adiciona automações que evitam problemas de versionamento. Sua instalação é muito simples, basta você rodar o seguinte comando:
+To improve your Node experience in the terminal, I advise using [volta.sh](https://volta.sh/). This tool does the same thing as nvm, but brings automations so you can avoid versioning headaches. Its installation is very simple, just run the following command:
 
 ```bash
 curl https://get.volta.sh | bash
 ```
 
-Com isso, o NodeJS já está disponível no terminal. O volta é um gerenciador virtual de versões do NodeJS, ele permite que você tenha várias versões instaladas e gerenciadas por ele. Você só precisa dizer qual versão quer instalar e utilizar.
+Done! That's it. Now you're ready to use NodeJS in your terminal in the simplest way possible. Volta is a virtual version manager for NodeJS, it allows you to have multiple versions installed and managed by it. You just need to tell it which version you want to install and use.
 
 ## Node + NPM
 
-Com a instalação do volta concluída, você irá instalar agora o NodeJS na versão mais atual e estável, a famosa [LTS](https://wiki.ubuntu.com/LTS).
+With the volta installation completed, you'll now install NodeJS in the most current and stable version, the famous [LTS](https://wiki.ubuntu.com/LTS).
 
 ```bash
-# Para instalar a versão LTS
+# To install the LTS version
 
 volta install node@lts
-# Para instalar a versão mais atual possível
+# To install the most current version possible
 volta install node@latest
 ```
 
-Iremos utilizar a LTS pois é a versão mais estável, assim evitamos problemas. Não podemos esquecer também do `npm`, o gerenciador de pacotes do NodeJS
+We'll use LTS because it's the most stable version, thus avoiding problems. We also can't forget about `npm`, the NodeJS package manager.
 
 ```bash
 volta install npm@latest
 ```
 
-## Utilitários node
+## Node utilities
 
-Caso você esteja estudando Typescript, com certeza vai precisar do CLI do Typescript para rodar seus projetos, ou até mesmo o ts-node para rodar seus scripts. Com o setup **Node + NPM**. 
+If you're studying TypeScript, you'll definitely need the TypeScript CLI to run your projects, or even ts-node to run your scripts. With the **Node + NPM** setup:
 
 ```bash
 npm install -g typescript ts-node
 ```
 
-Com essa instalação `-g` você vai instalar globalmente os seus scripts e permitirá que você execute os comandos de qualquer lugar.
-# Vscode
+With this `-g` installation, you'll install your scripts globally and allow you to execute commands from anywhere.
 
-O VSCode é uma das ferramentas mais completas para edição de código. Existem outros bons editores
-como [WebStorm](https://www.jetbrains.com/webstorm) ou [Neovim](https://neovim.io/), mas o Vscode ganha em simplicidade
-e possui uma menor curva de aprendizado.
+# VSCode
 
-Para fazer a instalação, basta você seguir o passo a passo do [site oficial](https://code.visualstudio.com/), de acordo
-com o seu sistema operacional. Lembre-se também de instalar a [CLI ou Command Line Interface](https://code.visualstudio.com/docs/editor/command-line) do Vscode, para facilitar a instalação das extensões nesse tutorial.
+This will definitely be the best tool you'll have for code editing. There are other good editors like [WebStorm](https://www.jetbrains.com/webstorm) or [Neovim](https://neovim.io/), but VSCode wins in simplicity and has a lower learning curve.
 
-## Extensões do Vscode
+To install it, just follow the step-by-step guide from the [official website](https://code.visualstudio.com/), according to your operating system. Also remember to install the [CLI or Command Line Interface](https://code.visualstudio.com/docs/editor/command-line) for VSCode, to facilitate the installation of extensions in this tutorial.
 
-O grande poder do Vscode está na sua extensibilidade, e com os diversos plugins, você pode montar o seu setup para programar em qualquer linguagem e com qualquer framework.
+## VSCode Extensions
+
+The great power of VSCode lies in its extensibility, and with various plugins, you can set up your environment to program in any language and with any framework.
 
 ```bash
-# Extensão do tailwindcss para auxiliar no autocomplete
+# TailwindCSS extension to help with autocomplete
 code --install-extension bradlc.vscode-tailwindcss
 
-# Habilita o eslint no vscode
+# Enables eslint in VSCode
 code --install-extension dbaeumer.vscode-eslint
 
-# Extensão que permite customizar o electron
+# Extension that allows customizing electron
 code --install-extension drcika.apc-extension
 
-# Melhorias na hora de trabalhar com HTML e CSS
+# Improvements when working with HTML and CSS
 code --install-extension ecmel.vscode-html-css
 
-# EditorConfig habilitado para o vscode
+# EditorConfig enabled for VSCode
 code --install-extension EditorConfig.EditorConfig
 
-# Prettier no vscode para formatação
+# Prettier in VSCode for formatting
 code --install-extension esbenp.prettier-vscode
 
-# Extensão para criação de arquivos com extensões e snippets
+# Extension for creating files with extensions and snippets
 code --install-extension g4rcez.superfile
 
-# Syntax highlight para dotenv
+# Syntax highlight for dotenv
 code --install-extension mikestead.dotenv
 
-# Extensão para correção de texto
+# Extension for text correction
 code --install-extension streetsidesoftware.code-spell-checker
-# Essa completamenta com correção em pt-br
+# This complements with pt-br correction
 code --install-extension streetsidesoftware.code-spell-checker-portuguese-brazilian
 
-# Extensão que calcula o tamanho do import de cada dependência do arquiv
+# Extension that calculates the import size of each file dependency
 code --install-extension wix.vscode-import-cost
 ```
 
-Com essas extensões, você já tem um bom setup para programar frontend com a stack React. Para as configurações, vale a
-pena você explorar um pouco ao invés de copiar uma configuração pronta. Mas caso queira uma inspiração, você pode olhar
-nos meus dotfiles, na pasta [`vscode`](https://github.com/g4rcez/dotfiles/tree/master/vscode).
+With these extensions, you already have a good setup for frontend programming with the React stack. For configurations, it's worth exploring a bit instead of copying a ready-made configuration. But if you want inspiration, you can look at my dotfiles, in the [`vscode`](https://github.com/g4rcez/dotfiles/tree/master/vscode) folder.
 
-# Conclusão
+# Conclusion
 
-Esse é só um tutorial rápido de configuração e customização do seu ambiente de desenvolvimento. Há muito mais coisas que
-você pode evoluir com o tempo, basta procurar inspirações em [awesome lists](https://github.com/topics/awesome) ou
-dotfiles. 
+This is just a quick tutorial for configuring and customizing your development environment. There are many more things you can evolve over time, just look for inspiration in [awesome lists](https://github.com/topics/awesome) or dotfiles.
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye
+
 
 
 

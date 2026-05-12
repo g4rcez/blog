@@ -1,48 +1,47 @@
 ---
-title: "Estado global, local ou no navegador?"
+title: "Global, local or browser state?"
 level: 2
 subjects: [ "typescript", "javascript", "react" ]
-language: "pt-br"
+language: "en-US"
 translations: [ "pt-br", "en-us" ]
 date: "2023-09-05T01:00:00.000Z"
-description: "O estado é responsabilidade do componente local, global ou do browser? Conheça as diversas formas de armazenamento de estado"
+description: "Is state the responsibility of the local component, global or the browser? Learn about the various forms of state storage"
 ---
 
-O controle de estado é um debate bem comum no meio frontend. Tendo tantas formas de se controlar, você pode acabar
-caindo em armadilhas de ter muitas opções, afinal de contas é para ser um estado local, global ou delegar a
-responsabilidade para o navegador?
+State control is a very common debate in the frontend world. With so many ways to control, you can end up
+falling into traps of having too many options, after all is it supposed to be local, global state or delegate the
+responsibility to the browser?
 
-A resposta é bem simples...**depende**.
+The answer is quite simple...**it depends**.
 
-# Tipos de estado
+# Types of state
 
-Para evitar confusões, vamos dar nomes aos estados e definir o escopo. Nesse post iremos abordar os estados dentro de
-aplicações React, onde podemos ter estados sendo manipulados de diversas fontes.
+To avoid confusion, let's name the states and define the scope. In this post we'll cover states within
+React applications, where we can have states being manipulated from various sources.
 
-## Estado local
+## Local state
 
-O estado local é a forma mais simples de controle de estado no universo React. Com ele é possível manter uma lógica
-simples, prática e bem próxima do seu componente.
+Local state is the simplest form of state control in the React universe. With it it's possible to maintain simple,
+practical logic very close to your component.
 
-Seja um componente de classe utilizando o `this.setState` ou então os hooks de controle de estado `useState`
-e `useReducer`. Como os componentes de classes estão quase que em total esquecimento, vamos focar nos componentes
-funcionais que possuem controle de estado através dos hooks.
+Whether a class component using `this.setState` or the state control hooks `useState`
+and `useReducer`. Since class components are almost completely forgotten, let's focus on functional components
+that have state control through hooks.
 
 ### useState
 
-O estado local é uma forma bem efetiva e clara de manipular seu estado. Utilizando o hook `useState` você tem uma tupla
-muito bem definida, `[estado, controladorDoEstado]`. Podendo manipular quaisquer valores, o `useState` é a forma mais
-simples com os hooks, dando a você o poder de atualizar diretamente o seu valor, seja ele um primitivo como `string`
-ou `number`, ou então algum objeto mais complexo como uma lista de usuários ou um objeto que virá de um request na API.
+Local state is a very effective and clear way to manipulate your state. Using the `useState` hook you have a
+well-defined tuple, `[state, stateController]`. Being able to manipulate any values, `useState` is the simplest
+form with hooks, giving you the power to directly update your value, whether it's a primitive like `string`
+or `number`, or some more complex object like a list of users or an object that will come from an API request.
 
-Mas não se engane, nem tudo são flores. O `useState` pode pregar peças com você caso faça uma atualização de estado
-incorreta ou comece a usar vários `useState` no seu componente. Se liga nessas situações
+However, `useState` has some pitfalls worth knowing about — particularly when state updates are incorrect or when many `useState` calls accumulate in a component. Check out these situations
 
-1. ***Atualização de estado com base no estado atual***. Essa é uma prática bem comum, mas não se engane...você pode
-   acabar caindo numa armadilha e reproduzir o seguinte cenário:
+1. ***State update based on current state***. This is a very common practice, but don't be fooled...you can
+   end up falling into a trap and reproduce the following scenario:
 
 ```typescript jsx
-// 🚨 Não faça dessa forma...
+// 🚨 Don't do it this way...
 function App() {
     const [count, setCount] = useState(0)
     return (
@@ -51,12 +50,12 @@ function App() {
 }
 ```
 
-Para um cenário simples isso com certeza irá funcionar. Em casos mais complexos como formulários e listas isso pode não
-funcionar corretamente e ocasionar em bugs. Para auxiliar essas atualizações com base no estado anterior, o useState
-entrega uma função que pode receber tanto o seu valor puro ou uma função que precisa retornar o novo valor.
+For a simple scenario this will certainly work. In more complex cases like forms and lists this may not
+work correctly and cause bugs. To help these updates based on previous state, useState
+delivers a function that can receive either your pure value or a function that needs to return the new value.
 
 ```typescript jsx
-// ✅ Faça dessa forma
+// ✅ Do it this way
 function App() {
     const [count, setCount] = useState(0)
     return (
@@ -65,9 +64,9 @@ function App() {
 }
 ```
 
-Seja o valor puro ou uma função que retorne esse valor, a função que atualiza o estado saberá interpretar corretamente e
-atualizar o estado com o novo valor passado. A forma de função serve exatamente para te auxiliar na atualização do
-estado com base no valor anterior, isso é bem útil para situações como a seguinte:
+Whether the pure value or a function that returns that value, the function that updates the state will know how to correctly interpret and
+update the state with the new value passed. The function form serves exactly to help you update
+state based on the previous value, this is very useful for situations like the following:
 
 ```typescript jsx
 const [count, setCount] = useState(0)
@@ -76,24 +75,23 @@ setCount(count + 1);
 setCount(count + 1);
 ```
 
-O resultado será 1 devido
-às [atualizações em lote ou batch updates](https://react.dev/learn/queueing-a-series-of-state-updates#react-batches-state-updates).
-Este é o comportamento esperado do React em relação à atualização do estado. E exatamente por isso que é importante utilizar a
-atualização de estado da forma de função e não pegando diretamente o valor do estado atual.
+The result will be 1 due to
+[batch updates](https://react.dev/learn/queueing-a-series-of-state-updates#react-batches-state-updates).
+This behavior may seem surprising, but it is the expected result given how React handles state updates. And that's exactly why it's important to use
+state updating in the function form and not directly getting the current state value.
 
-2. ***Referências e referências***
+2. ***References and references***
 
-Como tudo no React é a base de referências, para controle de estado não poderia ser diferente. Você tem que lembrar que
-as atualizações de estado são baseadas na seguinte lógica:
+As everything in React is based on references, for state control it couldn't be different. You have to remember that
+state updates are based on the following logic:
 
-- *Valor do tipo primitivo*: números, strings, booleanos, undefined, null...
-- *Referência do objeto*: Date, object, Array, File...
+- *Primitive type value*: numbers, strings, booleans, undefined, null...
+- *Object reference*: Date, object, Array, File...
 
-Mas por que para tipos primitivos o React utiliza valores e para objetos ele utiliza a referência? A base de comparação
-do React é um método bem conhecido,
-o [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is). Seu
-funcionamento é semelhante ao funcionamento do operador strict
-equal `===`. Abaixo podemos observar como ele funciona
+But why does React use values for primitive types and reference for objects? The comparison base
+of React is a well-known method,
+[Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is). Its
+operation is similar to the strict equal operator `===`. Below we can observe how it works
 
 ```typescript
 Object.is(1, 1) // true
@@ -105,119 +103,116 @@ const other = object
 Object.is(object, other) // true
 ```
 
-Como foi falado...tudo são **referências**. O algoritmo do `Object.is` olha para a referência dos objetos, e somente
-quando ela é diferente que o React vai causar a atualização de estado. Devido a essa regra, o exemplo abaixo não causa
-atualização de estado
+As stated...everything is **references**. The `Object.is` algorithm looks at the reference of objects, and only
+when it's different React will cause the state update. Due to this rule, the example below doesn't cause
+state update
 
 ```typescript jsx
-// 🚨  Não faça isso
+// 🚨 Don't do this
 const [user, setUser] = useState({name: ""});
-user.name = "Fulano";
+user.name = "John";
 ```
 
-Como a referência de `user` permanece a mesma, não será realizada nenhuma atualização de estado. Caso você realmente
-queira atualizar o estado, você pode fazer das seguintes formas:
+Since the reference of `user` remains the same, no state update will be performed. If you really
+want to update the state, you can do it as follows:
 
 ```typescript jsx
-// ✅  Faça dessa forma
+// ✅ Do it this way
 const [user, setUser] = useState({name: ""});
-// Quando você possui apenas uma chave no objeto
-setUser({name: "Fulano"});
-// Quando você possui um objeto com várias chaves
-setUser((prev) => ({...prev, name: "Fulano"}));
+// When you have only one key in the object
+setUser({name: "John"});
+// When you have an object with several keys
+setUser((prev) => ({...prev, name: "John"}));
 ```
 
-Olhando para a segunda opção você pode estar se perguntando:
-> Assim eu vou estar recriando os objetos dentro do meu estado anterior, certo?
+Looking at the second option you might be asking:
+> This way I'll be recreating the objects inside my previous state, right?
 
-É uma ótima pergunta e a resposta é não.
-O [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) faz
-um [shallow copy](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) e isso preserva a referência dos
-objetos e listas que existirem no seu estado.
+It's a great question and the answer is no.
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) does
+a [shallow copy](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy) and this preserves the reference of
+objects and lists that exist in your state.
 
 ### useReducer
 
-O `useState` é bem efetivo na manipulação, mas em alguns casos pode não trazer a clareza de código desejada ou a forma
-mais efetiva de atualizar os estados. E é nessa hora que você pode recorrer ao `useReducer`, uma forma sofisticada de
-atualizar o seu estado com base na lógica
-do [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce), onde você
-possui apenas uma função de atualização do estado e
-essa função recebe o estado anterior e os novos valores para retornar o estado atualizado. Meio complexo? Vamos
-exemplificar com código
+`useState` is very effective in manipulation, but in some cases it may not bring the desired code clarity or the most
+effective way to update states. And this is when you can resort to `useReducer`, a sophisticated way to
+update your state based on the
+[reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) logic, where you
+have only one state update function and
+this function receives the previous state and the new values to return the updated state. Kind of complex? Let's
+exemplify with code
 
 ```typescript jsx
 type State = { name: string; age: number };
-type Action = { type: "cadastro", name: string } | { type: "aniversario" }
+type Action = { type: "register", name: string } | { type: "birthday" }
 const reducer = (state: State, action: Action) => {
-    if (action.type === "cadastro") return {...state, name: action.name}
-    if (action.type === "aniversario") return {...state, age: state.age + 1}
+    if (action.type === "register") return {...state, name: action.name}
+    if (action.type === "birthday") return {...state, age: state.age + 1}
     return state;
 }
 const [state, dispatch] = useReducer();
-dispatch({type: "cadastro", name: "Fulano"});
-dispatch({type: "aniversario"});
+dispatch({type: "register", name: "John"});
+dispatch({type: "birthday"});
 ```
 
-Agora ficou mais claro a forma de utilizar o `useReducer`. E vale lembrar que a sua função reducer deve ser uma função
-pura, ou seja, ela não pode ter efeitos colaterais fora do seu escopo, coisas como alteração do DOM, salvar em
-localStorage ou afins.
+Now it's clearer how to use `useReducer`. And it's worth remembering that your reducer function must be a pure
+function, that is, it can't have side effects outside its scope, things like DOM changes, saving to
+localStorage or similar.
 
-Olhando assim o `useReducer` parece ter mais problemas do que o `useState`, mas seu ganho é a organização via
-atualizações baseadas em ações/eventos e o fato de concentrar todas as lógicas de atualização num único setor do código.
+Looking at it this way `useReducer` seems to have more problems than `useState`, but its gain is the organization via
+updates based on actions/events and the fact of concentrating all update logic in a single sector of the code.
 
-> Também não sou muito fã de utilizar o `useReducer`, por isso criei a
-> biblioteca [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer) com o intuito de ter uma forma mais
-> simples
-> e fortemente tipada para os dispatchers. Com a adição de algumas funcionalidades como middlewares e formas de obter as
-> props atualizadas a cada dispatch.
+> I'm also not a big fan of using `useReducer`, so I created the
+> library [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer) with the intention of having a simpler
+> and strongly typed form for dispatchers. With the addition of some features like middlewares and ways to get
+> updated props at each dispatch.
 
-## Estado global
+## Global state
 
-Esse é possivelmente o tipo de estado que mais gera discussões e diferentes implementações. Apenas para você ter noção,
-temos as seguintes formas de ter estado global numa aplicação
+This is possibly the type of state that generates the most discussions and different implementations. Just to give you an idea,
+we have the following ways to have global state in an application
 
-- [ContextAPI](https://react.dev/reference/react/createContext): funcionalidade nativa do React para estado global
-- [React-Redux](https://redux.js.org/): uma das maiores e mais antigas bibliotecas para controle de estado do React
-- [Zustand](https://github.com/pmndrs/zustand): forma simples e efetiva de trabalhar com estados via funções seletoras
-  para evitar rerender
-- [Valtio](https://github.com/pmndrs/valtio): atualizações de estado via atualização granular, procurando otimizar as
-  propriedades do objeto
-- [Recoil](https://recoiljs.org/): biblioteca do Facebook/Meta para controle de estado via átomos, ou seja, pequenas
-  peças de estado
-- [Jotai](https://github.com/pmndrs/jotai): similar ao recoil, porém com muito mais funcionalidades para trabalhar com
-  os átomos
-- [Preact-react-signals](https://github.com/preactjs/signals/tree/main/packages/react): uma forma de controle de estado
-  bem antiga (apresentada no BackboneJS) que foi ressuscitada
-  pelo SolidJS e Preact
+- [ContextAPI](https://react.dev/reference/react/createContext): native React functionality for global state
+- [React-Redux](https://redux.js.org/): one of the largest and oldest libraries for React state control
+- [Zustand](https://github.com/pmndrs/zustand): simple and effective way to work with states via selector functions
+  to avoid rerender
+- [Valtio](https://github.com/pmndrs/valtio): state updates via granular update, seeking to optimize
+  object properties
+- [Recoil](https://recoiljs.org/): Facebook/Meta library for state control via atoms, that is, small
+  pieces of state
+- [Jotai](https://github.com/pmndrs/jotai): similar to recoil, but with many more features for working with
+  atoms
+- [Preact-react-signals](https://github.com/preactjs/signals/tree/main/packages/react): a very old form of state control
+  (presented in BackboneJS) that was resurrected by SolidJS and Preact
 
-> Zustand, valtio e jotai são mantidos pela mesma equipe de desenvolvedores
+> Zustand, valtio and jotai are maintained by the same team of developers
 
-O tema principal de debate do estado global é a forma que as atualizações de estado impactam suas aplicações. Muitas
-pessoas não gostam da ContextAPI por ela forçar a re-renderização de todos os componentes filhos, não havendo otimização
-do estado. Algumas outras pessoas não gostam do redux devido ao grande volume de código produzido para fazer ações
-simples (o que não é mais tão verdade, dadas as novas versões do redux). Bibliotecas como zustand, valtio, jotai e
-signals estão bastante em alta devido a sua simplicidade em gerenciar o estado. Signals estão ainda mais em alta devido
-as suas otimizações para atualizar o
-estado, [embora você não precise de signals](https://blog.axlight.com/posts/why-you-dont-need-signals-in-react/).
+The main topic of debate about global state is how state updates impact your applications. Many
+people don't like ContextAPI because it forces re-rendering of all child components, with no state
+optimization. Some other people don't like redux due to the large volume of code produced to do simple
+actions (which is no longer so true, given the new versions of redux). Libraries like zustand, valtio, jotai and
+signals are quite popular due to their simplicity in managing state. Signals are even more popular due
+to their optimizations for updating state,
+[although you don't need signals](https://blog.axlight.com/posts/why-you-dont-need-signals-in-react/).
 
-Como temos diversas bibliotecas que fazem o controle de estado, não vamos focar em todas. Primeiro iremos abordar a
-ContextAPI e seus efeitos colaterais, depois falaremos um pouco de como as demais bibliotecas fazem para evitar
-renderizações desnecessárias.
+Since we have several libraries that do state control, we won't focus on all of them. First we'll cover
+ContextAPI and its side effects, then we'll talk a little about how the other libraries do to avoid
+unnecessary renders.
 
 ### ContextAPI
 
-A canônica de estado global do React, como dito anteriormente. Ao criar um contexto, você tem dois valores para
-lidar, `consumer` e `provider`.
+The canonical global state of React, as mentioned earlier. When creating a context, you have two values to
+deal with, `consumer` and `provider`.
 
-Como o nome diz, `consumer` será sua forma de consumir o estado global via componentes, já o `provider` será sua forma
-de distribuir o estado global ou até mesmo de forma mais localizada. Você pode ter um contexto que provê estado em
-diversos locais, de forma separada. É uma técnica bem comum em componentes da
-biblioteca [radix-ui](https://www.radix-ui.com/), sendo um
-excelente exemplo para se observar o funcionamento.
+As the name says, `consumer` will be your way to consume global state via components, while `provider` will be your way
+to distribute global state or even in a more localized way. You can have a context that provides state in
+various places, separately. It's a very common technique in components of the
+[radix-ui](https://www.radix-ui.com/) library, being an excellent example to observe how it works.
 
-Com os hooks é ainda mais fácil consumir contextos, através do hook `useContext`. Para prover o estado global com a
-context, você pode utilizar os seus conhecimentos com o `useState`, `useReducer` ou até mesmo com
-o [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer):
+With hooks it's even easier to consume contexts, through the `useContext` hook. To provide global state with
+context, you can use your knowledge with `useState`, `useReducer` or even with
+[use-typed-reducer](https://github.com/g4rcez/use-typed-reducer):
 
 ```typescript jsx
 import {createContext, PropsWithChildren, useContext, useState} from "react"
@@ -233,11 +228,11 @@ export const Provider = (props: PropsWithChildren) => {
 export const useMyContext = () => useContext(context)
 ```
 
-Esse é um pequeno snippet para inicializar sua context de forma segura. Em alguns tutoriais você irá encontrar a context
-sendo criada sem um valor inicial. Essa técnica também é comum para obrigar as pessoas a passarem um valor inicial no
-Provider e ocultar o uso do retorno de `createContext`. Como esse exemplo é algo voltado para um código dentro do
-projeto, você não precisa utilizar as mesmas técnicas utilizadas por bibliotecas, mas para fins de curiosidade o
-resultado seria o seguinte:
+This is a small snippet to safely initialize your context. In some tutorials you'll find the context
+being created without an initial value. This technique is also common to force people to pass an initial value in the
+Provider and hide the use of the return from `createContext`. Since this example is something aimed at code within the
+project, you don't need to use the same techniques used by libraries, but for curiosity purposes the
+result would be the following:
 
 ```typescript jsx
 import {createContext, PropsWithChildren, useContext, useState} from "react"
@@ -252,42 +247,42 @@ export const Provider = (props: PropsWithChildren<{ initialValue: State }>) => {
 
 export const useMyContext = () => {
     const ctx = useContext(context)
-    if (ctx === null) throw new Error("Informe um valor inicial no Provider");
+    if (ctx === null) throw new Error("Provide an initial value in the Provider");
     return ctx;
 }
 ```
 
-O teste condicional em `useMyContext` garante que o seu retorno seja sempre do tipo `State` e não um `State | null`.
-Como a context não possui mecanismos para realizar seletores no estado, ela acaba não sendo a queridinha do público.
+The conditional test in `useMyContext` ensures that your return is always of type `State` and not a `State | null`.
+Since context doesn't have mechanisms to perform selectors on state, it ends up not being the audience's favorite.
 
-### Seletores de estado
+### State selectors
 
-Essa expressão já foi utilizada algumas vezes e ainda não teve uma explicação do que realmente é, então aqui será
-abordado o que é. Seletores de estado ou `selectors` é uma técnica que ajuda bibliotecas como redux e zustand a
-re-renderizarem parcialmente sua árvore de componentes. Isso porque com os seletores você pode dizer exatamente o que
-você quer do seu estado global, permitindo que as bibliotecas façam seu componente re-renderizar somente quando a parte
-específica do estado for atualizada, ou melhor, quando a parte selecionada do estado for atualizada.
+This expression has already been used a few times and still hasn't had an explanation of what it really is, so here it will be
+addressed. State selectors or `selectors` is a technique that helps libraries like redux and zustand
+partially re-render your component tree. This is because with selectors you can say exactly what
+you want from your global state, allowing libraries to make your component re-render only when the specific
+part of state is updated, or better, when the selected part of state is updated.
 
-É bem comum nas bibliotecas você ter parâmetros de função com um `selector` e um `comparator`.
+It's very common in libraries for you to have function parameters with a `selector` and a `comparator`.
 
-O selector é responsável por dizer qual parte do estado você quer usar e como será a representação do seu estado global
-no seu componente. Com ele você poderá particionar o seu estado em objetos menores, mesmo que o seu estado possua vários
-objetos aninhados, como você pode conferir no exemplo abaixo
+The selector is responsible for saying which part of state you want to use and how your global state will be represented
+in your component. With it you can partition your state into smaller objects, even if your state has several
+nested objects, as you can see in the example below
 
 ```typescript jsx
 const state = useStore(state => ({name: state.user.name, products: state.cart.products}))
 ```
 
-Já o comparator fica a cargo de comparar o estado anterior com o atual e definir se haverá mudança. É praticamente uma
-função que dita o comportamento da memorização, similar ao [`React.memo`](https://react.dev/reference/react/memo).
-Raramente você precisará escrever essa função (mas é importante saber), pois as bibliotecas já possuem sua função de
-shallow compare. Apenas em um caso muito específico você vai precisar, mas se chegar nesse estágio, talvez você tenha
-que repensar seus estados.
+The comparator is responsible for comparing the previous state with the current one and defining if there will be change. It's practically a
+function that dictates the behavior of memoization, similar to [`React.memo`](https://react.dev/reference/react/memo).
+Rarely will you need to write this function (but it's important to know), because libraries already have their shallow
+compare function. Only in a very specific case will you need it, but if you reach this stage, maybe you have
+to rethink your states.
 
 ### zustand
 
-Por ser uma das queridinhas atualmente (no dia 06 de setembro de 2023), vou falar dela em específico. Creio que um dos
-motivos que faz com que essa lib seja tão adotada recentemente é o fato da sua simplicidade no uso, se liga...
+Since it's one of the darlings currently (on September 6, 2023), I'll talk about it specifically. I believe one of the
+reasons that makes this lib so adopted recently is the fact of its simplicity in use, check it out...
 
 ```typescript jsx
 import {create} from 'zustand'
@@ -308,86 +303,86 @@ function Counter() {
 }
 ```
 
-Um fato bem curioso é que o zustand trabalha de uma forma muito semelhante ou até mesmo idêntica ao redux no que diz a
-respeito de otimização de re-render. Ambos usam selectors para a otimização, ambos se baseam no modelo de estado
-imutável. O ganho do zustand é não depender de providers, não tendo um boilerplate como existe no redux.
+A very curious fact is that zustand works in a very similar or even identical way to redux regarding
+re-render optimization. Both use selectors for optimization, both are based on the immutable state model.
+The gain of zustand is not depending on providers, not having boilerplate like there is in redux.
 
-Outro fator interessante é que o zustand permite você adicionar as ações ao state, tendo todo o controle em um só lugar,
-seja estado, ou ação que manipula o estado. Diferente do redux, você não irá precisar de bibliotecas de terceiros para
-melhorar a experiência de desenvolvimento com o zustand.
+Another interesting factor is that zustand allows you to add actions to state, having all control in one place,
+whether state, or action that manipulates state. Unlike redux, you won't need third-party libraries to
+improve the development experience with zustand.
 
-Se você busca uma boa biblioteca para manipular seu estado global, o zustand é uma ótima opção.
+If you're looking for a good library to manipulate your global state, zustand is a great option.
 
-### valtio, signals e afins...
+### valtio, signals and similar...
 
-Como são muitas libs, vou apenas abordar alguns pontos positivos e negativos de cada uma delas
+Since there are many libs, I'll only address some positive and negative points of each
 
-- [Recoil](https://recoiljs.org/) e [Jotai](https://github.com/pmndrs/jotai): controle de estado ao nível atômico, onde você faz o uso dos atoms de forma composicional, incentivando modelos mais funcionais. O recoil foi a primeira lib com esse modelo e logo em seguida veio o Jotai como alternativa ao recoil, tendo features bastante interessantes e focando numa experiência de desenvolvimento sem igual. 
-- [Preact-react-signals](https://github.com/preactjs/signals/tree/main/packages/react): recentemente signals tem sido
-  bastante comentados pela comunidade frontend, tivemos VueSignals, Angular Signals, QwikSignals... É um conceito de
-  otimização ao nível granular, sendo uma forma bem efetiva de evitar re-renderizações indesejáveis. O ponto não tão
-  negativo é a forma de consumo dos signals, que é um pouco fora do padrão do react, incentivando técnicas de mutação
-- [Valtio](https://github.com/pmndrs/valtio): Similar aos signals, o valtio possui um modelo de estado mutável, onde faz o uso de [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) para identificar as mutações e atualizar o estado. O ponto negativo é o mesmo dos signals, incentivando um modelo um pouco diferente do React.
+- [Recoil](https://recoiljs.org/) and [Jotai](https://github.com/pmndrs/jotai): state control at the atomic level, where you use atoms in a compositional way, encouraging more functional models. Recoil was the first lib with this model and soon after came Jotai as an alternative to recoil, having quite interesting features and focusing on an unmatched development experience.
+- [Preact-react-signals](https://github.com/preactjs/signals/tree/main/packages/react): recently signals have been
+  widely commented by the frontend community, we had VueSignals, Angular Signals, QwikSignals... It's a concept of
+  optimization at the granular level, being a very effective way to avoid unwanted re-renders. The not so
+  negative point is the way of consuming signals, which is a bit out of the react standard, encouraging mutation techniques
+- [Valtio](https://github.com/pmndrs/valtio): Similar to signals, valtio has a mutable state model, where it uses [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to identify mutations and update state. The negative point is the same as signals, encouraging a model a bit different from React.
 
-## Estado no browser
+## Browser state
 
-> Se tudo roda no browser, significa que todos os estados são estados de browser?
- 
-Com essa pergunta podemos começar a apresentar o estado do browser. Quando digo estado do browser, significa que iremos utilizar features e API's do browser para guardar o estado, independente da tecnologia. 
+> If everything runs in the browser, does that mean all states are browser states?
+
+With this question we can start presenting browser state. When I say browser state, it means we'll use browser features and APIs to store state, regardless of technology.
 
 ### URL
 
-Sim, a URL é uma forma muito efetiva de guardar estado e além de guardar o estado ela possui uma feature que nenhuma outra lib poderá trazer para você ***histórico do browser***. Guardando o estado na URL você conseguirá:
+Yes, the URL is a very effective way to store state and besides storing state it has a feature that no other lib can bring you ***browser history***. Storing state in the URL you'll be able to:
 
-- Permitir que o seu usuário possa caminhar nos estados passados da aplicação
-- Permitir a navegação fluída e restaurar ações realizadas anteriormente, tal como buscas via query-string
-- Seu usuário poderá compartilhar o estado com outros usuários. Sabe quando você vê um produto com um bom preço num ecommerce? Então, graças a URL você consegue compartilhar com outras pessoas.
+- Allow your user to walk through past application states
+- Allow fluid navigation and restore previously performed actions, such as searches via query-string
+- Your user can share the state with other users. You know when you see a product with a good price in an ecommerce? Well, thanks to the URL you can share it with other people.
 
-Parece muito mágico, não é mesmo? Além de mágico é uma tarefa que você facilmente pode implementar, seja na mão ou utilizando bibliotecas de roteamento, tais como [react-router](https://reactrouter.com/en/main), [tanstack-router](https://tanstack.com/router/v1) ou até mesmo o [brouther](https://brouther.vercel.app/).
+This may seem complex at first, but it is straightforward to implement — either manually or using routing libraries, such as [react-router](https://reactrouter.com/en/main), [tanstack-router](https://tanstack.com/router/v1) or even [brouther](https://brouther.vercel.app/).
 
-Utilizando bibliotecas de roteamento em React, basta que você utilize hooks que forneçam acesso e modificação a query-string da sua URL. Tendo isso, você não precisará controlar os estados da sua aplicação e poderá delegar o estado para a URL, ganhando de brinde todos os pontos citados anteriormente.
+Using routing libraries in React, you just need to use hooks that provide access and modification to your URL's query-string. Having that, you won't need to control your application states and can delegate state to the URL, getting for free all the points mentioned earlier.
 
-### Local Storage e Session Storage
+### Local Storage and Session Storage
 
-Esses são dois caras bem conhecidos. São formas bem simples de armazenar o estado no browser e persistir mesmo que o browser seja fechado. Caso você queira armazenar os dados sem expiração, opte pelo [Local Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Mas se você optar por uma sessão curta (até o usuário fechar a aba), então o [Session Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
+These are two well-known browser storage APIs. They provide simple ways to persist state even after the browser is closed. If you want to store data without expiration, opt for [Local Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). But if you opt for a short session (until the user closes the tab), then [Session Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
 
-O funcionamento de ambos é bem similar, com uma interface idêntica, permitindo que você troque um pelo outro sem nenhuma dificuldade, apenas tendo que lidar com as consequências de expiração.
+The operation of both is very similar, with an identical interface, allowing you to swap one for another without any difficulty, only having to deal with expiration consequences.
 
-Não existe uma maneira simples de fazer um estado reativo utilizando esses storages, mas eles são ótimos para salvar os estados de formulário entre um passo e outro, salvar as atualizações de estado dos componentes para você fornecer opções de "Continue de onde parou". Outra forma bastante efetiva é para salvar preferências do usuário, como o tema, página inicial, filtros mais buscados (isso é apenas aconselhável caso você não tenha uma API de preferências e queira manter as preferências atreladas ao browser do usuário).
+There's no simple way to make reactive state using these storages, but they're great for saving form states between one step and another, saving component state updates so you can provide "Continue where you left off" options. Another very effective way is to save user preferences, like theme, home page, most searched filters (this is only advisable if you don't have a preferences API and want to keep preferences tied to the user's browser).
 
 ```typescript jsx
 window.localStorage.setItem("prefer-theme","dark")
 window.localStorage.get("prefer-theme") === "dark" // true
 ```
 
-Caso você precise de uma biblioteca que faça algumas abstrações, como parsear JSON para salvar no Local Storage ou Session Storage, você pode olhar o [storage-manager-js](https://www.npmjs.com/package/storage-manager-js). Além de Local e Session Storage, ele contempla manipulações de cookies.
+If you need a library that does some abstractions, like parsing JSON to save in Local Storage or Session Storage, you can look at [storage-manager-js](https://www.npmjs.com/package/storage-manager-js). Besides Local and Session Storage, it covers cookie manipulations.
 
 ### Cookies
 
-Aceitas biscoitos? Os clássicos da web que vivem sendo pedidos para armazenar suas informações em prol de rastreamento. Cookies também armazenam informações, mas são mais aconselháveis de serem manipulados do lado da API e não no frontend. Por isso irei abordar menos sobre eles. A única dica que posso deixar é para utilizar os seus JWT nos cookies, com secure habilitado, http-only setado (para evitar roubos em casos de ataque de XSS) e com um tempo de expiração não muito longo.
+Accept cookies? The web classics that are always being asked to store your information for tracking. Cookies also store information, but are more advisable to be manipulated on the API side and not on the frontend. So I'll cover less about them. The only tip I can leave is to use your JWTs in cookies, with secure enabled, http-only set (to avoid theft in case of XSS attack) and with a not too long expiration time.
 
-# Quando usar qual?
+# When to use which?
 
-Agora que foram apresentados diversos tipos de estado, podemos comparar cada um deles e tirar conclusões de uso de cada um deles. A forma mais efetiva vai ser apresentar um problema e a solução de estado mais adequada para cada um dos problemas citados. Lembre-se que mais de uma solução pode existir para o problema, aqui apresentarei apenas soluções que julgo serem mais adequadas.
+Now that several types of state have been presented, we can compare each of them and draw conclusions about the use of each. The most effective way will be to present a problem and the most appropriate state solution for each of the problems mentioned. Remember that more than one solution can exist for the problem, here I'll only present solutions that I consider most appropriate.
 
-## Formulário com múltiplos passos
+## Multi-step form
 
-Formulários sempre foram e possivelmente sempre vão ser uma dor de cabeça para todo mundo, devido à quantidade de requisitos pedidos para cada um. Quando um formulário não possui interações de estado, eu prefiro não fazer o controle de estado local, apenas salvo o estado de cada passo na hora do submit no Local Storage. Dessa forma, consigo fazer o formulário de forma mais rápida, com menos lógica e ainda consigo extrair a feature de ter um valor default caso o usuário volte em algum passo, utilizando as properties `defaultValue` dos inputs e o valor obtido do Local Storage durante a primeira renderização.
+Forms have always been and will possibly always be a headache for everyone, due to the amount of requirements asked for each one. When a form doesn't have state interactions, I prefer not to do local state control, I just save the state of each step at submit time in Local Storage. This way, I can make the form faster, with less logic and I can still extract the feature of having a default value if the user goes back to some step, using the inputs' `defaultValue` properties and the value obtained from Local Storage during the first render.
 
-## Filtros de tabela/buscas por formulário
+## Table filters/form searches
 
-Esse é um caso bem similar ao formulário com múltiplos passos, a diferença é que nesse caso eu opto por salvar as informações na URL, assim o usuário pode ter um histórico com suas buscas e compartilhar buscas através da URL. É um caso bem simples. Assim como no caso anterior, opto por não controlar o estado dos formulários e apenas carregar os valores padrões conforme o estado da URL.
+This is a case very similar to the multi-step form, the difference is that in this case I opt to save the information in the URL, so the user can have a history with their searches and share searches through the URL. It's a very simple case. Like the previous case, I opt not to control form state and only load default values according to URL state.
 
-## Formulários de multi interações ou interdependência
+## Multi-interaction or interdependency forms
 
-Esses são os formulários são os mais chatos, onde o campo X depende do valor do campo Y e Z. Nesses casos não tem muito para onde correr...você precisa ter um estado local para controlar o seu formulário. Nada que um [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer) ou um [react-hook-form](https://www.react-hook-form.com/) para resolver o problema de manipulação do estado global. Assim como todo formulário, costumo salvar o estado para que o usuário possa recuperar a sessão caso aconteça algum acidente com o formulário (fechar a aba ou o navegador, dar um F5 sem querer).
+These are the most annoying forms, where field X depends on the value of field Y and Z. In these cases there's not much to run from...you need to have a local state to control your form. Nothing that a [use-typed-reducer](https://github.com/g4rcez/use-typed-reducer) or a [react-hook-form](https://www.react-hook-form.com/) can't solve the global state manipulation problem. Like every form, I usually save the state so the user can recover the session if something happens to the form (closing the tab or browser, accidentally hitting F5).
 
-## Informações do usuário
+## User information
 
-Esse é um caso clássico de estado global, seja utilizando redux, zustand, jotai ou qualquer outro. Este estado em específico é importante estar no estado global para que seja possível reagir às informações do perfil, seja para ocultar ou exibir componentes, evidenciar a conta logada, trocar perfil...são muitas coisas que fazem sentido.
+This is a classic case of global state, whether using redux, zustand, jotai or any other. This guy specifically is important to be in global state so you can react to profile information, whether to hide or show components, highlight the logged account, switch profile...there are many things that make sense.
 
-# Conclusão
+# Conclusion
 
-São diversas formas de manipular estado, para não se confundir, conheça bem cada uma delas e principalmente conhecer bem o seu problema. Nem sempre é necessário um estado global só porque a informação é utilizada em duas telas diferentes, às vezes um hook com a lógica implementada pode fazer bem o trabalho. Tente não otimizar as coisas antes de realmente precisar, e assim, você conseguirá conviver bem com os estados e suas múltiplas fontes. 
+There are several ways to manipulate state, to not get confused, know each one well and mainly know your problem well. It's not always necessary to have global state just because the information is used in two different screens, sometimes a hook with implemented logic can do the job well. Avoid premature optimization, and the various state sources will be manageable.
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

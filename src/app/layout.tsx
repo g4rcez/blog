@@ -17,19 +17,19 @@ const lexend = Lexend({ subsets: ["latin"], display: "swap", variable: "--font-l
 
 export const metadata: Metadata = {
     title: {
-        template: `%s - ${BlogConfig.name["pt-BR"]}`,
-        default: BlogConfig.name["pt-BR"],
+        template: `%s - ${BlogConfig.name["en-US"]}`,
+        default: BlogConfig.name["en-US"],
     },
 };
 
 export default async function RootLayout(props: PropsWithChildren<{ params: Promise<{ lang?: string }> }>) {
     const params = await props.params;
-    const lang = params.lang || "pt-BR";
+    const lang = params.lang || "en-US";
     return (
         <html
             lang={lang}
             suppressHydrationWarning
-            className={clsx("h-full antialiased dark", inter.variable, lexend.variable)}
+            className={clsx("dark h-full antialiased", inter.variable, lexend.variable)}
         >
             <head>
                 <title>Blog</title>

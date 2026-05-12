@@ -2,22 +2,34 @@
 import { Locale } from "@/lib/dictionary";
 import { useLocale } from "@/lib/i18n";
 import { Menu, MenuItem } from "@g4rcez/components/menu";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const languages = [
-    { base: "/", code: "pt-BR" as Locale, name: "Português", flag: "🇧🇷" },
-    { base: "/en", code: "en-US" as Locale, name: "English", flag: "🇺🇸" },
+    { base: "/", code: "en-US" as Locale, name: "English", flag: "🇺🇸" },
+    { base: "/pt", code: "pt-BR" as Locale, name: "Português", flag: "🇧🇷" },
 ];
+
+const prefixes = languages.map((l) => l.base).filter((b) => b !== "/");
+
+const toNeutralPath = (pathname: string) => {
+    for (const prefix of prefixes) {
+        if (pathname === prefix) return "/";
+        if (pathname.startsWith(`${prefix}/`)) return pathname.slice(prefix.length);
+    }
+    return pathname;
+};
 
 export function LanguageSwitcher() {
     const router = useRouter();
+    const pathname = usePathname();
     const [locale, setLocale] = useLocale();
     const currentLanguage = languages.find((lang) => lang.code === locale);
+
     return (
         <Menu
             title={locale}
             label={
-                <span className="flex gap-1 items-center text-foreground">
+                <span className="flex items-center gap-1 text-foreground">
                     {currentLanguage?.flag} <span className="hidden lg:inline-block">{currentLanguage?.name}</span>
                 </span>
             }
@@ -28,7 +40,8 @@ export function LanguageSwitcher() {
                     title={language.name}
                     onClick={() => {
                         setLocale(language.code);
-                        router.push(language.base);
+                        const neutral = toNeutralPath(pathname);
+                        router.push(language.base === "/" ? neutral : `${language.base}${neutral}`);
                     }}
                 >
                     <span className="text-foreground">

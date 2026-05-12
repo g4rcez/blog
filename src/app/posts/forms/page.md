@@ -1,56 +1,54 @@
 ---
 level: 0
-title: Como trabalhar com formulários?
+title: How to work with forms?
 subjects: ["react", "frontend", "typescript", "javascript"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2023-01-12T14:45:00.000Z"
-description: "Como criar formulários sem ter milhões de dependências externas?"
+description: "How to create forms without having millions of external dependencies?"
 ---
 
-# Introdução
+# Introduction
 
-Porque existem várias libs de formulários? Porque existem sempre tantas complicações quando se trata de formulários?
+Why are there so many form libraries? Why are there always so many complications when it comes to forms?
 
-A maioria do tempo trabalhamos com formulários simples (que serão o foco desse artigo) e raramente encontramos casos
-onde existem objetos aninhados ou listas (tópico para o próximo artigo). Se a maioria dos casos são simples, por que
-utilizamos várias e várias bibliotecas?
+Most of the time we work with simple forms (which will be the focus of this article) and rarely find cases
+where there are nested objects or lists (topic for the next article). If most cases are simple, why
+do we use so many libraries?
 
-# Os dois tipos de formulários
+# The two types of forms
 
-No mundo react você irá encontrar vários e vários artigos como este, falando sobre forms controlados (controlled forms)e
-forms não controlados (uncontrolled forms). A ideia aqui não é trazer mais do mesmo, mas sim fazer uma comparação mais
-profunda (ou o famoso deep dive) em ambas as formas
+In the react world you'll find many articles like this, talking about controlled forms and
+uncontrolled forms. The goal here is not to repeat what has been covered elsewhere, but to offer a more thorough comparison — a genuine deep dive — into both approaches.
 
-## Forms controlados
+## Controlled forms
 
-Como o nome diz, são forms controlados. Mas controlados por o que? Nesse caso, controlados pelo estado do React. Neste
-caso você terá um [useState](https://beta.reactjs.org/apis/react/useState)
-ou [useReducer](https://beta.reactjs.org/apis/react/useReducer) para sincronizar o estado do react com os seus
-formulários na tela.
+As the name says, they are controlled forms. But controlled by what? In this case, controlled by React state. In this
+case you'll have a [useState](https://beta.reactjs.org/apis/react/useState)
+or [useReducer](https://beta.reactjs.org/apis/react/useReducer) to synchronize the react state with your
+forms on screen.
 
-> Particularmente, eu costumo evitar essa forma quando os formulários são simples. Mas esse método é bem útil nas
-> seguintes situações
+> Personally, this approach is best avoided for simple forms. It is, however, very useful in the following situations:
 
-- Dependência entre os campos
-- Validações em tempo real
-- Feedbacks interativos
-- Formulários complexos com objetos e listas internas
+- Dependency between fields
+- Real-time validations
+- Interactive feedback
+- Complex forms with internal objects and lists
 
-Tendo em mente feito o controle de estado, podemos aplicar a lógica reativa do react ao nosso formulário de forma bem
-simples
+Having state control in mind, we can apply react's reactive logic to our form in a very
+simple way
 
 ### Form + useState
 
-Essa talvez seja a implementação mais simples para formulários controlados, talvez a única coisa complexa aqui seja o
-handler para as mudanças de estado.
+This is perhaps the simplest implementation for controlled forms, maybe the only complex thing here is the
+handler for state changes.
 
-No exemplo a seguir iremos implementar as seguintes features:
+In the following example we'll implement the following features:
 
-1. Criar um estado tipado para o caso
-2. Criar um onChange genérico que recebe o evento e insere o novo valor com base no nome do input que despachou o evento
-3. Um onSubmit que irá previnir o comportamento padrão para que a página não seja recarregada
-4. Um `<form>` com um onSubmit aplicado para a lógica da função citada acima
+1. Create a typed state for the case
+2. Create a generic onChange that receives the event and inserts the new value based on the input name that dispatched the event
+3. An onSubmit that will prevent the default behavior so the page is not reloaded
+4. A `<form>` with an onSubmit applied for the logic of the function mentioned above
 
 ```typescript
 type State = {
@@ -63,7 +61,7 @@ export default function FormPage() {
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.currentTarget;
-        // vale lembrar que value sempre será uma string
+        // remember that value will always be a string
         setState(prev => ({...prev, [name]: value}));
     }
 
@@ -92,27 +90,27 @@ export default function FormPage() {
 }
 ```
 
-Com esse simples código, você irá conseguir fazer formulário simples com o controle de estado. Sinta-se a vontade para
-acrescentar quaisquer lógicas customizadas, sejam utilizando um useEffect ou quaisquer event listeners do seu input,
-tais como onBlur e onFocus.
+With this simple code, you'll be able to make simple forms with state control. Feel free to
+add any custom logic, whether using a useEffect or any event listeners from your input,
+such as onBlur and onFocus.
 
-Para casos onde você não tem uma validação customizada, esse approach é perfeito porquê:
+For cases where you don't have custom validation, this approach is perfect because:
 
-- Lógica de estado simples
-- Clareza das ações
-- Tipagem conforme o estado
-- Código simples
+- Simple state logic
+- Clarity of actions
+- Typing according to state
+- Simple code
 
-Claro que assim é simplista demais, mas é possível utilizar a [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) para garantir consistências como valor numérico, min e max, range, checkbox ou radiobox. O melhor é que isso é nativo do navegador. Esse exemplo será explorado com mais detalhes mais adiante.
+This example is intentionally simple, but the native [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) can be used to enforce constraints such as numeric values, min/max ranges, and checkbox or radio state — all without any external libraries. This will be covered in more detail shortly.
 
-## Forms não controlados
+## Uncontrolled forms
 
-Como o próprio nome diz, forms não controlados não possuem controle de estado. A captura dos valores desse tipo de
-formulário é toda feita no submit do formulário. A captura pode ser feita através de uma lógica de parsear todos os
-inputs do formulário através de querySelectorAll ou `form.elements`, ou ainda
-utilizando [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
+As the name says, uncontrolled forms don't have state control. The capture of values from this type of
+form is all done on form submit. The capture can be done through a logic of parsing all
+form inputs through querySelectorAll or `form.elements`, or using
+[FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 
-Iremos fazer das duas formas para que fique bem claro algumas das possibilidades
+Both approaches will be demonstrated to illustrate the available options:
 
 ### FormData
 
@@ -141,23 +139,23 @@ export default function App() {
 }
 ```
 
-Bem simples, não é mesmo? E o melhor de tudo é que tudo isso é nativo do navegador, zero controle de estado durante a
-interação do usuário e total controle dos dados na ação de submit.
+Pretty simple, isn't it? And best of all, this is all native to the browser, zero state control during
+user interaction and total control of data on submit action.
 
-Apesar de utilizar uma API que trata nativamente os dados do formulário, mesmo que você utilize um `type=number`, o
-FormData não irá fazer a conversão automática :/
+Although using an API that natively handles form data, even if you use a `type=number`,
+FormData won't do automatic conversion :/
 
 ### Query Selectors
 
-Um recurso bem famoso para selecionar elementos é o `ELEMENT.querySelector` ou `ELEMENT.querySelectorAll`. A diferença
-entre os dois é que o `querySelectorAll` retorna um `NodeListOf` dos elementos HTML, e não, isso não é um array para
-você utilizar métodos como ` `.filter` ou `.reduce`.
+A well-known feature for selecting elements is `ELEMENT.querySelector` or `ELEMENT.querySelectorAll`. The difference
+between the two is that `querySelectorAll` returns a `NodeListOf` of HTML elements, and no, this is not an array for
+you to use methods like `.filter` or `.reduce`.
 
-O uso do querySelector é bem simples, basta escrever
-um [CSS Selector](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors) e você terá
-um `NodeListOf` desses elementos.
+Using querySelector is quite simple, just write
+a [CSS Selector](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors) and you'll have
+a `NodeListOf` of those elements.
 
-O código a seguir ilustra essa abordagem:
+Without further ado, let's go to the code
 
 ```typescript
 type State = {
@@ -185,76 +183,72 @@ export default function App() {
 }
 ```
 
-Assim como o método anterior, esse método também não faz nenhum controle de estado durante as ações do usuário, apenas
-na ação de submit você terá acesso a todos os valores preenchidos no formulário.
+Like the previous method, this method also doesn't do any state control during user actions, only
+on the submit action you'll have access to all values filled in the form.
 
-A diferença básica entre os métodos é que nesse método você irá fazer a seleção "manual" do que contemplará o estado.
-Como é um CSS Selector, você pode fazer queries mais complexas baseadas
-em [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset)
-ou [AriaAttributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA).
+The basic difference between the methods is that in this method you'll do the "manual" selection of what will compose the state.
+As it's a CSS Selector, you can make more complex queries based
+on [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset)
+or [AriaAttributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA).
 
-Até agora já foram apresentados 3 métodos de formulário e nenhum deles foi devidamente validado. Mas isso nós vamos ver
-agora...
+So far 3 form methods have been presented and none of them have been properly validated. But we'll see that
+now...
 
 # Validity State
 
-Essa é uma das APIs mais subestimadas do navegador. Pouquissimo se usa ela em detrimento de bibliotecas de validação
-como [Yup](https://github.com/jquense/yup) ou [Zod](https://github.com/colinhacks/zod) junto de alguma outra lib de
-validação como [react-hook-form](https://react-hook-form.com/) e similares.
+This is one of the most underrated browser APIs, frequently overlooked in favor of validation libraries such as [Yup](https://github.com/jquense/yup) or [Zod](https://github.com/colinhacks/zod) combined with form libraries like [react-hook-form](https://react-hook-form.com/).
 
-Esse combo de bibliotecas é até interessante, mas talvez em situações onde você queira manter um tamanho de build menor,
-eles não vão ser tão efetivos assim. E é exatamente aqui onde
-a [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) brilha. E vale lembrar que você **só
-pode utilizar ela com inputs dentro da tag `<form/>`**, caso contrário, nenhuma validação será feita
+This combo of libraries is interesting, but maybe in situations where you want to keep a smaller build size,
+they won't be as effective. And this is exactly where
+the [Validity State](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) shines. And it's worth remembering that you **can
+only use it with inputs inside the `<form/>` tag**, otherwise no validation will be done
 
-Claro que em alguns casos mais complexos de formulário como:
+Of course in some more complex form cases like:
 
-- Lista de objetos
-- Objetos aninhados
-- Lista de objetos dentro de objetos
-- Dependência de campos
+- List of objects
+- Nested objects
+- List of objects inside objects
+- Field dependency
 
-Enfim...qualquer lógica um pouco mais complexa ela costuma não lidar bem com a Validity State. Mas nada impede seu uso,
-basta pensar num fluxo amigável para o usuário que dispense a necessidade de dependência entre campos ou objetos/listas
-complexas.
+Any slightly more complex logic is typically beyond what Validity State handles well. That said, nothing prevents its use — the key is designing a user-friendly flow that avoids field dependencies and complex nested structures.
 
-Com a ValidityState, podemos aplicar CSS baseado no estado do nosso elemento. Temos também algumas "razões" para os
-motivos dos erros, o que nos facilita o entendimento e o controle de validação do componente. Ao total são 10 estados de
-erro e 1 estado de válido, chamado `:valid`.
+With ValidityState, we can apply CSS based on our element's state. We also have some "reasons" for
+error motives, which makes it easier for us to understand and control component validation. In total there are 10 error states
+and 1 valid state, called `:valid`.
 
-- valueMissing: trigga o estado de `:invalid`, aplicado para casos onde não existe valor
-- typeMissmatch: trigga o estado de `:invalid`, aplicado para casos onde o atributo type(email ou url) possui um formato
-  incorreto em seu valor
-- tooShort: trigga o estado de `:invalid` ou `out-of-range`, aplicado para casos onde o valor não possui a quantidade de
-  caracteres mínima. Controle feito através de `minLength`
-- tooLong: é o oposto do tooShort, porém para casos onde o valor ultrapassa a quantidade máxima de caracteres. Controle
-  feito através de `maxLength`
-- stepMismatch: determina se o valor é divisível
-  por [`step`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step). Caso não seja, trigga o
-  estado de `:invalid` ou `out-of-range`.
-- rangeUnderflow: corresponde ao `tooShort`, porém para `<input type=number/>`
-- rangeOverflow: corresponde ao `tooLong`, porém para `<input type=number/>`
-- patternMismatch: trigga o estado `:invalid` quando o valor do input não corresponde ao padrão determinado
-  em [pattern](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-pattern)
-- customError: erros customizáveis que você pode setar apartir do
-  método [setCustomValidity](https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity)
-- badInput: checa caso o browser não consiga converter o valor do input
+- valueMissing: triggers the `:invalid` state, applied for cases where there's no value
+- typeMismatch: triggers the `:invalid` state, applied for cases where the type attribute (email or url) has an incorrect format
+  in its value
+- tooShort: triggers the `:invalid` or `out-of-range` state, applied for cases where the value doesn't have the minimum number of
+  characters. Controlled through `minLength`
+- tooLong: is the opposite of tooShort, but for cases where the value exceeds the maximum number of characters. Controlled
+  through `maxLength`
+- stepMismatch: determines if the value is divisible
+  by [`step`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step). If not, triggers the
+  `:invalid` or `out-of-range` state.
+- rangeUnderflow: corresponds to `tooShort`, but for `<input type=number/>`
+- rangeOverflow: corresponds to `tooLong`, but for `<input type=number/>`
+- patternMismatch: triggers the `:invalid` state when the input value doesn't match the pattern determined
+  in [pattern](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-pattern)
+- customError: customizable errors that you can set from the
+  [setCustomValidity](https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity) method
+- badInput: checks if the browser can't convert the input value
 
-E caso nenhum desses seja considerado como verdadeiro, significa que nosso input está indeterminado ou válido. Em casos
-de válido, o estado `:valid` será triggado. O caso
-de [indeterminado](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate) é aplicado para valores iniciais,
-checkbox ou radiobox.
+And if none of these are considered true, it means our input is indeterminate or valid. In valid cases,
+the `:valid` state will be triggered. The
+[indeterminate](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate) case is applied for initial values,
+checkbox or radiobox.
 
-Conhecendo esses valores você pode criar estilos utilizando seletores CSS baseados no estado do seu input e reduzir a
-quantidade de lógica no seu código Javascript
+Knowing these values you can create styles using CSS selectors based on your input's state and reduce
+the amount of logic in your Javascript code
 
-# Conclusão
+# Conclusion
 
-Com todo o conteúdo apresentado, fica um pouco mais fácil decidir o que fazer quando esbarrar em alguma situação de
-formulário. Não é preciso adicionar libs para validar alguns campos, só em situações que são realmente complexas.
+With all the content presented, it's a bit easier to decide what to do when you encounter some form situation.
+There is no need to add libraries to validate fields unless the situation is genuinely complex.
 
-Uma mentalidade legal de adotar, não só para formulários, é utilizar mais do navegador ao invés de utilizar soluções
-custom. Isso reduz a quantidade de código entregue para o cliente e melhora a experiência, trazendo uma experiência mais
-nativa/familiar.
+A cool mindset to adopt, not just for forms, is to use more of the browser instead of using custom
+solutions. This reduces the amount of code delivered to the client and improves the experience, bringing a more
+native/familiar experience.
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

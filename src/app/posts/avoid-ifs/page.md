@@ -1,135 +1,131 @@
 ---
 level: 0
 subjects: ["javascript", "typescript"]
-title: "JS Tricks, evitando ifs"
-language: "pt-br"
+title: "JS Tricks, avoiding ifs"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-12-16T23:59:59.999Z"
-description: "Estratégia para substituir ninhos de if"
+description: "Strategy to replace nested ifs"
 ---
 
-# Introdução
+# Introduction
 
-_Provavelmente existe um nome bem definido para este tipo de pattern, mas não foi possível identificá-lo antes de escrever o post._
+_There is probably a well-known name for this type of pattern, but the specific term escapes me. Rather than delay the post, I'll proceed without it — apologies for the missing reference._
 
-Em um grupo do Telegram, um desenvolvedor perguntou:
+I was in a telegram group and saw a guy saying:
 
-> Preciso fazer este algoritmo sem usar if. Alguém poderia me ajudar?
+> I need to make this algorithm without using if. Could someone help me?
 
-O algoritmo era basicamente pegar o sexo, idade e tempo de trabalho para dizer se a pessoa poderia se aposentar ou não.
-Antes que fosse possível responder, alguém escreveu o algoritmo com um ternário — uma solução engenhosa, mas essencialmente um hack.
+The algorithm was basically to get the sex, age and work time to tell if the person could retire or not.
+Before I could respond, someone wrote the algorithm using a ternary expression — quite clever, but ultimately a workaround.
 
-Essa situação me fez lembrar um algoritmo de IMC que tive que fazer na faculdade, utilizando Java e ele precisava ter
-uma complexidade baixa e ser facilmente testável (a matéria era sobre testes). Todos começaram a escrever de forma apressada e não estruturada, produzindo ninhos de **ifs** para realizar os cálculos. Eu já achei melhor parar pra pensar antes de
-escrever e acabei fazendo o seguinte:
+This situation reminded me of a BMI algorithm I had to do in college, using Java and it needed to have
+low complexity and be easily testable (the subject was about tests). Everyone began writing in a quick, unprincipled manner and produced deeply nested **ifs** to perform the calculations. Taking a step back to think before writing led to the following approach:
 
-1. Criar um enum para masculino e outro para feminino, onde havia o menor índice e o maior índice para cada categoria
-2. Receber a entrada e fazer o cálculo normalmente.
-   3 Com o resultado, buscar nos enums o intervalo que satisfaça a condição do resultado obtido no cálculo
+1. Create an enum for male and another for female, each containing the minimum and maximum index for that category.
+2. Receive the input and perform the calculation normally.
+3. With the result, search the enums for the range that satisfies the condition based on the calculated value.
 
-Em Java isso fica bem mais verboso — chegou a gerar cerca de seis arquivos para algo relativamente simples — mas todas as condições do desafio foram atendidas.
+Of course, in Java this becomes quite complex — it ended up spanning about six files for something relatively simple — but all the challenge conditions were met.
 
-Como o título deste post é evitar os **ifs**, vamos pra essa trick agora em JS/TS.
+Since the title of this post is to avoid **ifs**, let's get to this trick now in JS/TS.
 
-# Definindo nossos casos
+# Defining our cases
 
 ```typescript
 type Sex = "M" | "F";
-type Medidas = { peso: number; altura: number };
+type Measurements = { weight: number; height: number };
 
 const titles = {
-    abaixoDoPeso: "Abaixo do peso",
-    normal: "Peso normal",
-    poucoAcimaDoPeso: "Um pouco acima do peso",
-    acimaDoPeso: "Acima do peso ideal",
-    obeso: "Obesidade",
+    underweight: "Underweight",
+    normal: "Normal weight",
+    slightlyOverweight: "Slightly overweight",
+    overweight: "Above ideal weight",
+    obese: "Obesity",
 };
 
-// Os valores não condizem com o real, eu fiz TI e não medicina.
-// Consulte o médico e beba água
-const parametros = {
+// The values don't match reality, I studied IT not medicine.
+// Consult your doctor and drink water
+const parameters = {
     M: [
-        {title: titles.abaixoDoPeso, min: 0, max: 20.7},
+        {title: titles.underweight, min: 0, max: 20.7},
         {title: titles.normal, min: 20.7, max: 26.4},
-        {title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8},
-        {title: titles.acimaDoPeso, min: 27.8, max: 31.1},
-        // Esse caso é absurdo, mas precisamos cobrir tudo acima de 31.1
-        {title: titles.obeso, min: 31.1, max: Number.MAX_SAFE_INTEGER},
+        {title: titles.slightlyOverweight, min: 26.4, max: 27.8},
+        {title: titles.overweight, min: 27.8, max: 31.1},
+        // This case is absurd, but we need to cover everything above 31.1
+        {title: titles.obese, min: 31.1, max: Number.MAX_SAFE_INTEGER},
     ],
     F: [
-        {title: titles.abaixoDoPeso, min: 0, max: 19.1},
+        {title: titles.underweight, min: 0, max: 19.1},
         {title: titles.normal, min: 19.1, max: 25.8},
-        {title: titles.poucoAcimaDoPeso, min: 25.8, max: 27.3},
-        {title: titles.acimaDoPeso, min: 27.3, max: 32.3},
-        {title: titles.obeso, min: 32.3, max: Number.MAX_SAFE_INTEGER},
+        {title: titles.slightlyOverweight, min: 25.8, max: 27.3},
+        {title: titles.overweight, min: 27.3, max: 32.3},
+        {title: titles.obese, min: 32.3, max: Number.MAX_SAFE_INTEGER},
     ],
 };
 
-const calculo = ({peso, altura}: Medidas) => peso / altura ** 2;
+const calculate = ({weight, height}: Measurements) => weight / height ** 2;
 
-const sexo = "M" as Sex; // o input vem do usuário
-const altura = 1.8;
-const peso = 77;
-const imc = calculo({altura, peso});
-const val = parametros[sexo].find(
-    (medida) => medida.min <= imc && imc <= medida.max
+const sex = "M" as Sex; // input comes from user
+const height = 1.8;
+const weight = 77;
+const bmi = calculate({height, weight});
+const val = parameters[sex].find(
+    (measurement) => measurement.min <= bmi && bmi <= measurement.max
 );
 console.log("Status", val.title);
-console.log("IMC", imc);
+console.log("BMI", bmi);
 ```
 
-Bom, esse é exatamente o algoritmo que fiz em Java, porém traduzido para Javascript, e em bem menos linhas. Vamos rever
-por partes
+This is essentially the same algorithm originally written in Java, now translated to JavaScript in far fewer lines. Let's review it part by part:
 
-1. Como ficou em TS, primeiro a definição dos tipos
-2. Definição dos títulos em `titles`
-3. Aqui os parâmetros de acordo com o sexo, temos uma lista de objetos contendo o título, o mínimo do IMC e o máximo do
-   IMC para cada categoria.
-4. `calculo` já diz tudo, é nossa função que irá fazer o cálculo do IMC
-5. De `sexo` até `imc` não temos nada de diferente ou gritante. Mas fica um **bônus**, ultimamente tenho optado por usar
-   parâmetros como objetos, assim posso nomear meus parâmetros recebidos na função e evita a confusão de parâmetros
-   posicionais, principalmente quando você não tem tipos
-6. Em `val` fazemos um `find` do objeto na nossa lista de `parametros` para identificar o título, mínimo e máximo do IMC
-7. Por fim, exibimos os valores
+1. Since it's in TS, first the type definitions
+2. Definition of titles in `titles`
+3. Here the parameters according to sex, we have a list of objects containing the title, the minimum BMI and the maximum
+   BMI for each category.
+4. `calculate` says it all, it's our function that will calculate the BMI
+5. From `sex` to `bmi` there's nothing different or striking. But here's a **bonus**, lately I've been opting to use
+   parameters as objects, so I can name my received parameters in the function and avoid the confusion of positional
+   parameters, especially when you don't have types
+6. In `val` we do a `find` of the object in our `parameters` list to identify the title, minimum and maximum BMI
+7. Finally, we display the values
 
-É isso, esse foi bem rápido, apenas para mostrar essa trick e fazer com que você evite **ifs** aninhados. Consegue
-imaginar como seria o código utilizando ifs? Bom, eu faço aqui pra você
+That covers the core technique for avoiding nested **ifs**. For comparison, here is the equivalent implementation using conditional statements:
 
 ```typescript
-if (sexo === "M") {
-    if (0 <= imc && imc <= 20.7) {
-        return {title: titles.abaixoDoPeso, min: 0, max: 20.7};
+if (sex === "M") {
+    if (0 <= bmi && bmi <= 20.7) {
+        return {title: titles.underweight, min: 0, max: 20.7};
     }
-    if (20.7 <= imc && imc <= 26.4) {
+    if (20.7 <= bmi && bmi <= 26.4) {
         return {title: titles.normal, min: 20.7, max: 26.4};
     }
-    if (26.4 <= imc && imc <= 27.8) {
-        return {title: titles.poucoAcimaDoPeso, min: 26.4, max: 27.8};
+    if (26.4 <= bmi && bmi <= 27.8) {
+        return {title: titles.slightlyOverweight, min: 26.4, max: 27.8};
     }
-    if (27.8 <= imc && imc <= 31.1) {
-        return {title: titles.acimaDoPeso, min: 27.8, max: 31.1};
+    if (27.8 <= bmi && bmi <= 31.1) {
+        return {title: titles.overweight, min: 27.8, max: 31.1};
     }
 }
-if (sexo === "F") {
-    // o mesmo ninho de ifs
+if (sex === "F") {
+    // the same nest of ifs
 }
-throw Error("Algo de errado não está certo");
+throw Error("Something wrong is not right");
 ```
 
-Viu como fica bem mais complicado? E se você precisar mudar algum valor? E se houverem novas regras? Resposta: vão haver
-mais e mais **ifs**
+Notice how much more complex this becomes. Adding new values or rules means adding more nested **ifs**, making the code increasingly difficult to maintain.
 
-> Mas Allan, nesse caso com vários ifs, nós temos um "else" para caso não seja atendido e no seu exemplo de objetos não
-> tem isso
+> But Allan, in that case with multiple ifs, we have an "else" for when it's not met and in your object example there's
+> no such thing
 
-Um ponto válido. É necessário proteger a entrada contra casos inválidos. Um simples guard clause resolve isso:
+A valid point. The input does need to be guarded against invalid cases. A simple guard clause handles this cleanly:
 
 ```typescript
-if (!parametros.hasOwnProperty(sexo)) {
-    throw Error("Algo certo está errado");
+if (!parameters.hasOwnProperty(sex)) {
+    throw Error("Something right is wrong");
 }
-// Fluxo normal do seu programa aqui
-// É legal abortar os erros primeiro
+// Normal flow of your program here
+// It's nice to abort errors first
 ```
 
-Com isso, a abordagem fica completa. Obrigado pelo seu tempo, tamo junto e até a próxima
+That covers everything. Thank you for your time, see you soon, bye bye

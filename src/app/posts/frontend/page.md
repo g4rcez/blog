@@ -1,39 +1,39 @@
 ---
 level: 1
 subjects: ["react", "frontend", "typescript", "javascript"]
-title: "E se eu precisar mudar só isso aqui?"
-language: "pt-br"
+title: "What if I need to change just this here?"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-08-08T03:18:00.000Z"
-description: "Criando frontends customizaveis com arquivos de setup"
+description: "Creating customizable frontends with setup files"
 ---
 
-Interrupções durante o desenvolvimento para atender pedidos como "Muda aquela cor de verde para vermelho magenta" ou "Troca só uma palavra em tal lugar" são mais comuns do que deveriam. Este post apresenta uma abordagem para tornar esse tipo de mudança mais controlada.
+Anyone who has worked in frontend development has likely received requests like "Change that color from green to magenta red" or "Just change this one word here". Those who have never encountered such requests are fortunate.
 
-# Historinhas
+# Stories
 
-A motivação deste post é explicar uma ferramenta desenvolvida em um projeto real, apresentada no primeiro Meetup de NodeJS do Rio de Janeiro. Embora o tema da apresentação fosse criação de CLIs, a ideia de uma CLI para **gerar configurações do frontend** gerou mais interesse do que o assunto principal.
+The motivation for this post was to document a tool developed for a company project, part of which was presented at the first NodeJS Meetup in Rio de Janeiro. The talk focused on CLI creation, but the concept of using a CLI to **generate frontend configurations** proved more interesting to the audience than the CLI topic itself.
 
-Esse CLI foi feito para criar parâmetros de configuração do meu frontend que precisa mudar de cara de acordo com o tenant que está sendo acessado.
+This CLI was made to create configuration parameters for my frontend that needs to change appearance according to the tenant being accessed.
 
-> Suponha que você tenha cliente XPTO e ABCD, ambos têm o mesmo site e o tema precisa ser diferente. Tendo que fazer em React, como você faria pra resolver esse problema? Eu vou relatar a minha solução
+> Suppose you have client XPTO and ABCD, both have the same site and the theme needs to be different. Having to do it in React, how would you solve this problem? I'll report my solution
 
 ## Step by Step
 
-Antes de começar, temos umas regrinhas que preciso deixar claro e explicar o cenário.
+Before starting, there are some rules I need to make clear and explain the scenario.
 
-- Um backend `roteador de UI` entrega os assets de acordo com o tenant. Os assets ficam em um bucket S3, separados de acordo com o tenant. A cada requisição, esse roteador identifica o tenant chamado e vai no respectivo bucket pegar um arquivo `versions.json` que diz o seguinte para ele _Roteador, a UI do XPTO está na versão 0.0.5 e o ABCD está na versão 0.0.6. Para cada um deles, entregue os assets com essas versões_. Para isso acontecer, basta concatenar strings de acordo com o `diretório + versão` para ter o caminho até o arquivo.
+- A backend `UI router` delivers assets according to the tenant. Assets are in an S3 bucket, separated according to the tenant. On each request, this router identifies the called tenant and goes to the respective bucket to get a `versions.json` file that says the following _Router, XPTO's UI is on version 0.0.5 and ABCD is on version 0.0.6. For each of them, deliver the assets with these versions_. For this to happen, just concatenate strings according to the `directory + version` to get the path to the file.
 
-- O `roteador de UI` entrega os assets. Primeiro, olhe a estrutura do `index.html`
+- The `UI router` delivers the assets. First, look at the `index.html` structure
 
 ```html
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link
       rel="shortcut icon"
-      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/favicon.ico"
+      href="https://MYCOMPANY.COM/assets/xpto/0.0.5/favicon.ico"
     />
     <meta
       name="viewport"
@@ -41,36 +41,36 @@ Antes de começar, temos umas regrinhas que preciso deixar claro e explicar o ce
     />
     <link
       rel="manifest"
-      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/xpto/manifest.json"
+      href="https://MYCOMPANY.COM/assets/xpto/0.0.5/xpto/manifest.json"
     />
     <meta name="theme-color" content="#000000" />
-    <!-- Isso é importante -->
+    <!-- This is important -->
     <script>
       window.$__CONFIG__ = { tenant: "xpto", version: "0.0.5" };
     </script>
-    <!-- Isso também é importante -->
-    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/xpto.js"></script>
+    <!-- This is also important -->
+    <script src="https://MYCOMPANY.COM/assets/xpto/0.0.5/js/xpto.js"></script>
     <title>Dev</title>
     <link
-      href="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/css/main.css"
+      href="https://MYCOMPANY.COM/assets/xpto/0.0.5/css/main.css"
       rel="stylesheet"
     />
-    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/js/analytics.js"></script>
+    <script src="https://MYCOMPANY.COM/assets/xpto/js/analytics.js"></script>
   </head>
   <body>
-    <noscript>Você precisa ativar o Javascript para usar esse site.</noscript>
+    <noscript>You need to enable Javascript to use this site.</noscript>
     <main id="root"></main>
-    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/_runtime.js"></script>
-    <script src="https://MINHAEMPRESA.COM.BR/assets/xpto/0.0.5/js/main.js"></script>
+    <script src="https://MYCOMPANY.COM/assets/xpto/0.0.5/js/_runtime.js"></script>
+    <script src="https://MYCOMPANY.COM/assets/xpto/0.0.5/js/main.js"></script>
   </body>
 </html>
 ```
 
-Se você prestar atenção, esse é o HTML que o `CreateReactApp` gera, mas com algumas modificações. Essas modificações podiam ser feitas no arquivo `public/index.html` do seu projeto React, mas como exigem versões e afins, optamos por gerar o `index.html` no `roteador de UI` (este que está em F#)
+This is the HTML that `Create React App` generates, with some notable modifications. These modifications could be made in the `public/index.html` file of your React project, but as they require versions and such, we opted to generate the `index.html` in the `UI router` (which is in F#)
 
-As duas tags de script no `head` são as que começam a fazer a mágica acontecer. Nelas eu digo a versão e o tenant que está sendo usado **_(o nome do tenant para tags de alt e substituição de valores em caso de referência a mágica, a versão apenas para colocar esse dado no footer da aplicação + copyright)_**. O arquivo `xpto.js` é o arquivo principal para o frontend funcionar, pois nele estão todas as cores, imagens e textos que eu devo fazer referência para cada tenant.
+The two script tags in the `head` are the ones that start making the magic happen. In them I tell the version and the tenant being used **_(the tenant name for alt tags and value substitution in case of magic reference, the version just to put this data in the application footer + copyright)_**. The `xpto.js` file is the main file for the frontend to work, because in it are all the colors, images and texts that I should reference for each tenant.
 
-Esses dois arquivos marcados foram colocados no `<head>` e acima da declaração do CSS com o propósito de serem executados primeiro para que quando houver o carregamento da aplicação, todas as variáveis do frontend estejam setadas para que ele possa trabalhar com os valores sem que os mesmos não sejam nulos quando forem usados.
+These two marked files were placed in the `<head>` and above the CSS declaration with the purpose of being executed first so that when the application loads, all frontend variables are set so it can work with the values without them being null when used.
 
 ```javascript
 // xpto.js
@@ -83,10 +83,10 @@ window.$__CONFIG__.config = {
   },
   texts: {
     ptBr: {
-      tituloBoasVindas: "Olá mundo",
+      welcomeTitle: "Hello world",
     },
     enUs: {
-      tituloBoasVindas: "Hello world",
+      welcomeTitle: "Hello world",
     },
   },
   logo: "https://...",
@@ -94,11 +94,11 @@ window.$__CONFIG__.config = {
 };
 ```
 
-Bom, com isso aí já da pra começar a ter uma ideia. Esse arquivo é gerado de um [script que cria os arquivos de configuração pra cada tenant](https://gist.github.com/g4rcez/c6bb44e9dca7d2b401dc4c46467b0cc2). _Não esquece de dar uma olhada nesse script aí, ele vai mostrar como eu crio cada configuração_.
+Well, with that you can already start getting an idea. This file is generated from a [script that creates configuration files for each tenant](https://gist.github.com/g4rcez/c6bb44e9dca7d2b401dc4c46467b0cc2). _Don't forget to take a look at that script, it will show how I create each configuration_.
 
-# Acesso no Frontend
+# Access in the Frontend
 
-Vamos começar do zero sobre como eu criei essa estratégia para o front.
+Let's start from scratch on how I created this strategy for the front.
 
 ```bash
 npm i -g create-react-app
@@ -107,7 +107,7 @@ cd awesome-project
 yarn add --dev polished signale npm-run-all
 ```
 
-Esses dois pacotes são para o script que mandei o link antes, caso você tente executar. Ainda antes de executar o script de build, você precisará criar um arquivo `.json` em `awesome-project/themes` com o nome do tenant. A estrutura do JSON deve ser a seguinte:
+These two packages are for the script I sent the link before, in case you try to run it. Still before running the build script, you'll need to create a `.json` file in `awesome-project/themes` with the tenant name. The JSON structure should be as follows:
 
 ```javascript
 {
@@ -119,10 +119,10 @@ Esses dois pacotes são para o script que mandei o link antes, caso você tente 
 	},
 	"texts": {
 		"ptBr": {
-			"tituloBoasVindas": "Olá mundo"
+			"welcomeTitle": "Hello world"
 		},
 		"enUs": {
-			"tituloBoasVindas": "Hello world"
+			"welcomeTitle": "Hello world"
 		}
 	},
 	"logo": "https://...",
@@ -130,21 +130,21 @@ Esses dois pacotes são para o script que mandei o link antes, caso você tente 
 }
 ```
 
-Como nessa versão do script ainda não fiz a criação de parâmetros, então você pode copiar essa minha estrutura ou editar o script de acordo com a sua necessidade.
+As in this version of the script I haven't created parameters yet, you can copy my structure or edit the script according to your need.
 
-Agora, no `package.json` precisamos adicionar a execução do script após o nosso build do React. No meu caso, eu tive que fazer um `yarn eject` para algumas configurações além do que o CRA me fornece, e também embuti a chamada do meu script dentro do `build.js` que ele gera. Caso você não queira fazer um `eject`, pode fazer da seguinte forma:
+Now, in the `package.json` we need to add the script execution after our React build. In my case, I had to do a `yarn eject` for some configurations beyond what CRA provides me, and I also embedded my script call inside the `build.js` it generates. If you don't want to do an `eject`, you can do it as follows:
 
 ```json
 "scripts": {
 	"react-build": "react-scripts build",
-	"themes": "node meu-script-de-temas.js",
+	"themes": "node my-themes-script.js",
 	"build": "npm-run-all -s build themes"
 }
 ```
 
-Com isso, o script será invocado após a geração do build do React e você terá dentro da sua pasta `js` os arquivos dos tenants para o `roteador de UI` ter acesso e chamar cada um de acordo com o tenant invocado pelo usuário.
+With this, the script will be invoked after the React build generation and you'll have inside your `js` folder the tenant files for the `UI router` to access and call each one according to the tenant invoked by the user.
 
-Já no nosso código React, eu tive que fazer algumas poucas _gambiarras_ que nesse caso se tornam aceitáveis para que eu possa fazer meu servidor comunicar com meu frontend sem a necessidade de uma segunda requisição para pegar o arquivo de configuração. Eu abstrai em um único arquivo toda a configuração para simplificar a visualização, até porque no meu projeto como o front está em TS, ainda tenho os arquivos de tipos e isso iria fugir um pouco do foco aqui.
+In the React code, a few acceptable workarounds were needed to allow the server to communicate with the frontend without a second request for the configuration file. All configuration was abstracted into a single file for clarity. The TypeScript type files are omitted here, as they would distract from the main focus.
 
 ```javascript
 const CONFIG = window.$__CONFIG__.config;
@@ -155,13 +155,13 @@ export const LOGO = CONFIG.logo;
 export const BANNER = CONFIG.banner;
 
 
-// Já vou explicar essa mágica
+// I'll explain this magic shortly
 const root: any = document.querySelector(":root");
 Object.keys(colors).forEach((x =>
 	root.style.setProperty(`--${x}`, `${colors[x]}`));
 ```
 
-[Como você pode ver no W3C Schools](https://www.w3schools.com/cssref/sel_root.asp), a tag `:root` faz referência a raiz do nosso documento, ou seja, a própria tag `<html>`. Isso foi feito pois nem todos os componentes do frontend estão com [styled-components](https://www.styled-components.com), existem alguns com CSS, e graças ao elemento `:root` e a função `var()` do CSS, eu consegui exportar minhas cores não somente no JS, mas também no CSS. Para eu usar é bem simples
+[As you can see in W3C Schools](https://www.w3schools.com/cssref/sel_root.asp), the `:root` tag references the root of our document, that is, the `<html>` tag itself. This was done because not all frontend components are with [styled-components](https://www.styled-components.com), some are with CSS, and thanks to the `:root` element and the CSS `var()` function, I was able to export my colors not only in JS, but also in CSS. To use it is very simple
 
 ```css
 .primary {
@@ -169,9 +169,9 @@ Object.keys(colors).forEach((x =>
 }
 ```
 
-Como disse anteriormente, isso tudo já vai estar setado quando carregar os dois arquivos de configuração e assim você poderá trabalhar com as variáveis no CSS sem problemas.
+As I said before, all this will already be set when loading the two configuration files and so you can work with variables in CSS without problems.
 
-Quando for o caso de usar quaisquer valores dentro do seu código React, basta importar como se fosse um objeto de um arquivo qualquer
+When it's the case of using any values inside your React code, just import as if it were an object from any file
 
 ```jsx
 import COLORS from "./config";
@@ -184,14 +184,14 @@ export default () => (
 );
 ```
 
-O processo de criação foi complexo, e existiam soluções prontas, mas o uso de bibliotecas de terceiros para estilização visual retira flexibilidade e acaba criando mais problemas do que resolve.
+The result is simple to use, though the process was complex. Ready-made solutions exist, but using third-party libraries for visual styling reduces flexibility and ultimately creates more problems than it solves.
 
-> Esse caso de usar bibliotecas de terceiro foi tão crítico que tive que reescrever toda a parte usada do [antd](https://ant.design) para o padrão com `var()`, assim não teria problemas em fazer o uso do componente sem quebrar as regras de cor do meu frontend
+> This case of using third-party library was so critical that I had to rewrite the entire part used from [antd](https://ant.design) to the standard with `var()`, so there would be no problems using the component without breaking my frontend's color rules
 
-Ainda quero escrever um pequeno projeto com o exemplo dessa aplicação, usando esse conceito de temas a partir de um arquivo de configuração que pode vir de um servidor que entrega os assets ou até mesmo ter uma requisição pegando esse arquivo em alguma CDN e só depois começar a renderizar os componentes React...as possibilidades de fazer isso são tão grandes quanto a sua criatividade.
+I still want to write a small project with an example of this application, using this concept of themes from a configuration file that can come from a server that delivers the assets or even have a request getting this file from some CDN and only then start rendering React components...the possibilities to do this are as great as your creativity.
 
-**Lembrando que** esse foi um relato de como resolvi esse problema onde trabalho, e mesmo que pareça meio complexo ou trabalhoso, resolveu nosso problema perfeitamente. Agora quaisquer mudanças necessárias na UI, a responsavel por design ou marketing pode editar um JSON e ela terá a mudança dela no ar em questão de segundos.
+**Remember that** this was a report of how I solved this problem where I work, and even if it seems a bit complex or laborious, it solved our problem perfectly. Now any necessary changes in the UI, the person responsible for design or marketing can edit a JSON and they'll have their change live in seconds.
 
-> Como nem tudo são flores, criaram a necessidade de customizar os textos com negrito, itálico, mudar de cor, aceitar valores dinâmicos de acordo com a ação do usuário e até mesmo criar links para instagram, facebook e whatsapp. Essa parada toda eu tenho tentado resolver [nesse repositório](https://github.com/g4rcez/code-markup-parser), porém não está tão atualizado ainda, mas ele esboça a ideia do parser baseado em [BBCode](https://www.bbcode.org)
+> An additional requirement emerged: supporting rich text formatting with bold, italic, color changes, dynamic values, and links to social platforms. Work on this continues in [this repository](https://github.com/g4rcez/code-markup-parser), which outlines the parser approach based on [BBCode](https://www.bbcode.org).
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

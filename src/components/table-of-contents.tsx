@@ -1,5 +1,6 @@
 "use client";
 import { useTocLink } from "@/hooks/use-toc-link";
+import { useTranslation } from "@/lib/i18n";
 import { type Section, type Subsection } from "@/lib/sections";
 import clsx from "clsx";
 import Link from "next/link";
@@ -9,6 +10,7 @@ const margin = { 0: "0", 1: "0", 2: "1", 3: "2", 4: "3", 5: "4", 6: "5" };
 
 export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Section> }) => {
     const showToc = useTocLink();
+    const { t } = useTranslation();
     const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id);
     const getHeadings = useCallback(
         (tableOfContents: Array<Section>) =>
@@ -57,9 +59,9 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
                 <>
                     <h2
                         id="on-this-page-title"
-                        className="text-sm font-medium dark:text-white font-display text-slate-900"
+                        className="font-display text-sm font-medium text-slate-900 dark:text-white"
                     >
-                        Sumário
+                        {t("blog.tableOfContents")}
                     </h2>
                     <ol role="list" className="mt-4 space-y-3 text-sm">
                         {tableOfContents.map((section) => (
@@ -77,7 +79,7 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
                                     </Link>
                                 </h3>
                                 {section.children.length > 0 && (
-                                    <ol role="list" className="pl-5 mt-2 space-y-3 text-slate-500 dark:text-slate-400">
+                                    <ol role="list" className="mt-2 space-y-3 pl-5 text-slate-500 dark:text-slate-400">
                                         {section.children.map((subSection) => (
                                             <li key={subSection.id}>
                                                 <Link
@@ -105,11 +107,11 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
     return (
         <Fragment>
             {showToc ? (
-                <div className="fixed right-0 top-16 isolate block rounded p-8 backdrop-blur xl:hidden dark:bg-slate-900/95 [@supports(backdrop-filter:blur(0))]:bg-slate-50/75 dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75">
+                <div className="fixed right-0 top-16 isolate block rounded p-8 backdrop-blur dark:bg-slate-900/95 xl:hidden [@supports(backdrop-filter:blur(0))]:bg-slate-50/75 dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75">
                     <div className="relative">{items}</div>
                 </div>
             ) : null}
-            <div className="hidden xl:block xl:overflow-y-auto xl:sticky xl:flex-none xl:py-16 xl:pr-6 xl:-mr-6 xl:top-[4.75rem] xl:h-[calc(100vh-4.75rem)]">
+            <div className="hidden xl:sticky xl:top-[4.75rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.75rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
                 {items}
             </div>
         </Fragment>

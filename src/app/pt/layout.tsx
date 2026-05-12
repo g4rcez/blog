@@ -1,0 +1,7 @@
+import { createGenerateMetadata } from "@/lib/metadata";
+
+export const generateMetadata = createGenerateMetadata("pt-BR");
+
+export default function PostsLayout(props: any) {
+    return props.children;
+}

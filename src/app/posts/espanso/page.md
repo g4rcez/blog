@@ -1,71 +1,72 @@
 ---
 level: 1
-title: Espanso. Uma nova forma de digitar
+title: Espanso. A new way to type
 subjects: ["tips-and-tricks"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2025-01-18T13:07:22.874Z"
-description: "Mudando sua forma de digitar com macros e automações."
+description: "Changing your way of typing with macros and automations."
 ---
 
-Você já ouviu falar do [espanso](https://espanso.org/)? É uma ferramenta que tenho usado há tempos e que é de grande utilidade para automatizar coisas simples durante sua digitação, como preencher uma data ou um CPF.
+Have you ever heard of [espanso](https://espanso.org/)? It's a tool I've been using for a while and it's very useful for automating simple things while typing, like filling in a date or an ID number.
 
-# Instalação
+# Installation
 
-Para realmente começar, precisamos instalar o espanso. Basta ir até a [página de download](https://espanso.org/install/) e selecionar o seu sistema operacional. Após a instalação, abra o terminal e digite o comando
+To really get started, we need to install espanso. Just go to the [download page](https://espanso.org/install/) and select your operating system. After installation, open the terminal and type the command
 
 ```shell
 espanso status
 ```
 
-Se tudo estiver certo você irá ver a mensagem `espanso is running`. Ao abrir o programa, você verá um pequeno tutorial e pedirá para que você digite `:espanso`. Isso vai resultar numa troca de `:espanso` para `Hi there`. 
+If everything is correct you'll see the message `espanso is running`. When opening the program, you'll see a small tutorial and it will ask you to type `:espanso`. This will result in replacing `:espanso` with `Hi there`.
 
-Já conseguiu imaginar o que você pode fazer com as substituições? Vamos continuar para você ver o real potencial do espanso.
+Can you already imagine what you can do with substitutions? Let's continue so you can see the real potential of espanso.
 
-# Configuração
+# Configuration
 
-Antes de escrever nossas configurações, precisamos saber onde estão os arquivos de configuração do espanso. Para isso, basta seguir os comandos:
+Before writing our configurations, we need to know where the espanso configuration files are. To do this, just follow the commands:
 
 ```shell
 espanso path
 ```
 
-Vão aparecer 3 linhas, `Config`, `Packages` e `Runtime`. Estamos interessados no diretório exibido em `Config`. Vamos abrir esse diretório no nosso editor de texto favorito ~~neovim~~.
+3 lines will appear, `Config`, `Packages` and `Runtime`. We're interested in the directory shown in `Config`. Let's open this directory in our favorite text editor ~~neovim~~.
 
 ```shell
 cd "$(espanso path config)"
-code # Usando o vscode para ser mais familiar
+code # Using vscode to be more familiar
 ```
 
-![Diretório do espanso](/public/espanso-directory.png)
+![Espanso directory](/public/espanso-directory.png)
 
-Nesse diretório temos alguns arquivos `.yml`. O principal deles para nossa configuração é o arquivo `base.yml`, onde vai conter todas as regras de substituição. 
+In this directory we have some `.yml` files. The main one for our configuration is the `base.yml` file, where all the substitution rules will be.
 
-Uma dica bastante importante para sua configuração é ter um prefixo para os ativadores (triggers) do espanso. Geralmente você vai achar as configurações e pacotes configurados com `:` , mas para evitar conflitos com Slack, Notion e afins, você pode usar `;`. Isso também vai evitar de precisar apertar `Shift + ;` para virar um `:`. 
-# Substituições
+A very important tip for your configuration is to have a prefix for espanso triggers. Configurations and packages typically use `:` as the trigger prefix, but to avoid conflicts with Slack, Notion, and similar applications, `;` is a better choice. This will also avoid having to press `Shift + ;` to get a `:`.
 
-Agora que sabemos o arquivo que precisamos editar, vamos olhar as substituições que o espanso pode fazer. Iremos ver cada um dos tipos de substituição que o espanso oferece. 
+# Substitutions
 
-Os blocos apresentados serão adicionados no arquivo `base.yml`, dentro da propriedade `matches`, sendo um array do formato YAML.
+Now that we know the file we need to edit, let's look at the substitutions that espanso can do. We'll see each type of substitution that espanso offers.
 
-## Substituição estática
+The blocks presented will be added in the `base.yml` file, inside the `matches` property, being a YAML format array.
 
-Essa é a mais simples de todas, mas não deixa de ser importante. Sabe aquela mensagem ou valor que você vive digitando ou salva em algum arquivo para copiar e colar? Agora ele pode virar um macro do espanso para te auxiliar nisso. 
+## Static substitution
+
+This is the simplest of all, but it's still important. You know that message or value you keep typing or save in some file to copy and paste? Now it can become an espanso macro to help you with this.
 
 ```yaml
 - trigger: ;email
-  replace: meuemail@email.com
-- trigger: ;cpf
-  replace: 280.624.055-75 # CPF fake gerado pelo meu espanso :D
+  replace: myemail@email.com
+- trigger: ;ssn
+  replace: 123-45-6789 # Fake SSN generated by my espanso :D
 ```
 
-As substituições estáticas são bem úteis para casos não interativos, onde você precisa apenas transcrever o texto para onde está digitando. Podem ser úteis para preencher formulários comuns com email, cpf, telefone, nome completo...o céu é o limte.
+Static substitutions are very useful for non-interactive cases, where you just need to transcribe the text to where you're typing. They can be useful for filling common forms with email, ID, phone, full name...the sky is the limit.
 
-Particularmente, além dos citados, utilizado pra preencher com links de redes sociais, tipo o meu [canal do youtube](https://www.youtube.com/@allangarcez), linkedin, twitter/x, emojis e afins.
+Particularly, besides those mentioned, I use it to fill in social network links, like my [youtube channel](https://www.youtube.com/@allangarcez), linkedin, twitter/x, emojis and similar.
 
-## Substituição dinâmica
+## Dynamic substitution
 
-Por padrão o espanso fornece algumas diretivas para substituir valores e criar funcionalidades práticas como por exemplo, datas:
+By default espanso provides some directives to replace values and create practical functionalities like, for example, dates:
 
 ```yaml
 - trigger: ;now
@@ -77,39 +78,39 @@ Por padrão o espanso fornece algumas diretivas para substituir valores e criar 
 	  format: "%H:%M"
 ```
 
-Nesse caso temos a criação da hora atual, baseado nos tokens do [chrono](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) , lib Rust para datas. Você também pode usar parâmetros como o `offset` e configurar mais ativadores lógicos, como pegar a data de ontem ou amanhã. 
+In this case we have the creation of the current time, based on [chrono](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) tokens, a Rust lib for dates. You can also use parameters like `offset` and configure more logical triggers, like getting yesterday's or tomorrow's date.
 
-Ainda nas extensões dinâmicas, temos a opção `random`. Essa opção tem um comportamento bem óbvio, dada uma lista de opções, ela vai retornar uma delas de forma aleatória. Essa opção eu costumo usar para CEP, já que não tem como gerar um número de cep válido, então crio uma lista com ceps válidos e conhecidos para poder utilizar no autocompletar.
+Still in dynamic extensions, we have the `random` option. This option has a very obvious behavior, given a list of options, it will return one of them randomly. I usually use this option for ZIP codes, since there's no way to generate a valid zip code number, so I create a list with valid and known zip codes to use in autocomplete.
 
 ```yaml
-  - label: "CEP aleatório"
-    replace: '{{cep}}'
-    trigger: ;cep
+  - label: "Random ZIP"
+    replace: '{{zip}}'
+    trigger: ;zip
     vars:
-      - name: cep
+      - name: zip
         type: random
         params:
           choices:
-            - 04538-133
-            - 04543-907
-            - 21530-014
-            - 22740-300
-            - 25060-236
-            - 28957-632
-            - 30260-070
-            - 70040-010
+            - 10001
+            - 90210
+            - 33101
+            - 60601
+            - 98101
+            - 02101
+            - 85001
+            - 30301
 
 ```
 
-Com isso, aleatoriamente você terá um cep funcional sempre que digitar `;cep`. 
+With this, you'll randomly have a functional zip code whenever you type `;zip`.
 
-Neste tópico de Substituição dinâmica nós vimos as [match-extensions](https://espanso.org/docs/matches/extensions/) do espanso, e ainda vimos como podemos ter variávels, por meio da sintaxe `{{NOME_VARIAVEL}}` e como atribuir labels aos nossos ativadores, com a propriedade `- label:`.
+In this Dynamic Substitution topic we saw espanso's [match-extensions](https://espanso.org/docs/matches/extensions/), and we also saw how we can have variables, through the syntax `{{VARIABLE_NAME}}` and how to assign labels to our triggers, with the `- label:` property.
 
-# Integrando seus scripts
+# Integrating your scripts
 
-Um dos grandes poderes do espanso é poder executar comandos shell quando os ativadores forem digitados. Isso traz grande poder ao seu fluxo de trabalho, podendo simplesmente programar os resultados gerados de forma dinâmica. E quando dizemos comandos shell, isso não se limita somente ao bash/zsh/fish, mas qualquer comando que você tiver instalado no seu sistema. Simplificando, você pode criar um programa em [deno](https://deno.com) e o output dele vai ser o seu autocomplete.
+One of espanso's great powers is being able to execute shell commands when triggers are typed. This brings great power to your workflow, being able to simply program the results generated dynamically. And when we say shell commands, this is not limited only to bash/zsh/fish, but any command you have installed on your system. Simply put, you can create a program in [deno](https://deno.com) and its output will be your autocomplete.
 
-Mas vamos com calma, primeiro analisando o exemplo mostrado na documentação oficial
+But let's take it easy, first analyzing the example shown in the official documentation
 
 ```yaml
   - trigger: ":ip"
@@ -121,62 +122,40 @@ Mas vamos com calma, primeiro analisando o exemplo mostrado na documentação of
           cmd: "curl 'https://api.ipify.org'"
 ```
 
-Simples e efetivo. Utilizando o [curl](https://curl.se/) para fazer um GET no [ipify.org](https://api.ipify.org) e obter o seu IP externo.
+Simple and effective. Using [curl](https://curl.se/) to make a GET on [ipify.org](https://api.ipify.org) and get your external IP.
 
-É importante lembrar que, a execução pode variar entre os sistemas operacionais, mas mantendo o padrão você não deve encontrar problemas.
+It's important to remember that execution may vary between operating systems, but keeping the standard you shouldn't encounter problems.
 
-Como sabemos que podemos executar comandos shell, vamos explorar algumas possibilidades.
+Since we know we can execute shell commands, let's explore some possibilities.
 
-## Gerador de CPF
+## ID Generator
 
-É muito comum para o desenvolvedor BR utilizar o [4devs](https://www.4devs.com.br/) para gerar CPF, CNPJ e outros documentos. E o processo para isso envolve:
-- Abrir o navegador
-- Digitar https://www.4devs.com.br/ na URL
-- Navegar até a opção `Gerador de CPF`
-- Clicar em `GERAR CPF`
+It's very common for developers to use various online tools to generate test IDs and documents. And the process for this involves:
+- Open the browser
+- Type the URL
+- Navigate to the option
+- Click to generate
 
-Para quem já está acostumado, pode ser um processo comum. Mas você não precisa mais disso. Agora você pode simplesmente só digitar `;cpf` e pronto... você tem seu CPF válido bem onde estava digitando, sem precisar sair do lugar. 
+For those who are already used to it, it can be a common process. But you don't need this anymore. Now you can simply type `;uuid` and that's it... you have your valid UUID right where you were typing, without having to leave.
 
-Como dito anteriormente, podemos criar programas em quaisquer linguagens e executar para obter o resultado. Para facilitar o artigo, vamos utilizar o [funcoeszz](https://github.com/funcoeszz/funcoeszz), um compilado de vários aplicativos de linha de comando que possui a geração de CPF e mais alguns utilitários
+As said before, we can create programs in any languages and execute to get the result. To make the article easier, let's use a simple UUID generator:
 
-```yaml
-  - trigger: ";cpf"
-    replace: "{{cpf}}"
-    vars:
-      - name: output
-        type: shell
-        params:
-          cmd: "funcoeszz cpf"
-```
-
-Ou caso você precise de algum CNPJ
-```yaml
-  - trigger: ";cnpj"
-    replace: "{{cnpj}}"
-    vars:
-      - name: output
-        type: shell
-        params:
-          cmd: "funcoeszz cnpj"
-```
-
-Claro que você pode executar comandos com Node, exemplo, gerar um UUID
 ```yaml
   - trigger: ";uuid"
     replace: "{{uuid}}"
     vars:
-      - name: output
+      - name: uuid
         type: shell
         params:
           cmd: "node -e 'console.log(require(\"node:crypto\").randomUUID())'"
 ```
 
-A partir daqui, o céu é o limite para você. Você pode transformar quaisquer tarefas em um fluxo do espanso. Para alguns amigos que já apresentei este programa, alguns deles estão usando para criar modelos de email, preencher formulários automáticos, gerar CPF/CNPJ
+From here, the sky is the limit for you. You can transform any tasks into an espanso flow. Several colleagues who have been introduced to this tool are now using it to create email templates, fill in forms automatically, and generate IDs.
 
-# Conclusão
+# Conclusion
 
-Tenho usado o espanso há pouco mais de 1 ano e meio e não tenho o que falar, ele melhorou muito a minha forma de trabalhar com formulários, escrever e-mails, preencher dados, criar queries SQL, snippets de código e muito mais. Todas essas automações você consegue ver lá no meu [arquivo de configuração do espanso](https://github.com/g4rcez/dotfiles/blob/master/espanso.config.ts). 
+I've been using espanso for a little over 1 and a half years and I have nothing to say, it greatly improved my way of working with forms, writing emails, filling data, creating SQL queries, code snippets and much more. You can see all these automations in my [espanso configuration file](https://github.com/g4rcez/dotfiles/blob/master/espanso.config.ts).
 
-O único porém é a escrita de YAML, que é um formato que eu particularmente não gosto. E por isso minha configuração é feita em Typescript + Deno, o que evita ter que lidar com problemas de espaçamento e indentação. Mas caso queira a configuração em YAML, só olhar no [gist](https://gist.github.com/g4rcez/dc52c404526753edcf4519b85854c1db). 
+The only downside is writing YAML, which is a format I particularly don't like. And that's why my configuration is made in Typescript + Deno, which avoids having to deal with spacing and indentation problems. But if you want the configuration in YAML, just look at the [gist](https://gist.github.com/g4rcez/dc52c404526753edcf4519b85854c1db).
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

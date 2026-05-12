@@ -12,6 +12,5 @@ export const getTranslation = (lang: string) => {
     if (lang in TRANSLATIONS) return TRANSLATIONS[lang as Locale];
     if (lang.startsWith("en")) return TRANSLATIONS["en-US"];
     if (lang.startsWith("pt")) return TRANSLATIONS["pt-BR"];
-    return TRANSLATIONS["pt-BR"];
+    return TRANSLATIONS["en-US"];
 };
-

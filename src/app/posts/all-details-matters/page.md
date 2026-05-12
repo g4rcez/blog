@@ -1,97 +1,97 @@
 ---
 level: 1
-title: Os detalhes importam
+title: Details Matter
 subjects: ["frontend"]
-language: "pt-br"
+language: "en-us"
 translations: ["pt-br", "en-us"]
 date: "2026-05-11T22:58:45.077Z"
-description: "Na era da IA, a atenção aos detalhes é tudo"
+description: "In the age of AI, attention to detail is everything"
 ---
 
-Nunca foi tão fácil escrever código como hoje em dia. Mas a qualidade sobre a qual vamos falar não é de código, e sim do produto. Mais do que nunca, o foco precisa ser na entrega que atinge o usuário final — gastando menos tempo com implementação de código e mais com UX/UI.
+It has never been easier to write code than it is today. But the quality discussed here is not about code — it is about the product. More than ever, the focus needs to be on delivering what actually reaches the end user, spending less time on code implementation and more on UX/UI.
 
-Para entender melhor os detalhes de usabilidade, vamos focar em dois tipos de páginas muito comuns na web:
+To better understand usability details, we will focus on two types of pages that are very common on the web:
 
-1. Lista + filtro de texto
-2. Formulários. Aqui vale lembrar que são formulários simples, até 7 campos.
+1. Text filter + list
+2. Forms — simple forms, up to 7 fields
 
-# Uma simples busca
+# A Simple Search
 
-Imagine o seguinte cenário numa página: um filtro de texto livre e uma tabela com algumas colunas. O filtro será aplicado a todas as colunas. Cada alteração do filtro gera uma requisição `GET HTTP` para a API, que pode retornar uma lista com paginação. Esse é o cenário feliz, onde nenhum erro pode atrapalhar sua implementação.
+Consider the following scenario: a free-text filter and a table with a few columns on a single page. The filter is applied across all columns. Each filter change triggers a `GET HTTP` request to the API, which may return a paginated list. This is the happy path — one where nothing goes wrong.
 
-Mas no mundo real, nada é somente o cenário feliz. Um cenário simples como esse pode ter diversos detalhes escondidos numa boa implementação de UX/UI.
+In the real world, however, it is rarely just the happy path. A scenario this simple can hide numerous details in a well-executed UX/UI implementation.
 
-1. Skeleton de carregamento (client side rendering) ou já iniciar a tela com dados carregados (server side rendering)
-2. [Debounce](https://stackoverflow.com/questions/25991367/difference-between-throttling-and-debouncing-a-function) para atualizar o input ou efetuar somente a busca ao clicar no botão "Buscar"
-    1. Caso o input tenha debounce, lembre de adicionar um ícone de loading ao lado do input para indicar a operação
-    2. No caso de ter o botão, o input entra em estado desabilitado, assim como o botão, ambos com indicativo de carregamento
-3. Definir o estado da página. Carregamento não é somente booleano, podemos ter estados intermediários:
-    1. ***idle***: A tela está a espera de alguma ação do usuário
-    2. ***loading***: A tela está carregando alguma informação
-    3. ***success***: A tela está apta para a visualização dos dados
-    4. ***error***: houve um erro no carregamento dos dados
-4. Retentativas em caso de falha da requisição. Aqui é válido se atentar ao retorno da API. Não adianta fazer uma retentativa em códigos 4xx ou em caso de 500. Nunca se esqueça do [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) para fazer retentativas em intervalos mais inteligentes.
-5. Fazer um `SELECT *` do banco e exibir na tela nunca é uma boa ideia. Por isso temos a **Paginação**, que nos ajuda a tornar as buscas mais rápidas e menos custosas para a API. Aqui não vamos entrar no mérito de paginação infinita ou numerada, isso vai de caso a caso.
-6. Erro na requisição? Usuário sem internet? Falha na API? Todo erro deve ser informado ao usuário, seja com toast, notificação ou alerta — siga o design system adotado no projeto.
-7. O estado deve ser reproduzível e buscável, ou seja, use a URL para salvar o histórico.
+1. Loading skeleton (client-side rendering) or pre-loaded data (server-side rendering)
+2. [Debounce](https://stackoverflow.com/questions/25991367/difference-between-throttling-and-debouncing-a-function) to update the input, or triggering the search only when the user clicks a "Search" button
+    1. If the input uses debounce, add a loading icon next to it to indicate the operation is in progress
+    2. If there is a button, the input enters a disabled state alongside the button — both with a loading indicator
+3. Define page states. Loading is not a boolean; there are intermediate states:
+    1. ***idle***: The page is waiting for user action
+    2. ***loading***: The page is fetching data
+    3. ***success***: The page is ready to display data
+    4. ***error***: An error occurred while loading data
+4. Retry on request failure. Pay attention to the API response code — retrying on 4xx responses or on every 500 is counterproductive. Always consider [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) for more intelligent retry intervals.
+5. Running a `SELECT *` from the database and rendering everything to the screen is never a good idea. **Pagination** solves this by making queries faster and less expensive for the API. Whether to use infinite or numbered pagination is a case-by-case decision.
+6. Request error? User offline? API failure? Every error must be communicated to the user, whether via toast, notification, or alert — follow the design system adopted in the project.
+7. The state must be reproducible and shareable — use the URL to persist the current view.
 
-# Um simples formulário
+# A Simple Form
 
-Deu trabalho pensar em exibir dados para o cliente? Imagina então exibir dados e ainda capturar dados do cliente. Esses são os formulários. Você pode até ter campos de texto livre e dados de correlação, mas sozinhos eles representam uma parcela menor dos campos de formulário. Geralmente em formulários temos o `<select>` ou similares para que o usuário selecione algum item da lista. Reparou bem? Lista, o mesmo tópico repetido anteriormente, mas agora dentro de um `<select>` e não uma página inteira. 
+Getting the display right for the user was already a challenge. Now imagine displaying data and also capturing data from the user. That is a form. You may have free-text fields and correlated data, but on their own, those represent a smaller share of form fields. Forms typically include a `<select>` or similar elements for the user to choose from a list. Notice? A list — the same topic as before, but now inside a `<select>` rather than an entire page.
 
-Ainda nem falamos sobre campos que podem ter formatações (para isso sempre tenho o [the-mask-input](https://github.com/g4rcez/the-mask-input)) que são uma grande melhoria na experiência do usuário. Formatações, validações inline, validações assíncronas e inline...são muitos detalhes além dos que já citamos para listas, mas agora para cada campo de select do nosso formulário.
+There are also fields that may require masking (for which [the-mask-input](https://github.com/g4rcez/the-mask-input) is always my recommendation) — a significant improvement in user experience. Formatting, inline validation, asynchronous inline validation — there are many more details beyond what was already mentioned for lists, now applied to each select field in the form.
 
-1. A validação de campos do frontend nunca é para segurança, mas sim para garantir o formato dos dados. Antes de qualquer processamento no backend, lembre-se sempre de validar os dados.
-2. A formatação dos dados é importante para trazer confiança no preenchimento. É um CPF? Formate com 000.000.000-00, e assim para cada documento ou dado conhecido por ter seu próprio formato. Lembre-se sempre do [the-mask-input](https://github.com/g4rcez/the-mask-input).
-3. Se o usuário estiver acessando de um smartphone, lembre-se de sempre alterar o tipo do teclado para a melhor forma de preenchimento. Isso ajuda a reduzir distrações de formatos e a experiência de digitação. É válido dizer que o [the-mask-input](https://github.com/g4rcez/the-mask-input) já trata isso por padrão.
-4. Existe alguma regra de negócio no valor do campo? Faça a validação inline para evitar frustração de erros ao submeter o formulário.
-    1. Valide somente quando o usuário parar de digitar ou no `onBlur` do input
-    2. A validação requer consulta a API? Coloque um estado de carregamento para indicar a operação
-5. É um formulário extenso e sem dados sensíveis? Salve os dados de sessão para restaurar em caso de atualização da página ou algum acidente que possa reiniciar o formulário.
-6. Ao submeter o formulário, atualize o estado para exibir o carregamento no botão e nos campos de texto. É importante lembrar que desabilitar o botão nesse estágio evita ações duplicadas.
-7. Já foi citado antes, mas vale lembrar: **sempre exibir os erros**.
-8. Use textos de suporte, geralmente textos em tamanho menor abaixo do input, para explicar mais sobre um campo que é pouco usual.
+1. Frontend field validation is never for security — it exists to ensure data format. Always validate data on the backend before any processing.
+2. Data formatting builds confidence during input. Is it a CPF? Format it as `000.000.000-00`, and apply the same principle to any document or data with a known format. [the-mask-input](https://github.com/g4rcez/the-mask-input) handles this well.
+3. If the user is on a smartphone, always configure the appropriate keyboard type for each field. This reduces distraction from incorrect input formats and improves the typing experience. [the-mask-input](https://github.com/g4rcez/the-mask-input) handles this by default.
+4. Is there a business rule on the field's value? Implement inline validation to prevent user frustration from errors at form submission.
+    1. Validate only when the user stops typing or on the input's `onBlur` event
+    2. Does the validation require an API call? Add a loading state to indicate the operation
+5. Is it a long form without sensitive data? Save the session data to restore it in case of a page refresh or any incident that might reset the form.
+6. When submitting the form, update the state to show a loading indicator on the button and text fields. Disabling the button at this stage prevents duplicate submissions.
+7. Already mentioned, but worth repeating: **always display errors**.
+8. Use support text — typically smaller text below the input — to explain unfamiliar or uncommon fields.
 
-# Mas e a implementação?
+# What About the Implementation?
 
-Controlar o estado vindo de múltiplas fontes pode ser um problema, mas tendo a descrição de todo o comportamento desejado, fica fácil construir sua solução.
+Managing state from multiple sources can be challenging. With a clear description of all desired behavior, however, building the solution becomes straightforward.
 
-## Telas de busca: Tanstack/query
+## Search pages: TanStack Query
 
-Precisa manipular um estado assíncrono? Esse estado vem de uma requisição HTTP? Já temos uma boa solução para isso, e estamos falando do [tanstack-query](https://tanstack.com/query). Provavelmente você já conhece e utiliza essa biblioteca, mas é importante lembrar de sua API. Essa biblioteca fornece diversas informações da requisição, que vão desde o `data` até razão de falha.
+Need to manage async state coming from an HTTP request? [TanStack Query](https://tanstack.com/query) is a well-established solution for this. You likely already know and use this library, but it is worth revisiting its API. It exposes numerous properties about a request — from `data` all the way to the failure reason.
 
-Podemos enumerar algumas propriedades que vão nos ajudar a criar os estados intermediários de uma tela:
+The following properties help build intermediate page states:
 
-- **status**: sendo eles `"error" | "success" | "pending"`. O status diz mais sobre os dados em cache do que a requisição em si
-- **data**: a resposta para sua requisição HTTP
-- **fetchStatus**: sendo eles `"fetching" | "paused" | "idle"`. O fetchStatus diz a respeito da requisição
-- **error**: o erro da requisição HTTP
-- **isLoading**: booleano se a requisição está sendo feita ou não
+- **status**: `"error" | "success" | "pending"`. Reflects the cache state more than the request itself.
+- **data**: the HTTP response
+- **fetchStatus**: `"fetching" | "paused" | "idle"`. Reflects the request state.
+- **error**: the HTTP request error
+- **isLoading**: boolean indicating whether a request is in progress
 
-Não vou listar todas as propriedades, mas listando essas já dá para cobrir tudo o que falamos anteriormente, e por ter o `status` não booleano + status da requisição, ainda conseguimos trabalhar com [Optimistic UI](https://simonhearne.com/2021/optimistic-ui-patterns/).
+These properties cover everything discussed above. Because `status` is not a boolean and can be combined with `fetchStatus`, it is also possible to build [Optimistic UI](https://simonhearne.com/2021/optimistic-ui-patterns/) patterns.
 
-- **status**, **loading** e **fetchStatus** nos dão as informações necessárias para o carregamento da tela
-- **error** é literalmente o nosso estado de erro para ser exibido em tela
-- **data** é a nossa informação
-- A biblioteca também fornece mecanismo de retry, seja por tempo ou por ação de focar a aba do site
-- Através do `useInfiniteQuery`, temos acesso a paginação no estilo scroll infinito
-- O cacheamento nativo da biblioteca nos permite rápida navegação entre páginas (quando não utilizamos scroll infinito)
+- **status**, **loading**, and **fetchStatus** provide the information needed to manage loading states
+- **error** is the error state to display to the user
+- **data** is the information itself
+- The library provides a retry mechanism, triggered by time or by tab focus
+- Through `useInfiniteQuery`, infinite scroll pagination is available
+- Native caching enables fast page navigation when not using infinite scroll
 
-## Histórico + roteamento
+## History and routing
 
-Um tópico importante é tornar nossa página reproduzível para outros clientes, permitindo compartilhar as visualizações. Parece um mecanismo complexo, mas basta copiar e colar a URL. Para isso, podemos utilizar alguma biblioteca famosa de roteamento, seja [React Router](https://reactrouter.com/), [Brouther](https://brouther.vercel.app/), [NextJS](https://nextjs.org/docs/app/api-reference/file-conventions/page) ou até mesmo o [Tanstack Router](https://tanstack.com/router).
+Making the page reproducible for other users — allowing them to share views — is an important concern. The mechanism sounds complex, but it amounts to copying and pasting the URL. Any established routing library handles this: [React Router](https://reactrouter.com/), [Brouther](https://brouther.vercel.app/), [Next.js](https://nextjs.org/docs/app/api-reference/file-conventions/page), or [TanStack Router](https://tanstack.com/router).
 
-Basta fazer o `.push()` para a URL e tudo ficará lá, armazenado e permitindo compartilhamento rápido.
+A `.push()` to the URL stores everything there — persisted and immediately shareable.
 
-## Controle de formulário
+## Form control
 
-Aqui é onde você realmente pode ter um problema, mas diria que a solução canônica é usar uma biblioteca de validação de esquema baseado em JSON + validação de formulários que interpretem os esquemas. Um combo perfeito é [Tanstack Form](https://tanstack.com/form) + [zod](https://zod.dev/).
+This is where complexity can accumulate. The canonical solution is to combine a schema-based validation library with a form library that interprets those schemas. [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev/) is a solid combination.
 
-Lembre-se sempre de validar os formatos corretos para garantir a melhor experiência do usuário, e em campos de formatação use sempre o [the-mask-input](https://github.com/g4rcez/the-mask-input) para garantir a formatação correta.
+Always validate the correct formats to ensure the best user experience, and for masked fields, use [the-mask-input](https://github.com/g4rcez/the-mask-input) to guarantee proper formatting.
 
-# Bônus
+# Bonus
 
-Para me ajudar a investigar problemas e melhorar a experiência das páginas, criei um agente de IA que pode ser bastante útil. Deixo aqui o prompt do agente para você usar:
+To help investigate problems and improve page quality, I built an AI agent that can be quite useful. The full agent is available at [Product UI Engineer](/agents/product-ui-engineer), and the prompt is included below for reference:
 
 ```markdown
 
@@ -253,12 +253,14 @@ Then ask: **"Ready to implement? Or shall we resolve the ⚠️ items first?"**
 - Group ⚠️ Missing items at the top of each section so they're immediately visible.
 - After the checklist, provide a **Summary** block:
 
+```
 ## Summary
 ⚠️  X items need decisions before coding
 ❓  Y items need clarification
 ✅  Z items are covered
 
 Blocking decisions: [list them]
+```
 
 ---
 
@@ -284,8 +286,8 @@ Regardless of what the user asks, always call out these when spotted:
 - If something is genuinely covered and well thought-out, say so. Don't manufacture concerns.
 ```
 
-# Conclusão
+# Conclusion
 
-O cuidado aos detalhes pode separar você de um bom para um ótimo engenheiro frontend, por isso, fique sempre atento a experiência do usuário e como você pode melhorar e reduzir a fricção no uso do sistema. Hoje com a ajuda de IA podemos melhorar nosso trabalho, use isso ao seu favor.
+Attention to detail can be what separates a good frontend engineer from a great one. Stay mindful of the user experience and how you can reduce friction in every interaction. Today, with the help of AI, we can elevate our work — use that to your advantage.
 
-Obrigado pelo seu tempo. Até a próxima.
+Thank you for reading.

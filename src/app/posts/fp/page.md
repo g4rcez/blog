@@ -1,86 +1,86 @@
 ---
-title: Mergulhando em Programação Funcional
+title: Diving into Functional Programming
 level: 1
 subjects: ["typescript", "javascript"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2023-03-05T21:45:00.000Z"
-description: "Tentando mais uma vez falar sobre programação funcional, trazendo uma introdução detalhada dos conceitos
-mais importantes e fazendo um mergulho em conceitos de forma explicativa."
+description: "Trying once again to talk about functional programming, bringing a detailed introduction of the
+most important concepts and diving into concepts in an explanatory way."
 ---
 
-Assim como programação orientada a objetos, programação funcional é um paradigma que visa resolver os problemas
-utilizando uma forma mais orientada a funções e composição ao invés de classes e heranças.
+Just like object-oriented programming, functional programming is a paradigm that aims to solve problems
+using a more function and composition oriented way instead of classes and inheritance.
 
-# Conceitos principais
+# Main concepts
 
-Programação funcional faz o uso de **funções puras**, **composições de função**, tratando as funções como uma **função
-de primeira ordem**. É importante ter em mente alguns conceitos antes de começar a ter um desafio utilizando programação
-funcional.
+Functional programming makes use of **pure functions**, **function compositions**, treating functions as **first-order
+functions**. It's important to have some concepts in mind before starting to have a challenge using functional
+programming.
 
-Nesse tópico iremos abordar sobre
+In this topic we'll cover
 
-- Imutabilidade
-- Funções puras
-- Funções de primeira ordem
-- Funções de alta ordem
-- Recursão
-- Composição
+- Immutability
+- Pure functions
+- First-order functions
+- Higher-order functions
+- Recursion
+- Composition
 
-## Imutabilidade
+## Immutability
 
-Talvez esse seja o princípio mais importante de programação funcional. Como o próprio nome sugere, imutabilidade visa a
-não alteração de variáveis durante o ciclo de vida numa função, evitando efeitos colaterais. Para garantir a
-imutabilidade, é importante utilizar funções que não alteram o estado das variáveis de entrada ou globais do sistema e
-sim calcular os valores com base na entrada e retornar novos valores.
+Maybe this is the most important principle of functional programming. As the name suggests, immutability aims at
+not changing variables during the lifecycle in a function, avoiding side effects. To ensure
+immutability, it's important to use functions that don't change the state of input or global system variables and
+instead calculate values based on input and return new values.
 
-## Funções puras
+## Pure functions
 
-Como dito acima em imutabilidade, as funções não devem ter efeitos colaterais, ou seja, para uma entrada X, sempre deve
-haver uma saída Y e não gerar nenhuma mutação em valores que não foram criados no escopo da função
+As said above in immutability, functions should not have side effects, that is, for an input X, there should always
+be an output Y and not generate any mutation in values that were not created in the function scope
 
-## Funções de primeira ordem
+## First-order functions
 
-É importante que você pense em funções como variáveis quaisquer, onde você pode passar uma função como parâmetros de
-outras funções, talvez esse conceito seja conhecido por você como **callback**. Simplificando, funções podem ser
-entradas de outras funções.
+It's important that you think of functions as any variables, where you can pass a function as parameters of
+other functions, maybe this concept is known to you as **callback**. Simply put, functions can be
+inputs of other functions.
 
-## Funções de alta ordem
+## Higher-order functions
 
-O nome do conceito ser parecido com o nome do conceito anterior talvez não seja coincidência, já que esse conceito
-remete ao retorno de funções ao invés da entrada. Funções também podem ser retornadas em outras funções, fazendo uma
-cadeia de funções.
+The name of the concept being similar to the name of the previous concept may not be a coincidence, since this concept
+refers to the return of functions instead of input. Functions can also be returned in other functions, making a
+chain of functions.
 
-## Recursão
+## Recursion
 
-<img src="/recursive-meme.png" className="w-full block min-w-full" alt="Meme recursão" />
+<img src="/recursive-meme.png" className="w-full block min-w-full" alt="Recursion meme" />
 
-De forma bem simplificada, recursão é a habilidade de uma função chamar ela mesmo, podendo substituir laços de
-repetição. Além dos laços, você pode reexecutar a função sempre que precisar atender a uma determinada execução e parar
-a recursão com uma **condição de saída**. A condição de saída é o ponto mais importante na recursão, caso você esqueça,
-você poderá causar uma execução infinita ou até tomar erros
-de [Stack Overflow](https://pt.wikipedia.org/wiki/Stack_overflow)
+In a very simplified way, recursion is the ability of a function to call itself, being able to replace loops.
+Besides loops, you can re-execute the function whenever you need to meet a certain execution and stop
+the recursion with an **exit condition**. The exit condition is the most important point in recursion, if you forget,
+you can cause an infinite execution or even get
+[Stack Overflow](https://en.wikipedia.org/wiki/Stack_overflow) errors
 
-## Composição
+## Composition
 
-**Composição ao invés de herança**
+**Composition over inheritance**
 
-Essa é uma frase famosa para explicar o motivo de compor funções é melhor que herança, devido ao seu controle no fluxo e
-facilidade na implementação. A composição de função pode ser entendida pela notação `f(g(x))`. Porém, ao escrever um
-código, talvez isso não seja a coisa mais legível do mundo, então para isso temos algumas técnicas que nos facilitam na
-hora de compor funções
+This is a famous phrase to explain why composing functions is better than inheritance, due to its control in flow and
+ease of implementation. Function composition can be understood by the notation `f(g(x))`. However, when writing
+code, maybe this isn't the most readable thing in the world, so for this we have some techniques that help us
+when composing functions
 
-# Hora da prática
+# Practice time
 
-Agora que a teoria já foi apresentada, vamos observar alguns conceitos na prática, na prática. Aqui vamos sempre lembrar
-que os conceitos de imutabilidade e funções puras serão sempre aplicadas, dado que são conceitos raíz
+Now that the theory has been presented, let's observe some concepts in practice. Here we'll always remember
+that the concepts of immutability and pure functions will always be applied, given that they are root concepts
 
-## Recursão
+## Recursion
 
-Um problema clássico para se resolver utilizando recursão é
-a [sequência de Fibonacci](https://pt.wikipedia.org/wiki/Sequ%C3%AAncia_de_Fibonacci).
-Você pode brincar com a implementação
-no [playground](https://www.typescriptlang.org/play?#code/MYewdgzgLgBAZgSwEbgIbGAmBeGAKMALhjAFcBbJAUwCcBKYsy2nAPhgCgYSYAeXAIwwA-D2KIUYdJgIwAtDAF0YAanjI0GBLIUAmOgG4OHUJBAAbKgDpzIAOZ4u6ydO0BmOhzpA)
+A classic problem to solve using recursion is
+the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_sequence).
+You can play with the implementation
+in the [playground](https://www.typescriptlang.org/play?#code/MYewdgzgLgBAZgSwEbgIbGAmBeGAKMALhjAFcBbJAUwCcBKYsy2nAPhgCgYSYAeXAIwwA-D2KIUYdJgIwAtDAF0YAanjI0GBLIUAmOgG4OHUJBAAbKgDpzIAOZ4u6ydO0BmOhzpA)
 
 ```typescript
 const fibonacci = (n: number): number =>
@@ -89,54 +89,54 @@ const fibonacci = (n: number): number =>
 console.log(fibonacci(3));
 ```
 
-Como foi comentado anteriormente, é sempre importante ter uma **condição de saída** para evitar a recursão infinita
+As mentioned earlier, it's always important to have an **exit condition** to avoid infinite recursion
 
-## Funções de primeira ordem
+## First-order functions
 
-Não foi comentado anteriormente, mas possivelmente você faz bastante o uso desse conceito no seu dia-a-dia. Funções
-como `map`, `forEach`, `filter` e `reduce` são um dos exemplos mais conhecidos desse conceito. Podemos observar em:
+It wasn't commented earlier, but you possibly make great use of this concept in your day-to-day. Functions
+like `map`, `forEach`, `filter` and `reduce` are some of the most known examples of this concept. We can observe in:
 
 ```typescript
-// utilizando map
+// using map
 const upper = (list: number[]) => list.map(x => x.toUpperCase());
 
-// utilizando reducez1x
+// using reduce
 const sum = (list: number[]) => list.reduce((acc, el) => acc + el, 0);
 ```
 
-# Conceitos de programação
+# Programming concepts
 
 ## Pipe
 
-De forma resumida, este conceito consiste em ser uma função agregadora de funções. Onde a saída de uma função é a
-entrada de outra. Por meio desse conceito é possível concatenar funções através de seu resultado, tendo assim uma
-pipeline de funções. Visualmente você pode entender melhor
+In short, this concept consists of being an aggregating function of functions. Where the output of one function is the
+input of another. Through this concept it's possible to concatenate functions through their result, thus having a
+pipeline of functions. Visually you can understand better
 
 ```
-função(argumentos) 
-	-> função2(retornoFunção1)
-	-> função3(retornoFunção2)
-	-> retornoFunção3
+function(arguments)
+	-> function2(returnFunction1)
+	-> function3(returnFunction2)
+	-> returnFunction3
 ```
 
-Podemos ver melhor uma comparação utilizando Typescript entre uma função com pipe e uma função sem o pipe
+We can see better a comparison using Typescript between a function with pipe and a function without pipe
 
 ```typescript
-// implementação sem pipe
+// implementation without pipe
 const parseName = (name: string) =>
     formatBrazilianNames(capitalize(normalize(name)))
 
 
-// implementação com pipe
+// implementation with pipe
 const parseName = pipe(normalize, capitalize, formatBrazilianNames);
 ```
 
-Para entender um pouco melhor o que nossa função pipe representa, vamos duas implementações:
+To understand a little better what our pipe function represents, let's see two implementations:
 
-1. implementação não tipada, apenas para entender o conceito
-2. utilitário totalmente tipado, facilitando o uso do conceito e melhoria na identificação de bugs
+1. untyped implementation, just to understand the concept
+2. fully typed utility, facilitating the use of the concept and improving bug identification
 
-### Pipe não tipado
+### Untyped Pipe
 
 ```typescript
 type Fn = (...a: any[]) => any;
@@ -148,18 +148,18 @@ const pipe = (first: A, ...fns: Fn[]) =>
                 g(f(...args)), (...args: unknown[]) => a(...args));
 ```
 
-1. `Fn`: é um tipo que utilizaremos para garantir que temos apenas funções
-2. `const pipe`: aqui na criação da nossa função pipe, é exigido uma função e fazemos um spread de outras N funções para
-   concatenar
-3. `fns.reduce`: utilizamos o reduce para agregar as funções, fazendo com que a entrada de `g` seja a saída
-   de `f(...args)`
-4. O segundo parâmetro do nosso reduce é o inicializador, sendo esse uma função que recebe quaisquer argumentos e passa
-   esses valores para a função `first`
+1. `Fn`: is a type that we'll use to ensure that we only have functions
+2. `const pipe`: here in the creation of our pipe function, a function is required and we spread N other functions to
+   concatenate
+3. `fns.reduce`: we use reduce to aggregate the functions, making the input of `g` be the output
+   of `f(...args)`
+4. The second parameter of our reduce is the initializer, being a function that receives any arguments and passes
+   these values to the `first` function
 
-### Pipe tipado
+### Typed Pipe
 
-Esta implementação não será detalhada no artigo devido à complexidade da tipagem, mas é possível conferir a explicação no
-artigo [pipe-type](/post/pipe-type)
+This one won't be explained in the article due to the complexity of this typing, but you can check the explanation in
+the article [pipe-type](/post/pipe-type)
 
 ```typescript
 import {L, N} from "ts-toolbelt";
@@ -188,15 +188,15 @@ console.log(r); // 14
 
 ## Either
 
-Em linguagens como Javascript, Java, C#, Python existem as Exceptions, formas de fazer o controle de erro lançando os
-erros para cima e fazendo com que a função de cima na hierarquia deva tratar as exceções. Caso não seja tratada, as
-exceções vão subindo até elas explodirem e quebrem o seu programa com o erro não tratado.
+In languages like Javascript, Java, C#, Python there are Exceptions, ways to control errors by throwing
+errors up and making the upper function in the hierarchy have to handle the exceptions. If not handled, the
+exceptions keep going up until they explode and break your program with the unhandled error.
 
-Além desse problema, temos algumas dificuldades para tratar esses erros através de `try/catch`. Para tratar de uma
-maneira alternativa, temos o Either.
+Besides this problem, we have some difficulties handling these errors through `try/catch`. To handle in an
+alternative way, we have Either.
 
-Basicamente o Either é um "empacotador" onde existem dois valores, `left` e `right`. O valor `left` representa os casos
-de erro, já o valor `right` os casos de sucesso. Podemos ver uma implementação do Either.
+Basically Either is a "wrapper" where there are two values, `left` and `right`. The `left` value represents error cases,
+while the `right` value represents success cases. We can see an Either implementation.
 
 ```typescript
 export namespace Either {
@@ -235,11 +235,10 @@ export namespace Either {
 }
 ```
 
-Esta implementação não é totalmente fiel ao conceito original — foi simplificada para facilitar a compreensão e apresentar
-o uso de [Type Assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+This implementation is not fully faithful to the real concept — it is intentionally simplified to aid understanding while also demonstrating [Type Assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
 
-Agora um pequeno exercício para aprender o Either. Primeiro vamos um request `GET HTTP` para exemplificar o uso de
-utilitários que utilizarão o Either.
+Now a small exercise to learn Either. First let's see a `GET HTTP` request to exemplify the use of
+utilities that will use Either.
 
 ```typescript
 type ResponseError = {
@@ -266,15 +265,15 @@ export namespace Request {
             const body = await response.json();
             return Either.success({body, headers: response.headers});
         } catch (e) {
-            // esse trycatch aqui é para tratar Network error
-            // em casos de falta de conexão com a internet
+            // this try/catch here is to handle Network error
+            // in cases of lack of internet connection
             return Either.error({status: 0, body: null, message: "Network error"})
         }
     }
 }
 ```
 
-Agora que temos o nosso utilitário com Either, podemos aplicar em um código para observar a aplicação real do conceito.
+Now that we have our utility with Either, we can apply it in code to observe the real application of the concept.
 
 ```typescript
 namespace Users {
@@ -294,13 +293,13 @@ namespace Users {
 }
 ```
 
-Com o Either, nossa função fica totalmente segura em tempo de execução, sem nenhuma Exception sendo lançada, sem nenhum
-fluxo de quebra. Apenas um código com um objeto que possui um formato de erro (left) e outro objeto com o formato de
-sucesso (right). Pode não parecer um grande ganho no primeiro momento, mas evitar as exceptions em tempo de execução vai
-trazer muito mais predição para o seu código.
+With Either, our function is totally safe at runtime, without any Exception being thrown, without any
+break flow. Just code with an object that has an error format (left) and another object with the success format
+(right). It may not seem like a big gain at first, but avoiding exceptions at runtime will
+bring much more prediction to your code.
 
-# Conclusão
+# Conclusion
 
-Com tudo o que foi apresentado, fica mais claro como absorver e aplicar os conceitos. Não é necessário adotar o paradigma funcional por completo — é possível utilizá-lo seletivamente para aprimorar os hábitos de programação.
+To summarize: there is no requirement to adopt the functional paradigm completely. The concepts presented here can be selectively applied to improve everyday programming habits.
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

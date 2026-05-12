@@ -6,7 +6,14 @@ import { collectSections } from "@/lib/sections";
 import { type Node } from "@markdoc/markdoc";
 import React, { Fragment, Suspense } from "react";
 
-type Frontmatter = { title: string; type: string; description: string };
+type Frontmatter = {
+    title: string;
+    type: string;
+    description: string;
+    subjects?: string[];
+    name?: string;
+    source?: string;
+};
 
 type Props = {
     nodes: Array<Node>;
@@ -20,7 +27,14 @@ export const DocsLayout = ({ children, frontmatter, nodes }: Props) => {
         <Fragment>
             <div className="min-w-0 max-w-7xl flex-auto px-2 py-16 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
                 <article>
-                    <DocsHeader title={frontmatter.title} description={frontmatter.description} />
+                    <DocsHeader
+                        title={frontmatter.title}
+                        description={frontmatter.description}
+                        tags={frontmatter.subjects}
+                        name={frontmatter.name}
+                        source={frontmatter.source}
+                        type={frontmatter.type}
+                    />
                     <Prose>{children}</Prose>
                 </article>
                 <PrevNextLinks />

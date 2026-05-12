@@ -1,10 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const locales = ["pt-BR", "en"];
+const locales = ["en-US", "pt"];
 
 const getLocale = (request: NextRequest) => {
     const url = new URL(request.url);
-    return url.searchParams.get("lang") || "pt-BR";
+    return url.searchParams.get("lang") || "en-US";
 };
 
 export function middleware(request: NextRequest) {

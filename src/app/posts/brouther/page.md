@@ -1,108 +1,105 @@
 ---
 level: 1
-title: Criando um router fortemente tipado
+title: Creating a strongly typed router
 subjects: ["react", "frontend", "typescript", "javascript"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2023-01-13T18:30:00.000Z"
-description: "Melhorando a DX na hora de trabalhar com rotas, links e redirecionamentos"
+description: "Improving DX when working with routes, links and redirects"
 ---
 
-[tl;dr. Código no codesandbox](https://codesandbox.io/s/vigilant-cloud-1lnyov?file=/src/index.tsx)
+[tl;dr. Code on codesandbox](https://codesandbox.io/s/vigilant-cloud-1lnyov?file=/src/index.tsx)
 
-# Introdução
+# Introduction
 
-Quando se fala de roteamento em react, você logo lembra do [react-router](https://github.com/remix-run/react-router).
-Alguns podem conhecer o recente [tanstack-router](https://github.com/TanStack/router). Ambos são ótimos e resolvem o
-mesmo problema, roteamento em aplicações SPA (*Single Page Application*), possibilitando também o uso caso sua aplicação
-seja SSR.
+When it comes to routing in react, you immediately think of [react-router](https://github.com/remix-run/react-router).
+Some might know the recent [tanstack-router](https://github.com/TanStack/router). Both are excellent solutions for routing in SPA (*Single Page Application*) applications, with support for server-side rendering (SSR) as well.
 
-> Comentário pessoal: funcionar para SSR é pouco útil, já que as soluções para aplicações SSR como NextJS ou Remix
-> entregam um sistema de roteamento. Mesmo que o Remix use o react-router por baixo dos panos, você não faz a
-> configuração
-> da mesma forma em uma aplicação CSR (*Client Side Render*).
+> Personal comment: working for SSR is not very useful, since SSR application solutions like NextJS or Remix
+> deliver a routing system. Even though Remix uses react-router under the hood, you don't do the
+> configuration
+> the same way in a CSR (*Client Side Render*) application.
 
-A proposta desse artigo é apresentar algumas coisas que não nos atentamos quanto ao uso de bibliotecas de roteamento e
-apresentar o [brouther](https://github.com/g4rcez/brouther), uma solução minha para resolver alguns dos problemas que
-irei comentar.
+The purpose of this article is to present some things we don't pay attention to when using routing libraries and
+introduce [brouther](https://github.com/g4rcez/brouther), my solution to solve some of the problems that
+I'll comment on.
 
 # React Router
 
-Talvez esse seja o mais famoso de todos os routers react, também o mais antigo. Hoje ele está na versão 6.6.2 e traz
-muitas features, algumas nem são ligadas ao roteamento em si. No passado houve alguns problemas quanto ao uso desse
-router, principalmente porque os mantenedores do repo se separaram e aconteceu a criação
-do [reach-router](https://reach.tech/router/), o que dividiu um pouco a comunidade.
+This is arguably the most widely used React router, and certainly the oldest. Today it's on version 6.6.2 and brings
+many features, some aren't even related to routing itself. In the past there were some problems with using this
+router, mainly because the repo maintainers split up and the creation of
+[reach-router](https://reach.tech/router/) happened, which divided the community a bit.
 
-Hoje o react router entrega muitas features úteis, um ecossistema fortemente baseado em hooks e uma documentação bem
-rica. Podemos até fazer uma lista com tudo o que ele entrega:
+Today react router delivers many useful features, an ecosystem heavily based on hooks and very rich
+documentation. We can even make a list of everything it delivers:
 
-- Roteamento do navegador via URL (padrão), hash ou roteamento em memória utilizando
-  o [history](https://github.com/remix-run/history)
-- Parametrização de rotas, bem similar ao [express](https://expressjs.com/en/guide/routing.html)
-- Formas de navegação entre rotas que podem incrementar ou trocar os elementos da pilha de histórico do navegador
-- Hooks, muitos hooks para quase todas as entidades presentes em uma URL ou em alguma outra entidade do contexto de
-  roteamento
-- Rastreamento de erros para rotas não encontradas, ou o famoso 404
-- Controle do estado de transição das páginas, seja em roteamento ou até em submit dos formulários
+- Browser routing via URL (standard), hash or memory routing using
+  the [history](https://github.com/remix-run/history)
+- Route parameterization, very similar to [express](https://expressjs.com/en/guide/routing.html)
+- Navigation methods between routes that can increment or swap elements in the browser's history stack
+- Hooks, many hooks for almost all entities present in a URL or some other routing context entity
+- Error tracking for routes not found, or the famous 404
+- Control of page transition state, whether in routing or even in form submits
 
-Porém, com isso tudo é claro que existem buracos de implementação, principalmente em questões de tipagem e DX (
-*Developer experience*). Algumas delas são:
+However, with all this, there are obviously implementation gaps, especially regarding typing and DX (
+*Developer experience*). Some of them are:
 
-- Falta de tipagem das rotas registradas no contexto
-- Falta de tipagem nos componentes de Link, Redirect
-- Falta de tipagem nas funções de manipulação da URL
-- Diversas features que podem não ser usadas
+- Lack of typing for registered routes in the context
+- Lack of typing in Link, Redirect components
+- Lack of typing in URL manipulation functions
+- Various features that may not be used
 
-Com a alta do Typescript, a tipagem acaba impactando bastante quando não existe um ecossistema fortemente tipado. E isso
-nos leva ao tanstack-router
+The growing adoption of TypeScript has made a strongly typed ecosystem increasingly important. This brings us to tanstack-router.
 
 # Tanstack Router
 
-O mais novo router da comunidade visa resolver certos problemas, principalmente problemas relacionados a DX. Visando
-esses problemas, eles criaram um ecossistema que consegue entregar o melhor dos dois mundos entre **roteamento vs DX**.
+The newest router in the community aims to solve certain problems, mainly problems related to DX. With
+these problems in mind, they created an ecosystem that manages to deliver the best of both worlds between **routing vs DX**.
 
-Por não ter tido muitas experiências com o tanstack-router, a análise aqui é limitada. Dando uma olhada na documentação, é possível ver que ainda não possui documentação de todos os seus hooks e formas canônicas de resolver um problema. Seu ecossistema possui muitas coisas que acabam não sendo responsabilidade de uma lib de
-roteamento e ainda possui uma arquitetura voltada para integrar com bibliotecas de controle de estado, como
-react-query (sendo do grupo desenvolvedor 🤔), Apollo, SWR e etc.
+I can't comment much on this one because I haven't had much experience with it yet, but looking at the
+documentation it's possible to see that it still doesn't have documentation for all its hooks and canonical ways to
+solve a problem. Its ecosystem has many things that end up not being the responsibility of a routing
+library and still has an architecture aimed at integrating with state control libraries, like
+react-query (being from the developer group), Apollo, SWR, etc.
 
-Por ser uma biblioteca relativamente nova, os comentários aqui são breves, mas, de forma geral, é uma tecnologia a se observar caso haja muitos problemas com estado e roteamento sincronizados.
+Being relatively new, there is not much to add here, but it is a technology worth watching if synchronized state and routing are significant concerns in your project.
 
 # Brouther
 
-Apesar de também ser uma biblioteca nova, o [brouther](https://github.com/g4rcez/brouther) foi pensado em resolver um
-único problema além do roteamento, sendo esse o problema de DX/tipagem. Como comentado sobre o react-router, sempre
-pensei que a falta de tipagem para os métodos e componentes era um problema, por que caso você precise mudar o path de
-uma página você terá um problema de mudar manualmente a referência em todos os lugares. Claro que você pode adotar
-práticas para evitar os erros, mas ainda assim o problema continua a existir, pois, o ecossistema não é fortemente
-integrado a biblioteca.
+Despite also being a new library, [brouther](https://github.com/g4rcez/brouther) was designed to solve a
+single problem besides routing, that being the DX/typing problem. As commented about react-router, I've always
+thought that the lack of typing for methods and components was a problem, because if you need to change the path of
+a page you'll have a problem of manually changing the reference everywhere. Of course you can adopt
+practices to avoid errors, but the problem still exists because the ecosystem is not strongly
+integrated with the library.
 
-Com o brouther, a ideia é entregar todas as ferramentas necessárias, sejam elas fortemente integrados ao sistema (de
-forma opinativa) ou apenas isolado de todo o sistema de tipos (de forma não opinativa). Alguns dos problemas visados:
+With brouther, the idea is to deliver all the necessary tools, whether they are strongly integrated with the system (
+in an opinionated way) or just isolated from the entire type system (in a non-opinionated way). Some of the targeted problems:
 
-- Melhoria de DX
-- Tipagem para as rotas, incluindo query-string e paths valorados (assim como no express)
-- Tipagem para os métodos do histórico
-- Tipagem para os componentes
-- Tipagem para os hooks
-- Ecossistema simples
-- Entregar o mínimo possível para o roteamento
+- DX improvement
+- Typing for routes, including query-string and valued paths (just like in express)
+- Typing for history methods
+- Typing for components
+- Typing for hooks
+- Simple ecosystem
+- Deliver the minimum possible for routing
 
-## Tipagem
+## Typing
 
-Com a alta do Typescript, ter um ecossistema fortemente tipado se tornou essencial no desenvolvimento de aplicações. Com
-isso em mente, decidi fazer com que todo o ecossistema da biblioteca pudesse ser conectado aos paths das páginas e
-seguindo as regras das URLs, onde:
+With the rise of Typescript, having a strongly typed ecosystem has become essential in application development. With
+this in mind, I decided to make the entire library ecosystem connect to page paths and
+following URL rules, where:
 
-- *Pathname* (meusite.com/isso-e-o-pathname) fosse obrigatório, incluindo lugares onde o pathname é dinânico (/users/:
+- *Pathname* (mysite.com/this-is-the-pathname) was mandatory, including places where the pathname is dynamic (/users/:
   id)
-- Garantindo que todos os paths fossem de fato uma string
-- Tipagem de *query string*, onde todos os parâmetros de query string são opcionais
+- Ensuring all paths were indeed strings
+- *Query string* typing, where all query string parameters are optional
 
-Seguindo essas regras e utilizando a biblioteca [ts-toolbelt](https://github.com/millsp/ts-toolbelt) foi possível
-constuir um sistema onde você só precisa informar a URL (path) e um apelido (id) para ter todo o sistema montado. Não
-podemos esquecer do nosso element, mas ele não entra nessa parte da tipagem. Através da URL é possível extrair todas as
-informações necessárias
-para podermos construir nossas páginas, fazer redirecionamentos e links. Observe o path abaixo
+Following these rules and using the [ts-toolbelt](https://github.com/millsp/ts-toolbelt) library it was possible
+to build a system where you only need to provide the URL (path) and a nickname (id) to have the entire system set up. We
+can't forget our element, but it doesn't enter this part of typing. Through the URL it's possible to extract all
+necessary information to build our pages, do redirects and links. See the path below
 
 ```text
 /posts/brouther?language=pt-br
@@ -111,13 +108,13 @@ para podermos construir nossas páginas, fazer redirecionamentos e links. Observ
 |pathname||query-string
 ```
 
-Para cadastrarmos essa rota no brouther precisamos fazer da seguinte forma
+To register this route in brouther we need to do the following
 
 ```text
 /posts/:title?language=string
 ```
 
-Dessa forma você o brouther irá te entregar a seguinte forma de construir a URL:
+This way brouther will give you the following way to build the URL:
 
 ```typescript jsx
 export const router = createRouter([
@@ -131,39 +128,39 @@ export const router = createRouter([
 router.link(router.links.post, {title: ""}, {});
 ```
 
-Primeiro construimos o nosso router e ele irá retornar um objeto contendo alguns métodos, componentes e hooks fortemente
-tipados para o nosso ecossistema tipado. Nesse ponto iremos apenas explorar o `router.link` e o `router.links`
+First we build our router and it will return an object containing some methods, components and hooks strongly
+typed for our typed ecosystem. At this point we'll only explore `router.link` and `router.links`
 
-### Construindo URLs
+### Building URLs
 
-Antes de desenvolver a ideia, uma breve explicação do que são os dois itens citados acima:
+Before developing the idea, a brief explanation of what the two items mentioned above are:
 
-`router.link` é um método que irá construir a URL com base nos paths passados em `createRouter`. O primeiro parâmetro é
-uma rota informada no nosso `createRouter`, obrigatoriamente deve ser um path passado no array, para evitar paths
-aleatórios que não existam no nosso sistema. É válido lembrar que deve ser exatamente o path inteiro, com a *query
-string* e tudo. O segundo parâmetro vai variar conforme o seu path, se existirem paths dinâmicos como `/users/:id`,
-então o segundo parâmetro será um objeto com todas as chaves obrigatórias, sendo essas chaves o apelido dado a cada um
-dos paths dinâmicos. Caso o seu path não contenha paths dinâmicos, então teremos apenas a *query string* requerida aqui.
-Vale lembrar que *query strings* são parâmetros não obrigatórios na URL, logo, não são obrigatórios. Caso você queira,
-podemos utilizar `?language=string!` e o tipo irá obrigar a passar o language como string
+`router.link` is a method that will build the URL based on the paths passed to `createRouter`. The first parameter is
+a route informed in our `createRouter`, it must necessarily be a path passed in the array, to avoid random
+paths that don't exist in our system. It's worth remembering that it must be exactly the full path, with the *query
+string* and everything. The second parameter will vary according to your path, if there are dynamic paths like `/users/:id`,
+then the second parameter will be an object with all required keys, these keys being the nickname given to each
+of the dynamic paths. If your path doesn't contain dynamic paths, then only the *query string* will be required here.
+It's worth remembering that *query strings* are non-mandatory URL parameters, therefore, not required. If you want,
+we can use `?language=string!` and the type will force you to pass language as string
 
-`router.links` é um dicionário que respeita todos os ids passados no array de `createRouter`. Ou seja, os nossos ids são
-apelidos para um objeto, fazendo com que você não precise digitar a string informada toda hora. Basta
-usar `router.links.ALIAS_PARA_A_ROTA` e pronto, você já vai ter a mesma string utilizada na construção do nosso router.
+`router.links` is a dictionary that respects all ids passed in the `createRouter` array. That is, our ids are
+nicknames for an object, so you don't need to type the given string all the time. Just
+use `router.links.ALIAS_FOR_THE_ROUTE` and that's it, you'll already have the same string used in building our router.
 
-Agora que temos a explicação fica fácil construir os nossos paths, basta seguir as regras dos parâmetros. O melhor de
-tudo é que tudo fica fortemente tipado e você não precisa fazer macetes no código para conectar os tipos da biblioteca
-com o seu ecossistema.
+Now that we have the explanation it's easy to build our paths, just follow the parameter rules. The best
+of all is that everything is strongly typed and you don't need to hack the code to connect the library types
+with your ecosystem.
 
-### Mapa de *query string*
+### *Query string* map
 
-A tipagem de uma *query string* sempre foi uma feature que eu quis nos routers, mas não de forma automática, mas sim de
-forma que eu pudesse dizer "esse valor é uma string e esse é um number", evitando conversões no código e ficando de
-forma transparente o uso em todos os lugares do sistema. A boa notícia é que agora podemos ter isso.
+Typing a *query string* has always been a feature I wanted in routers, but not automatically, but in a way
+that I could say "this value is a string and this is a number", avoiding conversions in code and being
+transparent in use everywhere in the system. The good news is that now we can have this.
 
-Abaixo temos a tipagem aceita na *query string*, feita a conversão automática para o tipo desejado. Caso você queira que
-um desses itens seja um array, você pode incluir `[]` ao final do valor e ainda caso queira que ele seja obrigatório,
-basta informar um `!` ao final. Caso queira saber todos os tipos da conversão, você pode ver o mapa abaixo:
+Below we have the accepted typing in the *query string*, with automatic conversion to the desired type. If you want
+one of these items to be an array, you can include `[]` at the end of the value and if you want it to be required,
+just add a `!` at the end. If you want to know all the conversion types, you can see the map below:
 
 ```typescript
 export type Map = {
@@ -177,16 +174,13 @@ export type Map = {
 
 ## Developer Experience
 
-O mais importante no brouther foi facilitar a vida de quem está usando a biblioteca, trazendo tipos fortes e bons hooks
-para manipular inteiramente o sistema de rotas. A simplicidade também foi um fator crucial, tentando trazer o mínimo
-possível para não inchar a biblioteca, evitando assim um código complexo e uma documentação extensa e cansativa para que
-ninguém precise procurar diversos métodos
+The primary goal of brouther was to simplify the developer experience by providing strong types and a focused set of hooks for fully manipulating the routing system. Simplicity was a crucial design factor: keeping the library lean avoids complex code and verbose documentation.
 
-# Referências
+# References
 
-- Construção de paths dinâmicos via tipo - [Github](https://github.com/ghoullier/awesome-template-literal-types)
+- Building dynamic paths via type - [Github](https://github.com/ghoullier/awesome-template-literal-types)
 - [ts-toolbelt](https://millsp.github.io/ts-toolbelt/)
 - [RFC 1738](https://www.rfc-editor.org/rfc/rfc1738)
 - [MDN - URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

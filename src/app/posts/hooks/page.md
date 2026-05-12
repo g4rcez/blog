@@ -2,77 +2,74 @@
 level: 1
 subjects: ["react", "typescript", "javascript", "frontend"]
 title: "React Hooks"
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2020-02-02T00:00:00.000Z"
-description: "Uma nova forma (nem tão nova) de pensar"
+description: "A new (not so new) way of thinking"
 ---
 
-# Introdução
+# Introduction
 
-Há algum tempo havia o objetivo de escrever sobre hooks. Este artigo apresenta uma perspectiva própria sobre o tema e algumas das técnicas adotadas na prática.
+This article on hooks has been overdue for a while. Many articles on the subject exist, but this one shares a personal perspective alongside some techniques that have proven most useful in practice.
 
 # Rule of Hooks.
 
-Antes de começar a ir lá de verdade, vamos deixar anotado as regras dos hooks, que podem ser aplicadas ao seu projeto
-com eslint através do
-pacote [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks#installation). Você poder
-fazer um `deep dive` na [documentação](https://pt-br.reactjs.org/docs/hooks-rules.html)
+Before really getting into it, let's note the rules of hooks, which can be applied to your project
+with eslint through the
+[eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks#installation) package. You can
+do a `deep dive` in the [documentation](https://reactjs.org/docs/hooks-rules.html)
 
-1. Use Hooks Apenas no Nível Superior
-2. Use Hooks Apenas Dentro de Funções do React
+1. Only Call Hooks at the Top Level
+2. Only Call Hooks from React Functions
 
-# Mas em classes era assim
+# But in classes it was like this
 
-A primeira coisa necessária para um bom entendimento de hooks foi parar de pensar em como as mesmas coisas seriam feitas com classes. apesar de ambos os approaches nos entregarem componentes, temos uma diferença
-enorme entre eles.
+The first step toward a solid understanding of hooks is to stop mapping them directly to class component patterns. Although both approaches produce components, the underlying model is fundamentally different.
 
-Se você já conhece componentes de classes, então esqueça um pouco do ciclo de vida para entender sobre hooks. As vezes
-acabamos fazendo algumas associações no caso do `useEffect`
+If you already know class components, then forget a bit about the lifecycle to understand hooks. Sometimes
+we end up making some associations in the case of `useEffect`
 
-- "O `useEffect` com um array de dependências vazio é igual ao `componentDidMount`"
-- "O `useEffect` com um array de dependências com alguns itens que precisam mudar é igual ao `componentDidMount` e
-  ao `componentDidUpdate`"
+- "The `useEffect` with an empty dependency array is equal to `componentDidMount`"
+- "The `useEffect` with a dependency array with some items that need to change is equal to `componentDidMount` and
+  `componentDidUpdate`"
 
-Isso é parcialmente verdade, apesar do efeito causado ser o mesmo, não podemos assumir que são a mesma coisa. Um
-exemplo:
+This is partially true, although the effect caused is the same, we can't assume they are the same thing. An
+example:
 
 ```jsx
-// Em caso de uma classe
+// In case of a class
 componentDidMount()
 {
-    console.log("Componente montou")
+    console.log("Component mounted")
 }
 
-// Com hooks
+// With hooks
 useEffect(() => {
-    console.log("Componente montou")
+    console.log("Component mounted")
 }, [])
 
 useEffect(() => {
-    console.log("Componente montou ou atualizou")
+    console.log("Component mounted or updated")
 }, [state])
 ```
 
-Se formos fazer uma rápida associação a classes, nosso componente com hooks possui dois `componentDidMount`? Sim e não.
+In a strict sense, this component has two `componentDidMount`-equivalent behaviors:
 
-- Sim. Pois ao ser montado, ambos efeitos do nosso `useEffect` serão executados
-- Não. Pois o nosso segundo efeito não é executado somente na hora do componente montar, ele será executado sempre que
-  o `state` mudar. Ao montar o componente, o `state` receberá um valor inicial, logo...ele irá mudar e irá triggar nosso
-  evento. Qualquer atualização nele irá fazer o efeito ser executado de novo.
+- In one sense, yes: when the component mounts, both `useEffect` callbacks execute.
+- In another sense, no: the second effect is not limited to mount — it executes whenever `state` changes. On mount, `state` receives its initial value, which constitutes a change and triggers the effect. Any subsequent update to `state` will trigger it again.
 
-O nosso querido hook `useEffect` apenas reage as mudanças dos seus dependentes.
+Our beloved `useEffect` hook only reacts to changes in its dependencies.
 
-Outro cara que confundimos é o `useState` por conta do método de classes `this.setState()`. Vamos dar uma conferida nos
-métodos:
+Another guy we confuse is `useState` because of the class method `this.setState()`. Let's check out the
+methods:
 
 ```javascript
-// updater pode ser um objeto ou uma função
+// updater can be an object or a function
 this.setState(updater[, callback
 ])
 
 
-// demonstração de uso
+// usage demonstration
 class Component extends React.Component<never, { name: string }> {
     constructor(props: never) {
         super(props);
@@ -85,54 +82,53 @@ class Component extends React.Component<never, { name: string }> {
         this.setState({name: "Javascript"});
         this.setState(current => {
             return {name: "Typescript"};
-        }, () => console.log("Atualizou com Typescript no this.state.name"));
+        }, () => console.log("Updated with Typescript in this.state.name"));
     }
 }
 
 ```
 
-Importante lembrar que o `this.setState` atualiza seu estado de acordo com o que você retorna para ele, se você possuir
-2 propriedades e o seu objeto de atualização possuir somente uma, ele não irá concatenar o estado anterior com o novo
-estado e nada será perdido.
+Important to remember that `this.setState` updates your state according to what you return to it, if you have
+2 properties and your update object has only one, it won't concatenate the previous state with the new
+state and nothing will be lost.
 
-Agora no nosso amigo `useState` funciona de forma um pouco diferente do `this.setState`. Vamos ver:
+Now our friend `useState` works a bit differently from `this.setState`. Let's see:
 
 ```javascript
 const [state, setState] = useState("");
-// setando diretamente o valor
-setState("Nova string");
-setState((currentState) => "Nova string com função");
+// setting the value directly
+setState("New string");
+setState((currentState) => "New string with function");
 ```
 
-Nesse caso é de boa, mas e nesse caso:
+In this case it's fine, but what about this case:
 
 ```typescript
 const [state, setState] = useState < {name: string; age: number}({name: "", age: 0});
-// setando diretamente o valor
+// setting the value directly
 setState({name: "Typescript"});
 ```
 
-Se você fizer isso, a propriedade `age` será perdida e você irá ganhar um undefined, para contornar isso, basta você
-fazer
+If you do this, the `age` property will be lost and you'll get an undefined, to get around this, just do
 
 ```typescript
 const [state, setState] = useState < {name: string; age: number}({name: "", age: 0});
-// setando diretamente o valor
+// setting the value directly
 setState(currentState => ({...currentState, name: "Typescript"}));
 ```
 
-Em minha opinião, o `useState` só é interessante de se utilizar nos seguintes casos:
+In my opinion, `useState` is only interesting to use in the following cases:
 
-- Valores de tipos primários
-- Objetos que são preenchidos em uma única ação
+- Primitive type values
+- Objects that are filled in a single action
 
-Com o `useState`, podemos compor nosso estado em pequenas partes isoladas e controladas de forma isolada.
+With `useState`, we can compose our state in small isolated parts controlled in isolation.
 
-> Mas Allan, eu quero manipular meu estado inteiro, como era no this.setState das classes
+> What if the goal is to manipulate the entire state at once, as `this.setState` allowed in class components?
 
-Bom, se você pensou isso, vou apresentar a você o `useReducer`. Vou apresentar duas formas, a forma tradicional e um
-custom hook que estou fazendo _(Como eu levo mais de um dia pra escrever alguns artigos, pode ser que ele já esteja no
-meu git)_.
+Well, if you thought that, I'll introduce you to `useReducer`. I'll present two forms, the traditional form and a
+custom hook I'm making _(As I take more than a day to write some articles, it might already be on
+my git)_.
 
 ```typescript
 import React, {useReducer} from "react";
@@ -194,33 +190,30 @@ function Component() {
 }
 ```
 
-Isso te lembra um pouco do redux? A diferença é que eu não usei `switch/case`. Pra ser sincero, eu não gosto de usar os
-reducers assim pois quando preciso de alguma lógica para um tipo de `dispatch`, eu tenho um escopo compartilhado entre
-as outras actions ou então tenho que criar um bloco dentro do `if` ou `switch/case`.
+This pattern may look familiar to those who have used Redux. The main difference here is the absence of `switch/case`. Personally, this approach to `useReducer` has a drawback: when logic is needed for a specific dispatch type, the scope is shared with other actions, requiring a block inside an `if` or `switch/case`.
 
-Bom, até aqui eu dei um leve overview de como hooks não são exatamente um `as is` de classes. Daqui pra frente é hora de
-extrair o poder que hooks nos dá com custom hooks e algumas outras técnicas
+That overview covers the key differences between hooks and class components. The next sections explore custom hooks and other techniques that unlock the full power of hooks.
 
 # Custom hooks - useReducer
 
-Como falei, essa forma de fazer um useReducer é estranha pra mim, gosto de transformar cada `action` que será despachada
-em uma função isolada das outras. Abaixo o código do `useReducer` customizado, se o código ficar muito
-grande, [pode ver o gist](https://gist.github.com/g4rcez/8274b8065e9506b33315baf05eca8645)
+As I said, this way of doing a useReducer is strange to me, I like to transform each `action` that will be dispatched
+into an isolated function from the others. Below is the code for the customized `useReducer`, if the code gets too
+big, [you can see the gist](https://gist.github.com/g4rcez/8274b8065e9506b33315baf05eca8645)
 
 ```tsx
 import React, {useState, useMemo, Fragment} from "react";
 
-// Lembrando pro cara que não pode haver reatribuição
-// no estado pois ele é imutável (ou deveria ser)
+// Reminding that there can't be reassignment
+// in state because it's immutable (or should be)
 type Immutable<State> = Partial<Readonly<State>>;
 
-// Inferência dos tipos da função primária
+// Inference of types from the primary function
 type Infer<
     State,
     Fn extends (...args: never) => (state: State) => Immutable<State>
 > = (...args: Parameters<Fn>) => (state: State) => Immutable<State>;
 
-// apenas um utils para extender nos tipos
+// just a utils to extend in types
 type ReducerChunk<Actions, State> = {
     [key in keyof Actions]: (args: any) => (state: State) => Immutable<State>;
 };
@@ -234,7 +227,7 @@ const useReducer = <State, Actions extends ReducerChunk<Actions, State>>(
     actions: Actions
 ): [State, Dispatches<State, Actions>] => {
     const [state, setState] = useState(initialState);
-    // memoizando as actions para evitar novos objetos
+    // memoizing actions to avoid new objects
     const dispatches = useMemo(
         () =>
             Object.entries(actions).reduce(
@@ -272,9 +265,9 @@ const App = () => {
     const [state, reducers] = useReducer(initialState as STATE, {
         onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => {
             const {value} = e.target;
-            // Se for passar o evento para essa próxima função
-            // não se esqueça de usar e.persist()
-            // mais informações:
+            // If passing the event to this next function
+            // don't forget to use e.persist()
+            // more info:
             // https://reactjs.org/docs/events.html#event-pooling
             return (): Partial<STATE> => ({name: value});
         },
@@ -317,20 +310,20 @@ const App = () => {
 export default App;
 ```
 
-Com esse `useReducer` nós podemos criar as funções do nosso componente no próprio `useReducer` e conseguimos inferir
-todos os tipos corretamente. Cada `type` do `useReducer` original vira uma _property_ no nosso objeto de funções.
+With this `useReducer` we can create the functions of our component in the `useReducer` itself and we can infer
+all types correctly. Each `type` from the original `useReducer` becomes a _property_ in our function object.
 
-> **Sim, o useReducer foi criado com o useState. Não tá errado kkkk**
+> **Note: this `useReducer` is implemented on top of `useState`. This is intentional and perfectly valid.**
 
-Como explicado no comentário, o `useMemo` foi utilizado para que não seja recriado um objeto a toda renderização,
-somente quando as nossas funções mudarem. Uma otimização bem básica é criar o objeto de função fora do componente.
+As explained in the comment, `useMemo` was used so that an object is not recreated at every render,
+only when our functions change. A very basic optimization is to create the function object outside the component.
 
-Com esse hook, acabei dando um exemplo bem consistente do `useState` + `useMemo`.
+This hook provides a concrete example of combining `useState` and `useMemo` effectively.
 
-# Lidando com listeners
+# Dealing with listeners
 
-Um coisa um pouco comum é criar um event listener, seja para um elemento ou até para o nosso objeto `window`. Vou
-demonstrar um efeito para observar a alteração de tamanho da tela
+Something a bit common is creating an event listener, whether for an element or even for our `window` object. I'll
+demonstrate an effect to observe screen size change
 
 ```typescript
 const isClient = typeof window === "object";
@@ -353,28 +346,28 @@ const useWidth = () => {
 export default useWidth;
 ```
 
-O `resizeHandler` foi criado dentro do `useEffect` pois o `addEventListener` e o `removeEventListener` precisam da mesma
-referência para controlar o evento.
+The `resizeHandler` was created inside `useEffect` because `addEventListener` and `removeEventListener` need the same
+reference to control the event.
 
-Uma coisa importante a falar é o retorno do `useEffect`. Acabei não falando anteriormente, mas o retorno do `useEffect`
-é executado quando o componente desmonta, efeito similar ao `componentWillUnmount`.
+One important thing to mention is the return of `useEffect`. I didn't mention earlier, but the return of `useEffect`
+is executed when the component unmounts, similar effect to `componentWillUnmount`.
 
-# O que é o useCallback?
+# What is useCallback?
 
-O useCallback é quase um `alias` para o `useMemo`, mas somente para funções. Ele garante a mesma referência de funções,
-evitando que funções no corpo dos nossos componentes de função sejam criadas a cada novo reRender.
+useCallback is almost an `alias` for `useMemo`, but only for functions. It ensures the same function reference,
+preventing functions in the body of our function components from being created at every new reRender.
 
-# useEffect ou useLayoutEffect?
+# useEffect or useLayoutEffect?
 
-Bom, os dois são iguais, mas diferentes. O `useLayoutEffect` é executado somente após todas as mutações na DOM. O ideal
-de seu uso é somente quando você faz mutações com `refs` ou coisas que dependam de elementos no nosso DOM (elementos que
-não são controlados por React, por exemplo).
+Well, both are the same, but different. `useLayoutEffect` is only executed after all mutations in the DOM. The ideal
+use is only when you do mutations with `refs` or things that depend on elements in our DOM (elements that
+are not controlled by React, for example).
 
 # React.forwardRef <3 useImperativeHandler
 
-Quando você precisa passar as referências do seu componente para que irá consumir, o seu componente precisa estar
-envolvido por um `React.forwardRef` e com o `useImperativeHandler` nós iremos atribuir o valor de `ref` do nosso
-componente. Simples assim:
+When you need to pass your component's references to whoever will consume it, your component needs to be
+wrapped by a `React.forwardRef` and with `useImperativeHandler` we will assign the `ref` value of our
+component. Simple as that:
 
 ```typescript
 type Props = {
@@ -398,14 +391,12 @@ const Input: React.FC<Props> = (props, externalRef) => {
 export default React.forwardRef(Input);
 ```
 
-Eu ainda não fiz um uso muito absurdo desses 2 recursos, mas é assim que funciona e é importante você saber que ele
-existe e um caso de uso.
+There has not been extensive personal use of these two APIs, but understanding their purpose and a practical use case is valuable.
 
-# Conclusão: vou ficar devendo 2 hooks
+# Conclusion: I'll owe you 2 hooks
 
-Ficaram de fora o `useContext` e o `useDebugValue`. O `useDebugValue` raramente é utilizado na prática, pois o hábito de depurar com `console.log` e `debugger` acaba prevalecendo. É um hook útil, mas situacional.
+Two hooks were not covered here: `useContext` and `useDebugValue`. `useDebugValue` has not been used in practice — `console.log` and `debugger` tend to cover most debugging needs.
 
-O `useContext` merece um artigo próprio. Mas já adianto que podemos usar a `ContextAPI` (não a legada, a da versão 16.3) para substituir o uso
-de Redux em alguns casos.
+`useContext` will be covered in a dedicated post, along with an experiment demonstrating how the `ContextAPI` (the modern version from React 16.3, not the legacy one) can replace Redux in certain scenarios.
 
-Ainda seria possível demonstrar mais alguns casos de uso, mas esses ficam para um próximo artigo. Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

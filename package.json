@@ -14,7 +14,8 @@
     "browserslist": "defaults, not ie <= 11",
     "dependencies": {
         "@algolia/autocomplete-core": "1.17.2",
-        "@g4rcez/components": "2.0.3",
+        "@emotion/is-prop-valid": "1.4.0",
+        "@g4rcez/components": "4.0.2",
         "@headlessui/react": "2.1.1",
         "@markdoc/markdoc": "0.4.0",
         "@markdoc/next.js": "0.3.7",

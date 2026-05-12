@@ -1,3 +1,4 @@
+"use client";
 import { Dates } from "@/components/client/dates";
 import { Card } from "@g4rcez/components/card";
 import Link from "next/link";

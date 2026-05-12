@@ -11,7 +11,7 @@ type LocalizedLink = {
 };
 
 export const BlogConfig = {
-    defaultLanguage: "pt-BR",
+    defaultLanguage: "en-US",
     user: {
         name: "Allan Garcez",
     },
@@ -74,6 +74,12 @@ export const BlogConfig = {
             href: "/?q=typescript",
         },
     ] as LocalizedLink[],
+    agents: [
+        {
+            title: { "pt-BR": "Product UI Engineer", "en-US": "Product UI Engineer" },
+            href: "/agents/product-ui-engineer",
+        },
+    ] as LocalizedLink[],
     terminal: [
         {
             title: "dotfiles",
@@ -103,4 +109,4 @@ export const BlogConfig = {
 };
 
 export const getLocalizedContent = (content: LocalizedContent, locale: Locale): string =>
-    content[locale] || content["pt-BR"];
+    content[locale] || content["en-US"];

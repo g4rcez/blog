@@ -1,116 +1,113 @@
 ---
 level: 1
-title: Como estudar frontend?
+title: How to study frontend?
 subjects: ["react", "frontend", "typescript", "javascript"]
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2023-12-21T05:30:00.000Z"
-description: "Como definir sua trilha de estudos com frontend?"
+description: "How to define your study path with frontend?"
 ---
 
-> Ainda não pude escrever sobre, mas comecei a fazer lives na [twitch.tv/allangarcez](https://twitch.tv/allangarcez) falando sobre desenvolvimento Backend/Frontend, com foco em NodeJS, React e Typescript.
+> I haven't been able to write about it yet, but I started doing live streams on [twitch.tv/allangarcez](https://twitch.tv/allangarcez) talking about Backend/Frontend development, focusing on NodeJS, React and Typescript.
 
-A área de TI é bastante comentada, mas nem sempre é claro como começar a estudar. Este artigo tem como objetivo orientar quem está iniciando a trilha de estudos em frontend e dar uma visão sobre carreira.
+The IT field is undeniably popular right now. What is less clear to many, however, is how to actually begin studying it. This article attempts to provide some direction for those starting their journey, along with thoughts on career paths. This is the first non-technical post on this blog.
 
-Este post terá foco na carreira de frontend. Conteúdo sobre backend será abordado em artigos futuros.
+And just a reminder, this post will focus on the frontend career. If you really like the backend part, rest assured that I'll still write about it.
 
-# Por onde começar?
+# Where to start?
 
-O primeiro passo importante para definir seus estudos é conhecer um pouco mais da área como um todo. Busque entender o que faz um frontend, um devops, um backend ou até mesmo um engenheiro de dados. Mesmo que superficialmente você conheça, já é uma boa dica para direcionar o que você busca, de acordo com seus gostos e aptidões.
+The first important step to define your studies is to know a little more about the field as a whole. Try to understand what a frontend, a devops, a backend or even a data engineer does. Even if you know it superficially, it's already a good tip to direct what you're looking for, according to your tastes and aptitudes.
 
-Como dito anteriormente, aqui falarei de frontend, então iremos explorar toda a trilha do desenvolvedor web, voltado para o navegador. Aqui você entenderá o que é necessário estudar para começar a criar seus sites, landing pages (páginas iniciais de sites super bonitos) e sistemas web que podem ou não se comunicar com serviços externos.
+As mentioned, this article focuses on the frontend path — specifically the web developer journey centered on the browser. It covers what to study to start building websites, landing pages, and web systems that may or may not communicate with external services.
 
-Não é o foco do post ensinar cada uma das tecnologias, mas te dar um direcionamento para começar com cada uma das tecnologias, abordando os conceitos, práticas e ferramentas mais utilizadas de cada um.
+The focus of the post is not to teach each of the technologies, but to give you a direction to start with each of the technologies, covering the most used concepts, practices and tools of each one.
 
-# HTML, onde tudo começa
+# HTML, where it all begins
 
-HTML ou Hyper Text Markup Language é uma linguagem de marcação para sinalizar ao navegador a estrutura da sua página. Pense no HTML como o esqueleto e músculos do corpo humano, sendo a base que sustenta tudo no corpo, mas não se engane, você ainda precisa ter a aparência ([CSS](#css)) e o sistema nervoso ([Javascript](#javascript)) para tudo funcionar como deveria. O HTML permite marcar páginas com títulos, textos, blocos, links e parágrafos — ou até mesmo referências para outros sites através do elemento `iframe`.
+HTML or Hyper Text Markup Language is a markup language to signal to the browser the structure of your page. Think of HTML as the skeleton and muscles of the human body, being the base that sustains everything in the body, but don't be fooled, you still need the appearance ([CSS](#css)) and the nervous system ([Javascript](#javascript)) for everything to work as it should. HTML allows you to mark your pages with titles, texts, blocks, links to access other sites, paragraphs or even references to other sites (you'll know this guy as iframe).
 
-O HTML é essencial para você começar a desenvolver seus sites, sem saber a semântica do HTML, você não irá evoluir nos seus estudos, então é bom fundamentar a base nessa tecnologia e principalmente nos conceitos ao redor dela.
+HTML is essential for you to start developing your sites, without knowing HTML semantics, you won't evolve in your studies, so it's good to build the foundation in this technology and especially in the concepts around it.
 
-## Referências para HTML
+## References for HTML
 
-- [W3c Schools](https://www.w3schools.com/html/): A escola de todo iniciante na web
-- [Mozilla Developer Network - MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML): O guia que você sempre irá buscar
-- [Como iniciar com HTML?](https://www.freecodecamp.org/news/introduction-to-html): Freecodecamp, um site ótimo para consultas e tutoriais sobre tecnologia
+- [W3c Schools](https://www.w3schools.com/html/): The school of every web beginner
+- [Mozilla Developer Network - MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML): The guide you'll always search for
+- [How to start with HTML?](https://www.freecodecamp.org/news/introduction-to-html): Freecodecamp, a great site for queries and tutorials about technology
 
-## Conceitos
+## Concepts
 
-Aqui vou deixar uma lista de conceitos que são aconselhados a serem estudados, lembre-se que você não precisa ser um mestre no assunto, seu estudo deve ser gradual. Comece estudando um pouco para saber do que se trata, conforme você evoluir mais com tecnologia num geral, você pode ir aperfeiçoando a profundidade de conhecimento.
+Here I'll leave a list of concepts that are advised to be studied, remember that you don't need to be a master in the subject, your study should be gradual. Start by studying a little to know what it's about, as you evolve more with technology in general, you can improve the depth of knowledge.
 
-- [O que é o DOM?](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
-- [Acessibilidade](https://www.a11yproject.com/): Por uma web sem barreiras, não importa como você usa o browser.
-- [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState): API nativa do navegador para validação de formulários
+- [What is the DOM?](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+- [Accessibility](https://www.a11yproject.com/): For a web without barriers, no matter how you use the browser.
+- [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState): If you've already filled out a form and want to make your own, this guy will help you with that
 
-## Você pode precisar de ferramentas
+## You may need tools
 
-- [Can I use?](https://caniuse.com/): Será que você pode usar um recurso em todos os browsers?
-- [Icon Monster](https://iconmonstr.com/): Você pode precisar de ícones customizados para seus sites.
-- [W3c Validator](https://validator.w3.org/): Ferramenta para verificar se o HTML está correto conforme os padrões
+- [Can I use?](https://caniuse.com/): Can you use a feature in all browsers?
+- [Icon Monster](https://iconmonstr.com/): You may need custom icons for your sites.
+- [W3c Validator](https://validator.w3.org/): Use this guy to know if your work is correct
 
 # CSS
 
-Se o HTML é a estrutura do corpo, o CSS é a aparência, definindo a cor dos cabelos, olhos, pele e tudo mais o que for relacionado a aparência. CSS é uma tecnologia bem divertida, mas não se deixe enganar pois também é traiçoeira. Digo isso porque CSS significa Cascading Style Sheets, ou folha de estilos em cascata. Se você sabe o que é uma cascata, sabe que a água cai de cima para baixo, assim como os estilos do CSS. São definidos de cima para baixo, assim como você escreve numa folha. 
+If HTML is the body structure, CSS is the appearance, defining the color of hair, eyes, skin and everything else related to appearance. CSS is an enjoyable technology, though it can be deceptive. The "Cascading" in its name is key: styles are applied from top to bottom, just as they are written. To style an element, specify its selector and the desired properties — but always be mindful of the cascade rules, as styles defined later in the file can override those defined above.
 
-Basta dizer o nome do que deseja estilizar, as propriedades que quer estilizar e você terá um elemento bonito na tela, simples assim. Mas nunca se esqueça das regras de cascata, pois o estilo definido abaixo pode sobrescrever o estilo de cima.
+## References for CSS
 
-## Referências para CSS
+- [W3c Schools](https://www.w3schools.com/css/): This is always a great starting point for web technologies
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS): You'll always see MDN, your new best friend for web technology studies
+- [Origamid](https://www.origamid.com/): I'll leave this course here that was a course that always helped me a lot to understand CSS, and it will certainly help you too
 
-- [W3c Schools](https://www.w3schools.com/css/): Aqui sempre é um ótimo ponto de partida para tecnologias da web
-- [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS): Você sempre vai ver o MDN, seu novo melhor amigo para estudos de tecnologias web
-- [Orgamid](https://www.origamid.com/): Vou deixar esse curso aqui que foi um curso que sempre me ajudou muito a entender sobre CSS, e com certeza vai ajudar você também
+## Concepts
 
-## Conceitos
+- [Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox): A simple way to visually structure your blocks on sites
+- [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid): Alternative to flex, being more focused on fixed layouts
+- [CSS Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations): If you like your creative side, animations will bring life to your sites
 
-- [Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox): Uma forma simples de estruturar visualmente os seus blocos nos sites
-- [Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid): Alternativa ao flex, sendo mais voltado para layouts fixos
-- [CSS Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations): Se você gosta do seu lado criativo, as animações vão trazer vida aos seus sites
+## Frameworks
 
-## Frameworks 
+With CSS you'll be able to bring all the visual identity of a brand, animations and styled elements to your frontend. And for that, you can use various techniques and frameworks *(tools that work as a ready-made code package)* to help you
 
-Com CSS é possível trazer toda a identidade visual de uma marca, animações e elementos estilizados ao frontend. Para isso, existem diversas técnicas e frameworks (ferramentas que oferecem um conjunto de código pronto) disponíveis:
+- [FCSS](https://www.htmlgoodies.com/css/brief-introduction-to-functional-css/): A solution for the CSS cascade problem
+- [Bem Syntax](https://getbem.com/introduction/): Build your styles through blocks
+- [RSCSS](https://ricostacruz.com/rscss/): A solution focused on components and style scopes
 
-- [FCSS](https://www.htmlgoodies.com/css/brief-introduction-to-functional-css/): Uma solução para o problema de cascata do CSS
-- [Bem Syntax](https://getbem.com/introduction/): Monte os seus estilos através de blocos
-- [RSCSS](https://ricostacruz.com/rscss/): Uma solução voltada para componentes e escopos de estilo
+## Tools
 
-## Ferramentas
-
-- [Bootstrap](https://getbootstrap.com/): Um dos frameworks CSS mais conhecidos e utilizados no mundo. Oferece componentes e estilos prontos para uso.
-- [Tailwindcss](https://tailwindcss.com/): Framework utility-first que permite estilizar diretamente no HTML com classes utilitárias.
+- [Bootstrap](https://getbootstrap.com/): One of the most widely recognized CSS frameworks. Its pre-built components and styles can accelerate development significantly.
+- [Tailwindcss](https://tailwindcss.com/): A utility-first CSS framework that enables building designs directly in markup using low-level classes.
 
 # Javascript
 
-A parte final do corpo humano, o sistema nervoso. E o Javascript é quem vai fazer o trabalho de ser a central e o cérebro do nosso site, controlando as ações, eventos e interagindo com o usuário através de código. Importante lembrar que Javascript é uma linguagem de programação, diferente de HTML e CSS. Isso significa que você precisará ter conceitos de lógica de programação e estrutura de dados para poder se aventurar com Javascript de forma mais fluída.
+JavaScript is the final element of the web development triad. Where HTML provides structure and CSS defines appearance, JavaScript serves as the logic layer — controlling actions, events, and user interactions through code. Unlike HTML and CSS, JavaScript is a programming language, so familiarity with programming logic and data structures will be necessary to use it fluently.
 
-Por ser uma linguagem de programação, Javascript tem um poder absurdo de fazer literalmente qualquer coisa no browser, basta você saber as APIs *(Application Programming Interface ou Interface de programação para aplicações, uma forma de abstrair códigos complexos em um código mais simples)* e será possível você realizar.
+Being a programming language, Javascript has an absurd power to literally do anything in the browser, you just need to know the APIs *(Application Programming Interface, a way to abstract complex codes into simpler code)* and you'll be able to accomplish it.
 
-## Referências para Javascript
+## References for Javascript
 
-- [W3c Schools](https://www.w3schools.com/js/): Ponto de partida para aprender os fundamentos do JavaScript
-- [MDN](https://developer.mozilla.org/en-US/docs/Web/Javascript): Referência completa sobre JavaScript e APIs do navegador
-- [The Algorithms](https://github.com/TheAlgorithms/JavaScript): Implementações de algoritmos em JavaScript
+- [W3C Schools](https://www.w3schools.com/js/): A reliable reference that has already been recommended throughout this guide
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/Javascript): The comprehensive JavaScript reference maintained by Mozilla
 
 # Typescript
 
-Durante seu aprendizado de Javascript, você pode se deparar com problemas do tipo `Cannot read properties of undefined`.
-E isso ocorre devido ao tipo da sua variável ser undefined. Geralmente, esse tipo de problema pode ser evitado caso você
-utilize linguagens tipadas, como Typescript, Java, C#...E por falar em Typescript, essa com certeza deve ser uma
-linguagem para adicionar no seu mapa de estudos.
+During your Javascript learning, you may encounter problems like `Cannot read properties of undefined`.
+And this occurs because the type of your variable is undefined. Generally, this type of problem can be avoided if you
+use typed languages, like Typescript, Java, C#...And speaking of Typescript, this should certainly be a
+language to add to your study map.
 
-[Typescript](https://www.typescriptlang.org/) é um superset de Javascript, adicionando tipos a linguagem e tornando sua
-vida muito mais simples. Por aqui no blog você pode achar vários [tópicos sobre Typescript](https://garcez.dev/?q=typescript).
+[Typescript](https://www.typescriptlang.org/) is a superset of Javascript, adding types to the language and making your
+life much simpler. Here on the blog you can find several [topics about Typescript](https://garcez.dev/?q=typescript).
 
-## Referências para Typescript
+## References for Typescript
 
-- [Documentação oficial](https://www.typescriptlang.org/)
-- [Total Typescript](https://www.totaltypescript.com/): Um ótimo curso com bastante material gratuito para te ajudar
-- [Type level Typescript](https://type-level-typescript.com/): Outro curso que com certeza vai te ajudar na caminhada
+- [Official documentation](https://www.typescriptlang.org/)
+- [Total Typescript](https://www.totaltypescript.com/): A great course with plenty of free material to help you
+- [Type level Typescript](https://type-level-typescript.com/): Another course that will certainly help you on the journey
 
 # Frameworks
 
-Para otimizar sua produtividade com código, você vai precisar conhecer e estudar alguns frameworks mais utilizados do
-mercado. Sem extender muito, deixarei uma lista dos mais utilizados de cada tópico.
+To optimize your productivity with code, you'll need to know and study some of the most used frameworks in the
+market. Without extending too much, I'll leave a list of the most used for each topic.
 
 ## Javascript/Typescript - Frontend
 
@@ -124,14 +121,14 @@ mercado. Sem extender muito, deixarei uma lista dos mais utilizados de cada tóp
 - [Bootstrap](https://getbootstrap.com/)
 - [Foundation](https://get.foundation/)
 
-## Bibliotecas
+## Libraries
 
-Esses daqui são tópicos interessantes a se estudarem, mas que não se englobam como frameworks
+These are interesting topics to study, but don't fall under frameworks
 
-- [Lodash](https://lodash.com/): Funções utilitárias para você evitar repetição de código
-- [DateFNS](https://date-fns.org/): Utilitários para trabalhar com datas
-- [D3js](https://d3js.org/): A mais famosa biblioteca para se trabalhar com gráficos
-- [Axios](https://axios-http.com/docs/intro): Biblioteca para requests HTTP
-- [Ant Design](https://ant.design/): Uma biblioteca de componentes visuais para ReactJS
+- [Lodash](https://lodash.com/): Utility functions for you to avoid code repetition
+- [DateFNS](https://date-fns.org/): Utilities for working with dates
+- [D3js](https://d3js.org/): The most famous library for working with charts
+- [Axios](https://axios-http.com/docs/intro): Library for HTTP requests
+- [Ant Design](https://ant.design/): A library of visual components for ReactJS
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Thank you for your time, see you soon, bye bye

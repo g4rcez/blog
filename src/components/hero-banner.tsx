@@ -11,7 +11,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Fragment, Suspense, useEffect, useState } from "react";
 
-const pathnameLanguages = ["/", "/en"]
+const pathnameLanguages = ["/", "/pt"];
 
 const useIsHome = () => {
     const pathname = usePathname();
@@ -46,25 +46,26 @@ export function Header() {
 
     return (
         <div
-            className={`sticky top-0 z-20 w-full bg-white shadow-md shadow-slate-900/5 transition duration-500 ease-in-out ${isScrolled
-                ? "bg-background dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-background/75"
-                : "dark:bg-transparent"
-                }`}
+            className={`sticky top-0 z-20 w-full bg-white shadow-md shadow-slate-900/5 transition duration-500 ease-in-out ${
+                isScrolled
+                    ? "bg-background dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-background/75"
+                    : "dark:bg-transparent"
+            }`}
         >
-            <header className="container flex flex-wrap flex-none justify-between items-center py-5 px-4 mx-auto sm:px-6 lg:px-8 dark:shadow-none">
-                <div className="flex mr-6 lg:hidden">
+            <header className="container mx-auto flex flex-none flex-wrap items-center justify-between px-4 py-5 dark:shadow-none sm:px-6 lg:px-8">
+                <div className="mr-6 flex lg:hidden">
                     <MobileNavigation />
                 </div>
-                <div className="flex relative flex-grow items-center basis-0">
+                <div className="relative flex flex-grow basis-0 items-center">
                     <Link href="/" aria-label={t("common.home")}>
                         <Logomark className="lg:hidden" />
-                        <Logo className="hidden lg:block text-foreground" />
+                        <Logo className="hidden text-foreground lg:block" />
                     </Link>
                 </div>
                 <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
                     <Search />
                 </div>
-                <div className="flex relative gap-6 justify-end sm:gap-8 md:flex-grow basis-0">
+                <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
                     {isHomePage ? null : (
                         <Link
                             scroll={false}
@@ -78,7 +79,7 @@ export function Header() {
                     )}
                     <LanguageSwitcher />
                     <Link target="_blank" href={BlogConfig.github} className="group" aria-label={t("hero.github")}>
-                        <GitHubIcon className="w-6 h-6 fill-slate-400 dark:group-hover:fill-slate-300 group-hover:fill-slate-500" />
+                        <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
                     </Link>
                 </div>
             </header>

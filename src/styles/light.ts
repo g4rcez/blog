@@ -4,7 +4,12 @@ export const lightColors: DesignTokens["colors"] = {
     foreground: "hsla(217, 15%, 30%)",
     background: "hsla(210, 40%, 97%)",
     border: "hsla(210, 25%, 88%)",
-    muted: "hsla(210, 30%, 86%)",
+    muted: {
+        DEFAULT: "hsla(210, 30%, 86%)",
+        foreground: "hsla(210, 10%, 45%)",
+        subtle: "hsla(210, 25%, 90%)",
+        hover: "hsla(210, 30%, 80%)",
+    },
     disabled: "hsla(240, 10%, 78%)",
     emphasis: {
         foreground: "hsla(251,91%,95%)",

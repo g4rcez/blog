@@ -2,21 +2,21 @@
 level: 1
 subjects: ["react", "redux", "frontend", "typescript", "javascript"]
 title: "Hooks + Redux"
-language: "pt-br"
+language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-09-29T11:33:00.000Z"
-description: "Unido os hooks ao estado global"
+description: "Uniting hooks with global state"
 ---
 
-# Introdução
+# Introduction
 
-Desde que saiu a versão estável de Hooks para React, eu vejo muitos artigos com a ideia de **Usando Hooks para eliminar o Redux da sua aplicação**. Alguns desses têm até umas ideias interessantes, mas não é esse o propósito de Hooks, se você quer criar uma biblioteca que substitua o Redux, você deverá estudar ContextAPI e não Hooks.
+Since the stable release of Hooks for React, many articles have promoted the idea of **using Hooks to eliminate Redux from your application**. Some of these contain interesting ideas, but that is not the purpose of Hooks. If the goal is to replace Redux, ContextAPI is the right area to study.
 
-Hooks e Redux Hooks foram adotados ainda em Alpha — ambos em produção.
+Hooks have been in use since the Alpha version, alongside Redux Hooks — both in production.
 
 # Hands on
 
-Logo no começo, tive alguma dificuldade em migrar a forma de uso e acabei parando para analisar `Como juntar Hooks com Redux? O ideal seria não precisar do connect, mas também ter a mesma facilidade que ele oferece`. Esse foi o primeiro tradeoff que encarei no uso. Apesar dos Hooks do Redux oferecerem bons Hooks com o `useSelector` e o `useDispatch`, eu não tinha algumas otimizações. A própria documentação do Redux nos dá formas de fazer essas otimizações, porém considero algo um pouco cru, podemos fazer algo mais robusto para trabalhar nas nossas aplicações. Vamos começar com a minha primeira ideia para otimizar isso:
+At the start, there was difficulty in migrating the usage pattern. The goal was to combine Hooks with Redux without needing `connect`, while preserving the convenience it offered. Although Redux Hooks provide `useSelector` and `useDispatch`, some optimizations were missing. Redux's documentation covers these optimizations, but the approach feels incomplete. A more robust solution can be built. Here is the first optimization idea:
 
 ```javascript
 // useReselect.js
@@ -48,7 +48,7 @@ const useReselect = (states, dispatches, comparator = shallowEqual) => {
 
 export default useReselect;
 
-// Demonstração de uso
+// Usage demonstration
 
 const mapStateToProps = (state) => ({
   clients: state.ClientReducer.clients,
@@ -64,10 +64,10 @@ const Component = () => {
 };
 ```
 
-Isso quebrou um galhão, mas eu queria entregar algo mais parecido com o approach de classes para um time que estava mais habituado, e iniciando em componentes funcionais + Hooks. Então eu apenas transformei em um objeto o que era um array
+This addressed many issues, but the goal was to provide something closer to the class component approach for a team transitioning to functional components with Hooks. The array return was transformed into an object:
 
 ```javascript
-// useConnect.js - O código acima será reutilizado
+// useConnect.js - The code above will be reused
 import useReselect from "./useReselect";
 import { shallowEqual } from "react-redux";
 
@@ -85,7 +85,7 @@ const useConnect = (
   return { ...globalState, ...globalDispatches, ...props };
 };
 
-// Demonstração de uso
+// Usage demonstration
 
 const mapStateToProps = (state) => ({
   clients: state.ClientReducer.clients,
@@ -101,16 +101,14 @@ const Component = (externalProps) => {
 };
 ```
 
-O resultado é um hook que entrega algo mais semelhante ao uso com classes, porém sem o `this`. O `useConnect` tem comportamento similar ao `connect`, mas sem criar um componente wrapper para passar props da store.
+The result is a hook that delivers something familiar to those accustomed to class components, without the wrapper component overhead. `useConnect` behaves similarly to `connect`, but does not create a wrapper component to pass props from the store.
 
-# Apenas isso?
+# Is that all?
 
-Não apenas isso.
-
-Com os hooks básicos: `useState` e `useEffect`, podemos criar ações que iram abstrair bastante do código e ao invés de entregar um valor de forma mais "mastigada" pra quem consumir os hooks. Dois exemplos que vou mostrar aqui são `Filtrar listas` (com o uso do Redux) e `Exibir o um loading` (sem o uso do Redux).
+Using the basic hooks `useState` and `useEffect`, it is possible to create abstractions that expose values in a more digestible form to consumers. Two examples follow: `Filter lists` (with Redux usage) and `Display loading` (without Redux usage).
 
 ```javascript
-// useClientFilter.js - Filtrar uma lista de clientes, dado uma chave e valor
+// useClientFilter.js - Filter a client list, given a key and value
 import { useState, useEffect } from "react";
 import useConnect from "./";
 
@@ -119,10 +117,10 @@ const useClientFilter = (key, value) => {
   const props = useConnect(stateToProps, {});
   const [list, setList] = useState(props.clients);
 
-  /* Esse efeito vai executar toda vez que:
-        - A lista mudar de tamanho
-        - A propriedade key mudar
-        - A propriedade value mudar
+  /* This effect will execute every time:
+        - The list changes size
+        - The key property changes
+        - The value property changes
     */
   useEffect(() => {
     const filterList = props.clients.filter((client) => {
@@ -138,7 +136,7 @@ const useClientFilter = (key, value) => {
 export default useClientFilter;
 ```
 
-Com esse pequeno hook, ao invés de criar o filtro no componente, podemos usa-lo para abstrair o trabalho e replicar seu uso em diversos componentes, sem repetir código.
+With this small hook, instead of creating the filter in the component, we can use it to abstract the work and replicate its use in several components, without repeating code.
 
 ```jsx
 import React, { useState } from "react";
@@ -162,19 +160,19 @@ const ClientList = () => {
 };
 ```
 
-![Demonstrando o hook de filtro para clientes](/static/hooks-demo.gif) Exemplo cortado :(
+![Demonstrating the filter hook for clients](/static/hooks-demo.gif) Cropped example :(
 
-Nesse componente, teremos a lista filtrada sempre que o método onChange for executado, pois a regra do nosso `useClientFilter` diz que se o nosso `value` mudar, ele irá executar o callback do `useEffect`;
+In this component, we'll have the filtered list whenever the onChange method is executed, because our `useClientFilter` rule says that if our `value` changes, it will execute the `useEffect` callback;
 
-O segundo exemplo que irei mostrar é para casos onde sua ação não terá impacto na store do seu redux, exceto setar atributos como `loading`. A partir de agora, essas ações você poderá tratar de uma nova forma, usando-as num hook. Dessa forma, cada ação terá um loading próprio e não irá acontecer problemas de o usuário executar uma ação que faça um trigger de `loading` no mesmo reducer.
+The second example I'll show is for cases where your action won't have an impact on your redux store, except setting attributes like `loading`. From now on, you can handle these actions in a new way, using them in a hook. This way, each action will have its own loading and there won't be problems of the user executing an action that triggers `loading` in the same reducer.
 
-Vamos fazer um exemplo para inativar clientes e atualizar a lista após o deletar ser efetuado com sucesso.
+Let's make an example to inactivate clients and update the list after delete is done successfully.
 
 ```javascript
 import useConnect from "./hooks";
 import { useState } from "react";
-const mapStateToProps = () => ({}); //objetos que precisar
-const mapDispatchToProps = {}; //ações que precisar
+const mapStateToProps = () => ({}); // objects you need
+const mapDispatchToProps = {}; // actions you need
 
 const useDeleteClient = () => {
 	const [state, setState] = useState({ loading: false, success: false });
@@ -184,44 +182,44 @@ const useDeleteClient = () => {
 			.then((e) => {
 				if (e.ok) {
                     setState({ loading: false, success: true });
-                    // ações do redux serão realizadas aqui
-                    // em caso de sucesso
+                    // redux actions will be performed here
+                    // in case of success
 				} else {
                     setState({ loading: false, success: false });
-                    // ações do redux serão realizadas aqui
-                    // em caso de falha da requisição
+                    // redux actions will be performed here
+                    // in case of request failure
 				}
 			})
 			.catch((e) => {
                 setState({ loading: false, success: false });
-                // Algum outro erro como de conexão, por exemplo
+                // Some other error like connection, for example
 			});
 	};
 	return [state, callback];
 };
 export default useDeleteClient;
 
-// Demonstração
+// Demonstration
 
 const DeleteClient42Button = () => {
     const [state,callback] = useDeleteClient();
     const delete = () => callback(42);
     if(state.success){
-        // Um componente de notificação qualquer
-        Notification.show("O cliente 42 foi deletado")
+        // Any notification component
+        Notification.show("Client 42 was deleted")
     }
 	return (
             <Button
                 disabled={state.loading}
                 onClick={delete}>
-                Deletar o Cliente 42
+                Delete Client 42
             </Button>
     )
 };
 ```
 
-E assim podemos ter uma ação com estado próprio, sem a necessidade de criar actions do redux para o controle de fluxo, apenas usando o Hooks.
+And thus we can have an action with its own state, without the need to create redux actions for flow control, just using Hooks.
 
-# Por hoje é só
+# That's all for today
 
-Este artigo demonstra que ao deparar com um artigo do tipo **Usando hooks para eliminar o Redux**, vale refletir sobre como as duas tecnologias podem ser usadas em conjunto. Elas não são concorrentes, mas sim complementares — juntas proporcionam maior produtividade para o time. Obrigado pelo seu tempo, tamo junto e até a próxima
+The next time an article titled **Using hooks to kill Redux** appears, consider how both technologies can be used together. They are not competitors — they are complementary tools that, combined, provide greater productivity for the entire team. Thank you for your time, see you soon, bye bye
