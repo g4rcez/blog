@@ -23,7 +23,6 @@ export const getPosts = (language: string) => {
             const fullPath = path.resolve(file);
             const content = fs.readFileSync(fullPath, "utf-8");
             const doc = Markdoc.parse(content);
-            console.log({ exist: fs.existsSync(fullPath), doc, content, fullPath });
             const frontmatter = yaml.load(doc.attributes.frontmatter);
             const info = PostSchema.parse(frontmatter);
             const date = info.date;
