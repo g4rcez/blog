@@ -1,9 +1,12 @@
 "use client";
 import { Input as InputBase } from "@g4rcez/components/input";
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 
+// TS2786: @g4rcez/components/input returns Promise<ReactNode> in its type signature,
+// which is incompatible with JSX element constraints. Narrowing to ComponentType<any>
+// preserves JSX call-site checking while suppressing the return-type error.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Input = InputBase as any;
+const Input = InputBase as ComponentType<any>;
 
 const cpfOrCnpj = (value: string) => (value.replace(/\D/g, "").length <= 11 ? ("cpf" as const) : ("cnpj" as const));
 

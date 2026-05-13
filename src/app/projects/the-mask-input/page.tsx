@@ -130,7 +130,7 @@ export default function TheMaskInputPage() {
                                 <code>color</code> — #000 or #000000
                             </li>
                             <li>
-                                <code>creditCard</code> — 0000 0000 0000 0000 0000
+                                <code>creditCard</code> — 0000 0000 0000 0000
                             </li>
                             <li>
                                 <code>date</code> — dd/MM/yyyy
