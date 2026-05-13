@@ -19,12 +19,12 @@ export const homeCopy: Record<Locale, { title: string; description: string }> = 
     "en-US": {
         title: `${BlogConfig.user.name} — Senior Frontend Engineer Blog`,
         description:
-            "Frontend engineering, TypeScript, React, Node.js, and developer tooling. Deep dives, patterns, and lessons from 25+ years building products.",
+            "Frontend engineering, TypeScript, React, Node.js, and developer tooling. Deep dives, patterns, and lessons from 10+ years building products.",
     },
     "pt-BR": {
         title: `${BlogConfig.user.name} — Blog de Engenharia Frontend`,
         description:
-            "Engenharia frontend, TypeScript, React, Node.js e ferramentas para desenvolvedores. Análises, padrões e aprendizados de 25+ anos construindo produtos.",
+            "Engenharia frontend, TypeScript, React, Node.js e ferramentas para desenvolvedores. Análises, padrões e aprendizados de 10+ anos construindo produtos.",
     },
 };
 
@@ -44,7 +44,7 @@ export const topicCopy: Record<
     "en-US": {
         title: (topic) => `${topic} — Articles by Allan Garcez`,
         description: (topic) =>
-            `Posts, deep dives and patterns about ${topic} from a senior frontend engineer with 25+ years building products.`,
+            `Posts, deep dives and patterns about ${topic} from a senior frontend engineer with 10+ years building products.`,
         index: {
             title: "Topics — Allan Garcez Blog",
             description:
@@ -54,7 +54,7 @@ export const topicCopy: Record<
     "pt-BR": {
         title: (topic) => `${topic} — Artigos por Allan Garcez`,
         description: (topic) =>
-            `Posts, análises e padrões sobre ${topic} por um engenheiro frontend sênior com 25+ anos construindo produtos.`,
+            `Posts, análises e padrões sobre ${topic} por um engenheiro frontend sênior com 10+ anos construindo produtos.`,
         index: {
             title: "Tópicos — Blog do Allan Garcez",
             description:
