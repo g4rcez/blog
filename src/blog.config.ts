@@ -29,6 +29,7 @@ export const BlogConfig = {
         { title: { "pt-BR": "dotfiles", "en-US": "dotfiles" }, href: "https://github.com/g4rcez/dotfiles" },
         { title: { "pt-BR": "writeme", "en-US": "writeme" }, href: "https://app.writeme.dev" },
         { title: { "pt-BR": "useReducer", "en-US": "useReducer" }, href: "https://github.com/g4rcez/use-reducer" },
+        { title: { "pt-BR": "the-mask-input", "en-US": "the-mask-input" }, href: "/projects/the-mask-input" },
     ] as LocalizedLink[],
     topics: [
         {
