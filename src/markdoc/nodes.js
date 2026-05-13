@@ -13,14 +13,26 @@ const Img = {
         src: { type: String },
         alt: { type: String },
         caption: { type: String },
+        width: { type: Number, default: 1200 },
+        height: { type: Number, default: 675 },
     },
-    render: ({ src = "", caption = "", alt = "" }) => (
-        <span className="markdown-img">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src.replace(/^\/public/g, "")} alt={alt} />
-            <small>{caption || alt}</small>
-        </span>
-    ),
+    render: ({ src = "", caption = "", alt = "", width = 1200, height = 675 }) => {
+        const resolvedAlt = alt || caption || "";
+        return (
+            <span className="markdown-img">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                    src={src.replace(/^\/public/g, "")}
+                    alt={resolvedAlt}
+                    width={width}
+                    height={height}
+                    loading="lazy"
+                    decoding="async"
+                />
+                {(caption || alt) && <small>{caption || alt}</small>}
+            </span>
+        );
+    },
 };
 
 const nodes = {

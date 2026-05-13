@@ -8,11 +8,12 @@ export const PostSchema = z.object({
     translations: z.array(z.string()),
     language: z.string(),
     date: z.string(),
+    dateModified: z.string().optional(),
 });
 
 export type Post = {
     href: string;
-    readingTime: number
+    readingTime: number;
     date: string;
     info: {
         title: string;
@@ -20,6 +21,7 @@ export type Post = {
         level: number;
         subjects: string[];
         date: string;
+        dateModified?: string;
         translations: string[];
         language: string;
     };
