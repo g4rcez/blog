@@ -1,6 +1,6 @@
 "use client";
 import { Input as InputBase } from "@g4rcez/components/input";
-import React from "react";
+import type { ReactNode } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Input = InputBase as any;
@@ -52,7 +52,7 @@ const docMask = (value: string) =>
 } as const;
 
 type CellProps = {
-    input: React.ReactNode;
+    input: ReactNode;
     chip: string;
     snippet: string;
 };
@@ -68,8 +68,10 @@ const MaskCell = ({ input, chip, snippet }: CellProps) => (
 );
 
 export const MaskPlayground = () => (
-    <section className="mb-12">
-        <h2 className="mb-6 font-display text-2xl font-semibold tracking-tight text-foreground">Live playground</h2>
+    <section className="mb-12" aria-labelledby="live-playground">
+        <h2 id="live-playground" className="mb-6 font-display text-2xl font-semibold tracking-tight text-foreground">
+            Live playground
+        </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <MaskCell
                 input={<Input name="cpf" mask="cpf" title="CPF" placeholder="000.000.000-00" />}
@@ -98,7 +100,7 @@ export const MaskPlayground = () => (
                         mask="currency"
                         locale="pt-BR"
                         currency="BRL"
-                        title="Price (BRL)"
+                        title="Price"
                         placeholder="R$ 0,00"
                     />
                 }
