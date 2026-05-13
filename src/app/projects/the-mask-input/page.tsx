@@ -7,17 +7,20 @@ import { type Section } from "@/lib/sections";
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 
+const DESCRIPTION =
+    "A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.";
+
 export const metadata: Metadata = {
     title: "the-mask-input",
-    description:
-        "A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.",
+    description: DESCRIPTION,
 };
 
+type TocEntry = { id: string; title: string; level: number; children: [] };
 const tableOfContents = [
-    { id: "installation", title: "Installation", level: 2, children: [] },
-    { id: "built-in-masks", title: "Built-in masks", level: 2, children: [] },
-    { id: "custom-masks", title: "Custom masks", level: 2, children: [] },
-] as unknown as Array<Section>;
+    { id: "installation", title: "Installation", level: 2, children: [] as [] },
+    { id: "built-in-masks", title: "Built-in masks", level: 2, children: [] as [] },
+    { id: "custom-masks", title: "Custom masks", level: 2, children: [] as [] },
+] satisfies TocEntry[] as unknown as Array<Section>;
 
 const INSTALL_SNIPPET = `pnpm add the-mask-input`;
 
@@ -57,14 +60,14 @@ const hourMask = (value: string) => {
 
 <Input name="hour" title="Hour" mask={hourMask} placeholder="00:00" />`;
 
-export default async function TheMaskInputPage() {
+export default function TheMaskInputPage() {
     return (
         <Fragment>
             <div className="min-w-0 max-w-7xl flex-auto px-2 py-16 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
                 <article>
                     <DocsHeader
                         title="the-mask-input"
-                        description="A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more."
+                        description={DESCRIPTION}
                         tags={["react", "typescript", "forms"]}
                     />
                     <div className="mb-8 flex gap-4 text-sm">
