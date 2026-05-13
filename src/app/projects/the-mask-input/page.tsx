@@ -1,0 +1,176 @@
+import { DocsHeader } from "@/components/docs-header";
+import { Fence } from "@/components/fence";
+import { MaskPlayground } from "@/components/client/mask-playground";
+import { Prose } from "@/components/prose";
+import { TableOfContents } from "@/components/table-of-contents";
+import { type Section } from "@/lib/sections";
+import type { Metadata } from "next";
+import { Fragment, Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "the-mask-input",
+    description:
+        "A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.",
+};
+
+const tableOfContents = [
+    { id: "installation", title: "Installation", level: 2, children: [] },
+    { id: "built-in-masks", title: "Built-in masks", level: 2, children: [] },
+    { id: "custom-masks", title: "Custom masks", level: 2, children: [] },
+] as unknown as Array<Section>;
+
+const INSTALL_SNIPPET = `pnpm add the-mask-input`;
+
+const QUICKSTART_SNIPPET = `import { Input } from "@g4rcez/components/input";
+
+export default function App() {
+  return (
+    <form>
+      <Input name="cpf" mask="cpf" title="CPF" placeholder="000.000.000-00" />
+    </form>
+  );
+}`;
+
+const TOKEN_SNIPPET = `// Tokens: d = digit, H = hex, X = alphanumeric, x = alpha, A = uppercase, a = lowercase
+import { Input } from "@g4rcez/components/input";
+
+<Input name="doc" mask="ddd.ddd.ddd-dd" title="Custom document" placeholder="000.000.000-00" />`;
+
+const REGEX_SNIPPET = `// Brazilian license plate: ABC-1234
+import { Input } from "@g4rcez/components/input";
+
+<Input
+  name="plate"
+  title="License plate"
+  mask={[/[A-Z]/, /[A-Z]/, /[A-Z]/, "-", /\\d/, /\\d/, /\\d/, /\\d/]}
+  placeholder="ABC-1234"
+/>`;
+
+const FUNCTION_SNIPPET = `// Validates hours 00–23 by switching the pattern when the first digit is "2"
+import { Input } from "@g4rcez/components/input";
+
+const hourMask = (value: string) => {
+  const startsWithTwo = ["2", /[0-3]/, ":", /[0-5]/, /\\d/];
+  const defaultHour  = [/[01]/, /\\d/, ":", /[0-5]/, /\\d/];
+  return value.startsWith("2") ? startsWithTwo : defaultHour;
+};
+
+<Input name="hour" title="Hour" mask={hourMask} placeholder="00:00" />`;
+
+export default async function TheMaskInputPage() {
+    return (
+        <Fragment>
+            <div className="min-w-0 max-w-7xl flex-auto px-2 py-16 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+                <article>
+                    <DocsHeader
+                        title="the-mask-input"
+                        description="A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more."
+                        tags={["react", "typescript", "forms"]}
+                    />
+                    <div className="mb-8 flex gap-4 text-sm">
+                        <a
+                            href="https://github.com/g4rcez/the-mask-input"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-sky-400 hover:text-sky-300"
+                        >
+                            GitHub ↗
+                        </a>
+                        <a
+                            href="https://www.npmjs.com/package/the-mask-input"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-sky-400 hover:text-sky-300"
+                        >
+                            npm ↗
+                        </a>
+                    </div>
+
+                    <MaskPlayground />
+
+                    <Prose>
+                        <h2 id="installation">Installation</h2>
+                        <Fence language="bash">{INSTALL_SNIPPET}</Fence>
+                        <Fence language="tsx">{QUICKSTART_SNIPPET}</Fence>
+                        <p>
+                            <code>@g4rcez/components</code> wraps <code>the-mask-input</code> — all named masks and
+                            custom mask features are available through it.
+                        </p>
+
+                        <h2 id="built-in-masks">Built-in masks</h2>
+                        <ul>
+                            <li>
+                                <code>cpf</code> — 000.000.000-00
+                            </li>
+                            <li>
+                                <code>cnpj</code> — 00.000.000/0000-00
+                            </li>
+                            <li>
+                                <code>cpfCnpj</code> — CPF or CNPJ (auto-detects by length)
+                            </li>
+                            <li>
+                                <code>cep</code> — 000000-000
+                            </li>
+                            <li>
+                                <code>cellphone</code> — (00) 90000-0000
+                            </li>
+                            <li>
+                                <code>telephone</code> — (00) 0000-0000
+                            </li>
+                            <li>
+                                <code>cellTelephone</code> — cellphone or telephone (auto-detects)
+                            </li>
+                            <li>
+                                <code>int</code> — integers only
+                            </li>
+                            <li>
+                                <code>color</code> — #000 or #000000
+                            </li>
+                            <li>
+                                <code>creditCard</code> — 0000 0000 0000 0000 0000
+                            </li>
+                            <li>
+                                <code>date</code> — dd/MM/yyyy
+                            </li>
+                            <li>
+                                <code>isoDate</code> — yyyy/MM/dd
+                            </li>
+                            <li>
+                                <code>time</code> — 00:00
+                            </li>
+                            <li>
+                                <code>uuid</code> — UUID format
+                            </li>
+                        </ul>
+
+                        <h2 id="custom-masks">Custom masks</h2>
+                        <h3>Token-based</h3>
+                        <p>
+                            Pass a string where each character is a token. Useful for fixed-length formats that match a
+                            single character class per position.
+                        </p>
+                        <Fence language="tsx">{TOKEN_SNIPPET}</Fence>
+
+                        <h3>Regex array</h3>
+                        <p>
+                            Pass an array where each element is either a literal string (fixed character) or a{" "}
+                            <code>RegExp</code> (validated position). Useful for formats with mixed literals and
+                            character classes.
+                        </p>
+                        <Fence language="tsx">{REGEX_SNIPPET}</Fence>
+
+                        <h3>Function-based</h3>
+                        <p>
+                            Pass a function that receives the current value and returns a mask. Useful when the mask
+                            pattern depends on what the user has typed so far.
+                        </p>
+                        <Fence language="tsx">{FUNCTION_SNIPPET}</Fence>
+                    </Prose>
+                </article>
+            </div>
+            <Suspense fallback={null}>
+                <TableOfContents tableOfContents={tableOfContents} />
+            </Suspense>
+        </Fragment>
+    );
+}
