@@ -1,16 +1,12 @@
-import { BlogConfig } from "@/blog.config";
 import { PostJsonLd } from "@/components/server/post-json-ld";
-import { Locale } from "@/lib/dictionary";
 import { createGenerateMetadata } from "@/lib/metadata";
 
-const lang = BlogConfig.defaultLanguage as Locale;
-
-export const generateMetadata = createGenerateMetadata(lang);
+export const generateMetadata = createGenerateMetadata("pt-BR");
 
 export default function PostsLayout(props: any) {
     return (
         <>
-            <PostJsonLd lang={lang} />
+            <PostJsonLd lang="pt-BR" />
             {props.children}
         </>
     );

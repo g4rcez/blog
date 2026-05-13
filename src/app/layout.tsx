@@ -91,11 +91,6 @@ const websiteJsonLd = {
     description: homeCopy["en-US"].description,
     inLanguage: ["en-US", "pt-BR"],
     publisher: { "@id": `${SITE_URL}/#person` },
-    potentialAction: {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/?q={search_term_string}` },
-        "query-input": "required name=search_term_string",
-    },
 };
 
 const personJsonLd = {
@@ -122,10 +117,8 @@ export default async function RootLayout(props: PropsWithChildren) {
             className={clsx("dark h-full antialiased", inter.variable, lexend.variable)}
         >
             <head>
-                <meta charSet="utf-8" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
                 <link
                     rel="alternate"
                     type="application/rss+xml"

@@ -27,7 +27,9 @@ export type Post = {
     };
 };
 
-export const readingTime = (content: string) => Math.ceil(content.split(" ").length / 250);
+export const wordCount = (content: string) => content.trim().split(/\s+/).filter(Boolean).length;
+
+export const readingTime = (content: string) => Math.ceil(wordCount(content) / 250);
 
 export const filterPosts = (q: string, posts: Post[]) =>
     q === ""

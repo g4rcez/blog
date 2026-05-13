@@ -1,18 +1,46 @@
 import { DocsHeader } from "@/components/docs-header";
 import { Fence } from "@/components/fence";
+import { CustomMaskLive } from "@/components/client/custom-mask-live";
 import { MaskPlayground } from "@/components/client/mask-playground";
 import { Prose } from "@/components/prose";
 import { TableOfContents } from "@/components/table-of-contents";
 import { type Section } from "@/lib/sections";
+import { BlogConfig } from "@/blog.config";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 
 const DESCRIPTION =
     "A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.";
 
+const PROJECT_PATH = "/projects/the-mask-input";
+const PROJECT_URL = absoluteUrl(PROJECT_PATH);
+
 export const metadata: Metadata = {
     title: "the-mask-input",
     description: DESCRIPTION,
+    keywords: ["react", "input mask", "typescript", "forms", "cpf", "cnpj", "the-mask-input"],
+    alternates: {
+        canonical: PROJECT_PATH,
+        languages: { "en-US": PROJECT_URL, "x-default": PROJECT_URL },
+    },
+    openGraph: {
+        type: "website",
+        url: PROJECT_URL,
+        siteName: BlogConfig.name["en-US"],
+        title: "the-mask-input",
+        description: DESCRIPTION,
+        locale: "en_US",
+        images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "the-mask-input" }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        site: "@garcez_allan",
+        creator: "@garcez_allan",
+        title: "the-mask-input",
+        description: DESCRIPTION,
+        images: [DEFAULT_OG_IMAGE],
+    },
 };
 
 type TocEntry = { id: string; title: string; level: number; children: [] };
@@ -153,7 +181,11 @@ export default function TheMaskInputPage() {
                             single character class per position.
                         </p>
                         <Fence language="tsx">{TOKEN_SNIPPET}</Fence>
-
+                        <p>
+                            The same token string works for any fixed-length format. Try it live — edit the mask below
+                            and the input updates instantly. The US Social Security Number is a good starting point:
+                        </p>
+                        <CustomMaskLive />
                         <h3>Regex array</h3>
                         <p>
                             Pass an array where each element is either a literal string (fixed character) or a{" "}

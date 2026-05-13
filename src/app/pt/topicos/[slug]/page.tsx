@@ -24,6 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (enHas) {
         languages["en-US"] = absoluteUrl(`${topicsBasePath["en-US"]}/${slug}`);
         languages["x-default"] = languages["en-US"];
+    } else {
+        languages["x-default"] = languages["pt-BR"];
     }
     const copy = topicCopy[lang];
     return {

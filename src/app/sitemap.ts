@@ -11,7 +11,7 @@ const buildAlternates = (translations: string[], href: string) => {
         if (lower === "en-us") languages["en-US"] = absoluteUrl(href);
         if (lower === "pt-br") languages["pt-BR"] = absoluteUrl(`/pt${href}`);
     });
-    if (languages["en-US"]) languages["x-default"] = languages["en-US"];
+    languages["x-default"] = languages["en-US"] ?? languages["pt-BR"];
     return { languages };
 };
 
@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const home: MetadataRoute.Sitemap[number] = {
         url: SITE_URL,
         lastModified: now,
-        changeFrequency: "daily",
+        changeFrequency: "weekly",
         priority: 1,
         alternates: { languages: { "en-US": SITE_URL, "pt-BR": `${SITE_URL}/pt`, "x-default": SITE_URL } },
     };
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const homePt: MetadataRoute.Sitemap[number] = {
         url: `${SITE_URL}/pt`,
         lastModified: now,
-        changeFrequency: "daily",
+        changeFrequency: "weekly",
         priority: 0.9,
         alternates: { languages: { "en-US": SITE_URL, "pt-BR": `${SITE_URL}/pt`, "x-default": SITE_URL } },
     };

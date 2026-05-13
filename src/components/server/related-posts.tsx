@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type Props = { lang: Locale; max?: number };
 
-export async function RelatedPosts({ lang, max = 3 }: Props) {
+export async function RelatedPosts({ lang, max = 4 }: Props) {
     const h = await headers();
     const pathname = h.get("x-pathname") || "";
     const cleanHref = lang === "pt-BR" ? pathname.replace(/^\/pt/, "") : pathname;
@@ -27,17 +27,17 @@ export async function RelatedPosts({ lang, max = 3 }: Props) {
     return (
         <aside aria-label={t.blog.relatedPosts} className="border-divider mt-12 border-t pt-8">
             <h2 className="font-display text-xl tracking-tight text-foreground">{t.blog.relatedPosts}</h2>
-            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {scored.map(({ post }) => {
                     const href = lang === "pt-BR" ? `/pt${post.href}` : post.href;
                     return (
                         <li key={post.href}>
                             <Link
                                 href={href}
-                                className="border-divider block rounded-xl border p-4 transition hover:border-foreground"
+                                className="border-divider h-full block rounded-xl border border-primary/20 p-4 transition-colors hover:border-primary/70"
                             >
                                 <span className="block font-medium text-foreground">{post.info.title}</span>
-                                <span className="mt-2 block text-sm text-secondary-foreground">
+                                <span className="mt-2 block text-sm text-secondary-foreground text-pretty">
                                     {post.info.description}
                                 </span>
                             </Link>

@@ -29,7 +29,7 @@ export async function PostJsonLd({ lang }: Props) {
         inLanguage: lang,
         keywords: post.info.subjects.join(", "),
         articleSection: post.info.subjects[0],
-        wordCount: post.readingTime * 250,
+        wordCount: post.wordCount,
         image: { "@type": "ImageObject", url: DEFAULT_OG_IMAGE, width: 1200, height: 630 },
         author: { "@id": `${SITE_URL}/#person` },
         publisher: { "@id": `${SITE_URL}/#person` },

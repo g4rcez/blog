@@ -32,48 +32,12 @@ export const BlogConfig = {
         { title: { "pt-BR": "the-mask-input", "en-US": "the-mask-input" }, href: "/projects/the-mask-input" },
     ] as LocalizedLink[],
     topics: [
-        {
-            title: {
-                "pt-BR": "Frontend",
-                "en-US": "Frontend",
-            },
-            href: "/?q=frontend",
-        },
-        {
-            title: {
-                "pt-BR": "Javascript",
-                "en-US": "Javascript",
-            },
-            href: "/?q=javascript",
-        },
-        {
-            title: {
-                "pt-BR": "NodeJS",
-                "en-US": "NodeJS",
-            },
-            href: "/?q=nodejs",
-        },
-        {
-            title: {
-                "pt-BR": "React",
-                "en-US": "React",
-            },
-            href: "/?q=react",
-        },
-        {
-            title: {
-                "pt-BR": "Dicas e Truques",
-                "en-US": "Tips and Tricks",
-            },
-            href: "/?q=tips-and-tricks",
-        },
-        {
-            title: {
-                "pt-BR": "Typescript",
-                "en-US": "Typescript",
-            },
-            href: "/?q=typescript",
-        },
+        { title: { "pt-BR": "Frontend", "en-US": "Frontend" }, href: "frontend" },
+        { title: { "pt-BR": "Javascript", "en-US": "Javascript" }, href: "javascript" },
+        { title: { "pt-BR": "NodeJS", "en-US": "NodeJS" }, href: "nodejs" },
+        { title: { "pt-BR": "React", "en-US": "React" }, href: "react" },
+        { title: { "pt-BR": "Dicas e Truques", "en-US": "Tips and Tricks" }, href: "tips-and-tricks" },
+        { title: { "pt-BR": "Typescript", "en-US": "Typescript" }, href: "typescript" },
     ] as LocalizedLink[],
     agents: [
         {

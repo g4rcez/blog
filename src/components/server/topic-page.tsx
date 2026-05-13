@@ -8,11 +8,17 @@ import { notFound } from "next/navigation";
 
 type Props = { lang: Locale; slug: string };
 
+const labels: Record<Locale, { topic: string; topics: string; article: string; articles: string }> = {
+    "en-US": { topic: "Topic", topics: "Topics", article: "article", articles: "articles" },
+    "pt-BR": { topic: "Tópico", topics: "Tópicos", article: "artigo", articles: "artigos" },
+};
+
 export async function TopicPage({ lang, slug }: Props) {
     const { topic, posts } = getTopicPosts(lang, slug);
     if (!topic) notFound();
     const base = topicsBasePath[lang];
     const homeUrl = lang === "pt-BR" ? `${SITE_URL}/pt` : SITE_URL;
+    const l = labels[lang];
     const collectionJsonLd = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -38,7 +44,7 @@ export async function TopicPage({ lang, slug }: Props) {
         "@type": "BreadcrumbList",
         itemListElement: [
             { "@type": "ListItem", position: 1, name: BlogConfig.name[lang], item: homeUrl },
-            { "@type": "ListItem", position: 2, name: "Topics", item: absoluteUrl(base) },
+            { "@type": "ListItem", position: 2, name: l.topics, item: absoluteUrl(base) },
             { "@type": "ListItem", position: 3, name: topic.name, item: absoluteUrl(`${base}/${slug}`) },
         ],
     };
@@ -46,10 +52,10 @@ export async function TopicPage({ lang, slug }: Props) {
         <div className="min-w-0 max-w-2xl flex-auto px-4 py-12 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
             <JsonLd data={[collectionJsonLd, breadcrumb]} />
             <header className="mb-9 space-y-4">
-                <p className="font-display text-sm font-medium text-secondary-foreground">Topic</p>
+                <p className="font-display text-sm font-medium text-secondary-foreground">{l.topic}</p>
                 <h1 className="font-display text-3xl tracking-tight text-foreground">{topic.name}</h1>
                 <p className="font-display text-secondary-foreground">
-                    {posts.length} {posts.length === 1 ? "article" : "articles"}
+                    {posts.length} {posts.length === 1 ? l.article : l.articles}
                 </p>
             </header>
             <Posts lang={lang} posts={posts} search="" />

@@ -1,5 +1,8 @@
 import { BlogConfig, getLocalizedContent } from "@/blog.config";
 import { Locale } from "./dictionary";
+import { topicsBasePath } from "./seo";
+
+const topicHref = (locale: Locale, slug: string) => `${topicsBasePath[locale]}/${slug}`;
 
 export function getNavigation(locale: Locale) {
     return [
@@ -7,7 +10,7 @@ export function getNavigation(locale: Locale) {
             title: locale === "pt-BR" ? "Tópicos" : "Topics",
             links: BlogConfig.topics.map((topic) => ({
                 title: getLocalizedContent(topic.title, locale),
-                href: topic.href,
+                href: topicHref(locale, topic.href),
             })),
         },
         {
@@ -27,9 +30,14 @@ export function getNavigation(locale: Locale) {
     ];
 }
 
-// Keep the old export for backward compatibility (will be updated in components)
 export const navigation = [
-    { title: "Topics", links: BlogConfig.topics.map((topic) => ({ title: topic.title["en-US"], href: topic.href })) },
+    {
+        title: "Topics",
+        links: BlogConfig.topics.map((topic) => ({
+            title: topic.title["en-US"],
+            href: topicHref("en-US", topic.href),
+        })),
+    },
     { title: "Agents", links: BlogConfig.agents.map((agent) => ({ title: agent.title["en-US"], href: agent.href })) },
     {
         title: "Projects",

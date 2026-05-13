@@ -1,5 +1,5 @@
 import { BlogConfig } from "@/blog.config";
-import { PostSchema, readingTime } from "@/lib/models";
+import { PostSchema, readingTime, wordCount } from "@/lib/models";
 import Markdoc from "@markdoc/markdoc";
 import glob from "fast-glob";
 import yaml from "js-yaml";
@@ -26,7 +26,14 @@ export const getPosts = (language: string) => {
             const frontmatter = yaml.load(doc.attributes.frontmatter);
             const info = PostSchema.parse(frontmatter);
             const date = info.date;
-            return { href, info, date, readingTime: readingTime(content), translations: info.translations };
+            return {
+                href,
+                info,
+                date,
+                readingTime: readingTime(content),
+                wordCount: wordCount(content),
+                translations: info.translations,
+            };
         })
         .toSorted((a, b) => (a.date < b.date ? 1 : -1));
     return posts.filter((x) => x.translations.includes(lang));
