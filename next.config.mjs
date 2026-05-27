@@ -12,6 +12,7 @@ export default withSearch(
     withMarkdoc({
         schemaPath: "./src/markdoc",
         mode: "static",
+        nextjsExports: [],
         options: { slots: true, allowComments: true },
     })(nextConfig),
 );
