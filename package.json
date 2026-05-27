@@ -21,6 +21,7 @@
         "@markdoc/next.js": "0.3.7",
         "@mdx-js/mdx": "3.0.1",
         "@sindresorhus/slugify": "2.2.1",
+        "@vercel/analytics": "^2.0.1",
         "clsx": "2.1.1",
         "fast-glob": "3.3.2",
         "flexsearch": "0.7.43",

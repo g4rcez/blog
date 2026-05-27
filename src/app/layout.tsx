@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next"
 import { Providers } from "@/app/providers";
 import { BlogConfig } from "@/blog.config";
 import { Layout } from "@/components/layout";
@@ -140,7 +141,8 @@ export default async function RootLayout(props: PropsWithChildren) {
                 <JsonLd data={[websiteJsonLd, personJsonLd]} />
             </head>
             <body className="flex min-h-full bg-background">
-                <Providers lang={lang}>
+               <Analytics/>
+               <Providers lang={lang}>
                     <Layout>{props.children}</Layout>
                 </Providers>
             </body>
