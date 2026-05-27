@@ -11,11 +11,22 @@ const discoveryLinks = [
 const acceptsMarkdown = (request: NextRequest) =>
     request.headers.get("accept")?.toLowerCase().includes("text/markdown") ?? false;
 
-export function middleware(request: NextRequest) {
+const isMarkdownRequest = (request: NextRequest, pathname: string) =>
+    acceptsMarkdown(request) || pathname.endsWith(".md");
+
+const markdownPath = (pathname: string) => {
+    if (pathname === "/") return "/markdown";
+    if (pathname === "/pt") return "/pt/markdown";
+    if (pathname.endsWith(".md")) return `/markdown-content${pathname.slice(0, -3) || "/"}`;
+
+    return `/markdown-content${pathname}`;
+};
+
+export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
-    const shouldReturnMarkdown = acceptsMarkdown(request) && (pathname === "/" || pathname === "/pt");
-    const response = shouldReturnMarkdown
-        ? NextResponse.rewrite(new URL(pathname === "/pt" ? "/pt/markdown" : "/markdown", request.url))
+    const acceptedMarkdownPath = isMarkdownRequest(request, pathname) ? markdownPath(pathname) : null;
+    const response = acceptedMarkdownPath
+        ? NextResponse.rewrite(new URL(acceptedMarkdownPath, request.url))
         : NextResponse.next();
 
     response.headers.set("x-pathname", request.nextUrl.pathname);
@@ -29,5 +40,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!_next|.*\\..*).*)"],
+    matcher: ["/((?!_next|.*\\..*).*)", "/:path*.md"],
 };
