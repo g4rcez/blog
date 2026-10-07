@@ -1,5 +1,4 @@
 "use client";
-import { useTocLink } from "@/hooks/use-toc-link";
 import { useTranslation } from "@/lib/i18n";
 import { type Section, type Subsection } from "@/lib/sections";
 import clsx from "clsx";
@@ -9,7 +8,6 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 const margin = { 0: "0", 1: "0", 2: "1", 3: "2", 4: "3", 5: "4", 6: "5" };
 
 export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Section> }) => {
-    const showToc = useTocLink();
     const { t } = useTranslation();
     const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id);
     const getHeadings = useCallback(
@@ -17,11 +15,11 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
             tableOfContents
                 .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
                 .map((id) => {
-                    let el = document.getElementById(id);
+                    const el = document.getElementById(id);
                     if (!el) return null;
-                    let style = window.getComputedStyle(el);
-                    let scrollMt = parseFloat(style.scrollMarginTop);
-                    let top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
+                    const style = window.getComputedStyle(el);
+                    const scrollMt = parseFloat(style.scrollMarginTop);
+                    const top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
                     return { id, top };
                 })
                 .filter((x): x is { id: string; top: number } => x !== null),
@@ -54,41 +52,42 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
     };
 
     const items = (
-        <nav aria-labelledby="on-this-page-title" className="w-60 whitespace-nowrap">
+        <nav aria-label={t("blog.tableOfContents")} className="w-full">
             {tableOfContents.length > 0 && (
                 <>
-                    <h2
-                        id="on-this-page-title"
-                        className="font-display text-sm font-medium text-slate-900 dark:text-white"
-                    >
+                    <h2 className="font-mono text-xs font-medium uppercase tracking-[0.12em] text-secondary-foreground">
                         {t("blog.tableOfContents")}
                     </h2>
-                    <ol role="list" className="mt-4 space-y-3 text-sm">
+                    <ol className="mt-4 space-y-2 text-sm">
                         {tableOfContents.map((section) => (
                             <li key={section.id} style={{ marginLeft: `${margin[section.level]}rem` }}>
                                 <h3>
                                     <Link
                                         href={`#${section.id}`}
+                                        aria-current={section.id === currentSection ? "location" : undefined}
                                         className={clsx(
+                                            "block rounded-sm py-0.5 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                                             isActive(section)
-                                                ? "text-sky-500"
-                                                : "font-normal text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300",
+                                                ? "font-medium text-primary-hover dark:text-primary"
+                                                : "font-normal text-secondary-foreground hover:text-foreground",
                                         )}
                                     >
                                         {section.title}
                                     </Link>
                                 </h3>
                                 {section.children.length > 0 && (
-                                    <ol role="list" className="mt-2 space-y-3 pl-5 text-slate-500 dark:text-slate-400">
+                                    <ol className="mt-1 space-y-1.5 pl-3 text-secondary-foreground">
                                         {section.children.map((subSection) => (
                                             <li key={subSection.id}>
                                                 <Link
                                                     href={`#${subSection.id}`}
-                                                    className={
+                                                    aria-current={subSection.id === currentSection ? "location" : undefined}
+                                                    className={clsx(
+                                                        "block rounded-sm py-0.5 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                                                         isActive(subSection)
-                                                            ? "text-sky-500"
-                                                            : "hover:text-slate-600 dark:hover:text-slate-300"
-                                                    }
+                                                            ? "font-medium text-primary-hover dark:text-primary"
+                                                            : "hover:text-foreground",
+                                                    )}
                                                 >
                                                     {subSection.title}
                                                 </Link>
@@ -104,14 +103,17 @@ export const TableOfContents = ({ tableOfContents }: { tableOfContents: Array<Se
         </nav>
     );
 
+    if (tableOfContents.length === 0) return null;
+
     return (
         <Fragment>
-            {showToc ? (
-                <div className="fixed right-0 top-16 isolate block rounded p-8 backdrop-blur dark:bg-slate-900/95 xl:hidden [@supports(backdrop-filter:blur(0))]:bg-slate-50/75 dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75">
-                    <div className="relative">{items}</div>
-                </div>
-            ) : null}
-            <div className="hidden xl:sticky xl:top-[4.75rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.75rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
+            <details className="mb-8 border-y border-border py-3 text-sm text-foreground xl:hidden">
+                <summary className="min-h-11 cursor-pointer py-3 font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                    {t("blog.tableOfContents")}
+                </summary>
+                <div className="pb-2 pt-1">{items}</div>
+            </details>
+            <div className="hidden xl:sticky xl:col-start-3 xl:row-start-1 xl:top-24 xl:block xl:h-[calc(100vh-6rem)] xl:w-60 xl:flex-none xl:justify-self-end xl:overflow-y-auto xl:border-border xl:py-2 xl:pl-6">
                 {items}
             </div>
         </Fragment>

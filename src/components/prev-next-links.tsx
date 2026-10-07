@@ -1,5 +1,6 @@
 "use client";
-import { navigation } from "@/lib/navigation";
+import { getNavigation } from "@/lib/navigation";
+import { useLocale } from "@/lib/i18n";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -42,7 +43,8 @@ const PageLink = ({
 
 export const PrevNextLinks = () => {
     const pathname = usePathname();
-    const allLinks = navigation.flatMap((section) => section.links);
+    const [locale] = useLocale();
+    const allLinks = getNavigation(locale).flatMap((section) => section.links);
     const linkIndex = allLinks.findIndex((link) => link.href === pathname);
     const previousPage = linkIndex > -1 ? allLinks[linkIndex - 1] : null;
     const nextPage = linkIndex > -1 ? allLinks[linkIndex + 1] : null;

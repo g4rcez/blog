@@ -1,0 +1,55 @@
+import { getTopicAlternates, getTopicPosts, getTopics } from "@/components/server/topics";
+import { TopicPage } from "@/components/server/topic-page";
+import { absoluteUrl, DEFAULT_OG_IMAGE, ogLocale, tagCopy, tagsBasePath } from "@/lib/seo";
+import { BlogConfig } from "@/blog.config";
+import type { Metadata } from "next";
+
+const lang = "pt-BR" as const;
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+    return getTopics(lang).map((t) => ({ slug: t.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const { topic } = getTopicPosts(lang, slug);
+    if (!topic) return { robots: { index: false, follow: false } };
+    const canonical = `${tagsBasePath[lang]}/${slug}`;
+    const languages = getTopicAlternates(slug);
+    const copy = tagCopy[lang];
+    return {
+        title: copy.title(topic.name),
+        description: copy.description(topic.name),
+        keywords: [topic.name, ...BlogConfig.topics.map((t) => t.title[lang])],
+        alternates: { canonical, languages },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+        },
+        openGraph: {
+            type: "website",
+            url: absoluteUrl(canonical),
+            siteName: BlogConfig.name[lang],
+            title: copy.title(topic.name),
+            description: copy.description(topic.name),
+            locale: ogLocale[lang],
+            images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: topic.name }],
+        },
+        twitter: {
+            card: "summary_large_image",
+            site: "@garcez_allan",
+            creator: "@garcez_allan",
+            title: copy.title(topic.name),
+            description: copy.description(topic.name),
+            images: [DEFAULT_OG_IMAGE],
+        },
+    };
+}
+
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    return <TopicPage lang={lang} slug={slug} />;
+}

@@ -1,66 +1,66 @@
 ---
 level: 1
-title: Back to css
+title: Back to CSS
 subjects: ["frontend"]
 language: "en-us"
 translations: ["pt-br", "en-us"]
 date: "2026-07-29T12:15:47.000Z"
-description: "Move from Tailwindcss to pure CSS"
+description: "Moving from Tailwind CSS to plain CSS"
 ---
 
-I have been using [Tailwindcss](tailwindcss.com) since the v1. Was an amazing bet, with a lots of benefits that we can
+I have used [Tailwind CSS](tailwindcss.com) since v1. It was a good choice, with several benefits:
 
-- Quick way to prototype
+- Fast prototyping
 - Functional CSS by default
-- Amazing way to use your design tokens
-- CSS generation integrated with your codebase
-- IntelliSense, LSP since v1
+- A practical way to use design tokens
+- CSS generation integrated with the codebase
+- IntelliSense and LSP support since v1
 
-An amazing tool to have in your frontend arsenal, no doubts. Now in v4 (almost 6 years after the v1) we have even more tools integrated to tailwindcss. It's a strong pattern nowadays in the AI world, compatibility with Vite. And even with those amazing tooling, why I'm talking about back to CSS? Let's dive into this topic
+Tailwind CSS is still a useful tool for frontend work. In v4, almost six years after v1, it includes even more tooling and integrates well with Vite. It is also a common default for AI-generated interfaces. Given those strengths, why return to CSS? This article explains my reasoning.
 
-## AI and Tailwindcss
+## AI and Tailwind CSS
 
-Of course we will talk about AI, but not too much. Since the release of [Vercel V0](https://v0.app/), tailwindcss exploded more and more their usage, you can check the npm downloads to see this. Lots of examples with Tailwindcss, lots of websites using tailwindcss, AI choosing tailwindcss as default to the project.
+AI is part of this discussion because it changes how interfaces are produced. Since the release of [Vercel V0](https://v0.app/), Tailwind CSS has become even more common. The package downloads, the number of examples, and the volume of AI-generated projects all reflect that trend.
 
-But how AI enter at this? Talking about the "coding" side, without a good harness to the AI, with strict rules and solid examples, AI will start the slop, writing all tailwindcss classes to create a button, replicating more and more slops, using inconsistent values from tailwindcss classes...a truly nightmare when we talk about consistency.
+Where does AI fit into this? Without a good harness, clear rules, and solid examples, an AI agent tends to produce slop: long class lists for simple components, repeated patterns, and inconsistent Tailwind CSS values. That makes a consistent interface harder to maintain.
 
-You can do things quickly with AI + Tailwindcss, but you will need a good setup of rules and skills to enforce the desired code output. Write good examples is a mandatory thing, export the components using things like [shadcn](https://ui.shadcn.com/) are good as well.
+AI and Tailwind CSS can make implementation fast, but the project needs rules and skills that guide the generated code. Good examples are essential. Publishing components through tools such as [shadcn](https://ui.shadcn.com/) can also give the agent a reliable starting point.
 
-In general, my experience using tailwindcss with AI without the correct tools is more slop them the expected result. Misleading the standard behaviour, more time invested in build the skills and rules to the project. ~~Or this is just a skill issue~~
+In practice, my experience with Tailwind CSS and AI is less consistent when those tools are missing. The default behaviour needs direction, and that direction takes time to encode in project-specific skills and rules.
 
 ## Plain old CSS
 
-Back to 1996, we have the CSS. Where everything started, but with a great evolution in terms of tools and support, just check the `:is` and `:where`, [pseudo-elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-elements) and other awesome features from the latest release of CSS.
+CSS began in 1996, but it has gained substantial tooling and browser support since then. Selectors such as `:is` and `:where`, [pseudo-elements](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-elements), and other modern features cover many of the needs that lead teams to add an abstraction.
 
-The question is "Why plain CSS?". Using only CSS instead of a framework we can have more benefits than you can imagine:
+Why use plain CSS? For some projects, using the platform directly provides several benefits:
 
-- Control to fine grain performance
-- Use `@layer` to control the cascade effect of css
+- Fine-grained control over performance
+- `@layer` for controlling the cascade
 - Semantic classes
-- Zero setup
-- Reduce the size of the HTML in SSR
-- Enforce style with one CSS class
+- Minimal setup
+- Smaller server-rendered HTML
+- A single class that owns a component's style
 
-Of course there are downsides on use the plain CSS instead of Tailwindcss, but it's our job deal with trade-offs. And to understand them, let's think about the benefits that I listed
+Plain CSS also has trade-offs. Understanding them requires looking more closely at each benefit.
 
-### Control to fine gain performance
+### Fine-grained performance control
 
-Who cares about CSS performance? We should think more about it. There are lots of ways to improve the CSS performance, like reducing the selectors, use only the styles that is needed, control the CSS stylesheet by using media queries to avoid unnecessary loading, preload...
+CSS performance deserves attention. You can improve it by reducing selector complexity, shipping only the styles you need, and controlling stylesheet loading with media queries, preloading, and similar techniques.
 
-I put this topic just to talk about the `:has`, that have a [performance consideration](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has#performance_considerations).
+The `:has` selector deserves a specific note because it has [performance considerations](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has#performance_considerations).
 
-Tailwindcss uses the `:has` selector with other selectors, like `has-focus` or `has-checked`. Of course the `has` is a feature that we can use, but there are some concerns about it. Use carefully.
+Tailwind CSS exposes `:has` through variants such as `has-focus` and `has-checked`. The feature is useful, but it still needs to be used with care.
 
 ## Use `@layer` to control the cascade effect of css
 
-Specially working with design systems, you maybe need to enforce some style behaviours to avoid the users to override the styles. Using the `@layer` you can have more control over this. Tailwindcss also use the `@layer`, but to enforce their functional css rules (properties, theme, base, components, utilities) and you can use it to enforce your own components, like card or dialog
+When working with design systems, you may need to protect component styles from accidental overrides. `@layer` gives you explicit control over that order. Tailwind CSS also uses layers for its properties, theme, base, components, and utilities; you can use the same feature to organize components such as cards and dialogs.
 
-## Semantic class
+## Semantic classes
 
-Of course we need to understand the context from components instead of css classes, but to reduce the context window to AI, the needs about understand one of each tailwindcss class, semantic class is worth. Compare both button implementations inside your HTML/JSX
+Components still need context, but semantic classes reduce the amount an AI agent must infer from a utility list. Compare these two button implementations in HTML or JSX:
 
 - CSS: `button`
-- Tailwindcss: `px-4 py-2 bg-slate-950 text-white hover:bg-slate-900 transition-colors transition-discrete duration-300 ease-linear`
+- Tailwind CSS: `px-4 py-2 bg-slate-950 text-white hover:bg-slate-900 transition-colors transition-discrete duration-300 ease-linear`
 
 The utility classes describe how the button looks. The semantic class describes what the element is. This distinction matters when an AI agent needs to inspect a component, because `button` provides the relevant context without requiring the agent to interpret every visual decision in the markup.
 
@@ -116,19 +116,19 @@ A class can own the complete visual contract of a component. Tokens, interaction
 
 The JSX communicates intent, while CSS owns presentation. An AI agent can reuse the class without recreating the component's visual rules or introducing a slightly different spacing value. Code review also becomes simpler: a change to the button design appears in the stylesheet rather than in every consumer.
 
-## The trade-offs
+## Trade-offs
 
-Plain CSS does not remove complexity. It moves responsibility back to the team. Someone must define the cascade, prevent accidental global styles, identify unused rules, and keep design tokens consistent. Tailwindcss provides conventions and tooling for several of these problems by default.
+Plain CSS does not remove complexity; it puts more of that responsibility on the team. Someone must define the cascade, prevent accidental global styles, identify unused rules, and keep design tokens consistent. Tailwind CSS provides conventions and tooling for several of these problems by default.
 
 Colocation is another difference. Utility classes make it possible to understand most of a component's presentation without opening another file. With CSS, the reader may need to move between the component and its stylesheet. CSS Modules and predictable file names reduce this cost, but they do not eliminate it.
 
 Variants also require a deliberate API. A utility can be added directly for an exceptional case, while a semantic component needs a class, attribute, or custom property that represents the variation. I consider this constraint useful for shared components, but it can slow down experiments.
 
-Tailwindcss remains a strong choice when a team already has a consistent configuration, a mature component library, and clear rules for generated code. Returning to CSS is not a claim that every project should remove Tailwindcss. It is a decision to prefer browser primitives and a smaller abstraction for the projects where I control the architecture.
+Tailwind CSS remains a strong choice when a team has a consistent configuration, a mature component library, and clear rules for generated code. Returning to CSS does not mean every project should remove Tailwind CSS. It means preferring browser primitives and a smaller abstraction when I control the architecture.
 
 ## My approach
 
-I am not returning to the CSS of 1996. I am using modern CSS with custom properties for design tokens, cascade layers for ordering, media and container queries for adaptation, and scoped styles when the framework supports them.
+I am not returning to the CSS of 1996. I am using modern CSS: custom properties for design tokens, cascade layers for ordering, media and container queries for adaptation, and scoped styles when the framework supports them.
 
 The basic structure is intentionally small:
 
@@ -137,10 +137,10 @@ The basic structure is intentionally small:
 3. A component layer contains semantic classes.
 4. A utility layer contains only the few reusable exceptions the project needs.
 
-This gives both developers and AI agents a clear place to find a decision. More importantly, it keeps generated code within the same constraints as manually written code. The goal is not to avoid tooling; it is to ensure that tooling supports the platform instead of becoming the platform.
+This gives developers and AI agents a clear place to find each decision. More importantly, it keeps generated code within the same constraints as manually written code. The goal is not to avoid tooling. It is to make tooling support the platform instead of becoming the platform.
 
 ## Conclusion
 
-Tailwindcss helped improve how frontend teams think about constraints, tokens, and reusable visual rules. Modern CSS can now express many of those ideas directly while keeping markup smaller and component intent clearer. For my current work, returning to CSS offers the control and simplicity I want, with trade-offs that I am willing to manage.
+Tailwind CSS helped frontend teams think more deliberately about constraints, tokens, and reusable visual rules. Modern CSS can express many of those ideas directly while keeping markup smaller and component intent clearer. In my current work, returning to CSS provides the control and simplicity I want, with trade-offs I am willing to manage.
 
 Thank you for reading.

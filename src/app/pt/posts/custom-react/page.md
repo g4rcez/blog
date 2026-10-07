@@ -5,35 +5,35 @@ language: "pt-br"
 translations: ["pt-br", "en-us"]
 subjects: ["frontend", "react", "typescript", "javascript"]
 date: "2019-08-28T23:59:59.999Z"
-description: "Você vai se impressionar o quão flexível vai ser essa aplicação"
+description: "Como um frontend multi-tenant se tornou flexível o bastante para atender marcas diferentes"
 ---
 
-Como havia escrito no post anterior, acabei fazendo um parser de BB code para ter um frontend flexível. Cores, textos, ícones, imagens — muitos elementos tiveram que ser dinâmicos, pois quem controla cada um desses itens é o **tenant** das aplicações.
+Como mencionei no post anterior, criei um parser de BBCode para dar suporte a um frontend flexível. Cores, textos, ícones e imagens precisavam ser dinâmicos, pois cada um desses elementos era controlado pelo **tenant** da aplicação.
 
-A seguir está a parte técnica, com a explicação do requisito ou necessidade por trás de cada problema. Os subtítulos são frases reais ouvidas após o desenho da arquitetura do frontend e o início do desenvolvimento de alguns componentes e páginas.
+A seguir, explico as decisões técnicas por trás dessa flexibilidade. Cada subtítulo se baseia em um requisito real que surgiu durante o desenho da arquitetura e o desenvolvimento do frontend.
 
 # "Preciso de um site que mude de acordo com a marca"
 
-Foi nesse ponto que a complexidade do projeto começou a emergir. Já havia sido definido em equipe tudo o que seria usado, alguns componentes já haviam sido escritos e grande parte da stack já estava estabelecida:
+Foi nesse ponto que a complexidade do projeto começou a aparecer. A equipe já havia escolhido a maior parte da stack, e alguns componentes já estavam prontos. O restante da arquitetura também começava a tomar forma. A stack era:
 
 - React - SPA (Single Page Application)
 - Typescript
 - Redux + Redux Saga
-- Ant Design (biblioteca auxiliar para alguns dos componentes que iriam dar um trabalho maior pra fazer em uma deadline curta)
+- Ant Design (uma biblioteca auxiliar para componentes que demorariam muito para ser construídos em um prazo curto)
 - Tachyons CSS
-- RC Components (biblioteca para auxiliar em alguns componentes, mas que ainda nos dava a flexibilidade para editar o visual)
-- Como o antd faz o uso do moment, tive que agregar o moment ao projeto, apesar de querer usar date-fns para este projeto
+- RC Components (uma biblioteca que ajudava em alguns componentes sem tirar nossa liberdade para personalizar o visual)
+- `moment`, porque o Ant Design dependia dele, embora eu preferisse usar `date-fns`
 - Axios para requisições HTTP
-- react-text-mask para criação de algumas máscaras como CPF, CNPJ, telefone, CEP...
-- O currency input foi desenvolvido _na pata_, inspirado em algo parecido com o do NuBank (app mobile)
+- `react-text-mask` para máscaras como CPF, CNPJ, telefone e CEP
+- Um campo de moeda desenvolvido _do zero_, inspirado em um componente semelhante do aplicativo móvel NuBank
 
-Uma outra decisão importante e talvez um pouco arriscada (eu não achei, apesar de usar builds Alpha sempre pode causar problemas futuros) foi a adoção prematura de ReactHooks. O fato de ter adotado bem no começo nos fez aprender mais sobre e também criar custom hooks que nos ajudaram a compartilhar código por toda a aplicação (inclusive a estratégia de rotas dinâmicas foi feita com hooks)
+Outra decisão importante, e potencialmente arriscada, foi adotar React Hooks cedo. Versões Alpha podem trazer problemas no futuro, mas começar com Hooks nos deu tempo para entendê-los e criar custom hooks que compartilhavam lógica pela aplicação — inclusive a estratégia de rotas dinâmicas.
 
 > "Preciso de um site que mude de acordo com a marca. Quando o usuário acessar o domínio xpto.com, ele irá ver esse site na cor preta. Quando acessar o site abcd.dev, ele irá ver o site na cor roxa. Uma coisa que eu queria que fosse possível é ao abrir o código fonte não ter a possibilidade de ver dados de outro site, mesmo o código sendo o mesmo"
 
-Com isso, já deu pra você ter uma noção da stack. E por usar o antd, tive que pegar todo o CSS dele e modificar de acordo com o nosso modelo de código para que tudo seja dinâmico. E aqui começou o primeiro problema.
+Isso dá uma ideia da stack. Como usávamos o Ant Design, também precisei adaptar todo o CSS ao nosso modelo de configuração para que o sistema visual fosse dinâmico. Foi aí que surgiu o primeiro problema.
 
-1. Em tempo de execução, como eu posso definir as variáveis do CSS? Para quem não sabe, CSS3 aceita variáveis com o método `var`, [só dar um check nesse link da MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/var). Como podemos ver, da pra definir de boa na nossa folha de estilo, mas se a nossa variável já é variável, como iremos fazer? Lembrando que a folha de CSS pode chegar até a 39k linhas, então manter mais de uma folha de estilos não era uma opção. Mas se observamos o exemplo, olha onde ele define as variáveis a serem usadas...hmmmmmmmmm...ele usa o seletor `:root` e pasme...ele é o seletor da raiz do nosso HTML, que se chama `html`. Tendo isso em mente, basta fazermos uma query no nosso documento para obter `root` e aplicar as "variáveis variáveis" ao nosso html.
+1. O primeiro desafio era definir variáveis de CSS em tempo de execução. O CSS aceita variáveis por meio da função `var` ([referência na MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/var)), e defini-las em uma folha de estilos é simples. Porém, a folha podia chegar a 39 mil linhas, então não era prático manter um arquivo separado para cada tema. A solução foi usar o seletor `:root`, que aponta para o elemento raiz do HTML. Ao consultar `:root` e definir propriedades nele, podíamos aplicar as variáveis do tema em tempo de execução:
 
 ```javascript
 import config from "./config-site";
@@ -41,21 +41,21 @@ const root: any = document.querySelector(":root");
 Object.keys(config).forEach((x: string) => root.style.setProperty(`--${x}`, `${config[x]}`));
 ```
 
-Problema das variáveis CSS resolvido. Temos um arquivo de configuração (ainda estático) que define as variáveis do frontend, e a partir daí é possível usá-las sem maiores problemas.
+Assim, o problema das variáveis estava resolvido. Tínhamos um arquivo de configuração estático que definia as variáveis do frontend, e o restante da aplicação podia consumi-las sem outras mudanças.
 
-2. Temos um CSS agnóstico a cores, ele entende nossas variáveis de acordo com todo o objeto de configuração, mas como vou ter um arquivo de configuração dinâmico? Como vou fazer a aplicação não exibir tal arquivo sempre que eu estiver em um determinado domínio ou subdomínio? Bom, esse problema não foi resolvido no frontend e também não foi resolvido em um único lugar. Para tal situação, tivemos que incluir uma prática já existente na equipe e uma ferramenta CLI para controlar os temas. Se você leu o post anterior, vai lembrar do roteador de UI mencionado — caso não tenha lido, recomenda-se a leitura.
+2. Tínhamos um CSS agnóstico às cores, capaz de interpretar as variáveis do objeto de configuração, mas ainda precisávamos de um arquivo de configuração dinâmico. Como fazer a aplicação carregar a configuração correta para cada domínio ou subdomínio sem expor dados de outro tenant? Esse problema não seria resolvido apenas no frontend, nem em um único lugar. Combinamos uma prática já existente na equipe com uma ferramenta de CLI para controlar os temas. Se você leu o post anterior, talvez se lembre do roteador de UI; se não, ele fornece o contexto necessário para o que vem a seguir.
 
-O roteador de UI é um webserver em F# que escuta as requisições feitas aos domínios registrados (no nosso caso, xpto.com e abcd.dev). Ao receber uma request vinda de `xpto.com` ele vai em um bucket S3 da Amazon e o path de todos os arquivos que temos (esses arquivos são os assets, js e css gerados no build do React) e monta um `index.html` customizado. Alguns valores são passados por ele para o HTML, sendo eles
+O roteador de UI é um web server em F# que escuta requisições para os domínios registrados (neste caso, `xpto.com` e `abcd.dev`). Ao receber uma requisição para `xpto.com`, ele localiza em um bucket S3 da Amazon os arquivos correspondentes — JavaScript, CSS e outros assets gerados pelo build do React — e monta um `index.html` personalizado. Alguns valores são injetados nesse HTML:
 
 - Tenant
 - Versão
 - Url dos assets
 
-Como ele monta um arquivo `.html`, significa que nele eu posso injetar código javascript, certo? E que também posso fazer condicionais para entregar um arquivo e outro não? A reposta é sim para ambas as perguntas. Mas para evitar `ifs` de acordo com os tenants, a solução foi mais simples ainda.
+Como o roteador monta um arquivo `.html`, ele pode injetar JavaScript e decidir quais arquivos servir. As duas coisas são possíveis, mas encontramos uma forma ainda mais simples de evitar `ifs` específicos para cada tenant.
 
-**_Apenas customizar o build do react para gerar pastas de acordo com o nome dos tenants, assim a própria URL diz qual arquivo o roteador de UI deverá pegar_**
+**_Personalizar o build do React para gerar uma pasta por tenant. Assim, a própria URL informa ao roteador de UI qual arquivo carregar._**
 
-Simples, prático, eficiente e limpo. Mas para isso funcionar, precisávamos de N arquivos de configuração para nossos tenants, o que ainda é ruim. Mas manter arquivos `.json` ainda é bem mais fácil do que manter toneladas de código, pense nisso. Manter arquivos diferentes é arriscado: pode causar inconsistências, acréscimos em um arquivo e remoções em outro — situações comuns em trabalho em equipe. E mesmo com o git ajudando, nesse caso toda edição gera conflito (o motivo ficará claro mais adiante). Primeiro, vamos ver o arquivo de configuração:
+A solução era simples, prática e eficiente. Ela exigia manter um arquivo de configuração por tenant, o que não era ideal, mas arquivos `.json` separados ainda eram mais fáceis de manter do que uma grande quantidade de condicionais. Arquivos diferentes podem se afastar uns dos outros — um recebe uma alteração e outro não —, um problema comum em equipes. O Git ajuda, mas, nesse caso, cada edição ainda podia gerar um conflito. O motivo ficará claro mais adiante. Primeiro, veja o arquivo de configuração:
 
 ```javascript
 {
@@ -80,7 +80,7 @@ Simples, prático, eficiente e limpo. Mas para isso funcionar, precisávamos de 
 }
 ```
 
-Claro que esse arquivo é muito maior, pois possuem mais cores, mais textos, mais imagens...O que importa aqui é você saber parte dessa estrutura. Mas agora fica a pergunta _"Como um browser vai ler um arquivo json e transformar em javascript?"_. Reposta: **Não vai**. E esse era o desafio do `script00`, transformar um JSON em um objeto Javascript. Sabemos que isso não é difícil, pois JSON é um objeto Javascript, então é apenas criar um arquivo `.js` e escrever uma declaração de variável. Apesar desse script ter várias outras regras de negócio, conversões de `http` para `https`, trocar nomes de tenants pelo tenant correto de acordo com o nome do arquivo, criar variações das cores...O que importa pra você aqui é `criar um script que gere javascript dado um diretório de arquivos JSON`.
+O arquivo real é bem maior, pois contém mais cores, textos e imagens. Este trecho já é suficiente para mostrar a estrutura. A pergunta seguinte é: _"Como um navegador vai ler um arquivo JSON e transformá-lo em JavaScript?"_ A resposta é: **não vai**. Essa era a função do `script00`: transformar JSON em um objeto JavaScript. A conversão em si é simples — criar um arquivo `.js` e atribuir o objeto a uma variável —, mas o script também cuidava de regras como converter `http` para `https`, substituir o nome do tenant com base no nome do arquivo e gerar variações de cores. A ideia importante é esta: `criar um script que gere JavaScript a partir de um diretório de arquivos JSON`.
 
 ```javascript
 const FS = require("fs");
@@ -215,11 +215,11 @@ module.exports = {
 };
 ```
 
-Sim, ficou bastante código pra esse artigo, mas a ideia é documentar tudo aqui, então aconselho você ler para poder entender. Algumas coisas acabei mudando para evitar expor algumas coisas da empresa. A pasta build usada é a mesma pasta gerada pelo React. Não preciso nem falar que para integrar isso ao build do React, a forma mais fácil foi utilizar o `eject` e eu mesmo controlar configurações de webpack e scripts de build. Esse mesmo script ficou ao final de `scripts/build.js`, que é o arquivo responsável por buildar o seu frontend. Antes de passar para o tópico 3, um questionamento
+É bastante código, mas ele mostra o fluxo completo. Alterei alguns detalhes para não expor informações proprietárias. A pasta `build` é a mesma gerada pelo React. Para integrar esse processo ao build do React, a opção mais simples foi usar `eject` e assumir o controle da configuração do webpack e dos scripts de build. Esse script era executado ao final de `scripts/build.js`, o arquivo responsável pelo build do frontend. Antes de passar ao terceiro problema, há uma pergunta razoável:
 
-> **Não era mais fácil você usar plugins do webpack para gerar esses arquivos?** Sim, era mais fácil. Porém no mundo do desenvolvimento temos a revés de "dureza" em toda facilidade que temos. Então se você precisa de flexibilidade, vai ter que meter muita mão na massa pra poder conseguir o que tanto almeja.
+> **Não teria sido mais fácil usar plugins do webpack para gerar esses arquivos?** Sim. Em desenvolvimento, conveniência costuma vir acompanhada de algum compromisso. Quando você precisa desse nível de flexibilidade, talvez seja necessário trabalhar mais perto do sistema de build.
 
-3. Esse é o último problema resolvido nesse questionamento de site customizável. E esse problema é o de sincronizar as alterações em arquivos de acordo com todos os textos e outras mudanças nos textos. Pra isso, tive que fazer mais um script para executar ele toda vez que eu quisesse adicionar um texto ao site
+3. O último problema era manter os arquivos de configuração sincronizados quando um texto ou outro conteúdo mudasse. Para resolvê-lo, escrevi mais um script, executado sempre que eu precisasse adicionar um texto ao site.
 
 ```javascript
 const { REFERENCE_FILE, writeJsVarInfile, referenceObject } = require("./frontend-builder");
@@ -266,15 +266,15 @@ FS.readdir(CONFIGS_DIR, (_, files) => {
 });
 ```
 
-O código é um pouco mais extenso neste trecho. Alguns erros podem aparecer devido à remoção de linhas com informações que não podem ser publicadas. Vale lembrar que esse `if (file==="reference.json")` é para criar um arquivo de desenvolvimento, servindo de _esqueleto_, já que toda a configuração é feita num html do roteador de UI. Isso é apenas um _hack_ ou **gambiarra** para rodar o projeto sem erros em desenvolvimento.
+Este trecho de código é mais extenso. Alguns erros podem aparecer porque removi linhas que continham informações que não podem ser publicadas. O bloco `if (file === "reference.json")` cria um arquivo de desenvolvimento que funciona como _esqueleto_, pois o roteador de UI fornece a configuração completa pelo HTML. É um _hack_, ou uma **gambiarra**, que permite executar o projeto sem erros durante o desenvolvimento.
 
-# "Eu preciso que esse texto seja em negrito e aquele botão mande uma mensagem no Zap da loja"
+# "Preciso que este texto fique em negrito e que aquele botão envie uma mensagem pelo WhatsApp da loja"
 
-Sem dúvidas, este foi o requisito mais desafiador. O setup de textos já estava todo definido, e mudanças visuais não eram possíveis — como separar, em tempo de execução, qual parte de uma string deveria ficar em negrito ou virar um link? Foi tentado adiá-la, mas não havia como evitar.
+Este foi o requisito mais desafiador. A configuração dos textos já estava pronta e todas as strings estavam definidas. Para oferecer formatação rica, precisávamos decidir em tempo de execução quais partes de uma string ficariam em negrito e quais se tornariam links. A princípio tentamos evitar a mudança, mas no fim não havia alternativa.
 
-A primeira solução considerada foi usar um parser de markdown, mas os parsers disponíveis não resolveriam o problema do "Zap". Essa ideia foi descartada, e surgiu então uma decisão que muitos programadores JS conhecem bem: **criar uma lib própria do zero, com zero dependências.** Apesar de eu ver isso como um meme, eu realmente tive que fazer isso, pois mesmo com muita pesquisa, nada fazia o que eu queria.
+A primeira ideia foi usar um parser de Markdown. Encontrei boas opções, mas nenhuma resolvia o requisito específico do WhatsApp. Surgiu então uma decisão conhecida por muitos desenvolvedores JavaScript: **quando nenhuma biblioteca faz exatamente o que você precisa, crie uma do zero e sem dependências.** Parece um clichê, mas, depois de pesquisar as opções disponíveis, não encontrei uma solução que atendesse aos requisitos.
 
-Desde que comecei a mexer com programação, sempre curti muito a ideia dos parsers. Um dos meus primeiros desafios pessoais foi criar um parser de BBCode para HTML, usando Shellscript. _Se você é tarado por programação, faça isso, mas no intuito de apenas aprender Regex e a ideia de parsers, yacc e afins_. Eu sei que BBCode não é melhor do que Markdown para pessoas leigas usarem, mas como era o que eu já tinha feito alguma vez na vida, só precisei de umas boas doses de energético pra fazer esse código em Javascript, e o melhor [esse código ta público, e vai ser atualizado no meio de setembro](https://github.com/g4rcez/code-markup-parser). Não é a coisa mais linda do mundo, mas ele funciona bem pro meu problema e ainda cria o linkão bolado pro Zap.
+Gosto de parsers desde que comecei a programar. Um dos meus primeiros projetos pessoais foi um parser de BBCode para HTML escrito em Shellscript. _Se você gosta de programação, tente algo parecido para aprender expressões regulares, parsers, yacc e assuntos relacionados._ BBCode não é um formato melhor que Markdown para pessoas não técnicas, mas eu já tinha experiência com ele. Depois de alguns testes — e de mais algumas doses de energético — escrevi esta versão em JavaScript. [O código é público e será atualizado em meados de setembro](https://github.com/g4rcez/code-markup-parser). Não é o projeto mais elegante do mundo, mas resolveu o problema e também conseguiu gerar o link do WhatsApp.
 
 Esse **code-markup-parser** gera um HTML, e como faço pra interpretar HTML puro em React?
 
@@ -282,9 +282,9 @@ Esse **code-markup-parser** gera um HTML, e como faço pra interpretar HTML puro
 <span dangerouslySetInnerHTML={{ __html: codeMarkupParser(parsed) }} />
 ```
 
-Uma das proteções adotadas foi sanitizar todo o HTML de entrada — não é possível escrever HTML + JS malicioso nas strings parseadas, pois as tags são removidas antes do parse.
+Uma das proteções importantes foi sanitizar todo o HTML de entrada. HTML e JavaScript potencialmente maliciosos são removidos das strings antes que elas sejam renderizadas.
 
-Ao final de tudo, bastou criar um método pra pegar as strings do nosso objeto de configuração e transformar em uma string HTML para ser interpretada. Assim poderíamos ter um texto escrito em negrito com `[b]Isso ta em negrito no meu site[/b]`.
+O passo seguinte foi criar um método que lê as strings do objeto de configuração e as transforma em HTML. Assim, a configuração pode representar um texto em negrito como `[b]Isso está em negrito no meu site[/b]`.
 
 ```javascript
 const remapTexts = (map: any) => (acc: string, x: string) => acc.replace(new RegExp(RE(x), "gi"), map[trueTrim(x)]);
@@ -305,7 +305,7 @@ export function resolve({ text, textParams = {} }: ResolverType) {
 }
 ```
 
-Também foi necessário aceitar variáveis nessas strings, problema resolvido com as funções `remapTexts` e `parseWithParams`. A sintaxe para textos com variáveis e customização ficou assim: `[b]Esse texto ta em negrito[/b] e esse texto usa uma variável {{ varName }}`. Usando dentro do JSX:
+As strings também precisavam aceitar variáveis. As funções `remapTexts` e `parseWithParams` resolvem esse caso. Textos que exigem formatação e interpolação usam esta sintaxe: `[b]Este texto está em negrito[/b] e este texto usa uma variável {{ varName }}`. No JSX, fica assim:
 
 ```jsx
 <p>
@@ -318,27 +318,27 @@ Também foi necessário aceitar variáveis nessas strings, problema resolvido co
 </p>
 ```
 
-Após terminar isso, fiquei bastante satisfeito, tava tudo lindo. Eu tinha um arquivo de configuração que era só entregar pro design editar ou pro marketing fazer os textos, ninguém mais ia pedir nenhuma modificação exorbitante no sistema...
+Depois disso, a configuração ficou muito mais fácil de manter. O design podia editar o conteúdo visual e o marketing podia escrever os textos sem exigir uma grande alteração no código a cada atualização.
 
-# "Esse link aí não pode aparecer pro usuário quando ele não tiver tantos produtos"
+# "Esse link não deve aparecer quando o usuário não tiver produtos suficientes"
 
-Esse título na real foi um pouco maior, ficou o seguinte:
+O pedido completo era mais longo:
 
-> "Esse link aí não pode aparecer pro usuário quando ele não tiver tantos produtos. Tem que redirecionar ele pra página quando não tiver nenhum produto. Não esquece de validar também pra quando ele não tiver nenhum produto, aparecer sempre um menu oferecendo um novo produto. E eu tinha visto que quando cancelava um produto, o menu continuava até ele recarregar a página, isso ta feio".
+> "Esse link não deve aparecer quando o usuário não tiver produtos suficientes. Ele deve redirecionar para a página exibida quando não houver nenhum produto. Também valide que, quando não houver produtos, sempre apareça um item de menu oferecendo um novo produto. Percebi que, depois de cancelar um produto, o menu continuava visível até o recarregamento da página. Isso não parece certo."
 
-Bom, isso talvez não seja tão sinistro de resolver a primeira vista. Mas pensa bem, são controle de rotas, menus, tudo isso dinâmicamente. Rotas e menus estão quase sempre ligados um ao outro, mas em React, a construção das rotas é separada da navbar, ainda mais quando a navbar muda de acordo com o perfil de um usuário logado.
+À primeira vista, o problema pode não parecer difícil. Na prática, ele envolve o controle dinâmico de rotas e menus. Os dois estão intimamente relacionados, mas aplicações React costumam construí-los separadamente — principalmente quando a navegação muda conforme o perfil do usuário autenticado.
 
-Esse problema foi resolvido bem rápido, mas eu tava mega pilhado e era um problema que eu já havia pensado, mas que não queria parar pra resolver pois existem vários outros componentes a serem escritos, código refatorado, segurança...e em minha defesa, não sou um grande especialista em UX.
+Resolvi o problema rapidamente porque já havia pensado nele. Eu o tinha adiado enquanto trabalhava em outros componentes, refatorava o código e cuidava de questões de segurança. Também preciso admitir que UX não é minha área mais forte.
 
-Como falei anteriormente, rotas e menus estão quase sempre ligados. Então a minha resolução se baseou em agrupar rotas e menus num único Array, de acordo com o perfil dos usuários.
+Como mencionei, rotas e menus estão relacionados. Por isso, agrupei os dois em um único array e filtrei esse array de acordo com o perfil do usuário.
 
-1. Criar uma lista de objetos com os componentes, ícones utilizados no menu, título do menu e da página, perfil que pode visualizar tal rota
-2. Enumerar todas as dependências (fica ligado nessa palavra, você já deve ter imaginado um `useEffect`) necessárias para as rotas
-3. Separar a lógica de cada rota de forma isolada, o que inclui mais um item no nosso objeto citado no item 1
-4. Configurar o React Router para não utilizar mais o `<Route />` hardcode, mas sim um `<Route />` que será gerado através de um array.
-5. Filtrar o array de acordo com todas as informações dos itens 1, 2 e 3.
+1. Criar uma lista de objetos com o componente, o ícone do menu, os títulos do menu e da página e o perfil autorizado a visualizar a rota.
+2. Listar todas as dependências necessárias para avaliar a rota (a palavra "dependência" provavelmente já faz você pensar em um `useEffect`).
+3. Manter isolada a lógica de validação de cada rota e adicioná-la ao objeto do primeiro passo.
+4. Configurar o React Router para gerar elementos `<Route />` a partir do array, em vez de declarar cada rota manualmente.
+5. Filtrar o array usando as informações dos passos 1, 2 e 3.
 
-O código a seguir demonstra a implementação:
+A implementação ficou assim:
 
 ```jsx
 import resolve from "@/config/texts";
@@ -391,35 +391,31 @@ const useClientRoutes = () => {
 export default useClientRoutes;
 ```
 
-Bom, acho que não foi nada tão complicado, mas quebrou um galhão, e eu tenho o mesmo array para o meu ReactRouter e minhas Navbars. Com isso, alterando nesse hook, ambos serão alterados e já aplicando a regra. Lembrando que ao atualizar o meu item do redux `products` eu já terei a nova regra aplicada ao router e a navbar.
+A solução não era especialmente complexa, mas eliminou regras duplicadas. O mesmo array alimenta o React Router e as barras de navegação. Ao alterar esse hook, os dois sistemas mudam e aplicam a mesma validação. Quando o valor `products` do Redux é atualizado, o router e a navbar já usam o novo conjunto de regras.
 
-Tudo ótimo. Ta tudo maneiro. Mas esse tanto de mudança acabou impactando no desempenho da aplicação. O `bundle.js` está beirando os 600KB. Eu estava incomodado com isso, mas devido a estrutura do roteador de UI, eu não podia aplicar uma regra de [code-splitting](https://reactjs.org/docs/code-splitting.html), pois meu path de assets é diferente do domínio o qual eu acesso, então o Suspense/Lazy não sabe lidar com isso.
+Essa flexibilidade teve um impacto no desempenho: o `bundle.js` estava se aproximando de 600 KB. Por causa da estrutura do roteador de UI, o [code splitting](https://reactjs.org/docs/code-splitting.html) padrão não funcionava. O caminho dos assets era diferente do domínio usado para acessar a aplicação, então `Suspense` e `lazy` não conseguiam resolver os chunks corretamente.
 
-Mas se eu to falando disso...é por que eu tive que resolver. E é esse problema em específico que me motivou ainda mais a escrever esse artigo mais _deep dive_ na construção dessa UI.
+O problema ainda precisava de uma solução e acabou se tornando a principal razão para escrever este relato mais aprofundado sobre a construção da UI.
 
-# "Cara, o site ta muito lento pra abrir, preciso resolver isso urgente"
+# "O site está muito lento para abrir. Precisamos resolver isso com urgência."
 
-Antes de continuar, preciso desabafar e dizer que eu quase dei uma resposta do tipo
+O impacto no desempenho era, em grande parte, consequência dos requisitos não funcionais acumulados ao longo do projeto. Aceitei o desafio, embora não tivesse certeza do resultado: já havia passado três meses pesquisando code splitting para uma arquitetura semelhante sem encontrar uma solução viável.
 
-> "Jura que ta lento, talvez tenha sido o tanto de requisito não funcional que acabou aumentando o projeto consideravelmente"
+Quando me concentrei apenas nesse problema, encontrei uma solução em cerca de três horas. Antes disso, passei outras cinco horas esboçando ideias e testando hipóteses. Estas foram as opções consideradas:
 
-Mas fazer isso custa o emprego, e eu não quero perder a equipe maravilhosa que tenho :). Apenas aceitei o desafio, mas com uma sensação de derrota, pois já fazem 3 meses que venho pesquisando sobre como fazer o code splitting numa arquitetura semelhante a minha e não consegui achar nada que me desse uma luz.
+1. Criar um proxy no roteador de UI que redirecionasse cada padrão de chunk do webpack para o bucket S3 correto do tenant. Seria uma solução cara e ineficiente.
 
-Por incrível que pareça, quando eu foquei só nesse problema, eu consegui resolver em umas 3h. Nem eu acreditei. Foram 5h de rascunho de ideias e 3h de _"Cara, se eu tentar isso aqui e mais isso, provavelmente vai funcionar"_. Seguem as ideias
-
-1. Criar um proxy no roteador de UI que recebe as requisições e a cada pattern de chunk do webpack, ele redireciona para o bucket S3 correto do tenant. Obviamente essa solução é custosa ao extremo, ineficiente e extremamente maluca. Isso se chama desespero
-
-2. Criar um script que força a URL dos tenants e mudar o versionamento da UI para v0.0.0-nome-do-tenant. E na hora de fazer o build, ter um script `.sh` que faz um replace no pattern dos chunks para a minha URL do bucket S3, de acordo com o `nome-do-tenant`. Essa ideia foi seriamente considerada, apesar de ser uma solução improvisada que impactaria negativamente toda a vida útil do software.
+2. Criar um script que forçasse as URLs dos tenants e alterasse o versionamento da UI para `v0.0.0-nome-do-tenant`. No build, um script `.sh` substituiria os padrões dos chunks pela URL do bucket S3 de cada tenant. Era uma solução improvisada, com custos de manutenção de longo prazo, mas foi considerada seriamente.
 
 3. Estudar o webpack em profundidade.
 
-A resposta sobre qual caminho foi seguido é a **terceira opção**.
+A opção correta foi a terceira.
 
-Eu sempre odiei ter que lidar com o webpack, acho que mexer num webpack gerado pelo CRA é pior ainda. Apesar disso tudo, sempre soube do poder do webpack, mas nunca soube que ele fazia mágica, e não é sacanagem, a parada é mágica mesmo.
+Sempre detestei trabalhar com webpack, e alterar a configuração gerada pelo CRA é ainda menos agradável. Eu sabia que o webpack era poderoso, mas não esperava que ele resolvesse esse problema de forma tão direta.
 
-Antes de dar a solução, eu gostaria de falar que o `bundle.js` de quase 600KB virou vários chunks de no máximo 10KB. O maior deles, que é quem contém os arquivos de actions do redux e regras de negócio, ficou com 120KB. Surreal demais. Isso não é magia, é o poder do code-splitting com a API maravilhosa do Suspense/Lazy que o React nos dá para fazer um frontend descente.
+O `bundle.js`, que tinha quase 600 KB, se transformou em vários chunks de no máximo 10 KB. O maior, que continha os arquivos de actions do Redux e as regras de negócio, ficou com 120 KB. Não foi mágica, mas o resultado do code splitting com as APIs `Suspense` e `lazy` do React.
 
-A mágica vem agora. Procurando a documentação do webpack, eu achei [esse link que fala de public-path](https://webpack.js.org/guides/public-path/). Apesar de entender o que está escrito, isso nunca foi possível pois ao procurar a variável `__webpack_public_path__` em **TODOS OS LUGARES** do bundle.js, build.js, start.js, tudo que estivesse ligado ao runtime da aplicação, mesmo que procure, você não vai achar (se achar, me fala por favor). Então sempre ignorei isso, achando que era uma opção oculta. E como o CRA já configura `PUBLIC_PATH`, achei que fosse essa a forma de abstrair a configuração do webpack. E mesmo alterando `PUBLIC_PATH`, nada era resolvido. No meio do `e se eu fizer isso e isso`, [achei essa issue explicando a diferença entre o `PUBLIC_PATH` e o `__webpack_public_path__`](https://github.com/facebook/create-react-app/issues/6024). Então a solução veio e é isso. Acabou
+A chave estava na documentação do webpack, especificamente [no guia sobre `public-path`](https://webpack.js.org/guides/public-path/). Eu havia procurado `__webpack_public_path__` em `bundle.js`, `build.js`, `start.js` e no restante do runtime da aplicação, mas não encontrei a variável. Achei que fosse uma opção interna. Como o CRA já configura `PUBLIC_PATH`, imaginei que essa fosse a abstração correta, mas alterá-la não resolveu o problema. Então encontrei [esta issue que explica a diferença entre `PUBLIC_PATH` e `__webpack_public_path__`](https://github.com/facebook/create-react-app/issues/6024). Isso esclareceu a solução:
 
 ```javascript
 // Seta o on the fly do webpack em runtime (por isso on the fly)
@@ -428,16 +424,16 @@ declare let __webpack_public_path__: string;
 __webpack_public_path__ = `https://buckets.amazao/${$__OBJECT__.tenant}/sites/${$__OBJECT__.version}/`;
 ```
 
-Problema resolvido. É difícil acreditar que uma solução tão simples resolveu um problema que estava em aberto há mais de 3 meses.
+Problema resolvido. Uma pequena alteração em runtime corrigiu um problema que estava aberto havia mais de três meses.
 
-Vale lembrar que a nota de performance do lighthouse saiu de 3 (no pior caso de internet lenta e celulares fracos) para 92 (no mesmo caso citado).
+A nota de performance do Lighthouse também subiu de 3 — em uma conexão lenta e um celular fraco — para 92 nas mesmas condições.
 
-Bom, consegui fazer um grande relato que queria fazer a muito tempo, de forma mais explicada, com exemplos reais. E mesmo que você tenha lido isso tudo e está se perguntando
+Este foi meu relato detalhado de um projeto real e dos compromissos por trás da arquitetura do frontend. Ainda pode restar uma pergunta:
 
-> "Mas Allan, isso não é gambiarra? Usar window como variável global pra sua aplicação poder consumir"
+> "Mas Allan, isso não é uma gambiarra? Usar `window` como uma variável global para a aplicação consumir."
 
-Eu também pensei a mesma coisa logo que comecei com tudo isso, mas cara...é Javascript. Mesmo com o boas práticas, Typescript, ReasonML, Fable, NativeScript, pensamento OO, pensamento funcional, lints rígidos que não vão deixar você fazer um código porco, testes e o que mais para garantir uma boa escrita de código. Ainda com isso tudo, é Javascript. Da uma lida na [história do Javascript](https://en.wikipedia.org/wiki/JavaScript) e talvez você se ligue mais sobre o que to falando. Sempre que tiver algo mais bizarro de performance ou compartilhar informação, você vai cair num caso parecido.
+Eu tive a mesma preocupação no início. Mas aplicações JavaScript às vezes precisam de soluções pouco convencionais, mesmo quando usam TypeScript, lint rigoroso, testes e outras boas práticas. A [história do JavaScript](https://en.wikipedia.org/wiki/JavaScript) ajuda a contextualizar: restrições de desempenho e compartilhamento de estado entre fronteiras costumam levar a padrões semelhantes.
 
-E lembre-se _"Se o Facebook controla a versão que do React fazendo um append no objeto window, por que eu não posso configurar a minha UI da mesma forma?"_
+Um bom ponto de referência é: _"Se o Facebook controla a versão do React adicionando informações ao objeto `window`, por que não posso configurar minha UI da mesma forma?"_
 
-Se a solução atende ao negócio, a equipe chegou a um consenso sobre a técnica e a manutenção não é custosa, então ela cumpre seu propósito. Obrigado pelo seu tempo, tamo junto e até a próxima
+O problema não é escolher uma implementação pouco convencional. Se ela atende aos requisitos do negócio, a equipe entende e aceita os compromissos e a manutenção continua administrável, então é uma decisão de engenharia válida.

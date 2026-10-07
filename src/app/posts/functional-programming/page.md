@@ -5,14 +5,14 @@ title: "Functional Typescript"
 language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2020-04-06T23:29:59.999Z"
-description: "FP beyond .reduce"
+description: "The functional programming ideas behind everyday JavaScript"
 ---
 
 # Introduction
 
-Functional programming concepts are widely used, often without developers realizing it. If you have ever used `Array.forEach`, `Array.map`, `Array.reduce`, `Array.filter`, or the spread syntax `[...array1, ...array2]`, you have already applied functional programming.
+Functional programming ideas appear in everyday JavaScript, often without being named. If you have used `Array.forEach`, `Array.map`, `Array.reduce`, `Array.filter`, or spread syntax such as `[...array1, ...array2]`, you have already used them.
 
-So what exactly are these concepts?
+What do these concepts mean, and why are they useful?
 
 # Pure and impure functions
 
@@ -34,13 +34,13 @@ const total = sum(1, 2); // total === 3
 const newTotal = sum(total, 4); // total === 7
 ```
 
-In the first case, we have an impure function that receives a value and increments our initial variable.
+The first function is impure: it receives a value and changes a variable outside its own scope.
 
-In the second case, we have a pure function that receives two values, performs the sum and returns the total, not touching any variable outside the function's own scope.
+The second function is pure: it receives two values, calculates their sum, and returns the result without touching external state.
 
-With this, you can understand that pure functions **DO NOT GENERATE SIDE EFFECTS**, that is, they don't produce change effects outside their own scope, they only receive values and return values, always ensuring that for the same input, the output is the same. This doesn't happen in an impure function, because it **GENERATES SIDE EFFECTS**, that is, it makes changes that bring unpredictability to the code, not ensuring that given an input, the output is the same.
+A pure function **does not produce side effects**. It receives values and returns a value, producing the same output for the same input. An impure function may change external state, which makes its result harder to reason about.
 
-A classic case for this is when we want to sum values from a list of objects. Some would do it like this
+Summing values from a list of objects is a common example. One implementation might look like this:
 
 ```typescript
 const list = [
@@ -61,7 +61,7 @@ list.forEach((x) => {
 });
 ```
 
-It's not a bad solution, but we can create a solution that avoids constantly changing the value of a variable. Simply using reduce
+This is not a bad solution, but `reduce` can express the same operation without repeatedly mutating a variable:
 
 ```typescript
 const list = [
@@ -79,7 +79,7 @@ const list = [
 const total = list.reduce((acc, el) => acc + el.value, 0);
 ```
 
-It's even simpler, right? These examples may not fully convey the concept, but consider a situation involving arrays and objects:
+The difference is small in this example. With arrays and objects, the effect of mutation becomes more significant:
 
 ```typescript
 // When executing this function, you'll change your original array and won't have consistency in the information
@@ -94,13 +94,13 @@ const safeConcatToArray = <T>(array: T[], newItem: T) => [...array, newItem];
 
 # First-class functions
 
-First-class functions is the concept that states:
+First-class functions are functions that can be treated like values:
 
-> Functions can be treated as simple values, being manipulated and returned (just as we do with integers and strings). It means we can pass a function to a function and operate with it as a simple value
+> Functions can be assigned to variables, passed as arguments, returned from other functions, and manipulated like numbers or strings.
 
-You've certainly used this at some point, after all, you've heard of callback, right? This introduces another concept: a `higher-order function`, which is a function that receives or returns another function.
+You have probably used this through callbacks. A `higher-order function` is a function that receives another function, returns one, or does both.
 
-These two concepts were already used in the previous example, when we did a `.reduce`. Check out the `Array.reduce` signature
+The previous `reduce` example uses both ideas. Consider a simplified `Array.reduce` signature:
 
 ```typescript
 Array.reduce(
@@ -108,19 +108,19 @@ Array.reduce(
 );
 ```
 
-We can read it as follows: _Array.reduce is a function that receives a function. The function passed to Array.reduce receives as parameters: accumulator which is of type T, a current element which is of the list item type, an index which is the numerical position of the item in the list and the array itself that is being operated_. Consider all the JavaScript methods you already know that meet these requirements:
+Read it this way: `Array.reduce` receives a function. That callback receives the accumulator, the current element, the element's index, and the array being processed. Many JavaScript methods follow a similar pattern:
 
-1. Receives a function as a parameter
-2. Iterates a list or object applying the received function
-3. Processes a value without changing its own variable
+1. Receive a function as an argument.
+2. Iterate over a list or object and apply that function.
+3. Produce a value without changing the collection itself.
 
-Once this pattern is recognized, it becomes clear that functional programming was already being applied — just without the formal terminology.
+Once you recognise this pattern, it becomes clear that you were already using functional programming — you may simply not have used the formal terminology.
 
 # Immutability
 
-This is an important concept that, despite being simple in theory, can feel counterintuitive when coming from a structural or object-oriented programming background. The `const` keyword provides a gentle introduction, but applying immutability correctly to arrays and objects often requires a shift in mindset.
+Immutability is simple in theory but can feel unfamiliar when you come from imperative or object-oriented programming. `const` is a useful introduction, but applying immutability to arrays and objects requires a different way of thinking.
 
-To understand immutability, we need to pay attention to two things, `variable reassignment` and `operations on variables`.
+Pay attention to two separate operations: `variable reassignment` and `operations on variables`.
 
 ```typescript
 const mutate = (obj) => {
@@ -133,13 +133,13 @@ a(b);
 console.log(b); // {a: 1, c: 2}
 ```
 
-Then you ask the following question
+This raises a common question:
 
-> If I'm using const, why does it let me change the value of my object?
+> If I am using `const`, why can I still change the object?
 
-The `const` keyword only prevents variable reassignment — it does not prevent mutation of the object it references. **So how can an object be updated without mutating its reference?** The answer is to create a copy, manipulate it, and return a new object.
+`const` prevents reassignment of the variable; it does not prevent mutation of the object referenced by that variable. **To update an object without mutating its reference, create a copy, change the copy, and return it.**
 
-Our friend `spread operator` helps us a lot with this, despite only doing a `shallow copy`, which is a copy only of values with primitive type (string, number, boolean). In cases where there are objects with arrays or other objects, it's necessary to use methods like `deepClone`.
+The `spread` operator helps, although it only creates a `shallow copy` of the top-level values. When nested arrays or objects are involved, use an appropriate deep-copy strategy such as `deepClone`.
 
 In the example given above, we could do it as follows:
 
@@ -151,8 +151,10 @@ a(b);
 console.log(b); // {a: 1}
 ```
 
-And thus we would ensure the immutability of our object received in the function.
+This version leaves the original object unchanged.
 
 # More to come
 
-The next article covers more advanced concepts. This one introduces the foundational ideas needed to start thinking functionally. Thank you for your time, see you soon, bye bye
+The next article covers more advanced concepts. This one introduces the foundations for thinking in a functional style.
+
+Thanks for reading.

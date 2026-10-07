@@ -1,5 +1,6 @@
 import { getPosts } from "@/components/server/posts";
-import { Locale, getTranslation } from "@/lib/dictionary";
+import { getTranslation, type Locale } from "@/lib/dictionary";
+import { postPath } from "@/lib/seo";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -8,9 +9,8 @@ type Props = { lang: Locale; max?: number };
 export async function RelatedPosts({ lang, max = 4 }: Props) {
     const h = await headers();
     const pathname = h.get("x-pathname") || "";
-    const cleanHref = lang === "pt-BR" ? pathname.replace(/^\/pt/, "") : pathname;
     const posts = getPosts(lang);
-    const current = posts.find((x) => x.href === cleanHref);
+    const current = posts.find((x) => x.href === pathname);
     if (!current) return null;
     const currentSubjects = new Set(current.info.subjects);
     const scored = posts
@@ -29,7 +29,7 @@ export async function RelatedPosts({ lang, max = 4 }: Props) {
             <h2 className="font-display text-xl tracking-tight text-foreground">{t.blog.relatedPosts}</h2>
             <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {scored.map(({ post }) => {
-                    const href = lang === "pt-BR" ? `/pt${post.href}` : post.href;
+                    const href = postPath(lang, post.href);
                     return (
                         <li key={post.href}>
                             <Link

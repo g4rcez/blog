@@ -5,7 +5,7 @@ subjects: ["frontend"]
 language: "pt-br"
 translations: ["pt-br", "en-us"]
 date: "2026-07-29T12:15:47.000Z"
-description: "A transição do Tailwind CSS para CSS puro"
+description: "Por que voltei do Tailwind CSS para o CSS puro"
 ---
 
 Utilizo [Tailwind CSS](tailwindcss.com) desde a v1. Foi uma excelente aposta, com muitos benefícios:
@@ -26,11 +26,11 @@ Mas qual é o papel da IA nisso? Quando pensamos na geração de código, uma IA
 
 É possível trabalhar rapidamente com IA e Tailwind CSS, mas é necessário configurar boas regras e skills para garantir o resultado desejado. Também é fundamental fornecer exemplos de qualidade. Disponibilizar os componentes com ferramentas como [shadcn](https://ui.shadcn.com/) ajuda a manter esse padrão.
 
-De forma geral, minha experiência com Tailwind CSS e IA sem as ferramentas adequadas produziu mais código inconsistente do que o resultado esperado. O comportamento padrão precisa ser direcionado, o que exige mais tempo para desenvolver as skills e regras específicas do projeto.
+Na prática, minha experiência com Tailwind CSS e IA é menos consistente quando faltam essas ferramentas. O comportamento padrão precisa de direcionamento, e isso exige tempo para definir skills e regras específicas do projeto.
 
 ## O bom e velho CSS
 
-O CSS surgiu em 1996, mas evoluiu muito em recursos e suporte desde então. Basta observar seletores como `:is` e `:where`, os [pseudoelementos](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-elements) e outras funcionalidades que chegaram às versões mais recentes da linguagem.
+O CSS surgiu em 1996, mas desde então evoluiu muito em recursos e suporte. Basta observar seletores como `:is` e `:where`, os [pseudoelementos](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-elements) e outras funcionalidades modernas da linguagem.
 
 A pergunta é: por que CSS puro? Utilizar apenas CSS, em vez de um framework, oferece mais benefícios do que pode parecer:
 
@@ -45,13 +45,13 @@ A pergunta é: por que CSS puro? Utilizar apenas CSS, em vez de um framework, of
 
 ### Controle refinado de performance
 
-Quem se preocupa com a performance do CSS? Deveríamos prestar mais atenção a ela. Existem várias formas de melhorá-la: reduzir a complexidade dos seletores, incluir apenas os estilos necessários e controlar o carregamento das folhas de estilo com media queries, preloads e outras estratégias.
+A performance do CSS merece atenção. É possível melhorá-la reduzindo a complexidade dos seletores, incluindo apenas os estilos necessários e controlando o carregamento das folhas de estilo com media queries, preloads e outras estratégias.
 
 Incluí este tópico principalmente para falar sobre o seletor `:has`, que possui [considerações de performance](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has#performance_considerations).
 
 O Tailwind CSS utiliza o seletor `:has` por meio de variantes como `has-focus` e `has-checked`. É um recurso útil, mas exige alguns cuidados. Utilize-o de forma criteriosa.
 
-## Utilizando `@layer` para controlar a cascata do CSS
+## Usando `@layer` para controlar a cascata do CSS
 
 Ao trabalhar com design systems, pode ser necessário garantir determinados comportamentos visuais e evitar que os consumidores sobrescrevam estilos por acidente. O `@layer` oferece mais controle sobre essa organização.
 
@@ -62,7 +62,7 @@ O Tailwind CSS também utiliza `@layer` para organizar suas regras de CSS funcio
 Precisamos compreender o contexto dos componentes, não apenas suas classes CSS. Uma classe semântica reduz o contexto necessário para uma IA porque dispensa a interpretação individual de cada utility class do Tailwind CSS. Compare as duas implementações de um botão no HTML ou JSX:
 
 - CSS: `button`
-- Tailwindcss: `px-4 py-2 bg-slate-950 text-white hover:bg-slate-900 transition-colors transition-discrete duration-300 ease-linear`
+- Tailwind CSS: `px-4 py-2 bg-slate-950 text-white hover:bg-slate-900 transition-colors transition-discrete duration-300 ease-linear`
 
 As utility classes descrevem a aparência do botão. A classe semântica descreve o que o elemento representa. Essa diferença é relevante quando um agente de IA precisa analisar um componente: `button` oferece o contexto necessário sem exigir a interpretação de cada decisão visual presente no markup.
 
@@ -126,7 +126,7 @@ A colocalização é outra diferença. Utility classes permitem compreender quas
 
 As variantes também exigem uma API intencional. Uma utility pode ser adicionada diretamente para atender a uma exceção, enquanto um componente semântico precisa de uma classe, um atributo ou uma custom property que represente essa variação. Considero essa restrição útil em componentes compartilhados, embora ela possa tornar a experimentação mais lenta.
 
-O Tailwind CSS continua sendo uma excelente escolha quando a equipe já possui uma configuração consistente, uma biblioteca de componentes madura e regras claras para o código gerado. Voltar ao CSS não significa que todo projeto deve remover o Tailwind CSS. É uma decisão de priorizar os recursos nativos do navegador e uma abstração menor nos projetos em que controlo a arquitetura.
+O Tailwind CSS continua sendo uma boa escolha quando a equipe já possui uma configuração consistente, uma biblioteca de componentes madura e regras claras para o código gerado. Voltar ao CSS não significa que todo projeto precise remover o Tailwind CSS. Significa priorizar os recursos nativos do navegador e uma abstração menor nos projetos em que controlo a arquitetura.
 
 ## Minha abordagem
 
@@ -145,4 +145,4 @@ Essa organização oferece aos desenvolvedores e agentes de IA um lugar claro pa
 
 O Tailwind CSS ajudou as equipes de frontend a pensar melhor sobre restrições, tokens e regras visuais reutilizáveis. Hoje, o CSS moderno consegue expressar muitas dessas ideias diretamente, com um markup menor e uma intenção mais clara nos componentes. Para o meu trabalho atual, voltar ao CSS oferece o controle e a simplicidade que procuro, com trade-offs que estou disposto a administrar.
 
-Obrigado pela leitura.
+Obrigado por ler.

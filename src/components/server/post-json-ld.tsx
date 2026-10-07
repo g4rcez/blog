@@ -2,7 +2,7 @@ import { BlogConfig } from "@/blog.config";
 import { JsonLd } from "@/components/server/json-ld";
 import { getPosts } from "@/components/server/posts";
 import { Locale } from "@/lib/dictionary";
-import { absoluteUrl, DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, DEFAULT_OG_IMAGE, postPath, SITE_URL } from "@/lib/seo";
 import { headers } from "next/headers";
 
 type Props = { lang: Locale };
@@ -10,12 +10,12 @@ type Props = { lang: Locale };
 export async function PostJsonLd({ lang }: Props) {
     const h = await headers();
     const pathname = h.get("x-pathname") || "";
-    const cleanHref = lang === "pt-BR" ? pathname.replace(/^\/pt/, "") : pathname;
     const posts = getPosts(lang);
-    const post = posts.find((x) => x.href === cleanHref);
+    const post = posts.find((x) => x.href === pathname);
     if (!post) return null;
-    const canonical = lang === "pt-BR" ? `/pt${post.href}` : post.href;
+    const canonical = postPath(lang, post.href);
     const fullUrl = absoluteUrl(canonical);
+    const homeUrl = absoluteUrl(postPath(lang, ""));
     const blogPosting = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -33,7 +33,7 @@ export async function PostJsonLd({ lang }: Props) {
         image: { "@type": "ImageObject", url: DEFAULT_OG_IMAGE, width: 1200, height: 630 },
         author: { "@id": `${SITE_URL}/#person` },
         publisher: { "@id": `${SITE_URL}/#person` },
-        isPartOf: { "@id": lang === "pt-BR" ? `${SITE_URL}/pt#blog` : `${SITE_URL}/#blog` },
+        isPartOf: { "@id": `${homeUrl}#blog` },
     };
     const breadcrumb = {
         "@context": "https://schema.org",
@@ -43,7 +43,7 @@ export async function PostJsonLd({ lang }: Props) {
                 "@type": "ListItem",
                 position: 1,
                 name: BlogConfig.name[lang],
-                item: lang === "pt-BR" ? `${SITE_URL}/pt` : SITE_URL,
+                item: homeUrl
             },
             { "@type": "ListItem", position: 2, name: post.info.title, item: fullUrl },
         ],

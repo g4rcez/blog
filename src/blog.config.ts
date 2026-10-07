@@ -1,17 +1,20 @@
-import { Locale } from "./lib/dictionary";
+import { DEFAULT_LOCALE, type Locale } from "./lib/dictionary";
 
-type LocalizedContent = {
-    "pt-BR": string;
-    "en-US": string;
-};
+type LocalizedContent = Record<Locale, string>;
 
 type LocalizedLink = {
     title: LocalizedContent;
     href: string;
 };
 
+type LocalizedTerminalLink = {
+    title: string;
+    description: LocalizedContent;
+    href: string;
+};
+
 export const BlogConfig = {
-    defaultLanguage: "en-US",
+    defaultLanguage: DEFAULT_LOCALE,
     user: {
         name: "Allan Garcez",
     },
@@ -19,7 +22,7 @@ export const BlogConfig = {
     name: {
         "pt-BR": "Blog do Garcez",
         "en-US": "Garcez's Blog",
-    },
+    } satisfies LocalizedContent,
     domain: "garcez.dev",
     site: "https://garcez.dev",
     github: "https://github.com/g4rcez",
@@ -49,29 +52,29 @@ export const BlogConfig = {
         {
             title: "dotfiles",
             description: {
-                "pt-BR": "Meus dotfiles para configuração incrível do shell",
-                "en-US": "My dotfiles for awesome setup/shell",
+                "pt-BR": "Meus dotfiles para configurar o shell no dia a dia",
+                "en-US": "My dotfiles for a practical shell setup",
             },
             href: "https://github.com/g4rcez/dotfiles",
         },
         {
             title: "brouther",
             description: {
-                "pt-BR": "O roteador irmão para ajudar em aplicações React",
-                "en-US": "The brother router to help in React apps",
+                "pt-BR": "Um router para React que simplifica a navegação",
+                "en-US": "A React router that keeps navigation simple",
             },
             href: "https://brouther.vercel.app",
         },
         {
             title: "use-reducer",
             description: {
-                "pt-BR": "Outra forma de usar React.useReducer, com tipos",
-                "en-US": "Another way to use React.useReducer, with types",
+                "pt-BR": "Uma forma tipada de usar React.useReducer",
+                "en-US": "A typed way to use React.useReducer",
             },
             href: "https://github.com/g4rcez/use-reducer",
         },
-    ],
+    ] satisfies LocalizedTerminalLink[],
 };
 
 export const getLocalizedContent = (content: LocalizedContent, locale: Locale): string =>
-    content[locale] || content["en-US"];
+    content[locale] || content[DEFAULT_LOCALE];

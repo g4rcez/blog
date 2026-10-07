@@ -1,4 +1,4 @@
 packages:
-  - './src/'
-allowBuilds:
-  sharp: true
+  - '.'
+onlyBuiltDependencies:
+  - sharp

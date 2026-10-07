@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T03:19:48Z",
+  "title": "Design System: Garcez's Blog",
+  "extensions": {
+    "colorMeta": {
+      "accent": { "role": "primary", "displayName": "Clear Sky", "canonical": "#00A6F4", "tonalRamp": ["#082431", "#103c50", "#16536f", "#006f9f", "#00A6F4", "#6ccfff", "#b4e7ff", "#e6f7ff"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#ffffff" },
+      "night": { "role": "neutral", "displayName": "Night", "canonical": "#0c1118" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Headlines and section titles." },
+      "body": { "displayName": "Body", "purpose": "Long-form reading and interface copy." },
+      "terminal": { "displayName": "Terminal", "purpose": "Code and browser-only Bash output." }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [{ "name": "sm", "value": "640px" }, { "name": "xl", "value": "1280px" }]
+  },
+  "components": [
+    {
+      "name": "Article link",
+      "kind": "nav",
+      "refersTo": "article-link",
+      "description": "A title link in the editorial archive.",
+      "html": "<a class=\"ds-article-link\" href=\"#\">Working with forms</a>",
+      "css": ".ds-article-link{color:var(--var-color-foreground,#171c27);font:500 1.25rem/1.4 Lexend,sans-serif;text-decoration:none;text-underline-offset:4px}.ds-article-link:hover{color:var(--var-color-primary-hover,#006f9f);text-decoration:underline}.ds-article-link:focus-visible{outline:2px solid var(--var-color-primary,#00A6F4)}"
+    },
+    {
+      "name": "Terminal shell",
+      "kind": "custom",
+      "refersTo": "terminal-shell",
+      "description": "An isolated browser Bash surface on the homepage.",
+      "html": "<div class=\"ds-terminal\"><div class=\"ds-terminal-bar\">garcez.dev / bash</div><pre>visitor@garcez.dev:~$ ls</pre></div>",
+      "css": ".ds-terminal{border:1px solid var(--var-color-border,#d8e0e7);border-radius:14px;overflow:hidden;background:var(--var-color-background,#fff);color:var(--var-color-foreground,#171c27)}.ds-terminal-bar{border-bottom:1px solid var(--var-color-border,#d8e0e7);padding:12px;font:12px monospace}.ds-terminal pre{padding:16px;margin:0;font:13px/1.5 monospace}.ds-terminal:focus-within{outline:2px solid var(--var-color-primary,#00A6F4)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The reader's desk",
+    "overview": "A calm editorial surface: generous margin around real writing, quiet dividers instead of card chrome, and a small working terminal as an invitation to explore.",
+    "keyCharacteristics": ["restrained typography", "flat reading surfaces", "editorial date-and-title lists", "a clearly bounded interactive terminal"],
+    "rules": [{ "name": "The One Accent Rule", "body": "Do not add another brand hue to compete with the blue.", "section": "colors" }],
+    "dos": ["Keep every route and long-form article readable without using the terminal.", "Preserve keyboard focus and an Escape-then-Tab exit from the terminal."],
+    "donts": ["Turn writing lists into equal-sized promotional cards or use gradients as decoration."]
+  }
+}

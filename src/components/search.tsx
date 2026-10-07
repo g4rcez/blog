@@ -1,6 +1,7 @@
 "use client";
 import { CloseOnAutoCompleteNavigation } from "@/components/client/mobile-close-navigation";
-import { navigation } from "@/lib/navigation";
+import { getNavigation } from "@/lib/navigation";
+import { useTranslation } from "@/lib/i18n";
 import { type Result } from "@/markdoc/search.mjs";
 import {
     type AutocompleteApi,
@@ -111,6 +112,8 @@ const SearchResult = ({
     query: string;
 }) => {
     const id = useId();
+    const { locale } = useTranslation();
+    const navigation = getNavigation(locale);
     const sectionTitle = navigation.find((section) =>
         section.links.find((link) => link.href === result.url.split("#")[0]),
     )?.title;
@@ -198,7 +201,7 @@ const SearchInput = forwardRef<
         onClose: () => void;
     }
 >(function SearchInput({ autocomplete, autocompleteState, onClose }, inputRef) {
-    let inputProps = autocomplete.getInputProps({ inputElement: null });
+    const inputProps = autocomplete.getInputProps({ inputElement: null });
 
     return (
         <div className="group relative flex h-12">
@@ -244,11 +247,11 @@ function SearchDialog({
     setOpen: (open: boolean) => void;
     className?: string;
 }) {
-    let formRef = useRef<React.ElementRef<"form">>(null);
-    let panelRef = useRef<React.ElementRef<"div">>(null);
-    let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null);
+    const formRef = useRef<React.ElementRef<"form">>(null);
+    const panelRef = useRef<React.ElementRef<"div">>(null);
+    const inputRef = useRef<React.ElementRef<typeof SearchInput>>(null);
 
-    let close = useCallback(
+    const close = useCallback(
         (autocomplete: Autocomplete) => {
             setOpen(false);
             autocomplete.setQuery("");
@@ -256,7 +259,7 @@ function SearchDialog({
         [setOpen],
     );
 
-    let { autocomplete, autocompleteState } = useAutocomplete({
+    const { autocomplete, autocompleteState } = useAutocomplete({
         close() {
             close(autocomplete);
         },
@@ -340,7 +343,7 @@ function useSearchProps() {
         dialogProps: {
             open,
             setOpen: useCallback((open: boolean) => {
-                let { width = 0, height = 0 } = buttonRef.current?.getBoundingClientRect() ?? {};
+                const { width = 0, height = 0 } = buttonRef.current?.getBoundingClientRect() ?? {};
                 if (!open || (width !== 0 && height !== 0)) {
                     setOpen(open);
                 }
@@ -350,6 +353,7 @@ function useSearchProps() {
 }
 
 export function Search() {
+    const { t } = useTranslation();
     const [modifierKey, setModifierKey] = useState<string>();
     const { buttonProps, dialogProps } = useSearchProps();
 
@@ -366,7 +370,7 @@ export function Search() {
             >
                 <SearchIcon className="h-5 w-5 flex-none fill-slate-400 group-hover:fill-slate-500 md:group-hover:fill-slate-400 dark:fill-slate-500" />
                 <span className="sr-only md:not-sr-only md:ml-2 md:text-slate-500 md:dark:text-slate-400">
-                    Encontre qualquer coisa...
+                    {t("common.searchHint")}
                 </span>
                 {modifierKey && (
                     <kbd className="ml-auto hidden font-medium text-slate-400 md:block dark:text-slate-500">

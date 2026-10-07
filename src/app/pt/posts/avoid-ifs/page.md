@@ -1,35 +1,32 @@
 ---
 level: 0
 subjects: ["javascript", "typescript"]
-title: "JS Tricks, evitando ifs"
+title: "JS tricks: evitando ifs"
 language: "pt-br"
 translations: ["pt-br", "en-us"]
 date: "2019-12-16T23:59:59.999Z"
-description: "Estratégia para substituir ninhos de if"
+description: "Substituindo condicionais aninhadas por dados"
 ---
 
 # Introdução
 
-_Provavelmente existe um nome bem definido para este tipo de pattern, mas não foi possível identificá-lo antes de escrever o post._
+_Esse pattern provavelmente tem um nome conhecido, mas o nome é menos importante do que a ideia._
 
 Em um grupo do Telegram, um desenvolvedor perguntou:
 
 > Preciso fazer este algoritmo sem usar if. Alguém poderia me ajudar?
 
-O algoritmo era basicamente pegar o sexo, idade e tempo de trabalho para dizer se a pessoa poderia se aposentar ou não.
-Antes que fosse possível responder, alguém escreveu o algoritmo com um ternário — uma solução engenhosa, mas essencialmente um hack.
+O algoritmo precisava usar sexo, idade e tempo de trabalho para determinar se a pessoa poderia se aposentar. Antes que eu pudesse responder, alguém o escreveu com um ternário. Foi uma solução engenhosa, mas apenas trocou uma forma de condicional por outra.
 
-Essa situação me fez lembrar um algoritmo de IMC que tive que fazer na faculdade, utilizando Java e ele precisava ter
-uma complexidade baixa e ser facilmente testável (a matéria era sobre testes). Todos começaram a escrever de forma apressada e não estruturada, produzindo ninhos de **ifs** para realizar os cálculos. Eu já achei melhor parar pra pensar antes de
-escrever e acabei fazendo o seguinte:
+Essa situação me fez lembrar de um algoritmo de IMC que escrevi na faculdade. Ele precisava ter baixa complexidade e ser fácil de testar, porque a disciplina era sobre testes. Todos começaram com uma implementação rápida e acabaram produzindo ninhos de **ifs**. Preferi parar para pensar antes de escrever e cheguei à seguinte abordagem:
 
 1. Criar um enum para masculino e outro para feminino, onde havia o menor índice e o maior índice para cada categoria
 2. Receber a entrada e fazer o cálculo normalmente.
-   3 Com o resultado, buscar nos enums o intervalo que satisfaça a condição do resultado obtido no cálculo
+3. Com o resultado, buscar nos enums o intervalo que satisfaz a condição correspondente.
 
-Em Java isso fica bem mais verboso — chegou a gerar cerca de seis arquivos para algo relativamente simples — mas todas as condições do desafio foram atendidas.
+Em Java, a solução ficou bem mais verbosa — cerca de seis arquivos para um problema relativamente simples —, mas atendeu a todas as condições do desafio.
 
-Como o título deste post é evitar os **ifs**, vamos pra essa trick agora em JS/TS.
+O restante do artigo aplica a mesma ideia em JavaScript e TypeScript.
 
 # Definindo nossos casos
 
@@ -78,8 +75,7 @@ console.log("Status", val.title);
 console.log("IMC", imc);
 ```
 
-Bom, esse é exatamente o algoritmo que fiz em Java, porém traduzido para Javascript, e em bem menos linhas. Vamos rever
-por partes
+Esse é o mesmo algoritmo que escrevi em Java, agora expresso em bem menos linhas de JavaScript. Veja o que cada parte faz:
 
 1. Como ficou em TS, primeiro a definição dos tipos
 2. Definição dos títulos em `titles`
@@ -92,8 +88,7 @@ por partes
 6. Em `val` fazemos um `find` do objeto na nossa lista de `parametros` para identificar o título, mínimo e máximo do IMC
 7. Por fim, exibimos os valores
 
-É isso, esse foi bem rápido, apenas para mostrar essa trick e fazer com que você evite **ifs** aninhados. Consegue
-imaginar como seria o código utilizando ifs? Bom, eu faço aqui pra você
+Essa é a técnica para evitar **ifs** aninhados. Para comparação, veja como seria a implementação com condicionais:
 
 ```typescript
 if (sexo === "M") {
@@ -116,11 +111,9 @@ if (sexo === "F") {
 throw Error("Algo de errado não está certo");
 ```
 
-Viu como fica bem mais complicado? E se você precisar mudar algum valor? E se houverem novas regras? Resposta: vão haver
-mais e mais **ifs**
+Observe como a solução fica mais complexa. Alterar um valor ou adicionar uma regra exige mais **ifs**, aumentando o custo de manutenção.
 
-> Mas Allan, nesse caso com vários ifs, nós temos um "else" para caso não seja atendido e no seu exemplo de objetos não
-> tem isso
+> Uma pergunta natural é: com várias condicionais, como tratar o caso em que nenhuma condição é atendida?
 
 Um ponto válido. É necessário proteger a entrada contra casos inválidos. Um simples guard clause resolve isso:
 
@@ -132,4 +125,4 @@ if (!parametros.hasOwnProperty(sexo)) {
 // É legal abortar os erros primeiro
 ```
 
-Com isso, a abordagem fica completa. Obrigado pelo seu tempo, tamo junto e até a próxima
+A guard clause completa o exemplo e mantém o fluxo principal concentrado nas entradas válidas.

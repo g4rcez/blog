@@ -1,23 +1,13 @@
 "use client";
-import { Locale } from "@/lib/dictionary";
+import { LOCALE_INFO, SUPPORTED_LOCALES } from "@/lib/dictionary";
 import { useLocale } from "@/lib/i18n";
+import { localeFromPath, localizedPath, removeLocalePath } from "@/lib/seo";
 import { Menu, MenuItem } from "@g4rcez/components/menu";
 import { usePathname, useRouter } from "next/navigation";
 
-const languages = [
-    { base: "/", code: "en-US" as Locale, name: "English", flag: "🇺🇸" },
-    { base: "/pt", code: "pt-BR" as Locale, name: "Português", flag: "🇧🇷" },
-];
+const languages = SUPPORTED_LOCALES.map((code) => ({ code, ...LOCALE_INFO[code] }));
 
-const prefixes = languages.map((l) => l.base).filter((b) => b !== "/");
-
-const toNeutralPath = (pathname: string) => {
-    for (const prefix of prefixes) {
-        if (pathname === prefix) return "/";
-        if (pathname.startsWith(`${prefix}/`)) return pathname.slice(prefix.length);
-    }
-    return pathname;
-};
+const toNeutralPath = (pathname: string) => removeLocalePath(localeFromPath(pathname), pathname);
 
 export function LanguageSwitcher() {
     const router = useRouter();
@@ -41,7 +31,7 @@ export function LanguageSwitcher() {
                     onClick={() => {
                         setLocale(language.code);
                         const neutral = toNeutralPath(pathname);
-                        router.push(language.base === "/" ? neutral : `${language.base}${neutral}`);
+                        router.push(localizedPath(language.code, neutral));
                     }}
                 >
                     <span className="text-foreground">

@@ -1,16 +1,8 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { Locale, TRANSLATIONS } from "./dictionary";
+import { DEFAULT_LOCALE, findSupportedLocale, Locale, TRANSLATIONS } from "./dictionary";
 
-const detectLocale = (defaults?: string): Locale => {
-    if (typeof window !== "undefined") {
-        if (window.location.pathname.startsWith("/pt")) return "pt-BR";
-        return "en-US";
-    }
-    if (!!defaults && defaults in TRANSLATIONS) return defaults as Locale;
-    if (typeof window === "undefined") return "en-US";
-    return "en-US";
-};
+const detectLocale = (defaults?: string): Locale => findSupportedLocale(defaults ?? "") ?? DEFAULT_LOCALE;
 
 const LocaleContext = React.createContext([detectLocale(), (_: Locale) => {}] as const);
 
@@ -22,7 +14,7 @@ export const useLocale = () => {
     return React.useContext(LocaleContext);
 };
 
-export const LocaleProvider = ({ children, lang = "en-US" }: { children: React.ReactNode; lang?: string }) => {
+export const LocaleProvider = ({ children, lang = DEFAULT_LOCALE }: { children: React.ReactNode; lang?: string }) => {
     const locale = useState<Locale>(() => detectLocale(lang));
     return <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>;
 };
@@ -41,7 +33,7 @@ export function useTranslation() {
             if (value && typeof value === "object" && k in value) {
                 value = value[k];
             } else {
-                value = TRANSLATIONS["en-US"];
+                value = TRANSLATIONS[DEFAULT_LOCALE];
                 for (const fallbackKey of keys) {
                     if (value && typeof value === "object" && fallbackKey in value) {
                         value = value[fallbackKey];

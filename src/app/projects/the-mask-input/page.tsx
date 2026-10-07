@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 import { Fragment, Suspense } from "react";
 
 const DESCRIPTION =
-    "A 3.9kB input masking library for React. Drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.";
+    "A 3.9 kB input-masking library for React. It provides a drop-in <Input /> with built-in masks for CPF, CNPJ, phone, date, currency, and more.";
 
 const PROJECT_PATH = "/projects/the-mask-input";
 const PROJECT_URL = absoluteUrl(PROJECT_PATH);
@@ -124,8 +124,8 @@ export default function TheMaskInputPage() {
                         <Fence language="bash">{INSTALL_SNIPPET}</Fence>
                         <Fence language="tsx">{QUICKSTART_SNIPPET}</Fence>
                         <p>
-                            <code>@g4rcez/components</code> wraps <code>the-mask-input</code> — all named masks and
-                            custom mask features are available through it.
+                            <code>@g4rcez/components</code> wraps <code>the-mask-input</code>. It exposes all named masks
+                            and custom-mask features through the same package.
                         </p>
 
                         <h2 id="built-in-masks">Built-in masks</h2>
@@ -177,27 +177,27 @@ export default function TheMaskInputPage() {
                         <h2 id="custom-masks">Custom masks</h2>
                         <h3>Token-based</h3>
                         <p>
-                            Pass a string where each character is a token. Useful for fixed-length formats that match a
-                            single character class per position.
+                            Pass a string in which each character is a token. This works well for fixed-length formats
+                            with one character class per position.
                         </p>
                         <Fence language="tsx">{TOKEN_SNIPPET}</Fence>
                         <p>
-                            The same token string works for any fixed-length format. Try it live — edit the mask below
-                            and the input updates instantly. The US Social Security Number is a good starting point:
+                            The same token string works for any fixed-length format. Edit the mask below to see the
+                            input update instantly. A US Social Security Number is a useful starting point:
                         </p>
                         <CustomMaskLive />
                         <h3>Regex array</h3>
                         <p>
-                            Pass an array where each element is either a literal string (fixed character) or a{" "}
-                            <code>RegExp</code> (validated position). Useful for formats with mixed literals and
-                            character classes.
+                            Pass an array in which each item is either a literal string (a fixed character) or a{" "}
+                            <code>RegExp</code> (a validated position). This works well for formats that combine
+                            literals and character classes.
                         </p>
                         <Fence language="tsx">{REGEX_SNIPPET}</Fence>
 
                         <h3>Function-based</h3>
                         <p>
-                            Pass a function that receives the current value and returns a mask. Useful when the mask
-                            pattern depends on what the user has typed so far.
+                            Pass a function that receives the current value and returns a mask. Use this when the mask
+                            depends on what the user has typed so far.
                         </p>
                         <Fence language="tsx">{FUNCTION_SNIPPET}</Fence>
                     </Prose>

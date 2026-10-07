@@ -1,10 +1,10 @@
 import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
 import { codeToHtml } from "shiki/bundle/web";
-import light from "shiki/themes/catppuccin-latte.mjs";
-import dark from "shiki/themes/catppuccin-mocha.mjs";
+import light from "shiki/themes/light-plus.mjs";
+import dark from "shiki/themes/dark-plus.mjs";
 
 export const highlight = async (code: string, lang: string) => {
-    const html = await codeToHtml(code, {
+    return codeToHtml(code, {
         lang,
         themes: { light, dark },
         transformers: [
@@ -16,5 +16,4 @@ export const highlight = async (code: string, lang: string) => {
             }),
         ],
     });
-    return html;
 }

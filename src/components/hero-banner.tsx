@@ -4,23 +4,46 @@ import { Hero } from "@/components/hero";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { Logo, Logomark } from "@/components/logo";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { Navigation } from "@/components/navigation";
 import { Search } from "@/components/search";
-import { TocBulb, useTocLink } from "@/hooks/use-toc-link";
+import { TerminalModal } from "@/components/terminal-modal";
+import { ThemeSelector } from "@/components/theme-selector";
+import { portfolioRoutes } from "@/lib/portfolio-routes";
+import { localeToPath, tagsBasePath } from "@/lib/seo";
 import { useTranslation } from "@/lib/i18n";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { Fragment, Suspense, useEffect, useState } from "react";
+import React from "react";
 
-const pathnameLanguages = ["/", "/pt"];
+const homePaths = Object.values(localeToPath);
 
 const useIsHome = () => {
     const pathname = usePathname();
-    return pathnameLanguages.includes(pathname);
+    return homePaths.includes(pathname);
 };
 
 export const HeroBanner = () => {
     const isHomePage = useIsHome();
-    return <Fragment>{isHomePage && <Hero />}</Fragment>;
+    return isHomePage ? <Hero /> : null;
+};
+
+export const SiteMain = ({ children }: { children: React.ReactNode }) => {
+    const isHomePage = useIsHome();
+    return (
+        <main
+            id="main-content"
+            className={`max-w-8xl mx-auto flex w-full min-w-0 flex-auto flex-col px-5 sm:px-8 lg:px-12 ${isHomePage ? "" : "xl:grid xl:grid-cols-[minmax(15rem,1fr)_minmax(0,75ch)_minmax(15rem,1fr)]"}`}
+        >
+            {!isHomePage && (
+                <aside className="hidden w-60 shrink-0 pt-16 xl:col-start-1 xl:row-start-1 xl:block">
+                    <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-8">
+                        <Navigation />
+                    </div>
+                </aside>
+            )}
+            {children}
+        </main>
+    );
 };
 
 const GitHubIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
@@ -30,56 +53,63 @@ const GitHubIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
 );
 
 export function Header() {
-    const { t } = useTranslation();
-    const showToc = useTocLink();
-    const isHomePage = useIsHome();
-    const [isScrolled, setIsScrolled] = useState(false);
-
-    useEffect(() => {
-        const onScroll = () => setIsScrolled(window.scrollY > 0);
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => {
-            window.removeEventListener("scroll", onScroll);
-        };
-    }, []);
+    const { t, locale } = useTranslation();
+    const pathname = usePathname();
+    const links = [
+        { href: localeToPath[locale], label: t("common.home") },
+        { href: portfolioRoutes[locale].writing, label: t("navigation.posts") },
+        { href: tagsBasePath[locale], label: t("navigation.tags") },
+        { href: portfolioRoutes[locale].about, label: t("navigation.about") },
+    ];
 
     return (
-        <div
-            className={`sticky top-0 z-20 w-full bg-white shadow-md shadow-slate-900/5 transition duration-500 ease-in-out ${
-                isScrolled
-                    ? "bg-background dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-background/75"
-                    : "dark:bg-transparent"
-            }`}
-        >
-            <header className="container mx-auto flex flex-none flex-wrap items-center justify-between px-4 py-5 dark:shadow-none sm:px-6 lg:px-8">
-                <div className="mr-6 flex lg:hidden">
+        <div className="border-border bg-background sticky top-0 z-20 w-full border-b">
+            <header className="max-w-8xl mx-auto flex items-center gap-4 px-5 py-4 sm:px-8 lg:px-12">
+                <div className="lg:hidden">
                     <MobileNavigation />
                 </div>
-                <div className="relative flex flex-grow basis-0 items-center">
-                    <Link href="/" aria-label={t("common.home")}>
-                        <Logomark className="lg:hidden" />
-                        <Logo className="hidden text-foreground lg:block" />
-                    </Link>
-                </div>
-                <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
-                    <Search />
-                </div>
-                <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
-                    {isHomePage ? null : (
+                <Link
+                    href={localeToPath[locale]}
+                    aria-label={t("common.home")}
+                    className="focus-visible:outline-primary shrink-0 focus-visible:outline-2"
+                >
+                    <Logomark className="sm:hidden" />
+                    <Logo className="text-foreground hidden sm:block" />
+                </Link>
+                <nav
+                    aria-label={t("navigation.main")}
+                    className="ml-auto hidden items-center gap-6 text-sm font-medium lg:flex"
+                >
+                    {links.map((link) => (
                         <Link
-                            scroll={false}
-                            className="block lg:hidden"
-                            href={{ query: showToc ? "toc=false" : "toc=true" }}
+                            key={link.href}
+                            href={link.href}
+                            aria-current={pathname === link.href ? "page" : undefined}
+                            className={
+                                pathname === link.href
+                                    ? "text-primary-hover dark:text-primary"
+                                    : "text-secondary-foreground hover:text-foreground transition-colors"
+                            }
                         >
-                            <Suspense fallback={null}>
-                                <TocBulb />
-                            </Suspense>
+                            {link.label}
                         </Link>
-                    )}
+                    ))}
+                </nav>
+                <div className="ml-auto flex items-center gap-4 lg:ml-5">
+                    <Search />
                     <LanguageSwitcher />
-                    <Link target="_blank" href={BlogConfig.github} className="group" aria-label={t("hero.github")}>
-                        <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
+                    <TerminalModal />
+                    <div className="relative">
+                        <ThemeSelector />
+                    </div>
+                    <Link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={BlogConfig.github}
+                        className="text-secondary-foreground hover:text-primary hidden transition-colors sm:block"
+                        aria-label={t("hero.github")}
+                    >
+                        <GitHubIcon className="h-5 w-5 fill-current" />
                     </Link>
                 </div>
             </header>

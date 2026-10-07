@@ -1,25 +1,33 @@
 import { getPosts, SimplePost } from "@/components/server/posts";
-import { Locale } from "@/lib/dictionary";
-import { slugifyTopic } from "@/lib/seo";
+import { Locale, SUPPORTED_LOCALES } from "@/lib/dictionary";
+import { localizedAlternates, slugifyTopic, tagsBasePath } from "@/lib/seo";
 
 export type TopicSummary = { slug: string; name: string; count: number; latest: string };
 
 export const getTopics = (lang: Locale): TopicSummary[] => {
     const posts = getPosts(lang);
     const map = new Map<string, { name: string; count: number; latest: string }>();
-    posts.forEach((p) => {
-        p.info.subjects.forEach((subject) => {
+    for (const post of posts) {
+        for (const subject of post.info.subjects) {
             const slug = slugifyTopic(subject);
-            if (!slug) return;
-            const prev = map.get(slug);
-            if (!prev) return map.set(slug, { name: subject, count: 1, latest: p.date });
-            prev.count += 1;
-            if (p.date > prev.latest) prev.latest = p.date;
-        });
-    });
+            if (!slug) continue;
+            const previous = map.get(slug);
+            if (!previous) {
+                map.set(slug, { name: subject, count: 1, latest: post.date });
+                continue;
+            }
+            previous.count += 1;
+            if (post.date > previous.latest) previous.latest = post.date;
+        }
+    }
     return Array.from(map.entries())
         .map(([slug, v]) => ({ slug, ...v }))
         .sort((a, b) => b.count - a.count);
+};
+
+export const getTopicAlternates = (slug: string) => {
+    const locales = SUPPORTED_LOCALES.filter((locale) => getTopics(locale).some((topic) => topic.slug === slug));
+    return localizedAlternates(locales, (locale) => `${tagsBasePath[locale]}/${slug}`);
 };
 
 export const getTopicPosts = (lang: Locale, slug: string): { topic: TopicSummary | null; posts: SimplePost[] } => {

@@ -3,6 +3,7 @@ import { CloseOnNavigation } from "@/components/client/mobile-close-navigation";
 import { Logomark } from "@/components/logo";
 import { Navigation } from "@/components/navigation";
 import { Dialog, DialogPanel } from "@headlessui/react";
+import { useTranslation } from "@/lib/i18n";
 import Link from "next/link";
 import React, { Fragment, Suspense, useCallback, useState } from "react";
 
@@ -20,6 +21,7 @@ const CloseIcon = (props: React.ComponentPropsWithoutRef<"svg">) => (
 
 export const MobileNavigation = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation();
     const close = useCallback(() => setIsOpen(false), [setIsOpen]);
 
     function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -34,7 +36,7 @@ export const MobileNavigation = () => {
 
     return (
         <Fragment>
-            <button type="button" onClick={() => setIsOpen(true)} className="relative" aria-label="Open navigation">
+            <button type="button" onClick={() => setIsOpen(true)} className="relative" aria-label={t("common.openNavigation")}>
                 <MenuIcon className="h-6 w-6 stroke-slate-500" />
             </button>
             <Suspense fallback={null}>
@@ -44,14 +46,14 @@ export const MobileNavigation = () => {
                 open={isOpen}
                 onClose={() => close()}
                 className="fixed inset-0 z-50 flex items-start overflow-y-auto bg-slate-900/50 pr-10 backdrop-blur lg:hidden"
-                aria-label="Navigation"
+                aria-label={t("common.navigation")}
             >
                 <DialogPanel className="min-h-full w-full max-w-xs bg-white px-4 pb-12 pt-5 sm:px-6 dark:bg-slate-900">
                     <div className="flex items-center">
-                        <button type="button" onClick={() => close()} aria-label="Close navigation">
+                        <button type="button" onClick={() => close()} aria-label={t("common.closeNavigation")}>
                             <CloseIcon className="h-6 w-6 stroke-slate-500" />
                         </button>
-                        <Link href="/" className="ml-6" aria-label="Home page">
+                        <Link href="/" className="ml-6" aria-label={t("common.home")}>
                             <Logomark  />
                         </Link>
                     </div>

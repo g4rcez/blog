@@ -5,28 +5,28 @@ subjects: ["tips-and-tricks", "nodejs"]
 language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2024-01-14T04:49:37.896Z"
-description: "How to set up your programming environment?"
+description: "A practical guide to setting up a productive development environment"
 ---
 
-In this post, we'll cover some techniques, tools, and configurations so you can have a development environment that doesn't give you headaches.
+This post covers a few tools and configurations for a development environment that stays out of your way.
 
-To avoid configuration problems, we'll assume you're using Linux - it could be Ubuntu, Arch Linux, or any other distro. And of course, to avoid giving multiple examples, Ubuntu commands will be used here.
+The examples assume Linux. They should be easy to adapt to other distributions, but the commands below use Ubuntu.
 
 # dotfiles
 
-If you're used to making various configurations in your terminal, you've probably heard about dotfiles. These dotfiles are configuration files that programs use as a base to change default behaviors and add your preferences.
+If you keep customising your terminal, you have probably heard of dotfiles. They are configuration files that programs use to change their default behaviour and apply your preferences.
 
-There's a repository dedicated to this on GitHub, you can read more about it at [this link](https://dotfiles.github.io/).
+The [dotfiles community](https://dotfiles.github.io/) has a useful collection of examples on GitHub.
 
-If you want to see a configuration example, you can look at [my dotfiles](https://github.com/g4rcez/dotfiles) for inspiration or even install and use exactly as I do.
+For a concrete example, see [my dotfiles](https://github.com/g4rcez/dotfiles). Use them for reference or install them as they are.
 
-> All configurations are kept publicly on GitHub, making it easy to restore them on any machine and maintain a full version history. This practice has been in use since 2019.
+> I keep all configurations public on GitHub. That makes them easy to restore on any machine and gives me a complete history of changes. I have followed this practice since 2019.
 
 # Shell
 
-Let's start with the terminal, bringing better interaction, autocomplete, improvements to `<TAB>` functionality, history improvements, and everything else.
+Start with the terminal. A better shell can improve interaction, autocomplete, `<TAB>` behaviour, history, and everyday navigation.
 
-By default, Linux systems come with the [bash](https://www.gnu.org/software/bash/) shell, but we'll replace it using [zsh](https://www.zsh.org/) which is a much more extensive type of shell, thanks to the large community it has.
+Linux distributions usually include [bash](https://www.gnu.org/software/bash/). This guide uses [zsh](https://www.zsh.org/) instead because its ecosystem and community provide more options for customisation.
 
 Without further ado, let's first install zsh and then we'll install [oh-my-zsh](https://ohmyz.sh/). For the correct configuration, we'll need to have zsh, [curl](https://curl.se/), and [git](https://git-scm.com/) installed.
 
@@ -35,9 +35,9 @@ sudo apt install zsh curl git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-After running these commands, you'll see some interactions happening and some questions will be asked. Just follow the process and everything will be installed correctly. When the entire installation is done, you'll just need to open and close your terminal again and everything will be working.
+The installer will ask a few questions. Follow its prompts, then close and reopen the terminal when it finishes.
 
-If any problem occurs, you can run the command below to ensure the shell change (and restart the terminal after that).
+If the shell did not change, run the command below and restart the terminal:
 
 ```bash
 chsh -s /bin/zsh
@@ -45,30 +45,30 @@ chsh -s /bin/zsh
 
 ## Plugins - oh-my-zsh
 
-To further improve your terminal experience, here's a list of plugins I usually use:
+These are the plugins I usually use to improve the terminal experience:
 
 - [zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting): Syntax highlighting for your terminal, marking language tokens like parentheses, braces, brackets, and so on
 - [zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions): Improved suggestions for your terminal, in a VSCode autocomplete style
 
-You'll be able to install these plugins without problems, just following the guide for each plugin.
+Install each plugin by following its own documentation.
 
-With oh-my-zsh installed, you'll have various features that will help you with productivity within the terminal. Towards the end of the article, I'll leave a list of themes, plugins, and such that you can use.
+Once oh-my-zsh is installed, its themes and plugins provide a productive starting point. The rest of this post lists a few tools to add to that setup.
 
 # Node
 
-The main item on our list will be [Node](https://nodejs.org). You can install it through the official website (which I don't recommend) or use some virtual manager. Many tutorials recommend [nvm](https://github.com/nvm-sh/nvm), but from personal experience it can be problematic — particularly when it is easy to forget to run the necessary version-switch commands.
+Next is [Node](https://nodejs.org). You can install it from the official website, although I prefer a version manager. Many tutorials recommend [nvm](https://github.com/nvm-sh/nvm), but I have found it easy to forget its version-switch commands.
 
-To improve your Node experience in the terminal, I advise using [volta.sh](https://volta.sh/). This tool does the same thing as nvm, but brings automations so you can avoid versioning headaches. Its installation is very simple, just run the following command:
+I use [volta.sh](https://volta.sh/) instead. It provides the same version-management role as nvm and automates some of the steps that otherwise cause versioning problems. Install it with:
 
 ```bash
 curl https://get.volta.sh | bash
 ```
 
-Done! That's it. Now you're ready to use NodeJS in your terminal in the simplest way possible. Volta is a virtual version manager for NodeJS, it allows you to have multiple versions installed and managed by it. You just need to tell it which version you want to install and use.
+Volta is now ready. It lets you install and manage multiple Node.js versions; you only need to choose which one a project should use.
 
 ## Node + NPM
 
-With the volta installation completed, you'll now install NodeJS in the most current and stable version, the famous [LTS](https://wiki.ubuntu.com/LTS).
+With Volta installed, add the current stable Node.js release, the familiar [LTS](https://wiki.ubuntu.com/LTS) version:
 
 ```bash
 # To install the LTS version
@@ -78,7 +78,7 @@ volta install node@lts
 volta install node@latest
 ```
 
-We'll use LTS because it's the most stable version, thus avoiding problems. We also can't forget about `npm`, the NodeJS package manager.
+LTS is the safest default for most projects. Install the `npm` package manager as well:
 
 ```bash
 volta install npm@latest
@@ -86,23 +86,23 @@ volta install npm@latest
 
 ## Node utilities
 
-If you're studying TypeScript, you'll definitely need the TypeScript CLI to run your projects, or even ts-node to run your scripts. With the **Node + NPM** setup:
+If you work with TypeScript, you may also need the TypeScript CLI and `ts-node` for running scripts. With the **Node + npm** setup:
 
 ```bash
 npm install -g typescript ts-node
 ```
 
-With this `-g` installation, you'll install your scripts globally and allow you to execute commands from anywhere.
+The `-g` flag installs these tools globally, so their commands are available from any directory.
 
 # VSCode
 
-This will definitely be the best tool you'll have for code editing. There are other good editors like [WebStorm](https://www.jetbrains.com/webstorm) or [Neovim](https://neovim.io/), but VSCode wins in simplicity and has a lower learning curve.
+For editing code, I use [VS Code](https://code.visualstudio.com/). [WebStorm](https://www.jetbrains.com/webstorm) and [Neovim](https://neovim.io/) are also good choices, but VS Code has a short learning curve and a broad extension ecosystem.
 
-To install it, just follow the step-by-step guide from the [official website](https://code.visualstudio.com/), according to your operating system. Also remember to install the [CLI or Command Line Interface](https://code.visualstudio.com/docs/editor/command-line) for VSCode, to facilitate the installation of extensions in this tutorial.
+Install it using the guide on the [official website](https://code.visualstudio.com/) for your operating system. Also install the [VS Code command-line interface](https://code.visualstudio.com/docs/editor/command-line), which is used by the extension commands below.
 
 ## VSCode Extensions
 
-The great power of VSCode lies in its extensibility, and with various plugins, you can set up your environment to program in any language and with any framework.
+VS Code's main strength is its extensibility. With the right extensions, you can adapt the editor to almost any language or framework.
 
 ```bash
 # TailwindCSS extension to help with autocomplete
@@ -138,13 +138,13 @@ code --install-extension streetsidesoftware.code-spell-checker-portuguese-brazil
 code --install-extension wix.vscode-import-cost
 ```
 
-With these extensions, you already have a good setup for frontend programming with the React stack. For configurations, it's worth exploring a bit instead of copying a ready-made configuration. But if you want inspiration, you can look at my dotfiles, in the [`vscode`](https://github.com/g4rcez/dotfiles/tree/master/vscode) folder.
+These extensions provide a solid starting point for frontend work with React. Explore their settings instead of copying a complete configuration, but my [`vscode` dotfiles](https://github.com/g4rcez/dotfiles/tree/master/vscode) are available if you want a reference.
 
 # Conclusion
 
-This is just a quick tutorial for configuring and customizing your development environment. There are many more things you can evolve over time, just look for inspiration in [awesome lists](https://github.com/topics/awesome) or dotfiles.
+This is a starting point for configuring a development environment. You can refine it over time by exploring [awesome lists](https://github.com/topics/awesome) and other dotfiles.
 
-Thank you for your time, see you soon, bye bye
+Thanks for reading.
 
 
 

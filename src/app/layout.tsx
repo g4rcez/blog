@@ -3,12 +3,22 @@ import { Providers } from "@/app/providers";
 import { BlogConfig } from "@/blog.config";
 import { Layout } from "@/components/layout";
 import { JsonLd } from "@/components/server/json-ld";
-import { Locale } from "@/lib/dictionary";
-import { absoluteUrl, DEFAULT_OG_IMAGE, homeCopy, homeKeywords, SITE_URL } from "@/lib/seo";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/lib/dictionary";
+import {
+    absoluteUrl,
+    DEFAULT_OG_IMAGE,
+    homeCopy,
+    homeKeywords,
+    localeFromPath,
+    localizedAlternates,
+    localeToPath,
+    ogLocale,
+    postPath,
+    SITE_URL,
+} from "@/lib/seo";
 import { darkColors } from "@/styles/dark";
 import { lightColors } from "@/styles/light";
-import { defaultDarkTheme, defaultLightTheme } from "@g4rcez/components/themes";
-import { createTheme } from "@g4rcez/components/styles";
+import { createThemeCss, defaultDarkThemeTokens } from "@g4rcez/components/theme";
 import clsx from "clsx";
 import { type Metadata, type Viewport } from "next";
 import { headers } from "next/headers";
@@ -20,20 +30,23 @@ const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-int
 
 const lexend = Lexend({ subsets: ["latin"], display: "swap", variable: "--font-lexend" });
 
-const resolveLocale = (pathname: string | null): Locale => {
-    if (pathname && pathname.startsWith("/pt")) return "pt-BR";
-    return "en-US";
-};
+const metadataBase = (() => {
+    try {
+        return new URL(SITE_URL);
+    } catch (cause) {
+        throw new Error("BlogConfig.site must be a valid absolute URL.", { cause });
+    }
+})();
 
 export const metadata: Metadata = {
-    metadataBase: new URL(SITE_URL),
+    metadataBase,
     title: {
-        template: `%s · ${BlogConfig.name["en-US"]}`,
-        default: homeCopy["en-US"].title,
+        template: `%s · ${BlogConfig.name[DEFAULT_LOCALE]}`,
+        default: homeCopy[DEFAULT_LOCALE].title,
     },
-    description: homeCopy["en-US"].description,
-    applicationName: BlogConfig.name["en-US"],
-    keywords: homeKeywords["en-US"],
+    description: homeCopy[DEFAULT_LOCALE].description,
+    applicationName: BlogConfig.name[DEFAULT_LOCALE],
+    keywords: homeKeywords[DEFAULT_LOCALE],
     authors: [{ name: BlogConfig.user.name, url: SITE_URL }],
     creator: BlogConfig.user.name,
     publisher: BlogConfig.user.name,
@@ -50,25 +63,25 @@ export const metadata: Metadata = {
         },
     },
     alternates: {
-        canonical: "/",
-        languages: { "en-US": "/", "pt-BR": "/pt", "x-default": "/" },
+        canonical: localeToPath[DEFAULT_LOCALE],
+        languages: localizedAlternates(SUPPORTED_LOCALES, (locale) => localeToPath[locale]),
     },
     openGraph: {
         type: "website",
         url: SITE_URL,
-        siteName: BlogConfig.name["en-US"],
-        title: homeCopy["en-US"].title,
-        description: homeCopy["en-US"].description,
-        locale: "en_US",
-        alternateLocale: ["pt_BR"],
+        siteName: BlogConfig.name[DEFAULT_LOCALE],
+        title: homeCopy[DEFAULT_LOCALE].title,
+        description: homeCopy[DEFAULT_LOCALE].description,
+        locale: ogLocale[DEFAULT_LOCALE],
+        alternateLocale: SUPPORTED_LOCALES.filter((locale) => locale !== DEFAULT_LOCALE).map((locale) => ogLocale[locale]),
         images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: BlogConfig.user.name }],
     },
     twitter: {
         card: "summary_large_image",
         site: "@garcez_allan",
         creator: "@garcez_allan",
-        title: homeCopy["en-US"].title,
-        description: homeCopy["en-US"].description,
+        title: homeCopy[DEFAULT_LOCALE].title,
+        description: homeCopy[DEFAULT_LOCALE].description,
         images: [DEFAULT_OG_IMAGE],
     },
     icons: { icon: "/favicon.ico" },
@@ -88,9 +101,9 @@ const websiteJsonLd = {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: BlogConfig.name["en-US"],
-    description: homeCopy["en-US"].description,
-    inLanguage: ["en-US", "pt-BR"],
+    name: BlogConfig.name[DEFAULT_LOCALE],
+    description: homeCopy[DEFAULT_LOCALE].description,
+    inLanguage: SUPPORTED_LOCALES,
     publisher: { "@id": `${SITE_URL}/#person` },
 };
 
@@ -109,41 +122,40 @@ const personJsonLd = {
 export default async function RootLayout(props: PropsWithChildren) {
     const h = await headers();
     const pathname = h.get("x-pathname");
-    const lang = resolveLocale(pathname);
-    const htmlLang = lang === "pt-BR" ? "pt-BR" : "en-US";
+    const lang = localeFromPath(pathname);
     return (
         <html
-            lang={htmlLang}
+            lang={lang}
             suppressHydrationWarning
-            className={clsx("dark h-full antialiased", inter.variable, lexend.variable)}
+            className={clsx("h-full antialiased", inter.variable, lexend.variable)}
         >
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link
-                    rel="alternate"
-                    type="application/rss+xml"
-                    title={`${BlogConfig.name["en-US"]} — RSS`}
-                    href="/feed.xml"
-                />
-                <link
-                    rel="alternate"
-                    type="application/rss+xml"
-                    title={`${BlogConfig.name["pt-BR"]} — RSS`}
-                    href="/pt/feed.xml"
-                    hrefLang="pt-BR"
-                />
+                {SUPPORTED_LOCALES.map((locale) => (
+                    <link
+                        key={locale}
+                        rel="alternate"
+                        type="application/rss+xml"
+                        title={`${BlogConfig.name[locale]} — RSS`}
+                        href={postPath(locale, "/feed.xml")}
+                        hrefLang={locale}
+                    />
+                ))}
                 <link rel="me" href={BlogConfig.github} />
                 <link rel="author" href={SITE_URL} />
+                <style data-name="theme" id="theme-light">
+                    {createThemeCss({ colors: lightColors }, { selector: "html:not(.dark)" })}
+                </style>
                 <style data-name="theme" id="theme-dark">
-                    {createTheme({ ...defaultDarkTheme, colors: darkColors }, "dark")}
+                    {createThemeCss({ colors: darkColors }, { selector: "html.dark", base: defaultDarkThemeTokens })}
                 </style>
                 <JsonLd data={[websiteJsonLd, personJsonLd]} />
             </head>
             <body className="flex min-h-full bg-background">
                <Analytics/>
                <Providers lang={lang}>
-                    <Layout>{props.children}</Layout>
+                    <Layout lang={lang}>{props.children}</Layout>
                 </Providers>
             </body>
         </html>

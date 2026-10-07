@@ -5,26 +5,18 @@ subjects: ["react", "frontend", "typescript", "javascript"]
 language: "pt-br"
 translations: ["pt-br", "en-us"]
 date: "2023-01-13T18:30:00.000Z"
-description: "Melhorando a DX na hora de trabalhar com rotas, links e redirecionamentos"
+description: "Um contrato type-safe para rotas, links e redirecionamentos"
 ---
 
 [tl;dr. Código no codesandbox](https://codesandbox.io/s/vigilant-cloud-1lnyov?file=/src/index.tsx)
 
 # Introdução
 
-Quando se fala de roteamento em react, você logo lembra do [react-router](https://github.com/remix-run/react-router).
-Alguns podem conhecer o recente [tanstack-router](https://github.com/TanStack/router). Ambos são ótimos e resolvem o
-mesmo problema, roteamento em aplicações SPA (*Single Page Application*), possibilitando também o uso caso sua aplicação
-seja SSR.
+Quando se fala de roteamento em React, o [react-router](https://github.com/remix-run/react-router) costuma ser a primeira biblioteca lembrada. Alguns leitores também podem conhecer o mais recente [tanstack-router](https://github.com/TanStack/router). Ambos são boas opções para aplicações SPA (*Single Page Application*) e também oferecem suporte a SSR.
 
-> Comentário pessoal: funcionar para SSR é pouco útil, já que as soluções para aplicações SSR como NextJS ou Remix
-> entregam um sistema de roteamento. Mesmo que o Remix use o react-router por baixo dos panos, você não faz a
-> configuração
-> da mesma forma em uma aplicação CSR (*Client Side Render*).
+> Uma observação: o suporte a SSR é menos relevante quando a aplicação já utiliza um framework como Next.js ou Remix, porque essas soluções fornecem o roteamento. O Remix usa react-router internamente, mas sua configuração é diferente da de uma aplicação CSR (*Client Side Render*).
 
-A proposta desse artigo é apresentar algumas coisas que não nos atentamos quanto ao uso de bibliotecas de roteamento e
-apresentar o [brouther](https://github.com/g4rcez/brouther), uma solução minha para resolver alguns dos problemas que
-irei comentar.
+Este artigo aborda detalhes que costumam passar despercebidos ao utilizar bibliotecas de roteamento e apresenta o [brouther](https://github.com/g4rcez/brouther), uma solução para alguns desses problemas.
 
 # React Router
 
@@ -45,39 +37,28 @@ rica. Podemos até fazer uma lista com tudo o que ele entrega:
 - Rastreamento de erros para rotas não encontradas, ou o famoso 404
 - Controle do estado de transição das páginas, seja em roteamento ou até em submit dos formulários
 
-Porém, com isso tudo é claro que existem buracos de implementação, principalmente em questões de tipagem e DX (
-*Developer experience*). Algumas delas são:
+Mesmo com esses recursos, ainda existem lacunas, principalmente em tipagem e experiência do desenvolvedor (DX):
 
 - Falta de tipagem das rotas registradas no contexto
 - Falta de tipagem nos componentes de Link, Redirect
 - Falta de tipagem nas funções de manipulação da URL
 - Diversas features que podem não ser usadas
 
-Com a alta do Typescript, a tipagem acaba impactando bastante quando não existe um ecossistema fortemente tipado. E isso
-nos leva ao tanstack-router
+Com a adoção do TypeScript, um ecossistema fortemente tipado se tornou mais importante. Isso nos leva ao tanstack-router.
 
 # Tanstack Router
 
-O mais novo router da comunidade visa resolver certos problemas, principalmente problemas relacionados a DX. Visando
-esses problemas, eles criaram um ecossistema que consegue entregar o melhor dos dois mundos entre **roteamento vs DX**.
+Esse router mais recente concentra-se na experiência do desenvolvedor. Seu ecossistema tenta combinar a flexibilidade do roteamento com tipagem e ferramentas melhores.
 
-Por não ter tido muitas experiências com o tanstack-router, a análise aqui é limitada. Dando uma olhada na documentação, é possível ver que ainda não possui documentação de todos os seus hooks e formas canônicas de resolver um problema. Seu ecossistema possui muitas coisas que acabam não sendo responsabilidade de uma lib de
-roteamento e ainda possui uma arquitetura voltada para integrar com bibliotecas de controle de estado, como
-react-query (sendo do grupo desenvolvedor 🤔), Apollo, SWR e etc.
+Como tive pouca experiência prática com ele, esta seção é breve. Quando escrevi o artigo, a documentação ainda não cobria todos os hooks ou formas canônicas de resolver cada problema. O ecossistema também inclui preocupações que nem sempre pertencem a uma biblioteca de roteamento, como integrações com bibliotecas de estado como react-query, Apollo e SWR.
 
-Por ser uma biblioteca relativamente nova, os comentários aqui são breves, mas, de forma geral, é uma tecnologia a se observar caso haja muitos problemas com estado e roteamento sincronizados.
+Como era uma biblioteca relativamente nova, há pouco mais a acrescentar aqui. Ainda assim, é uma tecnologia para acompanhar se estado e roteamento sincronizados forem importantes no projeto.
 
 # Brouther
 
-Apesar de também ser uma biblioteca nova, o [brouther](https://github.com/g4rcez/brouther) foi pensado em resolver um
-único problema além do roteamento, sendo esse o problema de DX/tipagem. Como comentado sobre o react-router, sempre
-pensei que a falta de tipagem para os métodos e componentes era um problema, por que caso você precise mudar o path de
-uma página você terá um problema de mudar manualmente a referência em todos os lugares. Claro que você pode adotar
-práticas para evitar os erros, mas ainda assim o problema continua a existir, pois, o ecossistema não é fortemente
-integrado a biblioteca.
+Embora o [brouther](https://github.com/g4rcez/brouther) também seja uma biblioteca recente, ele se concentra em um problema além do roteamento: a lacuna de DX e tipagem. Sem tipagem para métodos e componentes, mudar o path de uma página exige atualizar referências em vários lugares. Convenções podem reduzir erros, mas não criam um contrato integrado.
 
-Com o brouther, a ideia é entregar todas as ferramentas necessárias, sejam elas fortemente integrados ao sistema (de
-forma opinativa) ou apenas isolado de todo o sistema de tipos (de forma não opinativa). Alguns dos problemas visados:
+O brouther fornece as ferramentas necessárias como um sistema integrado e opinativo ou como peças menores, que podem permanecer separadas do restante do sistema de tipos. Os problemas visados são:
 
 - Melhoria de DX
 - Tipagem para as rotas, incluindo query-string e paths valorados (assim como no express)
@@ -89,20 +70,14 @@ forma opinativa) ou apenas isolado de todo o sistema de tipos (de forma não opi
 
 ## Tipagem
 
-Com a alta do Typescript, ter um ecossistema fortemente tipado se tornou essencial no desenvolvimento de aplicações. Com
-isso em mente, decidi fazer com que todo o ecossistema da biblioteca pudesse ser conectado aos paths das páginas e
-seguindo as regras das URLs, onde:
+Com a adoção do TypeScript, um ecossistema fortemente tipado se tornou importante no desenvolvimento de aplicações. Por isso, conectei todo o ecossistema da biblioteca aos paths das páginas e às regras das URLs:
 
 - *Pathname* (meusite.com/isso-e-o-pathname) fosse obrigatório, incluindo lugares onde o pathname é dinânico (/users/:
   id)
 - Garantindo que todos os paths fossem de fato uma string
 - Tipagem de *query string*, onde todos os parâmetros de query string são opcionais
 
-Seguindo essas regras e utilizando a biblioteca [ts-toolbelt](https://github.com/millsp/ts-toolbelt) foi possível
-constuir um sistema onde você só precisa informar a URL (path) e um apelido (id) para ter todo o sistema montado. Não
-podemos esquecer do nosso element, mas ele não entra nessa parte da tipagem. Através da URL é possível extrair todas as
-informações necessárias
-para podermos construir nossas páginas, fazer redirecionamentos e links. Observe o path abaixo
+Com essas regras e a biblioteca [ts-toolbelt](https://github.com/millsp/ts-toolbelt), basta informar o path da URL e um identificador para configurar o sistema. O element continua necessário, mas fica fora desta parte do modelo de tipos. A URL contém as informações necessárias para construir páginas, redirecionamentos e links. Observe o path:
 
 ```text
 /posts/brouther?language=pt-br
@@ -111,13 +86,13 @@ para podermos construir nossas páginas, fazer redirecionamentos e links. Observ
 |pathname||query-string
 ```
 
-Para cadastrarmos essa rota no brouther precisamos fazer da seguinte forma
+Para cadastrar essa rota no brouther:
 
 ```text
 /posts/:title?language=string
 ```
 
-Dessa forma você o brouther irá te entregar a seguinte forma de construir a URL:
+Com essa definição, o brouther permite construir a URL da seguinte forma:
 
 ```typescript jsx
 export const router = createRouter([
@@ -131,8 +106,7 @@ export const router = createRouter([
 router.link(router.links.post, {title: ""}, {});
 ```
 
-Primeiro construimos o nosso router e ele irá retornar um objeto contendo alguns métodos, componentes e hooks fortemente
-tipados para o nosso ecossistema tipado. Nesse ponto iremos apenas explorar o `router.link` e o `router.links`
+O router retorna um objeto com métodos, componentes e hooks tipados a partir da definição das rotas. Aqui, vamos explorar apenas `router.link` e `router.links`.
 
 ### Construindo URLs
 
@@ -151,19 +125,13 @@ podemos utilizar `?language=string!` e o tipo irá obrigar a passar o language c
 apelidos para um objeto, fazendo com que você não precise digitar a string informada toda hora. Basta
 usar `router.links.ALIAS_PARA_A_ROTA` e pronto, você já vai ter a mesma string utilizada na construção do nosso router.
 
-Agora que temos a explicação fica fácil construir os nossos paths, basta seguir as regras dos parâmetros. O melhor de
-tudo é que tudo fica fortemente tipado e você não precisa fazer macetes no código para conectar os tipos da biblioteca
-com o seu ecossistema.
+Com essas regras, construir paths fica simples. As definições das rotas fornecem os tipos, sem exigir código adaptador para conectar a biblioteca ao restante da aplicação.
 
 ### Mapa de *query string*
 
-A tipagem de uma *query string* sempre foi uma feature que eu quis nos routers, mas não de forma automática, mas sim de
-forma que eu pudesse dizer "esse valor é uma string e esse é um number", evitando conversões no código e ficando de
-forma transparente o uso em todos os lugares do sistema. A boa notícia é que agora podemos ter isso.
+Eu queria que as query strings fossem tipadas de forma explícita, em vez de convertidas em vários pontos da aplicação. Uma rota deve poder declarar que um valor é string e outro é number, mantendo esse contrato transparente em todo o sistema.
 
-Abaixo temos a tipagem aceita na *query string*, feita a conversão automática para o tipo desejado. Caso você queira que
-um desses itens seja um array, você pode incluir `[]` ao final do valor e ainda caso queira que ele seja obrigatório,
-basta informar um `!` ao final. Caso queira saber todos os tipos da conversão, você pode ver o mapa abaixo:
+Os tipos abaixo são aceitos na *query string* e convertidos automaticamente. Acrescente `[]` para transformar um valor em array e `!` para torná-lo obrigatório. O mapa completo de conversões é:
 
 ```typescript
 export type Map = {
@@ -177,10 +145,7 @@ export type Map = {
 
 ## Developer Experience
 
-O mais importante no brouther foi facilitar a vida de quem está usando a biblioteca, trazendo tipos fortes e bons hooks
-para manipular inteiramente o sistema de rotas. A simplicidade também foi um fator crucial, tentando trazer o mínimo
-possível para não inchar a biblioteca, evitando assim um código complexo e uma documentação extensa e cansativa para que
-ninguém precise procurar diversos métodos
+O objetivo do brouther é simplificar o trabalho com rotas por meio de tipos fortes e um conjunto focado de hooks. Manter a biblioteca pequena é uma decisão deliberada: evita código complexo e uma documentação extensa.
 
 # Referências
 
@@ -189,4 +154,4 @@ ninguém precise procurar diversos métodos
 - [RFC 1738](https://www.rfc-editor.org/rfc/rfc1738)
 - [MDN - URL](https://developer.mozilla.org/en-US/docs/Web/API/URL)
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Esse é o núcleo do brouther: uma camada de roteamento pequena com um contrato type-safe.

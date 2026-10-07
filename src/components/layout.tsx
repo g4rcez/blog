@@ -1,33 +1,44 @@
-import { Header, HeroBanner } from "@/components/hero-banner";
-import { Navigation } from "@/components/navigation";
+import { Header, HeroBanner, SiteMain } from "@/components/hero-banner";
+import { portfolioPath } from "@/lib/portfolio-routes";
+import { getTranslation, type Locale } from "@/lib/dictionary";
+import { postPath } from "@/lib/seo";
+import Link from "next/link";
 import React, { Suspense } from "react";
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children, lang }: { children: React.ReactNode; lang: Locale }) {
+    const copy = getTranslation(lang);
     return (
         <div className="flex w-full flex-col">
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-foreground focus:px-4 focus:py-2 focus:text-background"
+                className="focus:bg-foreground focus:text-background sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:px-4 focus:py-2"
             >
-                Skip to content
+                {copy.common.skipToContent}
             </a>
             <Suspense fallback={null}>
                 <Header />
             </Suspense>
             <HeroBanner />
-            <div className="container relative mx-auto flex w-full flex-auto justify-center sm:px-2 lg:px-8 xl:px-8">
-                <aside aria-label="Primary" className="hidden lg:relative lg:block lg:flex-none">
-                    <div className="absolute inset-y-0 right-0 w-[50vw] bg-glow-light dark:hidden" />
-                    <div className="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-glow-divider dark:block" />
-                    <div className="absolute bottom-0 right-0 top-28 hidden w-px bg-glow-divider dark:block" />
-                    <div className="sticky top-[4.75rem] -ml-0.5 h-[calc(100vh-4.75rem)] w-56 overflow-y-auto overflow-x-hidden py-16 pl-0.5 pr-8 xl:w-56 xl:pr-16">
-                        <Navigation />
+            <SiteMain>{children}</SiteMain>
+            <footer className="border-border mt-20 border-t">
+                <div className="max-w-8xl text-secondary-foreground mx-auto flex flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm sm:px-8 lg:px-12">
+                    <span>Allan Garcez</span>
+                    <div className="flex gap-6">
+                        <Link
+                            href={portfolioPath(lang, "writing")}
+                            className="hover:text-primary-hover dark:hover:text-primary"
+                        >
+                            {copy.navigation.posts}
+                        </Link>
+                        <Link
+                            href={postPath(lang, "/feed.xml")}
+                            className="hover:text-primary-hover dark:hover:text-primary"
+                        >
+                            RSS
+                        </Link>
                     </div>
-                </aside>
-                <main id="main-content" className="contents">
-                    {children}
-                </main>
-            </div>
+                </div>
+            </footer>
         </div>
     );
 }

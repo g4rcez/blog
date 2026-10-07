@@ -1,100 +1,71 @@
-import { BlogConfig } from "@/blog.config";
 import { getPosts } from "@/components/server/posts";
 import { getTopics } from "@/components/server/topics";
-import { absoluteUrl, SITE_URL, topicsBasePath } from "@/lib/seo";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/lib/dictionary";
+import {
+    absoluteUrl,
+    languageAlternates,
+    localizedAlternates,
+    localeToPath,
+    postPath,
+    tagsBasePath,
+} from "@/lib/seo";
 import type { MetadataRoute } from "next";
 
-const buildAlternates = (translations: string[], href: string) => {
-    const languages: Record<string, string> = {};
-    translations.forEach((t) => {
-        const lower = t.toLowerCase();
-        if (lower === "en-us") languages["en-US"] = absoluteUrl(href);
-        if (lower === "pt-br") languages["pt-BR"] = absoluteUrl(`/pt${href}`);
-    });
-    languages["x-default"] = languages["en-US"] ?? languages["pt-BR"];
-    return { languages };
-};
+const buildAlternates = (translations: string[], href: string) => ({
+    languages: languageAlternates(translations, href),
+});
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const en = getPosts(BlogConfig.defaultLanguage);
-    const pt = getPosts("pt-BR");
     const now = new Date();
-
-    const home: MetadataRoute.Sitemap[number] = {
-        url: SITE_URL,
+    const homeAlternates = localizedAlternates(SUPPORTED_LOCALES, (locale) => localeToPath[locale]);
+    const homeEntries: MetadataRoute.Sitemap = SUPPORTED_LOCALES.map((locale) => ({
+        url: absoluteUrl(localeToPath[locale]),
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 1,
-        alternates: { languages: { "en-US": SITE_URL, "pt-BR": `${SITE_URL}/pt`, "x-default": SITE_URL } },
-    };
+        priority: locale === DEFAULT_LOCALE ? 1 : 0.9,
+        alternates: { languages: homeAlternates },
+    }));
 
-    const homePt: MetadataRoute.Sitemap[number] = {
-        url: `${SITE_URL}/pt`,
+    const tagIndexAlternates = localizedAlternates(SUPPORTED_LOCALES, (locale) => tagsBasePath[locale]);
+    const tagIndexEntries: MetadataRoute.Sitemap = SUPPORTED_LOCALES.map((locale) => ({
+        url: absoluteUrl(tagsBasePath[locale]),
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 0.9,
-        alternates: { languages: { "en-US": SITE_URL, "pt-BR": `${SITE_URL}/pt`, "x-default": SITE_URL } },
-    };
-
-    const enEntries: MetadataRoute.Sitemap = en.map((p) => ({
-        url: absoluteUrl(p.href),
-        lastModified: new Date(p.date),
-        changeFrequency: "monthly",
-        priority: 0.8,
-        alternates: buildAlternates(p.info.translations, p.href),
+        priority: locale === DEFAULT_LOCALE ? 0.7 : 0.6,
+        alternates: { languages: tagIndexAlternates },
     }));
 
-    const ptEntries: MetadataRoute.Sitemap = pt.map((p) => ({
-        url: absoluteUrl(`/pt${p.href}`),
-        lastModified: new Date(p.date),
-        changeFrequency: "monthly",
-        priority: 0.7,
-        alternates: buildAlternates(p.info.translations, p.href),
-    }));
+    const postEntries: MetadataRoute.Sitemap = SUPPORTED_LOCALES.flatMap((locale) =>
+        getPosts(locale).map((post) => ({
+            url: absoluteUrl(postPath(locale, post.href)),
+            lastModified: new Date(post.date),
+            changeFrequency: "monthly",
+            priority: locale === DEFAULT_LOCALE ? 0.8 : 0.7,
+            alternates: buildAlternates(post.info.translations, post.href),
+        })),
+    );
 
-    const enTopics = getTopics("en-US");
-    const ptTopics = getTopics("pt-BR");
-    const enTopicsIndex: MetadataRoute.Sitemap[number] = {
-        url: absoluteUrl(topicsBasePath["en-US"]),
-        lastModified: now,
-        changeFrequency: "weekly",
-        priority: 0.7,
-    };
-    const ptTopicsIndex: MetadataRoute.Sitemap[number] = {
-        url: absoluteUrl(topicsBasePath["pt-BR"]),
-        lastModified: now,
-        changeFrequency: "weekly",
-        priority: 0.6,
-    };
-    const enTopicEntries: MetadataRoute.Sitemap = enTopics.map((t) => ({
-        url: absoluteUrl(`${topicsBasePath["en-US"]}/${t.slug}`),
-        lastModified: new Date(t.latest),
-        changeFrequency: "weekly",
-        priority: 0.7,
-        alternates: ptTopics.find((p) => p.slug === t.slug)
-            ? {
-                  languages: {
-                      "en-US": absoluteUrl(`${topicsBasePath["en-US"]}/${t.slug}`),
-                      "pt-BR": absoluteUrl(`${topicsBasePath["pt-BR"]}/${t.slug}`),
-                      "x-default": absoluteUrl(`${topicsBasePath["en-US"]}/${t.slug}`),
-                  },
-              }
-            : undefined,
-    }));
-    const ptTopicEntries: MetadataRoute.Sitemap = ptTopics.map((t) => ({
-        url: absoluteUrl(`${topicsBasePath["pt-BR"]}/${t.slug}`),
-        lastModified: new Date(t.latest),
-        changeFrequency: "weekly",
-        priority: 0.6,
-    }));
-    return [
-        home,
-        homePt,
-        enTopicsIndex,
-        ptTopicsIndex,
-        ...enTopicEntries,
-        ...ptTopicEntries,
-        ...enEntries,
-        ...ptEntries,
-    ];
+    const topicsByLocale = new Map(SUPPORTED_LOCALES.map((locale) => [locale, getTopics(locale)] as const));
+    const topicEntries: MetadataRoute.Sitemap = SUPPORTED_LOCALES.flatMap((locale) =>
+        (topicsByLocale.get(locale) ?? []).map((topic) => {
+            const alternateLocales = SUPPORTED_LOCALES.filter((supportedLocale) =>
+                topicsByLocale.get(supportedLocale)?.some((candidate) => candidate.slug === topic.slug),
+            );
+            const href = `${tagsBasePath[locale]}/${topic.slug}`;
+            return {
+                url: absoluteUrl(href),
+                lastModified: new Date(topic.latest),
+                changeFrequency: "weekly",
+                priority: locale === DEFAULT_LOCALE ? 0.7 : 0.6,
+                alternates: {
+                    languages: localizedAlternates(
+                        alternateLocales,
+                        (alternateLocale) => `${tagsBasePath[alternateLocale]}/${topic.slug}`,
+                    ),
+                },
+            };
+        }),
+    );
+
+    return [...homeEntries, ...tagIndexEntries, ...topicEntries, ...postEntries];
 }

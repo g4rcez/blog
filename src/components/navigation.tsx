@@ -13,29 +13,27 @@ type Props = {
 
 export const Navigation = ({ className, onLinkClick }: Props) => {
     const pathname = usePathname();
-    const { locale } = useTranslation();
+    const { locale, t } = useTranslation();
     const navigation = getNavigation(locale);
-    
+
     return (
-        <nav className={clsx("text-base lg:text-sm", className)}>
-            <ul role="list" className="space-y-9">
+        <nav aria-label={t("navigation.browseSections")} className={clsx("text-sm", className)}>
+            <ul className="space-y-8">
                 {navigation.map((section) => (
                     <li key={section.title}>
-                        <h2 className="font-display font-medium text-slate-900 dark:text-white">{section.title}</h2>
-                        <ul
-                            role="list"
-                            className="mt-2 space-y-2 border-l-2 border-slate-100 lg:mt-4 lg:space-y-4 lg:border-slate-200 dark:border-slate-800"
-                        >
+                        <h2 className="font-display font-medium text-foreground">{section.title}</h2>
+                        <ul className="mt-3 space-y-2 border-l border-border">
                             {section.links.map((link) => (
                                 <li key={link.href} className="relative">
                                     <Link
                                         href={link.href}
                                         onClick={onLinkClick}
+                                        aria-current={link.href === pathname ? "page" : undefined}
                                         className={clsx(
-                                            "block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full",
+                                            "block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                                             link.href === pathname
-                                                ? "font-semibold text-sky-500 before:bg-sky-500"
-                                                : "text-slate-500 before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300",
+                                                ? "font-semibold text-primary-hover before:bg-primary-hover dark:text-primary dark:before:bg-primary"
+                                                : "text-secondary-foreground before:hidden before:bg-muted-foreground hover:text-foreground hover:before:block",
                                         )}
                                     >
                                         {link.title}

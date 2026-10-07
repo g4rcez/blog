@@ -3,7 +3,7 @@ import { PrevNextLinks } from "@/components/prev-next-links";
 import { Prose } from "@/components/prose";
 import { RelatedPosts } from "@/components/server/related-posts";
 import { TableOfContents } from "@/components/table-of-contents";
-import { Locale } from "@/lib/dictionary";
+import { localeFromPath, removeLocalePath } from "@/lib/seo";
 import { collectSections } from "@/lib/sections";
 import { type Node } from "@markdoc/markdoc";
 import { headers } from "next/headers";
@@ -28,11 +28,14 @@ export const DocsLayout = async ({ children, frontmatter, nodes }: Props) => {
     const tableOfContents = collectSections(nodes);
     const h = await headers();
     const pathname = h.get("x-pathname") || "";
-    const lang: Locale = pathname.startsWith("/pt") ? "pt-BR" : "en-US";
-    const isPost = pathname.startsWith("/posts/") || pathname.startsWith("/pt/posts/");
+    const lang = localeFromPath(pathname);
+    const isPost = removeLocalePath(lang, pathname).startsWith("/posts/");
     return (
         <Fragment>
-            <div className="min-w-0 max-w-7xl flex-auto px-2 py-16 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+            <Suspense fallback={null}>
+                {frontmatter.type === "index" ? null : <TableOfContents tableOfContents={tableOfContents} />}
+            </Suspense>
+            <div className="mx-auto min-w-0 max-w-[75ch] flex-auto pt-10 pb-24 sm:pt-14 xl:col-start-2 xl:row-start-1 xl:pt-16">
                 <article>
                     <DocsHeader
                         title={frontmatter.title}
@@ -51,9 +54,6 @@ export const DocsLayout = async ({ children, frontmatter, nodes }: Props) => {
                 ) : null}
                 <PrevNextLinks />
             </div>
-            <Suspense fallback={null}>
-                {frontmatter.type !== "index" ? <TableOfContents tableOfContents={tableOfContents} /> : null}
-            </Suspense>
         </Fragment>
     );
 };

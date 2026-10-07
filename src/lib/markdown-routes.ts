@@ -1,8 +1,14 @@
-import { BlogConfig } from "@/blog.config";
 import { getPosts, type SimplePost } from "@/components/server/posts";
 import { getTopicPosts, getTopics } from "@/components/server/topics";
-import type { Locale } from "@/lib/dictionary";
-import { absoluteUrl, homeCopy, SITE_URL, topicCopy, topicsBasePath } from "@/lib/seo";
+import { getTranslation, type Locale } from "@/lib/dictionary";
+import {
+    absoluteUrl,
+    homeCopy,
+    localeFromPath,
+    removeLocalePath,
+    tagCopy,
+    tagsBasePath,
+} from "@/lib/seo";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -13,15 +19,13 @@ const markdownCacheControl = "public, max-age=3600, s-maxage=86400, stale-while-
 const labels = {
     "en-US": {
         recentPosts: "Recent posts",
-        topics: "Topics",
         articles: (count: number) => `${count} ${count === 1 ? "article" : "articles"}`,
     },
     "pt-BR": {
         recentPosts: "Posts recentes",
-        topics: "Tópicos",
         articles: (count: number) => `${count} ${count === 1 ? "artigo" : "artigos"}`,
     },
-} satisfies Record<Locale, { recentPosts: string; topics: string; articles: (count: number) => string }>;
+} satisfies Record<Locale, { recentPosts: string; articles: (count: number) => string }>;
 
 const projectMarkdown = `# the-mask-input
 
@@ -161,19 +165,18 @@ export const getHomeMarkdown = (lang: Locale) => {
     ].join("\n");
 };
 
-const getTopicsIndexMarkdown = (lang: Locale) => {
-    const topics = getTopics(lang);
-    const copy = topicCopy[lang].index;
+const getTagsIndexMarkdown = (lang: Locale) => {
+    const tags = getTopics(lang);
+    const copy = tagCopy[lang].index;
     const l = labels[lang];
 
     return [
-        `# ${l.topics}`,
+        `# ${getTranslation(lang).navigation.tags}`,
         "",
         copy.description,
         "",
-        ...topics.map(
-            (topic) =>
-                `- [${topic.name}](${absoluteUrl(`${topicsBasePath[lang]}/${topic.slug}`)}) — ${l.articles(topic.count)}`,
+        ...tags.map(
+            (tag) => `- [${tag.name}](${absoluteUrl(`${tagsBasePath[lang]}/${tag.slug}`)}) — ${l.articles(tag.count)}`,
         ),
     ].join("\n");
 };
@@ -189,18 +192,17 @@ const getTopicMarkdown = (lang: Locale, slug: string) => {
 
 export const getMarkdownForRoute = (rawRoutePath: string): string | null => {
     const routePath = normalizeRoutePath(rawRoutePath);
+    const locale = localeFromPath(routePath);
+    const localPath = removeLocalePath(locale, routePath);
 
-    if (routePath === "/" || routePath === "/markdown") return getHomeMarkdown(BlogConfig.defaultLanguage as Locale);
-    if (routePath === "/pt" || routePath === "/pt/markdown") return getHomeMarkdown("pt-BR");
-    if (routePath === "/topics") return getTopicsIndexMarkdown("en-US");
-    if (routePath === "/pt/topicos") return getTopicsIndexMarkdown("pt-BR");
-    if (routePath === "/projects/the-mask-input") return projectMarkdown;
+    if (localPath === "/" || localPath === "/markdown") return getHomeMarkdown(locale);
+    if (localPath === "/tags" || localPath === "/topics" || localPath === "/topicos") {
+        return getTagsIndexMarkdown(locale);
+    }
+    if (localPath === "/projects/the-mask-input") return projectMarkdown;
 
-    const topicMatch = routePath.match(/^\/topics\/([^/]+)$/);
-    if (topicMatch) return getTopicMarkdown("en-US", topicMatch[1]);
-
-    const ptTopicMatch = routePath.match(/^\/pt\/topicos\/([^/]+)$/);
-    if (ptTopicMatch) return getTopicMarkdown("pt-BR", ptTopicMatch[1]);
+    const tagMatch = localPath.match(/^\/(?:tags|topics|topicos)\/([^/]+)$/);
+    if (tagMatch) return getTopicMarkdown(locale, tagMatch[1]);
 
     const file = markdownFileForRoute(routePath);
     if (!fs.existsSync(file)) return null;

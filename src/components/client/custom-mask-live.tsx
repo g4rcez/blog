@@ -56,7 +56,7 @@ export const CustomMaskLive = () => {
     return (
         <div className="flex flex-col gap-4 rounded-xl bg-slate-900 p-5 ring-1 ring-slate-300/10">
             <div>
-                How to use tokens?
+                Token reference
                 <ul>
                     <li>d = digit</li>
                     <li>H = hexadecimal</li>
@@ -68,7 +68,7 @@ export const CustomMaskLive = () => {
             </div>
             <div className="flex flex-col gap-1.5">
                 <label htmlFor="mask-editor" className="font-mono text-xs font-semibold text-slate-400">
-                    mask string
+                    Mask string
                 </label>
                 <input
                     id="mask-editor"

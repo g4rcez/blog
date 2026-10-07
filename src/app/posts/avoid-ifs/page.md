@@ -1,34 +1,32 @@
 ---
 level: 0
 subjects: ["javascript", "typescript"]
-title: "JS Tricks, avoiding ifs"
+title: "JS tricks: avoiding if statements"
 language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-12-16T23:59:59.999Z"
-description: "Strategy to replace nested ifs"
+description: "Replacing nested conditionals with data"
 ---
 
 # Introduction
 
-_There is probably a well-known name for this type of pattern, but the specific term escapes me. Rather than delay the post, I'll proceed without it — apologies for the missing reference._
+_This pattern probably has a well-known name, but the name is less important than the idea._
 
-I was in a telegram group and saw a guy saying:
+In a Telegram group, I saw someone ask:
 
 > I need to make this algorithm without using if. Could someone help me?
 
-The algorithm was basically to get the sex, age and work time to tell if the person could retire or not.
-Before I could respond, someone wrote the algorithm using a ternary expression — quite clever, but ultimately a workaround.
+The algorithm needed to use sex, age, and employment time to determine whether someone could retire. Before I could respond, someone wrote it with a ternary expression. It was clever, but it only replaced one conditional form with another.
 
-This situation reminded me of a BMI algorithm I had to do in college, using Java and it needed to have
-low complexity and be easily testable (the subject was about tests). Everyone began writing in a quick, unprincipled manner and produced deeply nested **ifs** to perform the calculations. Taking a step back to think before writing led to the following approach:
+The situation reminded me of a BMI algorithm I wrote in college. It had to have low complexity and be easy to test because the course focused on testing. Everyone began with a quick implementation and ended up with deeply nested **ifs**. Stepping back before writing led to this approach:
 
 1. Create an enum for male and another for female, each containing the minimum and maximum index for that category.
 2. Receive the input and perform the calculation normally.
 3. With the result, search the enums for the range that satisfies the condition based on the calculated value.
 
-Of course, in Java this becomes quite complex — it ended up spanning about six files for something relatively simple — but all the challenge conditions were met.
+In Java, this became fairly verbose—about six files for a relatively simple problem—but it met all the constraints.
 
-Since the title of this post is to avoid **ifs**, let's get to this trick now in JS/TS.
+The rest of this article applies the same idea in JavaScript and TypeScript.
 
 # Defining our cases
 
@@ -77,7 +75,7 @@ console.log("Status", val.title);
 console.log("BMI", bmi);
 ```
 
-This is essentially the same algorithm originally written in Java, now translated to JavaScript in far fewer lines. Let's review it part by part:
+This is the same algorithm I first wrote in Java, expressed in far fewer lines of JavaScript. Here is what each part does:
 
 1. Since it's in TS, first the type definitions
 2. Definition of titles in `titles`
@@ -115,8 +113,7 @@ throw Error("Something wrong is not right");
 
 Notice how much more complex this becomes. Adding new values or rules means adding more nested **ifs**, making the code increasingly difficult to maintain.
 
-> But Allan, in that case with multiple ifs, we have an "else" for when it's not met and in your object example there's
-> no such thing
+> A natural question is: with multiple conditionals, how do we handle the case where no condition matches?
 
 A valid point. The input does need to be guarded against invalid cases. A simple guard clause handles this cleanly:
 
@@ -128,4 +125,4 @@ if (!parameters.hasOwnProperty(sex)) {
 // It's nice to abort errors first
 ```
 
-That covers everything. Thank you for your time, see you soon, bye bye
+The guard clause completes the example and keeps the main flow focused on valid input.

@@ -1,18 +1,17 @@
 import { BlogConfig } from "@/blog.config";
 import { getPosts } from "@/components/server/posts";
 import { Locale } from "@/lib/dictionary";
-import { absoluteUrl, DEFAULT_OG_IMAGE, languageAlternates, ogLocale, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, DEFAULT_OG_IMAGE, languageAlternates, ogLocale, postPath, SITE_URL } from "@/lib/seo";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 
 export const createGenerateMetadata = (lang: Locale) => async (): Promise<Metadata> => {
     const h = await headers();
     const pathname = (h.get("x-pathname") ?? "").replace(/\?.+$/, "");
-    const cleanHref = lang === "pt-BR" ? pathname.replace(/^\/pt/, "") : pathname;
     const posts = getPosts(lang);
-    const post = posts.find((x) => x.href === cleanHref);
+    const post = posts.find((x) => x.href === pathname);
     if (!post) return {};
-    const canonical = lang === "pt-BR" ? `/pt${post.href}` : post.href;
+    const canonical = postPath(lang, post.href);
     const alternates = languageAlternates(post.info.translations, post.href);
     const ogImage = DEFAULT_OG_IMAGE;
     const siteName = BlogConfig.name[lang];

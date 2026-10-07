@@ -5,7 +5,7 @@ title: "dotfiles"
 language: "en-us"
 translations: ["en-us"]
 date: "2025-07-05T13:26:30.811Z"
-description: "My work environment"
+description: "My development environment"
 ---
 
 {% terminal %}

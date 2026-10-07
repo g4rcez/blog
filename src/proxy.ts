@@ -1,3 +1,4 @@
+import { localeFromPath, localizedPath, removeLocalePath } from "@/lib/seo";
 import { NextResponse, type NextRequest } from "next/server";
 
 const discoveryLinks = [
@@ -15,8 +16,8 @@ const isMarkdownRequest = (request: NextRequest, pathname: string) =>
     acceptsMarkdown(request) || pathname.endsWith(".md");
 
 const markdownPath = (pathname: string) => {
-    if (pathname === "/") return "/markdown";
-    if (pathname === "/pt") return "/pt/markdown";
+    const locale = localeFromPath(pathname);
+    if (removeLocalePath(locale, pathname) === "/") return localizedPath(locale, "/markdown");
     if (pathname.endsWith(".md")) return `/markdown-content${pathname.slice(0, -3) || "/"}`;
 
     return `/markdown-content${pathname}`;
@@ -32,7 +33,8 @@ export function proxy(request: NextRequest) {
     response.headers.set("x-pathname", request.nextUrl.pathname);
     response.headers.set("vary", "Accept");
 
-    if (pathname === "/" || pathname === "/pt") {
+    const locale = localeFromPath(pathname);
+    if (removeLocalePath(locale, pathname) === "/") {
         response.headers.set("link", discoveryLinks);
     }
 

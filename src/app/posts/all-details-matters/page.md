@@ -1,7 +1,7 @@
 ---
 level: 1
 title: Details Matter
-subjects: ["frontend"]
+subjects: ["frontend", "ai", "agents"]
 language: "en-us"
 translations: ["pt-br", "en-us"]
 date: "2026-05-11T22:58:45.077Z"

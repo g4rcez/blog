@@ -5,12 +5,12 @@ title: "Array.prototype"
 language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2019-08-05T00:00:00.000Z"
-description: "Unmasking Array in JS"
+description: "A practical guide to JavaScript arrays"
 ---
 
 # Introduction
 
-Like most JavaScript articles, this one covers `Map`, `Filter`, and `Reduce`. The goal here, however, is to go a step further and do a deep dive into the `Array` package.
+This article covers `map`, `filter`, and `reduce`, then goes further into the `Array` object and its most useful methods.
 
 # Array
 
@@ -21,14 +21,14 @@ const people = ["John", "Mary"]; // or
 const People = Array("John", "Mary");
 ```
 
-Both ways create an array, but it's more common to see the first form being used. Instantiating an array with `Array` will have some implications. Example
+Both forms create an array, but the first is more common. Calling `Array` as a constructor has a few implications. For example:
 
 ```javascript
 const a = Array(5); // Creates an array with size 5 and undefined elements
 const a = Array(5, 6, 7, 8); // Creates an array [5,6,7,8]
 ```
 
-Notice how using `Array` directly can be problematic. It is preferable to always use `[]`, and that convention will be followed throughout this article. Before continuing, here are three static methods worth knowing:
+Calling `Array` directly can be surprising, so this article uses `[]` throughout. Before looking at instance methods, three static methods are worth knowing:
 
 ## **Array.isArray**
 
@@ -65,11 +65,11 @@ const a = Array.of(5); // [5]
 
 This property returns the number of elements in an array.
 
-> Important to remember that array indices in Javascript start at 0, in case you come from Delphi, Lua...
+> Array indices in JavaScript start at 0.
 
 # Array.concat
 
-This method is quite interesting for you to **concat**enate elements and arrays with an existing one. But remember that it returns a new array and doesn't change the reference of your current array, requiring reassignment in case of reuse
+`concat` combines elements and arrays with an existing array. It returns a new array and does not change the original, so assign the result if you need to use it again.
 
 ```javascript
 const zero = []; // []
@@ -78,12 +78,11 @@ const with3elements = zero.concat([1, 2, 3]); // [1,2,3]
 const with2elements = zero.concat([1], 2); // [1,2]
 ```
 
-> Concat is great to use in .reduce, but if you're crazy about performance, you can take a
-> [look at this article](https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki) which is quite interesting showing the difference in usage and performance between push and concat
+> `concat` works well in `reduce`. If performance is critical, this [comparison of `push` and `concat`](https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki) is worth reading.
 
 # Array.push
 
-`push` is similar to `concat`, with one key difference: it adds all items passed as arguments to the end of the array without flattening them. Unlike `concat`, it does not convert a nested array into individual elements. Calling `array.push(elements)` where `elements` is an array may produce unexpected results:
+`push` is similar to `concat`, with one important difference: it adds its arguments to the end of the array without flattening them. Calling `array.push(elements)` with an array as `elements` therefore creates a nested array:
 
 ```javascript
 const a = []; // we create a constant,
@@ -92,7 +91,7 @@ a.push(1); // returns nothing, but we have a = [1]
 a.push([1]); // returns nothing, but we have a = [1, [1]]
 ```
 
-If you know exactly the type of elements, you can use it without fear and still have a performance gain at scale.
+When the element types are known, `push` is predictable and can perform well at scale.
 
 # Array.reverse
 
@@ -106,11 +105,11 @@ const string = "A man a plan a canal Panama";
 
 > A [palindrome](https://en.wikipedia.org/wiki/Palindrome) phrase is used here for demonstration. The capital letters make the reversal easier to observe.
 
-# ... or SpreadOperator
+# ... or spread syntax
 
-"Spread syntax" as it is in [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) is our beloved _SpreadOperator_. It allows expanding iterable objects for use in functions and also destructuring iterables.
+[Spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) expands iterable values for use in function calls and destructuring assignments.
 
-Although it's not the primary focus of this article, a few spread operator tricks are demonstrated below. Feel free to open an issue in the blog repository with any questions.
+Spread syntax is not the primary focus here, but the following examples show a few useful patterns. Open an issue in the blog repository if you have questions.
 
 ```javascript
 const [first, second, ...n] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -134,7 +133,7 @@ The spread syntax is a powerful tool that can replace `.call` and `.apply` in ma
 
 # Array.join
 
-Since I used it in a previous example, here's the explanation. `join` concatenates all array items and transforms them into a string. The argument passed is how the `array -> string` conversion will be done. The default is comma, but if you want to transform into words, just use an empty string `("")`
+`join` concatenates all array items into a string. Its argument controls the separator used for the `array -> string` conversion. The default separator is a comma; use an empty string `("")` when you do not want a separator.
 
 ```javascript
 const string = "The early bird catches the worm";
@@ -152,11 +151,11 @@ yourLoves.find((x) => You.loveMeByName(x)); // undefined
 yourLoves.find(Boolean); // mom
 ```
 
-While `find` returns the first match, the next method returns all matching occurrences.
+`find` returns the first match. The next method returns every matching element.
 
 # Array.filter
 
-If find returns the first occurrence, filter returns **ALL** occurrences according to your callback
+If `find` returns the first occurrence, `filter` returns **all** elements that satisfy the callback.
 
 ```javascript
 const yourLoves = ["mom", "dad", "sister", "brother", "dog", "parrot"];
@@ -164,7 +163,7 @@ const whoLovesYou = yourLoves.filter(Boolean);
 yourLoves.length === whoLovesYou.length; // true
 ```
 
-Both `find` and `filter` share the same callback signature: `currentElement, indexInArray, iteratedArray`. It is worth noting that `map` uses this same signature as well.
+Both `find` and `filter` use the callback signature `currentElement, indexInArray, iteratedArray`. `map` uses the same signature.
 
 # Array.map
 
@@ -206,11 +205,11 @@ To clarify, `acc` and `el` are positional parameters received by the callback fu
 3. Current value index. The name also says it all
 4. Source iterable array. I don't even need to say the name says it all, right?
 
-The `reduce` method accepts two parameters: the callback and the initial value. If the initial value is omitted, `reduce` uses the first array element as the accumulator and begins iteration from index 1. Always provide an explicit initial value to avoid subtle bugs.
+The `reduce` method accepts two parameters: the callback and the initial value. If the initial value is omitted, `reduce` uses the first array element as the accumulator and starts at index 1. Provide an explicit initial value to avoid subtle bugs.
 
 # Tricks
 
-The following tricks reinforce the concepts covered in this article. No explanation is provided — working through them independently is the best way to solidify understanding. Feel free to open an issue if you have questions.
+The following examples reinforce the concepts from this article. They have no additional explanation; working through them is the best way to test your understanding. Open an issue if you have questions.
 
 ```javascript
 const newArray = (number, transformCallback) =>
@@ -225,4 +224,4 @@ const pipeAsyncFunctions =
     fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
 ```
 
-Thank you for your time, see you soon, bye bye
+These examples bring the article to a close.

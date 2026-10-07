@@ -5,30 +5,30 @@ title: "Array.prototype"
 language: "pt-br"
 translations: ["pt-br"]
 date: "2019-08-05T00:00:00.000Z"
-description: "Desmascarando Array em JS"
+description: "Um guia prático sobre arrays em JavaScript"
 ---
 
 # Introdução
 
-Este artigo explora a série `Map, Filter e Reduce` com uma abordagem mais aprofundada do pacote `Array`, indo além do que a maioria dos artigos costuma cobrir.
+Este artigo apresenta `map`, `filter` e `reduce` e aprofunda os principais métodos do objeto `Array`.
 
 # Array
 
-Criar um Array em JS é simples:
+Criar um array em JavaScript é simples:
 
 ```javascript
 const pessoas = ["João", "Maria"]; // ou então
 const Pessoas = Array("Jão", "Mariá");
 ```
 
-Ambas as formas criam um array, porém é mais comum você ver a primeira forma sendo usada. Instanciando um array com `Array` você terá algumas implicações. Exemplo
+As duas formas criam um array, mas a primeira é mais comum. Chamar `Array` como construtor tem algumas implicações. Por exemplo:
 
 ```javascript
 const a = Array(5); // Cria um array com tamanho 5 e elementos undefined
 const a = Array(5, 6, 7, 8); // Cria um array [5,6,7,8]
 ```
 
-Conseguiu ver como usar diretamenta a criação através de `Array` pode ser problemático? Melhor adotarmos então sempre o uso de `[]`. E é o que vou fazer nesse artigo a partir de agora. Mas antes, talvez seja legal você conhecer outros 3 métodos estáticos que podem ser úteis pra você
+Chamar `Array` diretamente pode gerar resultados inesperados, por isso usarei `[]` ao longo do artigo. Antes dos métodos de instância, vale conhecer três métodos estáticos:
 
 ## **Array.isArray**
 
@@ -63,13 +63,13 @@ const a = Array.of(5); // [5]
 
 # Array.length
 
-Esse eu nem vou mostrar com código, mas ele serve pra obter o tamanho do Array.
+Essa propriedade retorna a quantidade de elementos do array.
 
-> Importante lembrar que os índices de array em Javascript começam em 0, caso você venha de Delphi, Lua...
+> Os índices de arrays em JavaScript começam em 0.
 
 # Array.concat
 
-Esse método é bem interessante para você **concat**enar elementos e arrays com um já existente. Mas lembre-se que ele retorna um novo array e não muda a referência do seu array atual, sendo necessário reatribuir em caso de reuso
+O `concat` combina elementos e arrays com um array existente. Ele retorna um novo array e não altera o original, então é preciso atribuir o resultado se ele for utilizado novamente.
 
 ```javascript
 const zero = []; // []
@@ -78,12 +78,11 @@ const with3elements = zero.concat([1, 2, 3]); // [1,2,3]
 const with2elements = zero.concat([1], 2); // [1,2]
 ```
 
-> O concat é bem legal para usar no .reduce, mas se você for louco com performance, pode dar uma
-> [olhada nesse artigo](https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki) que é bem interessante mostrar a diferença de uso e performance entre push e concat
+> O `concat` funciona bem em `reduce`. Se performance for uma preocupação, vale ler esta [comparação entre `push` e `concat`](https://dev.to/uilicious/javascript-array-push-is-945x-faster-than-array-concat-1oki).
 
 # Array.push
 
-Como eu já citei acima, vou falar desse. O `push` é bastante semelhante ao `concat` a diferença é que ele acrescenta todos os itens passados como argumentos ao final do array, mantendo a natureza. Ou seja, ele não converte um array para elementos planos como é o caso do `concat`. Então se for fazer algo do tipo `array.push(elements)`, você poderá se surpreender com o seu novo último item de array
+O `push` é semelhante ao `concat`, mas acrescenta os argumentos ao final do array sem achatá-los. Ao chamar `array.push(elements)` com um array em `elements`, o novo item será outro array:
 
 ```javascript
 const a = []; // criamos uma constante,
@@ -92,11 +91,11 @@ a.push(1); // não retorna nada, mas temos a = [1]
 a.push([1]); // não retorna nada, mas temos a = [1, [1]]
 ```
 
-Se você souber exatamente o tipo dos elementos, você pode usar ele sem medo e ainda ter um ganho de performance em larga escala.
+Quando os tipos dos elementos são conhecidos, `push` é previsível e pode oferecer bom desempenho em escala.
 
 # Array.reverse
 
-Como o próprio nome sugere, ele inverte os elementos do array, fazendo o primeiro ser o último, o segundo ser o penúltimo e assim vai...Esse eu vou mostrar em formato de código para me dar brecha no próximo tópico sobre um operador de array
+Como o nome sugere, `reverse` inverte a ordem dos elementos do array. O exemplo também introduz o operador de propagação, assunto da próxima seção.
 
 ```javascript
 const string = "Socorram-me em Marrocos";
@@ -104,13 +103,13 @@ const string = "Socorram-me em Marrocos";
 // socorraM me em-marrocoS
 ```
 
-> Eu usei uma frase [palíndroma](https://www.soportugues.com.br/secoes/palindromos/) só de sacanagem, mas o traço e as letras maiúsculas ajudam você a entender
+> A frase [palíndroma](https://www.soportugues.com.br/secoes/palindromos/) facilita a visualização da inversão porque usa um hífen e letras maiúsculas.
 
 # ... ou SpreadOperator
 
-"Sintaxe de propagação" como está na [MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Spread_operator) é o nosso querido _SpreadOperator_. Ele permite expandir os objetos iteráveis para o uso em funções e também desestruturar iteráveis.
+A [sintaxe de propagação](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Spread_operator) expande valores iteráveis para uso em chamadas de função e atribuições por desestruturação.
 
-Apesar de não ser muito o foco desse artigo, vou mostrar algumas demonstrações com o SpreadOperator em arrays. Em caso de dúvida, abra uma issue no repositório do blog.
+A sintaxe de propagação não é o foco principal deste artigo, mas os exemplos a seguir mostram alguns padrões úteis. Em caso de dúvida, abra uma issue no repositório do blog.
 
 ```javascript
 const [primeiro, segundo, ...n] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -134,7 +133,7 @@ O Spread é bastante poderoso — é possível fazer bom uso dele para evitar `.
 
 # Array.join
 
-Já que eu usei ele em um exemplo anterior, aqui fica a explicação dele. O `join` concatena todos os itens do array e os transforma em string. O argumento passado é como irá ser feita a conversão `array -> string`. O padrão é vírgula, mas se você quiser transformar em palavras, basta usar uma string vazia `("")`
+O `join` concatena os itens do array em uma string. O argumento define o separador usado na conversão `array -> string`. O padrão é a vírgula; use uma string vazia `("")` quando não quiser um separador.
 
 ```javascript
 const string = "A sorte ajuda a quem cedo madruga";
@@ -155,11 +154,11 @@ seusAmores.find((x) => Voce.meAmaPeloNome(x)); // undefined
 seusAmores.find(Boolean); // mãe
 ```
 
-O próximo método retorna todas as ocorrências em vez de apenas a primeira:
+O próximo método retorna todos os elementos correspondentes, não apenas o primeiro:
 
 # Array.filter
 
-Se o find retorna a primeira ocorrência, o filter retorna **TODAS** as ocorrências de acordo com o seu callback
+Se `find` retorna a primeira ocorrência, `filter` retorna **todos** os elementos que satisfazem o callback.
 
 
 ```javascript
@@ -168,7 +167,7 @@ const quemTeAma = seusAmores.filter(Boolean);
 seusAmores.length === quemTeAma.length; // true. Geral te ama
 ```
 
-Bom, usei esses dois métodos em sequência para explicar os parâmetros passados tanto para o `find` quanto para o `filter`. Ambos recebem `elementoCorrente, indiceNoArray, arrayIterado`. Importante lembrar que o `map` também tem essa assinatura. E falando dele...
+`find` e `filter` usam a assinatura de callback `elementoCorrente, indiceNoArray, arrayIterado`. O `map` também usa essa assinatura.
 
 # Array.map
 
@@ -183,13 +182,13 @@ novaVida; // ["Ricão", "s(ua|eu) crush apaixonad(o|a)", "Brasil+++"]
 ```
 
 
-Uma coisa que o `map` não faz é converter o seu array pra valores únicos, então pra isso nós iremos entender o `reduce`
+O `map` não reduz um array a um único valor. Para isso, usamos `reduce`.
 
 # Array.reduce
 
 O reduce transforma uma lista em um elemento do tipo que você bem definir, sendo útil pra fazer somas de itens e também emular quase todos os outros métodos que mostrei aqui.
 
-> Antes de dar um exemplo, só queria lembrar que no final eu vou fazer um compilado de tricks pra te facilitar no entendimento caso nada do que eu tenha falado tenha feito sentido até então
+> Ao final, há uma pequena coleção de exemplos para consolidar os conceitos apresentados.
 
 ```javascript
 [1, 2, 3, 3, 4, 5, 6].reduce((acc, el) => `${el} + ${acc}`, "");
@@ -213,11 +212,11 @@ Os parâmetros `acc` e `el` são recebidos pela função de callback. Como são 
 3. Índice do valor atual. O nome também diz tudo
 4. Array de origem iterável. Preciso nem falar que o nome também diz tudo né?
 
-O método `reduce` recebe dois parâmetros: o callback e o valor inicial. Caso o valor inicial não seja fornecido, o `reduce` utilizará o primeiro item do array e a redução será feita a partir do índice 1. Portanto, sempre forneça o valor inicial.
+O método `reduce` recebe dois parâmetros: o callback e o valor inicial. Se o valor inicial não for fornecido, `reduce` usará o primeiro item do array como acumulador e começará no índice 1. Sempre forneça um valor inicial explícito para evitar bugs sutis.
 
 # Tricks
 
-Exemplos práticos para consolidar o conteúdo apresentado. Sem explicações adicionais — tente exercitar e, em caso de dúvida, abra uma issue no repositório.
+Os exemplos a seguir consolidam os conceitos apresentados. Eles não têm explicações adicionais: tente resolvê-los e abra uma issue no repositório em caso de dúvida.
 
 ```javascript
 const newArray = (number, transformCallback) =>
@@ -232,4 +231,4 @@ const pipeAsyncFunctions =
     fns.reduce((p, f) => p.then(f), Promise.resolve(arg));
 ```
 
-Obrigado pelo seu tempo, tamo junto e até a próxima
+Esses exemplos encerram o artigo.

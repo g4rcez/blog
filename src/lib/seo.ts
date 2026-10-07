@@ -1,5 +1,5 @@
 import { BlogConfig } from "@/blog.config";
-import { Locale } from "@/lib/dictionary";
+import { DEFAULT_LOCALE, findSupportedLocale, SUPPORTED_LOCALES, type Locale } from "@/lib/dictionary";
 
 export const SITE_URL = BlogConfig.site;
 
@@ -19,46 +19,46 @@ export const homeCopy: Record<Locale, { title: string; description: string }> = 
     "en-US": {
         title: `${BlogConfig.user.name} — Senior Frontend Engineer Blog`,
         description:
-            "Frontend engineering, TypeScript, React, Node.js, and developer tooling. Deep dives, patterns, and lessons from 10+ years building products.",
+            "Writing about frontend engineering, TypeScript, React, Node.js, and developer tooling after 10+ years of building products.",
     },
     "pt-BR": {
         title: `${BlogConfig.user.name} — Blog de Engenharia Frontend`,
         description:
-            "Engenharia frontend, TypeScript, React, Node.js e ferramentas para desenvolvedores. Análises, padrões e aprendizados de 10+ anos construindo produtos.",
+            "Textos sobre engenharia frontend, TypeScript, React, Node.js e ferramentas para desenvolvedores, a partir de 10+ anos construindo produtos."
     },
 };
 
-export const topicsBasePath: Record<Locale, string> = {
-    "en-US": "/topics",
-    "pt-BR": "/pt/topicos",
+export const tagsBasePath: Record<Locale, string> = {
+    "en-US": "/tags",
+    "pt-BR": "/pt/tags",
 };
 
-export const topicCopy: Record<
+export const tagCopy: Record<
     Locale,
     {
-        title: (topic: string) => string;
-        description: (topic: string) => string;
+        title: (tag: string) => string;
+        description: (tag: string) => string;
         index: { title: string; description: string };
     }
 > = {
     "en-US": {
-        title: (topic) => `${topic} — Articles by Allan Garcez`,
-        description: (topic) =>
-            `Posts, deep dives and patterns about ${topic} from a senior frontend engineer with 10+ years building products.`,
+        title: (tag) => `${tag} — Articles by Allan Garcez`,
+        description: (tag) =>
+            `Articles and practical notes about ${tag} from a senior frontend engineer with 10+ years of product experience.`,
         index: {
-            title: "Topics — Allan Garcez Blog",
+            title: "Tags — Allan Garcez Blog",
             description:
-                "Browse every topic covered on the blog: frontend, TypeScript, React, Node.js, tooling and more.",
+                "Browse the tags used on the blog, from frontend and TypeScript to React, Node.js, and tooling.",
         },
     },
     "pt-BR": {
-        title: (topic) => `${topic} — Artigos por Allan Garcez`,
-        description: (topic) =>
-            `Posts, análises e padrões sobre ${topic} por um engenheiro frontend sênior com 10+ anos construindo produtos.`,
+        title: (tag) => `${tag} — Artigos por Allan Garcez`,
+        description: (tag) =>
+            `Artigos, análises e padrões sobre ${tag}, escritos por um engenheiro frontend sênior com 10+ anos de experiência em produtos.`,
         index: {
-            title: "Tópicos — Blog do Allan Garcez",
+            title: "Tags — Blog do Allan Garcez",
             description:
-                "Explore todos os tópicos cobertos no blog: frontend, TypeScript, React, Node.js, ferramentas e mais.",
+                "Explore as tags do blog, de frontend e TypeScript a React, Node.js e ferramentas para desenvolvedores.",
         },
     },
 };
@@ -102,18 +102,57 @@ export const absoluteUrl = (path: string): string => {
     return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
-export const postPath = (lang: Locale, href: string): string => {
-    if (lang === "pt-BR") return `/pt${href}`;
-    return href;
+export const localizedPath = (locale: Locale, href = ""): string => {
+    const existingPrefix = Object.values(localeToPath)
+        .filter((prefix) => prefix !== "/")
+        .sort((left, right) => right.length - left.length)
+        .find((prefix) => href === prefix || href.startsWith(`${prefix}/`));
+    let suffix = existingPrefix ? href.slice(existingPrefix.length) : href;
+    const prefix = localeToPath[locale];
+
+    if (suffix === "/") suffix = "";
+    if (suffix && !suffix.startsWith("/")) suffix = `/${suffix}`;
+    return `${prefix === "/" ? "" : prefix}${suffix}` || "/";
 };
 
+export const removeLocalePath = (locale: Locale, pathname: string): string => {
+    const prefix = localeToPath[locale];
+    if (prefix === "/") return pathname;
+    if (pathname === prefix) return "/";
+    return pathname.startsWith(`${prefix}/`) ? pathname.slice(prefix.length) : pathname;
+};
+
+export const localeFromPath = (pathname: string | null): Locale => {
+    if (!pathname) return DEFAULT_LOCALE;
+
+    const locale = [...SUPPORTED_LOCALES]
+        .filter((supportedLocale) => localeToPath[supportedLocale] !== "/")
+        .sort((left, right) => localeToPath[right].length - localeToPath[left].length)
+        .find((supportedLocale) => {
+            const prefix = localeToPath[supportedLocale];
+            return pathname === prefix || pathname.startsWith(`${prefix}/`);
+        });
+
+    return locale ?? DEFAULT_LOCALE;
+};
+
+export const localizedAlternates = (
+    locales: readonly Locale[],
+    hrefForLocale: (locale: Locale) => string,
+): Record<string, string> => {
+    const languages: Record<string, string> = {};
+    for (const locale of locales) languages[locale] = absoluteUrl(hrefForLocale(locale));
+
+    const defaultUrl = languages[DEFAULT_LOCALE] ?? Object.values(languages)[0];
+    if (defaultUrl) languages["x-default"] = defaultUrl;
+    return languages;
+};
+
+export const postPath = (lang: Locale, href: string): string => localizedPath(lang, href);
+
 export const languageAlternates = (translations: string[], href: string) => {
-    const map: Record<string, string> = {};
-    translations.forEach((t) => {
-        const lower = t.toLowerCase();
-        if (lower === "en-us") map["en-US"] = absoluteUrl(href);
-        if (lower === "pt-br") map["pt-BR"] = absoluteUrl(`/pt${href}`);
-    });
-    if (map["en-US"]) map["x-default"] = map["en-US"];
-    return map;
+    const locales = SUPPORTED_LOCALES.filter((locale) =>
+        translations.some((translation) => findSupportedLocale(translation) === locale),
+    );
+    return localizedAlternates(locales, (locale) => postPath(locale, href));
 };

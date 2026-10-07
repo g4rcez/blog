@@ -5,35 +5,35 @@ language: "en-US"
 translations: ["pt-br", "en-us"]
 subjects: ["frontend", "react", "typescript", "javascript"]
 date: "2019-08-28T23:59:59.999Z"
-description: "You'll be impressed how flexible this application will be"
+description: "How a multi-tenant frontend became flexible enough to serve different brands"
 ---
 
-As described in the previous post, a BBCode parser was developed to enable a flexible frontend. Colors, texts, icons, and images all had to be dynamic because each of these items is controlled by the **tenant** of the application.
+As I described in the previous post, I built a BBCode parser to support a flexible frontend. Colors, text, icons, and images all had to be dynamic because each of them was controlled by the application's **tenant**.
 
-The technical details follow below. Each section heading corresponds to a real requirement that emerged during the frontend architecture design and development phases.
+The sections below explain the technical decisions behind that flexibility. Each heading is based on a real requirement that appeared while we were designing and building the frontend.
 
 # "I need a site that changes according to the brand"
 
-This is where the complexity began. I had already defined with the team everything that would be used, some components had already been written. Much of the future stack had already been defined. _Calm down, I'll tell you the stack_
+This is where the complexity began. The team had already chosen most of the stack, and some components were already in place. The rest of the architecture was taking shape as well. Here is the stack:
 
 - React - SPA (Single Page Application)
 - Typescript
 - Redux + Redux Saga
-- Ant Design (auxiliary library for some components that would take longer to make in a short deadline)
+- Ant Design (an auxiliary library for components that would take too long to build under a short deadline)
 - Tachyons CSS
-- RC Components (library to help with some components, but that still gave us the flexibility to edit the visual)
-- Since antd uses moment, I had to add moment to the project, although I wanted to use date-fns for this project
+- RC Components (a component library that still allowed us to customise the visual design)
+- `moment`, because Ant Design depended on it, although I wanted to use `date-fns`
 - Axios for HTTP requests
-- react-text-mask for creating some masks like CPF, CNPJ, phone, ZIP code...
-- The currency input was developed _from scratch_, inspired by something similar to NuBank (mobile app)
+- `react-text-mask` for masks such as CPF, CNPJ, phone numbers, and ZIP codes
+- A currency input built _from scratch_, inspired by a similar component in the NuBank mobile app
 
-Another important — and admittedly risky — decision was the early adoption of React Hooks. While using Alpha builds can introduce future problems, adopting it early provided an opportunity to learn deeply and create custom hooks that helped share code throughout the application, including the dynamic routing strategy.
+Another important, and potentially risky, decision was adopting React Hooks early. Alpha releases can introduce problems later, but using Hooks from the beginning gave us time to understand them and build custom hooks that shared logic across the application, including the dynamic routing strategy.
 
 > "I need a site that changes according to the brand. When the user accesses the domain xpto.com, they'll see this site in black. When they access the site abcd.dev, they'll see the site in purple. One thing I wanted to be possible is when opening the source code not having the possibility to see data from another site, even though the code is the same"
 
-With this, you've already got a sense of the stack. And by using antd, I had to take all its CSS and modify it according to our code model so that everything is dynamic. And here the first problem began.
+That gives you a picture of the stack. Because we used Ant Design, I also had to adapt its CSS to our configuration model so that the visual system could be dynamic. That led to the first problem.
 
-1. The first challenge was defining CSS variables at runtime. CSS3 supports variables via the `var()` function ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/CSS/var)), which is straightforward to define in a stylesheet. However, with a CSS file potentially reaching 39,000 lines, maintaining multiple stylesheets was not an option. The solution lies in the `:root` selector, which targets the root HTML element. By querying the document for `:root` and setting properties on it, dynamic "variable variables" can be applied at runtime:
+1. The first challenge was defining CSS variables at runtime. CSS supports variables through the `var()` function ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/CSS/var)), and defining them in a stylesheet is simple. However, the stylesheet could reach 39,000 lines, so maintaining a separate file for each theme was not practical. The solution was the `:root` selector, which targets the root HTML element. By querying `:root` and setting properties on it, we could apply the theme variables at runtime:
 
 ```javascript
 import config from "./config-site";
@@ -41,21 +41,21 @@ const root: any = document.querySelector(":root");
 Object.keys(config).forEach((x: string) => root.style.setProperty(`--${x}`, `${config[x]}`));
 ```
 
-Great! Variables problem solved, we have a configuration file (still static) that defines our frontend variables and then we can use without further problems.
+That solved the variable problem. We had a static configuration file defining the frontend variables, and the rest of the application could consume them without further changes.
 
-2. We have a color-agnostic CSS, it understands our variables according to the entire configuration object, but how do I have a dynamic configuration file? How do I make the application not display such file whenever I'm on a certain domain or subdomain? Well, this problem wasn't solved in the frontend and also wasn't solved in one place. For this situation, we had to include an already existing practice in the team and a CLI tool to control the themes. If you read my previous post, you'll remember the UI router I mentioned, but if you didn't **YOU SHOULD READ IT, PLEASE**.
+2. We had color-agnostic CSS that understood the variables in the configuration object, but we still needed a dynamic configuration file. How could the application load the correct configuration for each domain or subdomain without exposing another tenant's data? This could not be solved in the frontend alone, or in a single place. We combined an existing team practice with a CLI tool for theme management. If you read the previous post, you may remember the UI router; if not, it provides useful context for what follows.
 
-The UI router is a webserver in F# that listens to requests made to registered domains (in our case, xpto.com and abcd.dev). Upon receiving a request from `xpto.com` it goes to an Amazon S3 bucket and the path of all files we have (these files are the assets, js and css generated in the React build) and mounts a customized `index.html`. Some values are passed by it to the HTML, being them
+The UI router is an F# web server that listens for requests to registered domains (in this case, `xpto.com` and `abcd.dev`). When it receives a request for `xpto.com`, it finds the corresponding files in an Amazon S3 bucket — the JavaScript, CSS, and other assets generated by the React build — and assembles a customised `index.html`. It injects a few values into that HTML:
 
 - Tenant
 - Version
 - Assets URL
 
-Since it mounts an `.html` file, it means I can inject javascript code into it, right? And I can also do conditionals to deliver one file and not another? The answer is yes to both questions. But to avoid `ifs` according to tenants, the solution was even simpler.
+Because the router assembles an `.html` file, it can inject JavaScript and choose which files to serve. Both are possible, but we found an even simpler way to avoid tenant-specific `if` statements.
 
-**_Just customize the react build to generate folders according to tenant names, so the URL itself tells which file the UI router should get_**
+**_Customise the React build to generate a folder for each tenant. The URL then tells the UI router which file to load._**
 
-Simple, practical, efficient and clean. But for this to work, we needed N configuration files for our tenants, which is still bad. But maintaining `.json` files is still much easier than maintaining tons of code, think about it. Maintaining different files is bad, can cause inconsistencies, additions made in one and removals in another, team work things you've probably seen. The famous **We each do our part and in the end we put it all together**. And guys, git helps a lot, no doubt, but in this case, every edit generates conflict (you'll still understand why, calm down buddy). First, let's see the configuration file:
+This was simple, practical, and efficient. It did mean maintaining one configuration file per tenant, which was not ideal, but separate `.json` files were still easier to maintain than a large amount of conditional code. Multiple files can drift apart — one may receive an addition while another misses the corresponding change — but that is a familiar team problem. Git helps, although in this case every edit could still produce a conflict. The reason will become clear below. First, here is the configuration file:
 
 ```javascript
 {
@@ -80,7 +80,7 @@ Simple, practical, efficient and clean. But for this to work, we needed N config
 }
 ```
 
-Of course this file is much bigger, because there are more colors, more texts, more images...What matters here is that you know part of this structure. But now the question arises _"How will a browser read a json file and transform it into javascript?"_. Answer: **It won't**. And that was the challenge of `script00`, transforming a JSON into a Javascript object. We know this isn't hard, since JSON is a Javascript object, so it's just creating a `.js` file and writing a variable declaration. Although this script has several other business rules, conversions from `http` to `https`, replacing tenant names with the correct tenant according to the file name, creating color variations...What matters to you here is `create a script that generates javascript given a directory of JSON files`.
+The real file is much larger because it contains more colors, text, and images. This excerpt is enough to show the structure. The next question is: _"How will a browser read a JSON file and turn it into JavaScript?"_ The answer is **it will not**. That was the purpose of `script00`: transform JSON into a JavaScript object. The conversion itself is simple — create a `.js` file and assign the object to a variable — but the script also handled rules such as converting `http` to `https`, replacing tenant names based on the filename, and generating color variations. The important idea is this: `create a script that generates JavaScript from a directory of JSON files`.
 
 ```javascript
 const FS = require("fs");
@@ -215,11 +215,11 @@ module.exports = {
 };
 ```
 
-That is a significant amount of code, but it documents the full picture. Some details were modified to avoid exposing proprietary information. The build folder used is the same folder generated by React. I don't even need to say that to integrate this into the React build, the easiest way was to use `eject` and control webpack configurations and build scripts myself. This same script was at the end of `scripts/build.js`, which is the file responsible for building your frontend. Before moving on to topic 3, a question
+That is a lot of code, but it shows the complete flow. I changed some details to avoid exposing proprietary information. The build folder is the same one generated by React. To integrate this process with the React build, the simplest option was to use `eject` and take control of the webpack configuration and build scripts. This script ran at the end of `scripts/build.js`, the file responsible for building the frontend. Before moving to the third problem, there is one reasonable question:
 
-> **Wasn't it easier to use webpack plugins to generate these files?** Yes, it was easier. However in the development world we have the trade-off of "hardship" in every ease we have. So if you need flexibility, you'll have to get your hands very dirty to get what you want.
+> **Wouldn't it have been easier to use webpack plugins to generate these files?** Yes. In software development, convenience often comes with a trade-off. If you need this level of flexibility, you may have to work closer to the build system.
 
-3. This is the last problem solved in this customizable site question. And this problem is synchronizing changes in files according to all texts and other changes in texts. For this, I had to make another script to run every time I wanted to add text to the site
+3. The final problem was keeping configuration files in sync when text or other content changed. To solve it, I wrote another script that ran whenever I needed to add text to the site.
 
 ```javascript
 const { REFERENCE_FILE, writeJsVarInfile, referenceObject } = require("./frontend-builder");
@@ -266,15 +266,15 @@ FS.readdir(CONFIGS_DIR, (_, files) => {
 });
 ```
 
-Once again, sorry for the slightly longer code. Some errors may be found due to deleting some lines that contain information that cannot be published. It's worth remembering that this `if (file==="reference.json")` is to create a development file, serving as a _skeleton_, since all configuration is done in an html of the UI router. This is just a _hack_ or **workaround** to run the project without errors in development.
+This is another long code sample. You may notice errors because I removed lines containing information that cannot be published. The `if (file === "reference.json")` block creates a development file that acts as a _skeleton_, since the UI router supplies the complete configuration through HTML. It is a _hack_, or **workaround**, that lets the project run without errors during development.
 
-# "I need this text to be bold and that button to send a message on the store's WhatsApp"
+# "I need this text to be bold and that button to send a message through the store's WhatsApp"
 
-Without a doubt, this was the most challenging requirement to receive. The text setup was already complete, all strings were defined, and supporting rich formatting meant determining at runtime which parts of a string should be bold or become a link. There was significant resistance to making this change, but ultimately it became unavoidable.
+This was the most challenging requirement. The text configuration was already complete and all strings were defined. Supporting rich formatting meant deciding at runtime which parts of a string should be bold and which should become links. We initially resisted the change, but eventually there was no way around it.
 
-The first solution that came to mind was "I'll use a markdown parser and everything's fine". I found good markdown parsers, but they weren't going to solve my "WhatsApp" problem. That idea was abandoned in favor of another approach familiar to many JavaScript developers: **if no library does exactly what is needed, build one from scratch with zero dependencies.** Despite the cliché, extensive research confirmed that no existing solution fit the requirements.
+The first idea was to use a Markdown parser. I found several good options, but none solved the WhatsApp-specific requirement. That led to a familiar JavaScript decision: **when no library does exactly what you need, build one from scratch with zero dependencies.** It sounds like a cliché, but after researching the available options, no existing solution met the requirements.
 
-Since I started messing with programming, I've always really liked the idea of parsers. One of my first personal challenges was to create a BBCode to HTML parser, using Shellscript. _If you're crazy about programming, do this, but with the intention of just learning Regex and the idea of parsers, yacc and the like_. I know BBCode isn't better than Markdown for laypeople to use, but since it was what I had already done sometime in my life, I just needed a few good doses of energy drink to make this code in Javascript, and the best [this code is public, and will be updated in mid-September](https://github.com/g4rcez/code-markup-parser). It's not the most beautiful thing in the world, but it works well for my problem and still creates the cool link for WhatsApp.
+I have liked parsers since I started programming. One of my first personal projects was a BBCode-to-HTML parser written in shell script. _If you enjoy programming, try something similar as a way to learn regular expressions, parsers, yacc, and related topics._ BBCode is not a better format than Markdown for non-technical users, but I already had experience with it. After some experimentation — and more than a little energy drink — I wrote this JavaScript version. [The code is public and will be updated in mid-September](https://github.com/g4rcez/code-markup-parser). It is not the most elegant project, but it solved the problem and could also generate the WhatsApp link.
 
 This **code-markup-parser** generates HTML, and how do I interpret raw HTML in React?
 
@@ -282,9 +282,9 @@ This **code-markup-parser** generates HTML, and how do I interpret raw HTML in R
 <span dangerouslySetInnerHTML={{ __html: codeMarkupParser(parsed) }} />
 ```
 
-One important security measure was sanitizing all input HTML, preventing malicious HTML and JavaScript from being injected into parsed strings — any such tags are stripped before rendering.
+One important security measure was sanitizing all input HTML. Potentially malicious HTML and JavaScript are removed from parsed strings before they are rendered.
 
-At the end of everything, I just had to create a method to get the strings from our configuration object and transform them into an HTML string to be interpreted. This way we could have text written in bold with `[b]This is bold on my site[/b]`.
+The remaining step was to create a method that reads strings from the configuration object and turns them into HTML. That lets the configuration express bold text as `[b]This is bold on my site[/b]`.
 
 ```javascript
 const remapTexts = (map: any) => (acc: string, x: string) => acc.replace(new RegExp(RE(x), "gi"), map[trueTrim(x)]);
@@ -305,7 +305,7 @@ export function resolve({ text, textParams = {} }: ResolverType) {
 }
 ```
 
-And of course, I should accept variables in these strings, another problem that was solved with the `remapTexts` and `parseWithParams` functions. The syntax for my texts that require variables and customization became like this: `[b]This text is bold[/b] and this text uses a variable {{ varName }}`. This syntax isn't even inspired by the Rails/Laravel template string, imagine lol. And using it inside JSX:
+The strings also needed to accept variables. The `remapTexts` and `parseWithParams` functions handle that case. Text that needs both formatting and interpolation uses this syntax: `[b]This text is bold[/b] and this text uses a variable {{ varName }}`. The syntax is loosely reminiscent of template strings in Rails and Laravel. In JSX, it looks like this:
 
 ```jsx
 <p>
@@ -318,27 +318,27 @@ And of course, I should accept variables in these strings, another problem that 
 </p>
 ```
 
-After finishing this, I was very satisfied, everything was beautiful. I had a configuration file that was just to deliver to design to edit or for marketing to write the texts, no one would ask for any exorbitant modification in the system anymore...
+Once this was finished, the configuration was much easier to maintain. Design could edit the visual content and marketing could write the text without requiring a large code change for every update.
 
-# "This link here can't appear for the user when they don't have that many products"
+# "This link should not appear when the user does not have enough products"
 
-This title was actually a bit longer, it was the following:
+The full request was longer:
 
-> "This link here can't appear for the user when they don't have that many products. It has to redirect them to the page when they don't have any product. Don't forget to also validate so that when they don't have any product, a menu always appears offering a new product. And I had seen that when canceling a product, the menu continued until they reloaded the page, that's ugly".
+> "This link should not appear when the user does not have enough products. It should redirect them to the page shown when they have no products. Also make sure that, when there are no products, a menu item offering a new product is always visible. I noticed that after cancelling a product, the menu stayed visible until the page was reloaded. That does not look right."
 
-Well, this might not be so sinister to solve at first glance. But think about it, it's route control, menus, all dynamically. Routes and menus are almost always linked to each other, but in React, route construction is separate from the navbar, even more so when the navbar changes according to a logged-in user's profile.
+At first, this may not sound too difficult. In practice, it involves dynamic route and menu control. Routes and menus are closely related, but React applications often build them separately — especially when the navigation changes with the profile of the logged-in user.
 
-This problem was solved very quickly, but I was mega pumped and it was a problem I had already thought about, but didn't want to stop to solve because there are several other components to be written, refactored code, security...and in my defense, I'm not a great UX specialist.
+I solved this quickly because I had already considered the problem. I had postponed it while working on other components, refactoring code, and addressing security concerns. I also have to admit that UX is not my strongest area.
 
-As I said earlier, routes and menus are almost always linked. So my resolution was based on grouping routes and menus in a single Array, according to user profiles.
+As mentioned earlier, routes and menus are closely related, so I grouped them in a single array and filtered that array according to the user's profile.
 
-1. Create a list of objects with components, icons used in the menu, menu and page title, profile that can view such route
-2. List all dependencies (pay attention to this word, you've probably already imagined a `useEffect`) necessary for the routes
-3. Separate the logic of each route in isolation, which includes one more item in our object mentioned in item 1
-4. Configure React Router to no longer use hardcoded `<Route />`, but rather a `<Route />` that will be generated through an array.
-5. Filter the array according to all information from items 1, 2 and 3.
+1. Create a list of objects containing the component, menu icon, menu and page titles, and the profile allowed to view the route.
+2. List every dependency required to evaluate the route (the word "dependency" probably makes you think of a `useEffect`).
+3. Keep each route's validation logic isolated and add it to the object from step 1.
+4. Configure React Router to generate `<Route />` elements from the array instead of declaring them all by hand.
+5. Filter the array using the information from steps 1, 2, and 3.
 
-Great. Better to show the code now
+The implementation looked like this:
 
 ```jsx
 import resolve from "@/config/texts";
@@ -391,31 +391,31 @@ const useClientRoutes = () => {
 export default useClientRoutes;
 ```
 
-Well, I think it wasn't anything too complicated, but it saved a lot, and I have the same array for my ReactRouter and my Navbars. With this, changing in this hook, both will be changed and already applying the rule. Remember that when updating my redux item `products` I'll already have the new rule applied to the router and navbar.
+This was not especially complex, but it removed duplicated rules. The same array drives both React Router and the navigation bars. Changing the hook changes both systems and applies the same validation rule to each. When the Redux `products` value updates, the router and navigation immediately use the new set of rules.
 
-However, all these changes had an impact on performance — the `bundle.js` was approaching 600KB. Due to the UI router structure, standard [code-splitting](https://reactjs.org/docs/code-splitting.html) could not be applied, because the assets path differs from the access domain, which prevents Suspense/Lazy from resolving correctly.
+The extra flexibility affected performance, though: `bundle.js` was approaching 600 KB. Because of the UI router's structure, standard [code splitting](https://reactjs.org/docs/code-splitting.html) was not working. The asset path differed from the domain used to access the application, so `Suspense` and `lazy` could not resolve the chunks correctly.
 
-But if I'm talking about it...it's because I had to solve it. And it's this specific problem that motivated me even more to write this more _deep dive_ article on building this UI.
+That problem still needed a solution, and it became the main reason I wrote this deeper account of how the UI was built.
 
-# "Dude, the site is very slow to open, I need to fix this urgently"
+# "The site is very slow to open. We need to fix this urgently."
 
-It is worth acknowledging that the performance impact was largely a consequence of the accumulation of non-functional requirements that had grown throughout the project. The challenge was accepted, though with some uncertainty, given that three months of research into code splitting for this architecture had yielded no viable leads.
+The performance problem was largely a result of the non-functional requirements accumulated throughout the project. I accepted the challenge, although I was unsure of the outcome: three months of researching code splitting for this architecture had produced no useful lead.
 
-Surprisingly, once focused exclusively on this problem, a solution emerged in approximately three hours — after five hours of sketching ideas and three hours of iterative experimentation. The approaches considered were:
+Once I focused exclusively on this problem, a solution appeared in about three hours. I had spent another five hours sketching ideas and testing them, and considered these approaches:
 
-1. Create a proxy in the UI router that redirects each webpack chunk pattern to the correct tenant S3 bucket. This was clearly too costly and inefficient.
+1. Create a proxy in the UI router that redirects each webpack chunk pattern to the correct tenant's S3 bucket. This would be expensive and inefficient.
 
-2. Create a script that forces tenant URLs and modifies the UI versioning to `v0.0.0-tenant-name`, with a build-time `.sh` script replacing chunk patterns with the S3 bucket URL per tenant. Despite being a significant workaround with long-term maintenance implications, this option was seriously considered.
+2. Create a script that forces tenant URLs and changes the UI version to `v0.0.0-tenant-name`. A build-time `.sh` script would then replace the chunk patterns with the S3 bucket URL for each tenant. This was a significant workaround with long-term maintenance costs, but I considered it seriously.
 
 3. Study webpack in depth.
 
-Ultimately, option 3 was the right path.
+Option 3 was the right path.
 
-I've always hated having to deal with webpack, I think messing with a webpack generated by CRA is even worse. Despite all this, I've always known the power of webpack, but I never knew it did magic, and I'm not kidding, it's really magic.
+I have always disliked working with webpack, and modifying the webpack configuration generated by CRA is even less appealing. I knew webpack was powerful, but I had not expected it to solve this problem so cleanly.
 
-Before giving the solution, I'd like to say that the `bundle.js` of almost 600KB became several chunks of at most 10KB. The largest of them, which contains the redux actions files and business rules, was 120KB. Too surreal. This isn't magic, it's the power of code-splitting with the wonderful Suspense/Lazy API that React gives us to make a decent frontend.
+The nearly 600 KB `bundle.js` became several chunks of at most 10 KB. The largest, containing the Redux action files and business rules, was 120 KB. That was a substantial improvement — not magic, but the result of code splitting with React's `Suspense` and `lazy` APIs.
 
-The magic comes now. Searching the webpack documentation, I found [this link that talks about public-path](https://webpack.js.org/guides/public-path/). Although I understand what's written, this was never possible because when searching for the variable `__webpack_public_path__` in **ALL PLACES** of bundle.js, build.js, start.js, everything that was linked to the application runtime, even if you search, you won't find it (if you find it, please tell me). So I always ignored this, thinking it was a hidden option. And since CRA already configures `PUBLIC_PATH`, I thought this was the way to abstract the webpack configuration. And even changing `PUBLIC_PATH`, nothing was solved. In the middle of `what if I do this and this`, [I found this issue explaining the difference between `PUBLIC_PATH` and `__webpack_public_path__`](https://github.com/facebook/create-react-app/issues/6024). So the solution came and that's it. Done
+The key was in the webpack documentation, specifically [the guide to `public-path`](https://webpack.js.org/guides/public-path/). I had searched for `__webpack_public_path__` throughout `bundle.js`, `build.js`, `start.js`, and the rest of the application runtime, but it was nowhere to be found. I assumed it was an internal option. CRA already configures `PUBLIC_PATH`, so I initially thought that was the right abstraction, but changing it did not solve the problem. Then I found [this issue explaining the difference between `PUBLIC_PATH` and `__webpack_public_path__`](https://github.com/facebook/create-react-app/issues/6024). That clarified the solution:
 
 ```javascript
 // Sets the webpack on the fly at runtime (hence on the fly)
@@ -424,16 +424,16 @@ declare let __webpack_public_path__: string;
 __webpack_public_path__ = `https://buckets.amazon/${$__OBJECT__.tenant}/sites/${$__OBJECT__.version}/`;
 ```
 
-Problem solved. It is remarkable that such a small change resolved an issue that had persisted for over three months.
+The problem was solved. A small runtime change fixed an issue that had remained open for more than three months.
 
-It's worth remembering that the lighthouse performance score went from 3 (in the worst case of slow internet and weak phones) to 92 (in the same case mentioned).
+The Lighthouse performance score also rose from 3 — on a slow connection and a low-powered phone — to 92 under the same conditions.
 
-This has been a detailed account of a real-world project, with concrete examples throughout. Even after reading all of this, there may still be a question:
+This is my detailed account of a real project and the trade-offs behind its frontend architecture. One question may still remain:
 
-> "But Allan, isn't this a hack? Using window as a global variable for your application to consume"
+> "But Allan, isn't this a hack? Using `window` as a global variable for the application to consume."
 
-The same concern arose at the start, but given the nature of JavaScript — even with TypeScript, strict linting, tests, and every other best practice — unconventional solutions sometimes become necessary. The [history of JavaScript](https://en.wikipedia.org/wiki/JavaScript) provides useful context. Performance and cross-boundary state sharing often lead to similar patterns.
+I had the same concern at first. But JavaScript applications sometimes need unconventional solutions, even with TypeScript, strict linting, tests, and other engineering practices. The [history of JavaScript](https://en.wikipedia.org/wiki/JavaScript) provides useful context: performance constraints and state shared across boundaries often lead to patterns like this.
 
-As a useful frame of reference: _"If Facebook controls its React version by appending to the window object, why can't a UI be configured the same way?"_
+A useful reference point is: _"If Facebook controls its React version by appending to the `window` object, why can't a UI be configured the same way?"_
 
-The wrong thing is not solving the problem. If the solution meets business requirements, the team has reached consensus, and maintenance is manageable — that is sound engineering. Thank you for your time, see you soon, bye bye
+The problem is not choosing an unconventional implementation. If it satisfies the business requirements, the team understands and accepts the trade-offs, and maintenance remains manageable, it is a sound engineering decision.

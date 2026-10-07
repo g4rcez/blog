@@ -54,14 +54,14 @@ export function ThemeSelector(props: React.ComponentPropsWithoutRef<typeof Listb
     }, []);
 
     if (!mounted) {
-        return <div className="h-6 w-6" />;
+        return <div className="h-10 w-10" />;
     }
 
     return (
         <Listbox as="div" value={theme} onChange={setTheme} {...props}>
             <Label className="sr-only">{t("theme.label")}</Label>
             <ListboxButton
-                className="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-slate-700 dark:ring-inset dark:ring-white/5"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-primary focus-visible:outline-2 focus-visible:outline-primary"
                 aria-label={t("theme.label")}
             >
                 <LightIcon
