@@ -4,7 +4,7 @@ import { portfolioCopy, portfolioPath } from "@/lib/portfolio";
 import { absoluteUrl, SITE_URL } from "@/lib/seo";
 import type { Locale } from "@/lib/dictionary";
 import Link from "next/link";
-import { PortfolioPage } from "./portfolio-ui";
+import { MetricGrid, PortfolioPage } from "./portfolio-ui";
 
 export function AboutPage({ lang }: { lang: Locale }) {
     const copy = portfolioCopy[lang];
@@ -71,6 +71,9 @@ export function AboutPage({ lang }: { lang: Locale }) {
                     {copy.about.statement}
                 </p>
                 <p className="mt-6 max-w-3xl text-base leading-7 text-secondary-foreground">{copy.about.intro}</p>
+                <div className="mt-10">
+                    <MetricGrid metrics={copy.impact.metrics} />
+                </div>
             </section>
 
             <section
@@ -103,24 +106,26 @@ export function AboutPage({ lang }: { lang: Locale }) {
                 className="mt-20 scroll-mt-24 border-t border-border pt-12"
                 aria-labelledby="experience-title"
             >
-                <div className="max-w-3xl">
-                    <p className="mb-3 font-mono text-xs uppercase tracking-[0.12em] text-secondary-foreground">
-                        {labels.history}
-                    </p>
-                    <h2
-                        id="experience-title"
-                        className="font-display text-2xl tracking-tight text-foreground sm:text-3xl"
-                    >
-                        {copy.about.experienceTitle}
-                    </h2>
-                    <div className="mt-10 space-y-10">
-                        {copy.about.experience.map((item) => (
-                            <article key={item.title} className="border-l border-border pl-5">
-                                <h3 className="font-display text-xl tracking-tight text-foreground">{item.title}</h3>
-                                <p className="mt-3 text-base leading-7 text-secondary-foreground">{item.body}</p>
-                            </article>
-                        ))}
+                <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+                    <div>
+                        <p className="mb-3 font-mono text-xs uppercase tracking-[0.12em] text-secondary-foreground">
+                            {labels.history}
+                        </p>
+                        <h2
+                            id="experience-title"
+                            className="font-display text-2xl tracking-tight text-foreground sm:text-3xl"
+                        >
+                            {copy.about.experienceTitle}
+                        </h2>
                     </div>
+                    <ol className="divide-y divide-border border-y border-border">
+                        {copy.about.experience.map((item) => (
+                            <li key={item.title} className="py-6 first:pt-5 last:pb-5">
+                                <h3 className="font-display text-lg tracking-tight text-foreground">{item.title}</h3>
+                                <p className="mt-2 text-base leading-7 text-secondary-foreground">{item.body}</p>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             </section>
 

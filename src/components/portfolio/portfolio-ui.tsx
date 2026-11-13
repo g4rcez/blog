@@ -51,8 +51,10 @@ export function MetricGrid({ metrics }: { metrics: Array<{ value: string; label:
     return (
         <ul className="grid grid-cols-1 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white/60 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-950/40 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
             {metrics.map((metric) => (
-                <li key={metric.label} className="p-5 sm:p-6">
-                    <p className="font-display text-2xl tracking-tight text-foreground sm:text-3xl">{metric.value}</p>
+                <li key={metric.label} className="min-w-0 p-5 sm:p-6">
+                    <p className="font-display text-2xl tracking-tight text-foreground [overflow-wrap:anywhere]">
+                        {metric.value}
+                    </p>
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{metric.label}</p>
                 </li>
             ))}

@@ -659,6 +659,29 @@ export type Project = {
 
 export const projects = [
     {
+        slug: "zetta",
+        name: "Zetta",
+        description: {
+            "en-US": "An open source platform where a team of AI bots does the work you describe, on your own server.",
+            "pt-BR":
+                "Uma plataforma open source em que um time de bots de IA executa o trabalho que você descreve, no seu próprio servidor.",
+        },
+        problem: {
+            "en-US":
+                "A single coding agent is hard to scale across a whole outcome. Teams need several agents with clear roles, shared context, and human approval for sensitive actions.",
+            "pt-BR":
+                "Um único agente de código é difícil de escalar para um resultado completo. Times precisam de vários agentes com papéis claros, contexto compartilhado e aprovação humana para ações sensíveis.",
+        },
+        technologies: ["AI agents", "MCP", "Open source"],
+        demonstrates: {
+            "en-US":
+                "Multi-agent orchestration, AI product development, agent experience (AX), and human-in-the-loop workflow design.",
+            "pt-BR":
+                "Orquestração multiagente, desenvolvimento de produtos com IA, experiência do agente (AX) e design de fluxos com humano no ciclo.",
+        },
+        links: [{ label: "Website", href: "https://zettabot.app/" }],
+    },
+    {
         slug: "writeme-editor",
         name: "WriteMe",
         description: {
