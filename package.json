@@ -4,8 +4,8 @@
     "version": "0.0.0",
     "packageManager": "pnpm@12.18.0",
     "engines": {
-        "node": ">=20.19.0",
-        "pnpm": ">=10 <11"
+        "node": "24.x",
+        "pnpm": ">=12 <13"
     },
     "browserslist": "defaults, not ie <= 11",
     "scripts": {
