@@ -182,8 +182,8 @@ importers:
         specifier: 1.4.0
         version: 1.4.0
       '@g4rcez/components':
-        specifier: 7.2.1
-        version: 7.2.1(@emotion/is-prop-valid@1.4.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 7.2.2
+        version: 7.2.2(@emotion/is-prop-valid@1.4.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)
       '@headlessui/react':
         specifier: 2.2.10
         version: 2.2.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -464,13 +464,14 @@ packages:
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
 
-  '@g4rcez/components@7.2.1':
-    resolution: {integrity: sha512-FuRZqz7ZZQvf02eMMEIzWhBLR4O+cPEsj5ARwDxehsbrT9vfCyOESx9i8R7ttdLeHdVLnSyXqVCk9RjkagHgPg==}
+  '@g4rcez/components@7.2.2':
+    resolution: {integrity: sha512-AsIZA9/SetJwVpkkMbPo+B5ZY1Fp9YPMpgDEw5HQ4bW7qVBGWfayYUR+cIGQIDfu9L7oVdvgGoohiw4TNMb1yQ==}
     engines: {node: '>=20.14.0'}
     hasBin: true
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
+      zod: ^4.0.0
 
   '@headlessui/react@2.2.10':
     resolution: {integrity: sha512-5pVLNK9wlpxTUTy9GpgbX/SdcRh+HBnPktjM2wbiLTH4p+2EPHBO1aoSryUCuKUIItdDWO9ITlhUL8UnUN/oIA==}
@@ -2641,7 +2642,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
-  '@g4rcez/components@7.2.1(@emotion/is-prop-valid@1.4.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@g4rcez/components@7.2.2(@emotion/is-prop-valid@1.4.0)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@4.6.7)':
     dependencies:
       '@base-ui/react': 1.6.0(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@floating-ui/react': 0.27.20(react-dom@19.3.1(react@19.3.1))(react@19.3.1)

@@ -4,7 +4,7 @@ allowBuilds:
   '@mongodb-js/zstd': false
   node-liblzma: false
 minimumReleaseAgeExclude:
-  - '@g4rcez/components@7.2.1'
+  - '@g4rcez/components@7.2.2'
   - framer-motion@14.13.0
   - motion-dom@14.13.0
   - motion@14.13.0
