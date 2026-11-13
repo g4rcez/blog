@@ -6,7 +6,7 @@ language: "pt-br"
 translations: ["pt-br", "en-us"]
 date: "2023-03-05T21:45:00.000Z"
 description: "Tentando mais uma vez falar sobre programação funcional, trazendo uma introdução detalhada dos conceitos
-mais importantes e fazendo um mergulho em conceitos de forma explicativa."
+  mais importantes e fazendo um mergulho em conceitos de forma explicativa."
 ---
 
 Assim como programação orientada a objetos, programação funcional é um paradigma que visa resolver os problemas

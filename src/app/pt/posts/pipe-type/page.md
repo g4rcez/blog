@@ -6,7 +6,7 @@ language: "pt-br"
 translations: ["pt-br"]
 date: "2023-03-06T11:45:00.000Z"
 description: "Como fazer sua função pipe ser fortemente tipada? Os conceitos por trás de tipos recursivos e cadeias de
-função"
+  função"
 ---
 
 # Contexto

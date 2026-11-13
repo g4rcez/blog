@@ -6,7 +6,7 @@ language: "en-US"
 translations: ["pt-br", "en-us"]
 date: "2023-03-05T21:45:00.000Z"
 description: "Trying once again to talk about functional programming, bringing a detailed introduction of the
-most important concepts and diving into concepts in an explanatory way."
+  most important concepts and diving into concepts in an explanatory way."
 ---
 
 Just like object-oriented programming, functional programming is a paradigm that aims to solve problems
