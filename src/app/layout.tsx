@@ -145,10 +145,10 @@ export default async function RootLayout(props: PropsWithChildren) {
                 <link rel="me" href={BlogConfig.github} />
                 <link rel="author" href={SITE_URL} />
                 <style data-name="theme" id="theme-light">
-                    {createThemeCss({ colors: lightColors }, { selector: "html:not(.dark)" })}
+                    {createThemeCss({ name: "default", colorScheme: "light", colors: lightColors })}
                 </style>
                 <style data-name="theme" id="theme-dark">
-                    {createThemeCss({ colors: darkColors }, { selector: "html.dark", base: defaultDarkThemeTokens })}
+                    {createThemeCss({ name: "dark", colorScheme: "dark", colors: { ...defaultDarkThemeTokens.colors, ...darkColors } })}
                 </style>
                 <JsonLd data={[websiteJsonLd, personJsonLd]} />
             </head>
