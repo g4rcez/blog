@@ -1,4 +1,13 @@
 packages:
   - '.'
+allowBuilds:
+  '@mongodb-js/zstd': set this to true or false
+  node-liblzma: set this to true or false
+minimumReleaseAgeExclude:
+  - '@g4rcez/components@7.2.1'
+  - framer-motion@14.13.0
+  - motion-dom@14.13.0
+  - motion@14.13.0
+  - prettier@3.10.1
 onlyBuiltDependencies:
   - sharp
