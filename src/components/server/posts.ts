@@ -2,7 +2,7 @@ import { BlogConfig } from "@/blog.config";
 import { PostSchema, readingTime, wordCount } from "@/lib/models";
 import Markdoc from "@markdoc/markdoc";
 import glob from "fast-glob";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import fs from "node:fs";
 import path from "node:path";
 

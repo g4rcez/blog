@@ -1,6 +1,6 @@
 import { nodes as defaultNodes, Tag } from "@markdoc/markdoc";
 import { slugifyWithCounter } from "@sindresorhus/slugify";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { DocsLayout } from "@/components/docs-layout";
 import { Fence } from "@/components/fence";
 

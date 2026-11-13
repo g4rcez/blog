@@ -1,5 +1,5 @@
 import { rendererRich, transformerTwoslash } from "@shikijs/twoslash";
-import { codeToHtml } from "shiki/bundle/web";
+import { codeToHtml } from "shiki";
 import light from "shiki/themes/light-plus.mjs";
 import dark from "shiki/themes/dark-plus.mjs";
 
