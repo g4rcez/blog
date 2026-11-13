@@ -1,8 +1,8 @@
 packages:
   - '.'
 allowBuilds:
-  '@mongodb-js/zstd': set this to true or false
-  node-liblzma: set this to true or false
+  '@mongodb-js/zstd': false
+  node-liblzma: false
 minimumReleaseAgeExclude:
   - '@g4rcez/components@7.2.1'
   - framer-motion@14.13.0
