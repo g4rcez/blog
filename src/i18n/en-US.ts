@@ -36,6 +36,7 @@ export default {
         shellUnavailable: "Terminal shell is unavailable",
         openUsage: "Usage: open posts/<slug>.md or open projects/<slug>.md",
         openNotFound: "open: post or project file not found",
+        fullscreenUnavailable: "fullscreen: not supported by this browser",
         unsupportedLocale: "Unsupported locale",
         readme: [
             "# garcez.dev",
@@ -50,6 +51,7 @@ export default {
             "",
             "- `cat <file>` reads a file; TypeScript files are highlighted and HTTP(S) URLs are clickable.",
             "- `posts` runs `ls posts`; `tags` runs `ls tags`; `agents` runs `cat agents.ts`; `skills` runs `cat skills.ts`.",
+            "- `f` or `fullscreen` toggles fullscreen: the terminal fills the whole viewport. Run it again to leave.",
             "- `open posts/<slug>.md` visits a post. `open projects/<slug>.md` opens its project page when available, or its card on the Open Source page.",
             "",
             "Clickable URLs open in a new tab; the open command navigates to a page in this tab. Shell commands use an in-memory filesystem and have no network access.",

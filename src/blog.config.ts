@@ -28,6 +28,7 @@ export const BlogConfig = {
     github: "https://github.com/g4rcez",
     twitter: "https://x.com/garcez_allan",
     projects: [
+        { title: { "pt-BR": "zetta", "en-US": "zetta" }, href: "https://zettabot.app/" },
         { title: { "pt-BR": "brouther", "en-US": "brouther" }, href: "https://brouther.vercel.app/" },
         { title: { "pt-BR": "dotfiles", "en-US": "dotfiles" }, href: "https://github.com/g4rcez/dotfiles" },
         { title: { "pt-BR": "writeme", "en-US": "writeme" }, href: "https://app.writeme.dev" },

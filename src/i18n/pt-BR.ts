@@ -34,6 +34,7 @@ const ptBR = {
         shellUnavailable: "Shell do terminal indisponível",
         openUsage: "Uso: open posts/<slug>.md ou open projects/<slug>.md",
         openNotFound: "open: post ou projeto não encontrado",
+        fullscreenUnavailable: "fullscreen: não suportado por este navegador",
         unsupportedLocale: "Idioma não suportado",
         readme: [
             "# garcez.dev",
@@ -48,6 +49,7 @@ const ptBR = {
             "",
             "- `cat <arquivo>` lê um arquivo; arquivos TypeScript recebem realce e URLs HTTP(S) podem ser clicadas.",
             "- `posts` executa `ls posts`; `tags` executa `ls tags`; `agents` executa `cat agents.ts`; `skills` executa `cat skills.ts`.",
+            "- `f` ou `fullscreen` alterna a tela cheia: o terminal ocupa toda a viewport. Execute de novo para sair.",
             "- `open posts/<slug>.md` abre um post. `open projects/<slug>.md` abre a página do projeto, quando houver, ou o cartão na página de código aberto.",
             "",
             "Os URLs clicáveis abrem em uma nova aba; o comando open navega para uma página nesta aba. Os comandos usam um sistema de arquivos em memória e não têm acesso à rede.",

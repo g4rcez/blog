@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/server/json-ld";
 import { getTopics } from "@/components/server/topics";
 import { getTranslation, type Locale } from "@/lib/dictionary";
 import { absoluteUrl, tagsBasePath } from "@/lib/seo";
-import Link from "next/link";
+import { TopicsGrid } from "@/components/client/topics-grid";
 
 type Props = { lang: Locale };
 
@@ -31,19 +31,7 @@ export function TopicsIndex({ lang }: Props) {
                     {tags.length} {tagsLabel.toLocaleLowerCase(lang)}
                 </p>
             </header>
-            <ul className="not-prose grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {tags.map((t) => (
-                    <li key={t.slug}>
-                        <Link
-                            href={`${base}/${t.slug}`}
-                            className="border-divider text-primary flex items-center justify-between rounded-md border-primary border px-3 py-1 duration-500 hover:scale-105 transition-all ease-in-out"
-                        >
-                            <span className="font-medium text-foreground">{t.name}</span>
-                            <span className="text-sm text-secondary-foreground">{t.count}</span>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            <TopicsGrid tags={tags} base={base} />
         </div>
     );
 }
