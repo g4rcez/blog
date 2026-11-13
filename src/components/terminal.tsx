@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "@/lib/i18n";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import styles from "./terminal.module.css";
 import { getTerminalContent } from "./terminal-content";
 
@@ -60,14 +60,27 @@ class TerminalBoundary extends React.Component<
 export function Terminal() {
     const { locale } = useTranslation();
     const copy = getTerminalContent(locale);
+    const root = useRef<HTMLDivElement>(null);
+    const toggleFullscreen = useCallback(() => {
+        const element = root.current;
+        if (!element?.showPopover) return false;
+        if (element.matches(":popover-open")) {
+            element.hidePopover();
+            element.removeAttribute("popover");
+        } else {
+            element.setAttribute("popover", "manual");
+            element.showPopover();
+        }
+        return true;
+    }, []);
     return (
-        <div>
+        <div ref={root} className={styles.root}>
             <section className={styles.frame} aria-label={copy.label}>
                 <pre className={styles.banner} role="img" aria-label={copy.bannerLabel}>
                     {terminalBanner}
                 </pre>
                 <TerminalBoundary key={locale} messages={copy}>
-                    <TerminalSandbox key={locale} />
+                    <TerminalSandbox key={locale} onToggleFullscreen={toggleFullscreen} />
                 </TerminalBoundary>
             </section>
             <p className={styles.hint}>{copy.hint}</p>

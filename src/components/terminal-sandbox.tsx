@@ -34,11 +34,16 @@ const createSyntaxHighlightedCat = (unavailableMessage: string) =>
         }
 
         let stdout = result.stdout;
-        if (args.every((path) => path.toLowerCase().endsWith(".ts"))) {
+        const lang = args.every((path) => path.toLowerCase().endsWith(".ts"))
+            ? "typescript"
+            : args.every((path) => path.toLowerCase().endsWith(".md"))
+              ? "markdown"
+              : null;
+        if (lang) {
             try {
                 const { codeToTokens } = await import("shiki/bundle/web");
                 const theme = document.documentElement.classList.contains("dark") ? "dark-plus" : "light-plus";
-                const { tokens } = await codeToTokens(result.stdout, { lang: "typescript", theme });
+                const { tokens } = await codeToTokens(result.stdout, { lang, theme });
                 stdout = tokens
                     .map((line) =>
                         line
@@ -114,7 +119,7 @@ function isTerminalPayload(value: unknown): value is { files: Record<string, str
     );
 }
 
-export function TerminalSandbox() {
+export function TerminalSandbox({ onToggleFullscreen }: { onToggleFullscreen: () => boolean }) {
     const { locale } = useTranslation();
     const instructionsId = useId();
     const copy = getTerminalContent(locale);
@@ -171,6 +176,18 @@ export function TerminalSandbox() {
                 bash.registerCommand(createCommandShortcut("agents", "cat agents.ts", copy.shellUnavailable));
                 bash.registerCommand(createCommandShortcut("skills", "cat skills.ts", copy.shellUnavailable));
                 bash.registerCommand(createOpenCommand(locale, copy));
+                for (const name of ["f", "fullscreen"]) {
+                    bash.registerCommand(
+                        defineCommand(name, async () => {
+                            const ok = onToggleFullscreen();
+                            return {
+                                stdout: "",
+                                stderr: ok ? "" : `${copy.fullscreenUnavailable}\n`,
+                                exitCode: ok ? 0 : 1,
+                            };
+                        }),
+                    );
+                }
                 setStatus("ready");
             })
             .catch((error: unknown) => {
@@ -182,7 +199,7 @@ export function TerminalSandbox() {
             .finally(() => {
                 if (request.current === controller) request.current = null;
             });
-    }, [copy, locale, write]);
+    }, [copy, locale, onToggleFullscreen, write]);
 
     const onData = useCallback(
         (data: string) => {

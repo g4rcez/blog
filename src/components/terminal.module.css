@@ -112,6 +112,43 @@
     outline-offset: 3px;
 }
 
+.root:popover-open {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--var-color-background, #fff);
+    color: var(--var-color-foreground, #171c27);
+}
+
+.root:popover-open .frame {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    border: 0;
+    border-radius: 0;
+}
+
+.root:popover-open .body {
+    min-height: 0;
+    flex: 1;
+}
+
+.root:popover-open .screen:global(.wterm) {
+    height: 100%;
+}
+
+.root:popover-open .hint {
+    display: none;
+}
+
 @media (min-width: 640px) {
     .frame {
         --terminal-screen-height: 22rem;
